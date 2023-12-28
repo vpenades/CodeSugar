@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <Nullable>enable</Nullable>    
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);CODESUGAR_USECODESUGARNAMESPACE</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\src\CodeSugar.System.IO.Sources\*.cs" LinkBase="CodeSugar.IO" />
+    <Compile Include="..\..\src\CodeSugar.System.IO.Sources\*.cs.pp" LinkBase="CodeSugar.IO" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="..\..\src\CodeSugar.System.IO.Sources\_NetStd.cs" />
+  </ItemGroup>
+
+</Project>
