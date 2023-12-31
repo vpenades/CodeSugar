@@ -15,14 +15,14 @@ using BYTESSEGMENT = System.ArraySegment<byte>;
 using LAZYHASHALGORYTHM = System.Lazy<System.Security.Cryptography.HashAlgorithm>;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
-namespace CodeSugar.IO
+namespace CodeSugar
 #elif CODESUGAR_USESYSTEMNAMESPACE
 namespace System.IO
 #else
 namespace $rootnamespace$
 #endif
 {
-    internal static partial class _CodeSugarExtensions
+    partial class CodeSugarIO
     {
         #region diagnostics
 

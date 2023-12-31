@@ -11,14 +11,14 @@ using ZIPENTRY = System.IO.Compression.ZipArchiveEntry;
 using BYTESSEGMENT = System.ArraySegment<byte>;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
-namespace CodeSugar.IO
+namespace CodeSugar
 #elif CODESUGAR_USESYSTEMNAMESPACE
 namespace System.IO
 #else
 namespace $rootnamespace$
 #endif
 {
-    internal static partial class _CodeSugarExtensions
+    partial class CodeSugarIO
     {
         public static string ReadAllText(this ZIPENTRY entry)
         {

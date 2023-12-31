@@ -14,21 +14,21 @@ using STREAM = System.IO.Stream;
 using BYTESSEGMENT = System.ArraySegment<byte>;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
-namespace CodeSugar.IO
+namespace CodeSugar
 #elif CODESUGAR_USESYSTEMNAMESPACE
 namespace System.IO
 #else
 namespace $rootnamespace$
 #endif
 {
-    internal static partial class _CodeSugarExtensions
+    partial class CodeSugarIO
     {
         /// <summary>
         /// Reads bytes from the stream until the end of the stream or until the destination buffer is full.
         /// </summary>
         /// <param name="stream">The source stream.</param>
         /// <param name="bytes">The destination buffer.</param>
-        /// <returns>the number of bytes read, or 0 if EOF</returns>
+        /// <returns>true if the bytes have successfully read, or false if EOF</returns>
         public static bool TryReadBytes(this STREAM stream, Span<Byte> bytes)
         {
             if (stream == null) return false;
@@ -46,6 +46,39 @@ namespace $rootnamespace$
             return true;
         }
 
+        public static (T0, T1) ReadValues<T0,T1>(this STREAM stream, bool streamIsBigEndian = false)
+            where T0:unmanaged
+            where T1:unmanaged
+        {
+            var v0 = ReadValue<T0>(stream, streamIsBigEndian);
+            var v1 = ReadValue<T1>(stream, streamIsBigEndian);
+            return (v0,v1);
+        }
+
+        public static (T0, T1, T2) ReadValues<T0,T1,T2>(this STREAM stream, bool streamIsBigEndian = false)
+            where T0:unmanaged
+            where T1:unmanaged
+            where T2:unmanaged
+        {
+            var v0 = ReadValue<T0>(stream, streamIsBigEndian);
+            var v1 = ReadValue<T1>(stream, streamIsBigEndian);
+            var v2 = ReadValue<T2>(stream, streamIsBigEndian);
+            return (v0,v1,v2);
+        }
+
+        public static (T0, T1, T2, T3) ReadValues<T0,T1,T2, T3>(this STREAM stream, bool streamIsBigEndian = false)
+            where T0:unmanaged
+            where T1:unmanaged
+            where T2:unmanaged
+            where T3:unmanaged
+        {
+            var v0 = ReadValue<T0>(stream, streamIsBigEndian);
+            var v1 = ReadValue<T1>(stream, streamIsBigEndian);
+            var v2 = ReadValue<T2>(stream, streamIsBigEndian);
+            var v3 = ReadValue<T3>(stream, streamIsBigEndian);
+            return (v0,v1,v2,v3);
+        }
+
         /// <summary>
         /// Reads a struct value from the stream.
         /// </summary>
@@ -58,6 +91,11 @@ namespace $rootnamespace$
             where T:unmanaged
         {
             // special cases
+
+            if (typeof(System.Runtime.CompilerServices.ITuple).IsAssignableFrom(typeof(T)))
+            {
+			    throw new ArgumentException("Unsupported. Use ReadValues instead.", nameof(T));
+		    }  
 
             if (typeof(T) == typeof(TimeSpan))
             {
@@ -90,6 +128,36 @@ namespace $rootnamespace$
             return span[0];
         }
 
+        public static void WriteValues<T0,T1>(this STREAM stream, T0 value0, T1 value1, bool streamIsBigEndian = false)
+            where T0:unmanaged
+            where T1:unmanaged            
+        {
+            WriteValue<T0>(stream, value0, streamIsBigEndian);
+            WriteValue<T1>(stream, value1, streamIsBigEndian);            
+        }
+
+        public static void WriteValues<T0,T1,T2>(this STREAM stream, T0 value0, T1 value1, T2 value2, bool streamIsBigEndian = false)
+            where T0:unmanaged
+            where T1:unmanaged
+            where T2:unmanaged            
+        {
+            WriteValue<T0>(stream, value0, streamIsBigEndian);
+            WriteValue<T1>(stream, value1, streamIsBigEndian);
+            WriteValue<T2>(stream, value2, streamIsBigEndian);            
+        }
+
+        public static void WriteValues<T0,T1,T2,T3>(this STREAM stream, T0 value0, T1 value1, T2 value2, T3 value3, bool streamIsBigEndian = false)
+            where T0:unmanaged
+            where T1:unmanaged
+            where T2:unmanaged
+            where T3:unmanaged
+        {
+            WriteValue<T0>(stream, value0, streamIsBigEndian);
+            WriteValue<T1>(stream, value1, streamIsBigEndian);
+            WriteValue<T2>(stream, value2, streamIsBigEndian);
+            WriteValue<T3>(stream, value3, streamIsBigEndian);
+        }
+
 		/// <summary>
 		/// Writes a struct value to the stream.
 		/// </summary>
@@ -100,9 +168,10 @@ namespace $rootnamespace$
 		public static void WriteValue<T>(this STREAM stream, T value, bool streamIsBigEndian = false)
             where T : unmanaged
         {
-            switch (value) // special cases
+        switch (value) // special cases
             {
-                case TimeSpan ts: WriteValue(stream, ts.Ticks, streamIsBigEndian); return;
+                case System.Runtime.CompilerServices.ITuple tuple: throw new ArgumentException("Unsupported. Use WriteValues instead.", nameof(value));
+				case TimeSpan ts: WriteValue(stream, ts.Ticks, streamIsBigEndian); return;
                 case DateTime dt: WriteValue(stream, dt.ToBinary(), streamIsBigEndian); return;
                 case DateTimeOffset dto:
                     WriteValue(stream, dto.DateTime, streamIsBigEndian);

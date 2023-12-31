@@ -13,14 +13,14 @@ using DIRECTORY = System.IO.DirectoryInfo;
 using SYSTEMENTRY = System.IO.FileSystemInfo;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
-namespace CodeSugar.IO
+namespace CodeSugar
 #elif CODESUGAR_USESYSTEMNAMESPACE
 namespace System.IO
 #else
 namespace $rootnamespace$
 #endif
 {
-    internal static partial class _CodeSugarExtensions    
+    static partial class CodeSugarIO    
     {
 		#region diagnostics
 
@@ -98,6 +98,11 @@ namespace $rootnamespace$
         public static FILE GetFile(this DIRECTORY baseDir, params string[] relativePath)
         {
             GuardNotNull(baseDir);
+            if (relativePath == null || relativePath.Length == 0) throw new ArgumentNullException(nameof(relativePath));
+
+            var last = relativePath[relativePath.Length-1];
+
+            if (last == "." || last == "..") throw new ArgumentException($"{last} is invalid file name", nameof(relativePath));
 
             var path = _GetPath(baseDir, relativePath);
             return new FILE(path);
@@ -121,13 +126,24 @@ namespace $rootnamespace$
         {
             GuardNotNull(dinfo);
 
-            if (relativePath == null) throw new ArgumentNullException(nameof(relativePath));
+            if (relativePath == null || relativePath.Length == 0) return dinfo.FullName;
 
-            var path = dinfo.FullName;
+            var path = dinfo.FullName.TrimEnd(_DirectorySeparators);
             foreach (var part in relativePath)
             {
                 if (string.IsNullOrWhiteSpace(part)) throw new ArgumentNullException(nameof(relativePath));
                 if (part.IndexOfAny(_InvalidChars) >= 0) throw new ArgumentException($"{part} contains invalid chars", nameof(relativePath));
+
+                if (part == ".") continue;
+
+                if (part == "..")
+                {
+                    var idx = path.LastIndexOfAny(_DirectorySeparators);
+                    if (idx < 0) throw new ArgumentException("invalid ..", nameof(relativePath));
+                    path = path.Substring(0, idx);                    
+                    continue;
+                }
+
                 path = System.IO.Path.Combine(path, part);
             }
 

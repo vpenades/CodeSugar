@@ -14,20 +14,27 @@ using SYSTEMENTRY = System.IO.FileSystemInfo;
 using System.Linq;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
-namespace CodeSugar.IO
+namespace CodeSugar
 #elif CODESUGAR_USESYSTEMNAMESPACE
 namespace System.IO
 #else
 namespace $rootnamespace$
 #endif
 {
-    internal static partial class _CodeSugarExtensions    
+    partial class CodeSugarIO
     {
-        #region constants
-
-        private static readonly char[] _InvalidChars = System.IO.Path.GetInvalidFileNameChars();
-
-        #endregion
+        /// <summary>
+        /// ensures that the path uses Path.DirectorySeparatorChar and it does not end with a path separator.
+        /// </summary>
+        /// <returns>
+        /// a normalized path that is suited to be used for path string comparison.
+        /// </returns>
+        public static string GetNormalizedFullName(this System.IO.FileSystemInfo finfo)
+        {
+            return finfo.FullName
+                .Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar)
+                .TrimEnd(System.IO.Path.DirectorySeparatorChar);
+        }
 
         /// <summary>
         /// Gets the relative path from <paramref name="baseDir"/> to reach <paramref name="finfo"/>
@@ -47,7 +54,7 @@ namespace $rootnamespace$
 
             while(baseDir != null)
             {
-                if (baseDir.ContainsFileOrDirectory(finfo)) return path.Substring(baseDir.FullName.Length).TrimStart('\\').TrimStart('/');
+                if (baseDir.ContainsFileOrDirectory(finfo)) return path.Substring(baseDir.FullName.Length).TrimStart(_DirectorySeparators);
                 baseDir = baseDir.Parent;
             }
 
@@ -95,16 +102,19 @@ namespace $rootnamespace$
 		/// using case insensitive rules.
 		/// </summary>
 		/// <param name="a"></param>
-		/// <param name="path"></param>
+		/// <param name="bPath"></param>
 		/// <returns>True if they have an equivalent <see cref="SYSTEMENTRY.FullName"/></returns>
-		public static bool FullNameEquals(this SYSTEMENTRY a, string path)
+		public static bool FullNameEquals(this SYSTEMENTRY a, string bPath)
         {            
             if (a == null) return false;            
 
-            var aPath = a.FullName.Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar);
-            path = path.Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar);
+            var aPath = GetNormalizedFullName(a);
 
-            return string.Equals(aPath, path, StringComparison.OrdinalIgnoreCase);
+            bPath = bPath
+                .Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar)
+                .TrimEnd(System.IO.Path.DirectorySeparatorChar);
+
+            return string.Equals(aPath, bPath, StringComparison.OrdinalIgnoreCase);
         }
 
 		/// <summary>
@@ -118,10 +128,37 @@ namespace $rootnamespace$
         {
             if (a == null) return false;
 
-            var aPath = a.FullName.Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar);
+            var aPath = GetNormalizedFullName(a);
             path = path.Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar);
 
             return aPath.StartsWith(path, StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+		/// Gets a <see cref="IEqualityComparer{T}"/> specialises in comparing <see cref="SYSTEMENTRY.FullName"/>
+		/// </summary>
+        /// <remarks>
+        /// Use Environment.OsVersion.GetFullNameComparer<FileInfo>();
+        /// </remarks>
+		public static IEqualityComparer<T> GetFullNameComparer<T>(this System.OperatingSystem os)
+            where T:SYSTEMENTRY        
+        {
+            var comparison = GetFullNameStringComparison(os);
+
+            return _FileSystemInfoComparer<T>.GetInstance(comparison);
+        }
+
+        public static StringComparison GetFullNameStringComparison(this System.OperatingSystem os)
+        {
+            switch(os.Platform)
+            {
+                case System.PlatformID.Unix: return StringComparison.Ordinal;
+                case System.PlatformID.MacOSX: return StringComparison.Ordinal;
+                #if NET
+                case System.PlatformID.Other: return StringComparison.Ordinal;
+                #endif
+                default: return StringComparison.OrdinalIgnoreCase;
+            }
         }
 
 		/// <summary>
@@ -171,8 +208,8 @@ namespace $rootnamespace$
                 if (x == null) return false;
                 if (y == null) return false;
 
-                var apath = x.FullName.Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar);
-                var bpath = y.FullName.Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar);            
+                var apath = GetNormalizedFullName(x);
+                var bpath = GetNormalizedFullName(y);
 
                 // https://stackoverflow.com/questions/430256/how-do-i-determine-whether-the-filesystem-is-case-sensitive-in-net
                 // https://stackoverflow.com/questions/7344978/verifying-path-equality-with-net
@@ -188,11 +225,7 @@ namespace $rootnamespace$
 
             public int GetHashCode(T obj)
             {
-                return obj == null
-                    ? 0
-                    : obj.FullName
-                    .Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar)
-                    .GetHashCode(_Comparison);
+                return obj == null ? 0 : GetNormalizedFullName(obj).GetHashCode(_Comparison);
             }
         }
     }

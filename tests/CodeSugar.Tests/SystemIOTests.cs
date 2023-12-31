@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 using NUnit.Framework;
 
-using CodeSugar.IO;
+using CodeSugar;
 
 namespace CodeSugar.Tests
 {
@@ -15,7 +15,7 @@ namespace CodeSugar.Tests
         {
             var readme_txt = ResourceInfo.From("readme.txt");
 
-            Assert.That(()=>readme_txt.File.Directory.GetFile(":*?"), Throws.ArgumentException);
+            
 
             var text = readme_txt.File.ReadAllText();
             Assert.That(text, Is.EqualTo("hello world"));
@@ -43,6 +43,64 @@ namespace CodeSugar.Tests
 
             Assert.That(readme_txt.File.GetRelativePath(readme_txt.File.Directory.Parent),
                 Is.EqualTo("Resources\\readme.txt"));
+
+            var dcomparer = Environment.OSVersion.GetFullNameComparer<DirectoryInfo>();
+
+            var tmp0 = new System.IO.DirectoryInfo("temp\\");
+            var tmp1 = tmp0.GetDirectory("a", "..", ".", "b", "..");
+            Assert.That(dcomparer.Equals(tmp0, tmp1));
+
+            Assert.That(() => readme_txt.File.Directory.GetFile(".."), Throws.ArgumentException);
+            Assert.That(() => readme_txt.File.Directory.GetFile(":*?"), Throws.ArgumentException);
+            Assert.That(() => readme_txt.File.Directory.GetFile("\\"), Throws.ArgumentException);
+            
+        }
+
+        
+        [TestCase("\\\\192.168.0.200\\temp\\xyz\\", "\\\\192.168.0.200")]
+        [TestCase("\\\\192.168.0.200\\temp\\", "\\\\192.168.0.200")]
+        [TestCase("\\\\X\\temp\\xyz\\", "\\\\X")]
+        [TestCase("c:\\xyz\\abc\\", "C:")]
+        [TestCase("c:\\xyz\\abc", "C:")]
+        [TestCase("c:", "C:")]
+        public void TestDrives(string path, string expected)
+        {
+            var root = System.IO.Path.GetPathRoot(path);            
+
+            var networkDir = new System.IO.DirectoryInfo(path);
+
+            var driveOrNetwork = networkDir.GetDriveOrNetworkName();
+
+            var driveName = "-";            
+
+            if (networkDir.TryGetDriveInfo(out var drive))
+            {
+                driveName = drive.Name;                
+            }
+
+            TestContext.WriteLine($"{root} {driveOrNetwork} {driveName}");
+
+            Assert.That(driveOrNetwork, Is.EqualTo(expected));            
+        }
+
+
+        [Test]
+        public void TestFileInfoEquality()
+        {
+            var fcomparer = Environment.OSVersion.GetFullNameComparer<FileInfo>();
+            var dcomparer = Environment.OSVersion.GetFullNameComparer<DirectoryInfo>();
+
+            var readme_txt_0 = ResourceInfo.From("readme.txt");
+            var readme_txt_1 = ResourceInfo.From("README.TXT");
+            Assert.That(fcomparer.Equals(readme_txt_0.File, readme_txt_1.File));
+
+            var tmp0 = new System.IO.DirectoryInfo("temp");
+            var tmp1 = new System.IO.DirectoryInfo("temp/");
+            var tmp2 = new System.IO.DirectoryInfo("temp\\");
+
+            Assert.That(dcomparer.Equals(tmp0, tmp1));
+            Assert.That(dcomparer.Equals(tmp0, tmp2));
+            Assert.That(dcomparer.Equals(tmp1, tmp2));
         }
 
         [Test]
@@ -51,8 +109,9 @@ namespace CodeSugar.Tests
             using var m = new System.IO.MemoryStream();
 
             var dt = new DateTime(2000, 3, 4).ToLocalTime();
+            var d = new DateOnly(dt.Year, dt.Month, dt.Day);
             var v3 = new System.Numerics.Vector3(1, 2, 3);
-
+            
             m.WriteValue<int>(10);
             m.WriteValue<long>(-100, true);
             m.WriteString("hello world");
@@ -64,8 +123,13 @@ namespace CodeSugar.Tests
             m.WriteUnsigned64Packed(345);
             m.WriteUnsigned64Packed(ulong.MinValue);
             m.WriteUnsigned64Packed(ulong.MaxValue);
+            m.WriteValue(d);
+            m.WriteValues(1, 2, 3, 4);
+            m.WriteValue(TypeCode.Int32);
 
-            m.Position = 0;
+            Assert.Throws<ArgumentException>( ()=>m.WriteValue((0, 1)));
+
+            m.Position = 0;            
 
             Assert.That(m.ReadValue<int>(), Is.EqualTo(10));
             Assert.That(m.ReadValue<long>(true), Is.EqualTo(-100));
@@ -78,7 +142,14 @@ namespace CodeSugar.Tests
             Assert.That(m.ReadUnsigned64Packed(), Is.EqualTo(345));
             Assert.That(m.ReadUnsigned64Packed(), Is.EqualTo(ulong.MinValue));
             Assert.That(m.ReadUnsigned64Packed(), Is.EqualTo(ulong.MaxValue));
+            Assert.That(m.ReadValue<DateOnly>(), Is.EqualTo(d));
+            Assert.That(m.ReadValues<int,int,int,int>(), Is.EqualTo((1,2,3,4)));
+            Assert.That(m.ReadValue<TypeCode>(), Is.EqualTo(TypeCode.Int32));
+
+            Assert.Throws<ArgumentException>(() => m.ReadValue<(int,int)>());
         }
+
+
 
 
         [Test]
