@@ -5,15 +5,27 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 
 using CodeSugar;
+using System.Xml.Linq;
 
 namespace CodeSugar.Tests
 {
     public class Tests
     {
-        [SetUp]
-        public void Setup()
+        [Test]
+        public void TestCharacters()
         {
-            TestContext.WriteLine($"Separators {System.IO.Path.DirectorySeparatorChar}, {System.IO.Path.AltDirectorySeparatorChar}");
+            // Ubuntu & mac:
+            //      Separators / /
+            //      invalid name chars: /
+
+            // Windows:
+            //      Separators \ /
+            //      invalid name chars: " < > |                             : * ? \ /
+
+            TestContext.WriteLine($"{Environment.OSVersion.Platform}");
+            TestContext.WriteLine($" comparison: {Environment.OSVersion.GetFullNameStringComparison()}");
+
+            TestContext.WriteLine($"Separators {System.IO.Path.DirectorySeparatorChar} {System.IO.Path.AltDirectorySeparatorChar}");
             TestContext.WriteLine($"invalid name chars: " + string.Join(" ",System.IO.Path.GetInvalidFileNameChars()));
         }
 
