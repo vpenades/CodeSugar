@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 #nullable disable
@@ -11,7 +12,6 @@ using System.Runtime.CompilerServices;
 using FILE = System.IO.FileInfo;
 using DIRECTORY = System.IO.DirectoryInfo;
 using SYSTEMENTRY = System.IO.FileSystemInfo;
-using System.Linq;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -31,9 +31,8 @@ namespace $rootnamespace$
         /// </returns>
         public static string GetNormalizedFullName(this System.IO.FileSystemInfo finfo)
         {
-            return finfo.FullName
-                .Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar)
-                .TrimEnd(System.IO.Path.DirectorySeparatorChar);
+            GuardNotNull(finfo);
+            return GetNormalizedPath(finfo.FullName);
         }
 
         /// <summary>
@@ -110,11 +109,9 @@ namespace $rootnamespace$
 
             var aPath = GetNormalizedFullName(a);
 
-            bPath = bPath
-                .Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar)
-                .TrimEnd(System.IO.Path.DirectorySeparatorChar);
+            bPath = bPath.Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar);
 
-            return string.Equals(aPath, bPath, StringComparison.OrdinalIgnoreCase);
+            return string.Equals(aPath, bPath, FileSystemStringComparison);
         }
 
 		/// <summary>
@@ -131,35 +128,18 @@ namespace $rootnamespace$
             var aPath = GetNormalizedFullName(a);
             path = path.Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar);
 
-            return aPath.StartsWith(path, StringComparison.OrdinalIgnoreCase);
+            return aPath.StartsWith(path, FileSystemStringComparison);
         }
 
         /// <summary>
 		/// Gets a <see cref="IEqualityComparer{T}"/> specialises in comparing <see cref="SYSTEMENTRY.FullName"/>
-		/// </summary>
-        /// <remarks>
-        /// Use Environment.OsVersion.GetFullNameComparer<FileInfo>();
-        /// </remarks>
-		public static IEqualityComparer<T> GetFullNameComparer<T>(this System.OperatingSystem os)
-            where T:SYSTEMENTRY        
+		/// </summary>		
+		public static IEqualityComparer<T> GetFullNameComparer<T>()
+            where T:SYSTEMENTRY
         {
-            var comparison = GetFullNameStringComparison(os);
-
-            return _FileSystemInfoComparer<T>.GetInstance(comparison);
+            return _FileSystemInfoComparer<T>.GetInstance(FileSystemStringComparison);
         }
-
-        public static StringComparison GetFullNameStringComparison(this System.OperatingSystem os)
-        {
-            switch(os.Platform)
-            {
-                case System.PlatformID.Unix: return StringComparison.OrdinalIgnoreCase;
-                case System.PlatformID.MacOSX: return StringComparison.Ordinal;
-                #if NET
-                case System.PlatformID.Other: return StringComparison.Ordinal;
-                #endif
-                default: return StringComparison.OrdinalIgnoreCase;
-            }
-        }
+        
 
 		/// <summary>
 		/// Gets a <see cref="IEqualityComparer{T}"/> specialises in comparing <see cref="SYSTEMENTRY.FullName"/>
@@ -193,7 +173,7 @@ namespace $rootnamespace$
                 return _Comparers[(int)comparison];
             }
 
-			public static IEqualityComparer<T> Default { get; } = GetInstance(StringComparison.OrdinalIgnoreCase);
+			public static IEqualityComparer<T> Default { get; } = GetInstance(FileSystemStringComparison);
 
 			private _FileSystemInfoComparer(StringComparison comparison)
             {

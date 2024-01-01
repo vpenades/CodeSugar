@@ -13,10 +13,6 @@
   <ItemGroup>
     <Compile Include="..\..\src\CodeSugar.System.IO.Sources\*.cs" LinkBase="CodeSugarIO" />
     <Compile Include="..\..\src\CodeSugar.System.IO.Sources\*.cs.pp" LinkBase="CodeSugarIO" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="..\..\src\CodeSugar.System.IO.Sources\_NetStd.cs" />
-  </ItemGroup>
+  </ItemGroup> 
 
 </Project>

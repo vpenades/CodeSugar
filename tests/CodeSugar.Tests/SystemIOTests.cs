@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 
 using CodeSugar;
-using System.Xml.Linq;
+using ShellLink.Structures;
 
 namespace CodeSugar.Tests
 {
@@ -14,6 +14,8 @@ namespace CodeSugar.Tests
         [Test]
         public void TestCharacters()
         {
+            // https://stackoverflow.com/questions/430256/how-do-i-determine-whether-the-filesystem-is-case-sensitive-in-net
+
             // Ubuntu & mac:
             //      Separators / /
             //      invalid name chars: /
@@ -23,10 +25,21 @@ namespace CodeSugar.Tests
             //      invalid name chars: " < > |                             : * ? \ /
 
             TestContext.WriteLine($"{Environment.OSVersion.Platform}");
-            TestContext.WriteLine($" comparison: {Environment.OSVersion.GetFullNameStringComparison()}");
+            TestContext.WriteLine($" comparison: {CodeSugarIO.FileSystemStringComparison}");
 
             TestContext.WriteLine($"Separators {System.IO.Path.DirectorySeparatorChar} {System.IO.Path.AltDirectorySeparatorChar}");
             TestContext.WriteLine($"invalid name chars: " + string.Join(" ",System.IO.Path.GetInvalidFileNameChars()));
+
+            var dinfo = AttachmentInfo.From("test.txt").WriteAllText("hello");
+
+            if (dinfo.TryGetDriveInfo(out var drive))
+            {
+                TestContext.WriteLine($"{drive.Name} {drive.DriveFormat} {drive.DriveType}");
+            }
+            else
+            {
+                TestContext.WriteLine("drive can't be retrieved.");
+            }
         }
 
         [TestCase("\\\\192.168.0.200\\temp\\xyz\\", "\\\\192.168.0.200")]
@@ -114,7 +127,7 @@ namespace CodeSugar.Tests
 
             // Assert.That(readme_txt.GetRelativePath(readme_txt.Directory.Parent), Is.EqualTo("Resources\\readme.txt")); // equality
 
-            var dcomparer = Environment.OSVersion.GetFullNameComparer<DirectoryInfo>();
+            var dcomparer = CodeSugarIO.GetFullNameComparer<DirectoryInfo>();
 
             var tmp0 = new System.IO.DirectoryInfo("temp\\");
             var tmp1 = tmp0.GetDirectory("a", "..", ".", "b", "..");
@@ -122,11 +135,13 @@ namespace CodeSugar.Tests
             
             Assert.That(() => readme_txt.Directory.GetFile(".."), Throws.Exception);
             Assert.That(() => readme_txt.Directory.GetFile("."), Throws.Exception);
-            Assert.That(() => readme_txt.Directory.GetFile(":"), Throws.Exception);
-            // Assert.That(() => readme_txt.Directory.GetFile("*"), Throws.Exception); // ubuntu
-            // Assert.That(() => readme_txt.Directory.GetFile("?"), Throws.Exception);
+            Assert.That(() => readme_txt.Directory.GetFile(":"), Throws.Exception);            
             Assert.That(() => readme_txt.Directory.GetFile("/"), Throws.Exception);
-            // Assert.That(() => readme_txt.Directory.GetFile("\\"), Throws.Exception); // apple
+
+            // ubuntu & mac
+            // Assert.That(() => readme_txt.Directory.GetFile("*"), Throws.Exception);
+            // Assert.That(() => readme_txt.Directory.GetFile("?"), Throws.Exception);
+            // Assert.That(() => readme_txt.Directory.GetFile("\\"), Throws.Exception);
         }
 
 
@@ -174,20 +189,24 @@ namespace CodeSugar.Tests
 
             TestContext.WriteLine($"OS file system is case sensitive: {isCaseSensitiveOS}");
 
-            var fcomparer = Environment.OSVersion.GetFullNameComparer<FileInfo>();
-            var dcomparer = Environment.OSVersion.GetFullNameComparer<DirectoryInfo>();
+            var fcomparer = CodeSugarIO.GetFullNameComparer<FileInfo>();
+            var dcomparer = CodeSugarIO.GetFullNameComparer<DirectoryInfo>();
             
             Assert.That(fcomparer.Equals(readme_txt_0, readme_txt_1), Is.Not.EqualTo(isCaseSensitiveOS));
 
             // test directory equality with various tails.
 
             var tmp0 = new System.IO.DirectoryInfo("temp");
-            var tmp1 = new System.IO.DirectoryInfo("temp/");
-            var tmp2 = new System.IO.DirectoryInfo("temp\\"); // ubuntu
+            var tmp1 = new System.IO.DirectoryInfo("temp/");           
 
             Assert.That(dcomparer.Equals(tmp0, tmp1));
-            // Assert.That(dcomparer.Equals(tmp0, tmp2));
-            // Assert.That(dcomparer.Equals(tmp1, tmp2));
+
+            if (System.IO.Path.DirectorySeparatorChar == '\\')
+            {
+                var tmp2 = new System.IO.DirectoryInfo("temp\\"); // ubuntu & mac consider \\ as a valid character
+                Assert.That(dcomparer.Equals(tmp0, tmp2));
+                Assert.That(dcomparer.Equals(tmp1, tmp2));
+            }
         }
 
         [Test]
@@ -235,9 +254,6 @@ namespace CodeSugar.Tests
 
             Assert.Throws<ArgumentException>(() => m.ReadValue<(int,int)>());
         }
-
-
-
 
         [Test]
         public async Task TestStreamsAsync()
