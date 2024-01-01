@@ -23,7 +23,7 @@ namespace $rootnamespace$
     {
     #region constants
 
-        private static System.IO.DriveInfo[] _InternedFixedDrives;
+        private static Dictionary<string, System.IO.DriveInfo> _InternedFixedDrives;
 
         private static readonly char[] _DirectorySeparators = _GetDirectorySeparators();
 
@@ -36,6 +36,8 @@ namespace $rootnamespace$
         public static bool FileSystemIsCaseSensitive { get; } = _CheckFileSystemCaseSensitive();
 
         public static StringComparison FileSystemStringComparison => FileSystemIsCaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+
+        public static StringComparer FileSystemStringComparer => FileSystemIsCaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase;
 
         private static char[] _GetDirectorySeparators()
         {

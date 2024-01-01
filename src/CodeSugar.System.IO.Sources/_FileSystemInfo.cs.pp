@@ -134,7 +134,7 @@ namespace $rootnamespace$
 
             adsFile = null;
 
-            if (!baseFile.TryGetDriveInfo(out var drive)) return false;
+            if (!baseFile.Directory.TryGetDriveInfo(out var drive)) return false;
             if (drive.DriveFormat != "NTFS") return false;           
             
             var path = baseFile.FullName + ":" + adsName;

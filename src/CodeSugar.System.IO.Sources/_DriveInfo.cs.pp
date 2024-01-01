@@ -33,25 +33,27 @@ namespace $rootnamespace$
         /// This only works on Windows.
         /// </para>
         /// </remarks>
-        public static bool TryGetDriveInfo(this System.IO.FileSystemInfo fsinfo, out System.IO.DriveInfo dinfo)
+        public static bool TryGetDriveInfo(this System.IO.DirectoryInfo dinfo, out System.IO.DriveInfo drive)
         {
-            if (fsinfo == null) { dinfo = null; return false; }
+            drive = null;
 
-            var root = System.IO.Path.GetPathRoot(fsinfo.FullName);            
+            if (dinfo == null) return false;
+            var root = dinfo.Root.GetNormalizedFullName();            
 
-            // system drive
-
-            if (root.Length >= 2 && root.Length <= 3 && Char.IsLetter(root[0]) && root[1] ==':')
-            {
-                root = root.ToUpperInvariant();
-                dinfo = _GetInternedDriveInfo(root) ?? new System.IO.DriveInfo(root);
-                return true;
-            }
+            if (string.IsNullOrWhiteSpace(root)) return false;
+            if (root.Length < 2) return false;            
 
             // network drive
 
-            dinfo = null;
-            return false;        
+            if (root[0] == System.IO.Path.DirectorySeparatorChar && root[1] == System.IO.Path.DirectorySeparatorChar) return false;                            
+
+            // system drive
+
+            var interned = _TryGetInternedDriveInfo(root);
+            if (interned != null) { drive = interned; return true; }
+
+            drive = new System.IO.DriveInfo(root);                
+            return true;
         }
 
         /// <summary>
@@ -60,57 +62,31 @@ namespace $rootnamespace$
         public static string GetDriveOrNetworkName(this System.IO.DirectoryInfo dinfo)
         {
             if (dinfo == null) return null;
-            var root = dinfo.Root.FullName.TrimEnd(_DirectorySeparators);
-            
-            if (root.Length < 2) return null;
+            var root = dinfo.Root.GetNormalizedFullName();
 
-            if (Char.IsLetter(root[0]) && root[1] == ':') // if it's a system drive, return it
-            {
-                return root.ToUpperInvariant();
-            }
+            var interned = _TryGetInternedDriveInfo(root);
+            if (interned != null) return interned.Name;
 
-            // network drive
-            
-            var idx = root.LastIndexOfAny(_DirectorySeparators);
-            if (idx >= 3) root = root.Substring(0, idx);
-            
-            return root;
+            return root;            
         }
 
         // this is a helper method that allows reusing tha same System.IO.DriveInfo instanced mapped to System Drives.
-        private static System.IO.DriveInfo _GetInternedDriveInfo(string root)
+        private static System.IO.DriveInfo _TryGetInternedDriveInfo(string root)
         {
-            int idx;
-
             if (_InternedFixedDrives == null) // initialize
             {
-                _InternedFixedDrives = new System.IO.DriveInfo[32];
+                _InternedFixedDrives = new Dictionary<string,System.IO.DriveInfo>(FileSystemStringComparer);
 
-                foreach(var dinfo in System.IO.DriveInfo.GetDrives())
+                foreach(var d in System.IO.DriveInfo.GetDrives())
                 {
-                    if (!dinfo.IsReady) continue;
+                    if (!d.IsReady) continue;
 
-                    if (dinfo.DriveType != System.IO.DriveType.Fixed) continue;
-                    idx = _GetLetterIndex(dinfo.Name);
-                    if (idx < 0 || idx >= _InternedFixedDrives.Length) continue;
-                    _InternedFixedDrives[idx] = dinfo;
+                    if (d.DriveType != System.IO.DriveType.Fixed) continue;                                    
+                    _InternedFixedDrives[d.Name] = d;
                 }
             }
 
-            idx = _GetLetterIndex(root);
-            if (idx < 0 || idx >= _InternedFixedDrives.Length) return null;
-            return _InternedFixedDrives[idx];
-        }
-
-        private static int _GetLetterIndex(string root)
-        {
-            if (string.IsNullOrEmpty(root)) return -1;
-
-            var driveLetter = Char.ToUpperInvariant(root[0]);
-            if (driveLetter < 'A') return -1;
-
-            var idx = (int)(driveLetter - 'A');            
-            return idx;
-        }
+            return _InternedFixedDrives.TryGetValue(root, out var drive) ? drive : null;            
+        }        
     }
 }
