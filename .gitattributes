@@ -1,0 +1,3 @@
+# this is used so github does not incorrectly pick .cs.pp files as pascal files.
+# https://github.com/github-linguist/linguist/issues/6662
+*.pp linguist-language=csharp

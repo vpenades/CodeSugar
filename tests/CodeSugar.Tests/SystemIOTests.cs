@@ -43,11 +43,11 @@ namespace CodeSugar.Tests
                 TestContext.WriteLine("drive can't be retrieved.");
             }
 
-            TestContext.WriteLine("drives:");
+            TestContext.WriteLine("fixed drives:");
             foreach (var drive2 in DriveInfo.GetDrives())
             {
                 if (!drive2.IsReady) continue;
-                TestContext.WriteLine($"{drive2.Name} {drive2.DriveFormat} {drive2.DriveType}");
+                TestContext.WriteLine($"{drive2.DriveFormat} {drive2.DriveType}  Name:\"{drive2.Name}\"");
             }
         }
 
