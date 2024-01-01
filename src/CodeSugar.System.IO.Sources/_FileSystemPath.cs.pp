@@ -55,14 +55,14 @@ namespace $rootnamespace$
             return string.Equals(pathX, pathY, comparer);
         }
 
-        public int GetPathHashCode(string path)
+        public static int GetPathHashCode(string path)
         {
             return GetPathHashCode(path, FileSystemStringComparison);
         }
 
-        public int GetPathHashCode(string path, StringComparison comparer)
+        public static int GetPathHashCode(string path, StringComparison comparer)
         {
-            return obj == null ? 0 : GetNormalizedPath(path).GetHashCode(comparer);
+            return path == null ? 0 : GetNormalizedPath(path).GetHashCode(comparer);
         }
     }
 }
