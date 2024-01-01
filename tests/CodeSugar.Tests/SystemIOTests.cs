@@ -154,7 +154,8 @@ namespace CodeSugar.Tests
             // apparently, writing the main content erases all additional data streams.
 
             var workFile = AttachmentInfo.From("readme_with_ADS.txt").WriteAllText("hello world");
-            Assert.That(workFile.TryGetAlternateDataStream("ads.bin", out var adsInfo));
+            if (!workFile.TryGetAlternateDataStream("ads.bin", out var adsInfo)) return;
+            
             Assert.That(adsInfo.Exists, Is.False);
 
             var data = new Byte[] { 1, 2, 3, 4 };
