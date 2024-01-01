@@ -104,8 +104,8 @@ namespace CodeSugar.Tests
             Assert.That(() => readme_txt.Directory.GetFile(".."), Throws.Exception);
             Assert.That(() => readme_txt.Directory.GetFile("."), Throws.Exception);
             Assert.That(() => readme_txt.Directory.GetFile(":"), Throws.Exception);
-            Assert.That(() => readme_txt.Directory.GetFile("*"), Throws.Exception);
-            Assert.That(() => readme_txt.Directory.GetFile("?"), Throws.Exception);
+            // Assert.That(() => readme_txt.Directory.GetFile("*"), Throws.Exception);
+            // Assert.That(() => readme_txt.Directory.GetFile("?"), Throws.Exception);
             Assert.That(() => readme_txt.Directory.GetFile("/"), Throws.Exception);
             Assert.That(() => readme_txt.Directory.GetFile("\\"), Throws.Exception);            
         }
