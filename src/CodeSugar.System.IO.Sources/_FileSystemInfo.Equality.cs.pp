@@ -152,8 +152,8 @@ namespace $rootnamespace$
         {
             switch(os.Platform)
             {
-                case System.PlatformID.Unix: return StringComparison.Ordinal;
-                case System.PlatformID.MacOSX: return StringComparison.OrdinalIgnoreCase;
+                case System.PlatformID.Unix: return StringComparison.OrdinalIgnoreCase;
+                case System.PlatformID.MacOSX: return StringComparison.Ordinal;
                 #if NET
                 case System.PlatformID.Other: return StringComparison.Ordinal;
                 #endif
