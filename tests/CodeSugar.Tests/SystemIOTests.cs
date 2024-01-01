@@ -66,6 +66,8 @@ namespace CodeSugar.Tests
 
             var readme_txt = AttachmentInfo.From("readme.txt").WriteAllText("hello world");
 
+            TestContext.WriteLine(readme_txt.FullName);
+
 
             var text = readme_txt.ReadAllText();
             Assert.That(text, Is.EqualTo("hello world"));
