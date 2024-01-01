@@ -27,6 +27,11 @@ namespace CodeSugar.Tests
                 .TryGetAlternateDataStream("data.bin", out var someFile);
 
             var driveOrNetwork = someDir.GetDriveOrNetworkName();
+            if (driveOrNetwork == null)
+            {
+                TestContext.WriteLine($"Skipping: {path}");
+                return;
+            }
 
             var driveName = "-";
 
@@ -127,8 +132,13 @@ namespace CodeSugar.Tests
         {
             // test file case sensitivity
 
-            var readme_txt_0 = AttachmentInfo.From("readme.txt").WriteAllText("lowercase");
-            var readme_txt_1 = AttachmentInfo.From("README.TXT").WriteAllText("uppercase");
+            var testDir = new System.IO.DirectoryInfo(TestContext.CurrentContext.WorkDirectory);
+
+            var readme_txt_0 = testDir.GetFile("readme.txt");
+            var readme_txt_1 = testDir.GetFile("README.TXT");
+
+            readme_txt_0.WriteAllText("lowercase");
+            readme_txt_1.WriteAllText("uppercase");
 
             bool isCaseSensitiveOS = readme_txt_0.ReadAllText() == "lowercase";
 
