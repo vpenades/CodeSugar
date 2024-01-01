@@ -37,5 +37,32 @@ namespace $rootnamespace$
                 .Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar)
                 .TrimEnd(System.IO.Path.DirectorySeparatorChar);
         }
+
+        public static bool ArePathsEqual(string pathX, string pathY)
+        {
+            return ArePathsEqual(pathX, pathY, FileSystemStringComparison);
+        }        
+
+        public static bool ArePathsEqual(string pathX, string pathY, StringComparison comparer)
+        {
+            if (pathX == pathY) return true;
+            if (pathX == null) return false;
+            if (pathY == null) return false;               
+
+            pathX = GetNormalizedPath(pathX);
+            pathY = GetNormalizedPath(pathY);              
+
+            return string.Equals(pathX, pathY, comparer);
+        }
+
+        public int GetPathHashCode(string path)
+        {
+            return GetPathHashCode(path, FileSystemStringComparison);
+        }
+
+        public int GetPathHashCode(string path, StringComparison comparer)
+        {
+            return obj == null ? 0 : GetNormalizedPath(path).GetHashCode(comparer);
+        }
     }
 }

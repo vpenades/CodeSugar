@@ -26,7 +26,12 @@ namespace $rootnamespace$
         /// Tries to get the DriveInfo from a given system file object.
         /// </summary>
         /// <remarks>
+        /// <para>
         /// it will fail if the path points to a network drive, as in: <c>\\NetworkDevice\path\</c>
+        /// </para>
+        /// <para>
+        /// This only works on Windows.
+        /// </para>
         /// </remarks>
         public static bool TryGetDriveInfo(this System.IO.FileSystemInfo fsinfo, out System.IO.DriveInfo dinfo)
         {

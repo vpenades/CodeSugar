@@ -12,7 +12,7 @@ namespace CodeSugar.Tests
     public class Tests
     {
         [Test]
-        public void TestCharacters()
+        public void TestEnvironment()
         {
             // https://stackoverflow.com/questions/430256/how-do-i-determine-whether-the-filesystem-is-case-sensitive-in-net
 
@@ -39,6 +39,12 @@ namespace CodeSugar.Tests
             else
             {
                 TestContext.WriteLine("drive can't be retrieved.");
+            }
+
+            TestContext.WriteLine("drives:");
+            foreach (var drive2 in DriveInfo.GetDrives())
+            {
+                TestContext.WriteLine($"{drive2.Name} {drive2.DriveFormat} {drive2.DriveType}");
             }
         }
 
@@ -171,6 +177,15 @@ namespace CodeSugar.Tests
         [Test]
         public void TestFileInfoEquality()
         {
+            // https://stackoverflow.com/questions/430256/how-do-i-determine-whether-the-filesystem-is-case-sensitive-in-net
+            // https://stackoverflow.com/questions/7344978/verifying-path-equality-with-net
+
+            // linux is case insensitive, but external drives on windows can also be.
+
+            // so the procedure would be:
+            // 1- check whether both files are located in the SAME DRIVE, if not, return false.
+            // 2- check the drive type to identify whether to compare as case sensitive or not.
+
             // test file case sensitivity
 
             var testDir = new System.IO.DirectoryInfo(TestContext.CurrentContext.WorkDirectory);

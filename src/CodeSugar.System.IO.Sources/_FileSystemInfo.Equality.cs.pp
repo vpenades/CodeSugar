@@ -189,16 +189,7 @@ namespace $rootnamespace$
                 if (y == null) return false;
 
                 var apath = GetNormalizedFullName(x);
-                var bpath = GetNormalizedFullName(y);
-
-                // https://stackoverflow.com/questions/430256/how-do-i-determine-whether-the-filesystem-is-case-sensitive-in-net
-                // https://stackoverflow.com/questions/7344978/verifying-path-equality-with-net
-
-                // linux is case insensitive, but external drives on windows can also be.
-
-                // so the procedure would be:
-                // 1- check whether both files are located in the SAME DRIVE, if not, return false.
-                // 2- check the drive type to identify whether to compare as case sensitive or not.
+                var bpath = GetNormalizedFullName(y);              
 
                 return string.Equals(apath, bpath, _Comparison);
             }
