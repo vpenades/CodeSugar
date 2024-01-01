@@ -135,10 +135,15 @@ namespace CodeSugar.Tests
             var testDir = new System.IO.DirectoryInfo(TestContext.CurrentContext.WorkDirectory);
 
             var readme_txt_0 = testDir.GetFile("readme.txt");
-            var readme_txt_1 = testDir.GetFile("README.TXT");
+            var readme_txt_1 = testDir.GetFile("README.txt");
 
             readme_txt_0.WriteAllText("lowercase");
             readme_txt_1.WriteAllText("uppercase");
+
+            foreach(var readme_txt in testDir.GetFiles("*.txt"))
+            {
+                TestContext.WriteLine(readme_txt.FullName);
+            }
 
             bool isCaseSensitiveOS = readme_txt_0.ReadAllText() == "lowercase";
 
