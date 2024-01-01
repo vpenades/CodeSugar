@@ -60,7 +60,11 @@ namespace CodeSugar.Tests
         [Test]
         public void TestFileInfo()
         {
-            var readme_txt = ResourceInfo.From("readme.txt").File;            
+            var readme_txt = ResourceInfo.From("readme.txt").File;
+
+            readme_txt = new System.IO.FileInfo(readme_txt.GetNormalizedFullName());
+
+            
 
             var text = readme_txt.ReadAllText();
             Assert.That(text, Is.EqualTo("hello world"));
