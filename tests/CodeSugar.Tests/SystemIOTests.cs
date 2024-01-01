@@ -44,6 +44,7 @@ namespace CodeSugar.Tests
             TestContext.WriteLine("drives:");
             foreach (var drive2 in DriveInfo.GetDrives())
             {
+                if (!drive2.IsReady) continue;
                 TestContext.WriteLine($"{drive2.Name} {drive2.DriveFormat} {drive2.DriveType}");
             }
         }

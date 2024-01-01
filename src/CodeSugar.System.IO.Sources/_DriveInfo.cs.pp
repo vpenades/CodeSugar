@@ -88,6 +88,8 @@ namespace $rootnamespace$
 
                 foreach(var dinfo in System.IO.DriveInfo.GetDrives())
                 {
+                    if (!dinfo.IsReady) continue;
+
                     if (dinfo.DriveType != System.IO.DriveType.Fixed) continue;
                     idx = _GetLetterIndex(dinfo.Name);
                     if (idx < 0 || idx >= _InternedFixedDrives.Length) continue;
