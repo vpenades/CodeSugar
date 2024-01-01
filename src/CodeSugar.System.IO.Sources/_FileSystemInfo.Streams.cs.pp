@@ -46,6 +46,8 @@ namespace $rootnamespace$
             {
                 s.WriteAllText(text, encoding);
             }
+
+            finfo.Refresh();
         }
 
         /// <summary>
@@ -74,6 +76,8 @@ namespace $rootnamespace$
             {
                 s.WriteAllBytes(bytes);
             }
+
+            finfo.Refresh();
         }
 
         /// <summary>

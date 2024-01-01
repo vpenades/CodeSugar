@@ -30,21 +30,50 @@ namespace $rootnamespace$
 		/// Checks whether a <see cref="SYSTEMENTRY"/> is not null.
 		/// </summary>        
 		/// <exception cref="ArgumentNullException"></exception>
-        public static void GuardNotNull(this SYSTEMENTRY info)
+		public static void GuardIsValidFileName(string fileName, bool checkForInvalidNames, string name = null)
         {
-            if (info == null) throw new ArgumentNullException(nameof(info));
+            name ??= nameof(fileName);
+            if (string.IsNullOrWhiteSpace(fileName)) throw new ArgumentNullException(name);
+            if (fileName.IndexOfAny(_InvalidChars) >= 0) throw new ArgumentException($"{fileName} contains invalid chars", name);
+            if (checkForInvalidNames)
+            {
+                if (fileName == "." || fileName == "..") throw new ArgumentException($"{fileName} is an invalid file name", name);
+            }
+        }
+
+        /// <summary>
+		/// Checks whether a <see cref="SYSTEMENTRY"/> is not null.
+		/// </summary>        
+		/// <exception cref="ArgumentNullException"></exception>
+        public static void GuardNotNull(this SYSTEMENTRY info, string name = null)
+        {
+            if (info == null) throw new ArgumentNullException(name ?? nameof(info));
         }        
 
         /// <summary>
 		/// Checks whether a <see cref="SYSTEMENTRY"/> exists in the file system.
 		/// </summary>        
 		/// <exception cref="ArgumentNullException"></exception>
-        public static void GuardExists(this SYSTEMENTRY info)
+        public static void GuardExists(this SYSTEMENTRY info, string name = null)
         {
-            if (!info.Exists()) throw new ArgumentException($"'{info.FullName}' does not exist.", nameof(info));
+            if (!info.Exists()) throw new ArgumentException($"'{info.FullName}' does not exist.", name ?? nameof(info));
         }  
 
         #else
+
+        /// <summary>
+		/// Checks whether a <see cref="SYSTEMENTRY"/> is not null.
+		/// </summary>        
+		/// <exception cref="ArgumentNullException"></exception>
+		public static void GuardIsValidFileName(string fileName, bool checkForInvalidNames, [CallerArgumentExpression("info")] string name = null)
+        {
+            if (string.IsNullOrWhiteSpace(fileName)) throw new ArgumentNullException(nameof(fileName));
+            if (fileName.IndexOfAny(_InvalidChars) >= 0) throw new ArgumentException($"{fileName} contains invalid chars", nameof(fileName));
+            if (checkForInvalidNames)
+            {
+                if (fileName == "." || fileName == "..") throw new ArgumentException($"{fileName} is an invalid file name", name);
+            }
+        }
 
 		/// <summary>
 		/// Checks whether a <see cref="SYSTEMENTRY"/> is not null.
@@ -78,7 +107,9 @@ namespace $rootnamespace$
         /// <exception cref="ArgumentException"></exception>
         public static bool Exists(this SYSTEMENTRY info)
         {
-            GuardNotNull(info);
+            if (info == null) return false;
+
+            info.Refresh();
 
             switch(info)
             {
@@ -90,7 +121,33 @@ namespace $rootnamespace$
         }
 
         /// <summary>
-        /// Gets a <see cref="FILE"/> derived from a given directory.
+        /// Tries to get the Alternate Data Stream (ADS) from an existing file.
+        /// </summary>
+        /// <remarks>
+        /// this is supported only on physical NTFS drives.
+        /// </remarks>
+        public static bool TryGetAlternateDataStream(this FILE baseFile, string adsName, out FILE adsFile)
+        {
+            GuardNotNull(baseFile);
+            GuardIsValidFileName(adsName, true);
+            if (baseFile.Name.Contains(':')) throw new ArgumentException($"{baseFile.Name} is already an alternate stream", nameof(baseFile));
+
+            adsFile = null;
+
+            if (baseFile.TryGetDriveInfo(out var drive))
+            {
+                if (drive.DriveFormat != "NTFS") return false;
+            }
+            
+            var path = baseFile.FullName + ":" + adsName;
+            
+            adsFile = new FILE(path);
+            adsFile.Refresh();
+            return true;
+        }
+
+        /// <summary>
+        /// Gets a <see cref="FILE"/> relative to the base directory.
         /// </summary>
         /// <param name="baseDir">the base directory</param>
         /// <param name="relativePath">the relative path parts</param>
@@ -99,17 +156,19 @@ namespace $rootnamespace$
         {
             GuardNotNull(baseDir);
             if (relativePath == null || relativePath.Length == 0) throw new ArgumentNullException(nameof(relativePath));
+            
+            // handle special cases for file name
 
             var last = relativePath[relativePath.Length-1];
-
-            if (last == "." || last == "..") throw new ArgumentException($"{last} is invalid file name", nameof(relativePath));
+            System.Diagnostics.Debug.Assert(!last.Contains(':'), "Use TryGetAlternateDataStream() instead");
+            GuardIsValidFileName(last, true, nameof(relativePath));
 
             var path = _GetPath(baseDir, relativePath);
             return new FILE(path);
-        }
+        }        
 
 		/// <summary>
-		/// Gets a <see cref="DIRECTORY"/> derived from a given directory.
+		/// Gets a <see cref="DIRECTORY"/> relative to the base directory.
 		/// </summary>
 		/// <param name="baseDir">the base directory</param>
 		/// <param name="relativePath">the relative path parts</param>
@@ -131,8 +190,7 @@ namespace $rootnamespace$
             var path = dinfo.FullName.TrimEnd(_DirectorySeparators);
             foreach (var part in relativePath)
             {
-                if (string.IsNullOrWhiteSpace(part)) throw new ArgumentNullException(nameof(relativePath));
-                if (part.IndexOfAny(_InvalidChars) >= 0) throw new ArgumentException($"{part} contains invalid chars", nameof(relativePath));
+                GuardIsValidFileName(part, false, nameof(relativePath));
 
                 if (part == ".") continue;
 
@@ -197,6 +255,22 @@ namespace $rootnamespace$
             extension = fileName.Substring(r);
             return true;
         }
+
+        public static void CopyTo(this FILE src, DIRECTORY dst, bool overwrite = false)        
+        {
+            GuardExists(src);
+            GuardNotNull(dst);
+            var dstf = dst.GetFile(src.Name);
+            src.CopyTo(dstf.FullName, overwrite);
+        }
+
+        public static void CopyTo(this FILE src, FILE dst, bool overwrite = false)        
+        {
+            GuardExists(src);
+            GuardNotNull(dst);
+            src.CopyTo(dst.FullName, overwrite);        
+            dst.Refresh();
+        }        
 
         #endregion
     }

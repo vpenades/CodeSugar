@@ -10,53 +10,6 @@ namespace CodeSugar.Tests
 {
     public class Tests
     {
-        [Test]
-        public void TestFileInfo()
-        {
-            var readme_txt = ResourceInfo.From("readme.txt");
-
-            
-
-            var text = readme_txt.File.ReadAllText();
-            Assert.That(text, Is.EqualTo("hello world"));
-
-            var file2 = readme_txt.File.Directory.GetFile("readme.txt");
-
-            Assert.That(file2.Exists);
-            Assert.That(readme_txt.File.FullNameEquals(file2));
-
-            var rfinfo = AttachmentInfo.From("readme.txt").WriteObjectEx(f => f.WriteAllText("hello world 2"));
-
-            Assert.That(rfinfo.ReadAllText(),
-                Is.EqualTo("hello world 2"));
-
-            Assert.That(System.Convert.ToHexString(readme_txt.File.ComputeSha256()),
-                Is.EqualTo("B94D27B9934D3E08A52E52D7DA7DABFAC484EFE37A5380EE9088F7ACE2EFCDE9"));            
-
-            Assert.That(System.Convert.ToHexString(readme_txt.File.ComputeSha512()),
-                Is.EqualTo("309ECC489C12D6EB4CC40F50C902F2B4D0ED77EE511A7C7A9BCD3CA86D4CD86F989DD35BC5FF499670DA34255B45B0CFD830E81F605DCF7DC5542E93AE9CD76F"));
-
-            Assert.That(readme_txt.File.Directory.ContainsFileOrDirectory(readme_txt.File));
-
-            Assert.That(readme_txt.File.GetRelativePath(readme_txt.File.Directory),
-                Is.EqualTo("readme.txt"));
-
-            Assert.That(readme_txt.File.GetRelativePath(readme_txt.File.Directory.Parent),
-                Is.EqualTo("Resources\\readme.txt"));
-
-            var dcomparer = Environment.OSVersion.GetFullNameComparer<DirectoryInfo>();
-
-            var tmp0 = new System.IO.DirectoryInfo("temp\\");
-            var tmp1 = tmp0.GetDirectory("a", "..", ".", "b", "..");
-            Assert.That(dcomparer.Equals(tmp0, tmp1));
-
-            Assert.That(() => readme_txt.File.Directory.GetFile(".."), Throws.ArgumentException);
-            Assert.That(() => readme_txt.File.Directory.GetFile(":*?"), Throws.ArgumentException);
-            Assert.That(() => readme_txt.File.Directory.GetFile("\\"), Throws.ArgumentException);
-            
-        }
-
-        
         [TestCase("\\\\192.168.0.200\\temp\\xyz\\", "\\\\192.168.0.200")]
         [TestCase("\\\\192.168.0.200\\temp\\", "\\\\192.168.0.200")]
         [TestCase("\\\\X\\temp\\xyz\\", "\\\\X")]
@@ -65,22 +18,107 @@ namespace CodeSugar.Tests
         [TestCase("c:", "C:")]
         public void TestDrives(string path, string expected)
         {
-            var root = System.IO.Path.GetPathRoot(path);            
+            var root = System.IO.Path.GetPathRoot(path);
 
-            var networkDir = new System.IO.DirectoryInfo(path);
+            var someDir = new System.IO.DirectoryInfo(path);
 
-            var driveOrNetwork = networkDir.GetDriveOrNetworkName();
+            someDir // create a FileInfo with an ADS which also contains a ":" in the path.
+                .GetFile("readme.txt")
+                .TryGetAlternateDataStream("data.bin", out var someFile);
 
-            var driveName = "-";            
+            var driveOrNetwork = someDir.GetDriveOrNetworkName();
 
-            if (networkDir.TryGetDriveInfo(out var drive))
+            var driveName = "-";
+
+            if (someDir.TryGetDriveInfo(out var drive))
             {
-                driveName = drive.Name;                
+                driveName = drive.Name;
+            }
+
+            if (someFile.TryGetDriveInfo(out var drive2))
+            {
+                Assert.That(drive2.Name, Is.EqualTo(driveName));
+            }
+            else
+            {
+                Assert.That(driveName, Is.EqualTo("-"));
             }
 
             TestContext.WriteLine($"{root} {driveOrNetwork} {driveName}");
 
-            Assert.That(driveOrNetwork, Is.EqualTo(expected));            
+            Assert.That(driveOrNetwork, Is.EqualTo(expected));
+
+            
+        }
+        
+
+        [Test]
+        public void TestFileInfo()
+        {
+            var readme_txt = ResourceInfo.From("readme.txt").File;            
+
+            var text = readme_txt.ReadAllText();
+            Assert.That(text, Is.EqualTo("hello world"));
+
+            var file2 = readme_txt.Directory.GetFile("readme.txt");
+
+            Assert.That(file2.Exists);
+            Assert.That(readme_txt.FullNameEquals(file2));
+
+            var rfinfo = AttachmentInfo.From("readme.txt").WriteObjectEx(f => f.WriteAllText("hello world 2"));
+
+            Assert.That(rfinfo.ReadAllText(),
+                Is.EqualTo("hello world 2"));
+
+            Assert.That(System.Convert.ToHexString(readme_txt.ComputeSha256()),
+                Is.EqualTo("B94D27B9934D3E08A52E52D7DA7DABFAC484EFE37A5380EE9088F7ACE2EFCDE9"));            
+
+            Assert.That(System.Convert.ToHexString(readme_txt.ComputeSha512()),
+                Is.EqualTo("309ECC489C12D6EB4CC40F50C902F2B4D0ED77EE511A7C7A9BCD3CA86D4CD86F989DD35BC5FF499670DA34255B45B0CFD830E81F605DCF7DC5542E93AE9CD76F"));
+
+            Assert.That(readme_txt.Directory.ContainsFileOrDirectory(readme_txt));
+
+            Assert.That(readme_txt.GetRelativePath(readme_txt.Directory),
+                Is.EqualTo("readme.txt"));
+
+            Assert.That(readme_txt.GetRelativePath(readme_txt.Directory.Parent),
+                Is.EqualTo("Resources\\readme.txt"));
+
+            var dcomparer = Environment.OSVersion.GetFullNameComparer<DirectoryInfo>();
+
+            var tmp0 = new System.IO.DirectoryInfo("temp\\");
+            var tmp1 = tmp0.GetDirectory("a", "..", ".", "b", "..");
+            Assert.That(dcomparer.Equals(tmp0, tmp1));
+            
+            Assert.That(() => readme_txt.Directory.GetFile(".."), Throws.Exception);
+            Assert.That(() => readme_txt.Directory.GetFile("."), Throws.Exception);
+            Assert.That(() => readme_txt.Directory.GetFile(":"), Throws.Exception);
+            Assert.That(() => readme_txt.Directory.GetFile("*"), Throws.Exception);
+            Assert.That(() => readme_txt.Directory.GetFile("?"), Throws.Exception);
+            Assert.That(() => readme_txt.Directory.GetFile("/"), Throws.Exception);
+            Assert.That(() => readme_txt.Directory.GetFile("\\"), Throws.Exception);            
+        }
+
+
+        [Test]
+        public void TestAlternateDataStreams()
+        {
+            // https://arstechnica.com/civis/threads/is-winfs-vulnerable-to-alternate-data-streams.468008/
+            // https://blog.j2i.net/2021/12/11/working-with-alternative-data-streamsthe-hidden-part-of-your-windows-file-system-on-windows/
+
+            // apparently, writing the main content erases all additional data streams.
+
+            var workFile = AttachmentInfo.From("readme_with_ADS.txt").WriteAllText("hello world");
+            Assert.That(workFile.TryGetAlternateDataStream("ads.bin", out var adsInfo));
+            Assert.That(adsInfo.Exists, Is.False);
+
+            var data = new Byte[] { 1, 2, 3, 4 };
+
+            adsInfo.WriteAllBytes(data);
+            Assert.That(adsInfo.Exists, Is.True);
+
+            Assert.That(workFile.ReadAllText(), Is.EqualTo("hello world"));
+            Assert.That(adsInfo.ReadAllBytes(), Is.EqualTo(data));
         }
 
 

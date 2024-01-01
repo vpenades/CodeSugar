@@ -49,22 +49,25 @@ namespace $rootnamespace$
             return false;        
         }
 
+        /// <summary>
+        /// Gets the drive or network name of the given object.
+        /// </summary>
         public static string GetDriveOrNetworkName(this System.IO.DirectoryInfo dinfo)
         {
             if (dinfo == null) return null;
-            var path = dinfo.Root.FullName.TrimEnd(_DirectorySeparators);
+            var root = dinfo.Root.FullName.TrimEnd(_DirectorySeparators);
 
-            if (path.EndsWith(':')) // if it's a system drive, return it
+            if (Char.IsLetter(root[0]) && root[1] == ':') // if it's a system drive, return it
             {
-                return path.ToUpperInvariant();
+                return root.ToUpperInvariant();
             }
 
             // network drive
             
-            var idx = path.LastIndexOfAny(_DirectorySeparators);
-            if (idx >= 3) path = path.Substring(0, idx);
+            var idx = root.LastIndexOfAny(_DirectorySeparators);
+            if (idx >= 3) root = root.Substring(0, idx);
             
-            return path;
+            return root;
         }
 
         // this is a helper method that allows reusing tha same System.IO.DriveInfo instanced mapped to System Drives.
