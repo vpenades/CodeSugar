@@ -125,12 +125,21 @@ namespace CodeSugar.Tests
         [Test]
         public void TestFileInfoEquality()
         {
+            // test file case sensitivity
+
+            var readme_txt_0 = AttachmentInfo.From("readme.txt").WriteAllText("lowercase");
+            var readme_txt_1 = AttachmentInfo.From("README.TXT").WriteAllText("uppercase");
+
+            bool isCaseSensitiveOS = readme_txt_0.ReadAllText() == "lowercase";
+
+            TestContext.WriteLine($"OS file system is case sensitive: {isCaseSensitiveOS}");
+
             var fcomparer = Environment.OSVersion.GetFullNameComparer<FileInfo>();
             var dcomparer = Environment.OSVersion.GetFullNameComparer<DirectoryInfo>();
+            
+            Assert.That(fcomparer.Equals(readme_txt_0, readme_txt_1), Is.Not.EqualTo(isCaseSensitiveOS));
 
-            var readme_txt_0 = ResourceInfo.From("readme.txt");
-            var readme_txt_1 = ResourceInfo.From("README.TXT");
-            Assert.That(fcomparer.Equals(readme_txt_0.File, readme_txt_1.File));
+            // test directory equality with various tails.
 
             var tmp0 = new System.IO.DirectoryInfo("temp");
             var tmp1 = new System.IO.DirectoryInfo("temp/");

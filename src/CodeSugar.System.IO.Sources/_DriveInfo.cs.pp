@@ -32,11 +32,11 @@ namespace $rootnamespace$
         {
             if (fsinfo == null) { dinfo = null; return false; }
 
-            var root = System.IO.Path.GetPathRoot(fsinfo.FullName);
+            var root = System.IO.Path.GetPathRoot(fsinfo.FullName);            
 
             // system drive
 
-            if (root.Length <= 3 && Char.IsLetter(root[0]) && root[1] ==':')
+            if (root.Length >= 2 && root.Length <= 3 && Char.IsLetter(root[0]) && root[1] ==':')
             {
                 root = root.ToUpperInvariant();
                 dinfo = _GetInternedDriveInfo(root) ?? new System.IO.DriveInfo(root);
@@ -56,6 +56,8 @@ namespace $rootnamespace$
         {
             if (dinfo == null) return null;
             var root = dinfo.Root.FullName.TrimEnd(_DirectorySeparators);
+            
+            if (root.Length < 2) return null;
 
             if (Char.IsLetter(root[0]) && root[1] == ':') // if it's a system drive, return it
             {
