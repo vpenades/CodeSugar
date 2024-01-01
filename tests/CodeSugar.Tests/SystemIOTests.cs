@@ -62,7 +62,7 @@ namespace CodeSugar.Tests
         {
             var readme_txt = ResourceInfo.From("readme.txt").File;
 
-            readme_txt = new System.IO.FileInfo(readme_txt.GetNormalizedFullName());
+            readme_txt = new System.IO.FileInfo(readme_txt.GetNormalizedFullName().Replace("\\","/"));
 
             
 
