@@ -9,6 +9,8 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
+using FILE = System.IO.FileInfo;
+using DIRECTORY = System.IO.DirectoryInfo;
 using BYTESSEGMENT = System.ArraySegment<byte>;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
@@ -25,7 +27,7 @@ namespace $rootnamespace$
         /// Reads all the text lines from the given file.
         /// Equivalent to <see cref="System.IO.File.ReadAllLines(string, Encoding)"/>
         /// </summary>        
-        public static IReadOnlyList<string> ReadAllLines(this FileInfo finfo, Encoding encoding = null)
+        public static IReadOnlyList<string> ReadAllLines(this FILE finfo, Encoding encoding = null)
         {
 			GuardExists(finfo);
 
@@ -39,7 +41,7 @@ namespace $rootnamespace$
         /// Reads all the text from the given file.
         /// Equivalent to <see cref="System.IO.File.ReadAllText(string, Encoding)"/>
         /// </summary>        
-        public static string ReadAllText(this FileInfo finfo, Encoding encoding = null)
+        public static string ReadAllText(this FILE finfo, Encoding encoding = null)
         {
 			GuardExists(finfo);
 
@@ -49,7 +51,7 @@ namespace $rootnamespace$
             }
         }
 
-        public static void WriteAllLines(this FileInfo finfo, Encoding encoding, params string[] lines)
+        public static void WriteAllLines(this FILE finfo, Encoding encoding, params string[] lines)
         {
             WriteAllLines(finfo, lines.AsEnumerable(), encoding);
         }
@@ -58,7 +60,7 @@ namespace $rootnamespace$
 		/// Writes all the text lines to a given file.
 		/// Equivalent to <see cref="System.IO.File.WriteAllLines(string, IEnumerabke<string>, Encoding)(string, Encoding)"/>
 		/// </summary>
-		public static void WriteAllLines(this FileInfo finfo, IEnumerable<string> lines, Encoding encoding = null)
+		public static void WriteAllLines(this FILE finfo, IEnumerable<string> lines, Encoding encoding = null)
         {
             GuardNotNull(finfo);
 
@@ -74,7 +76,7 @@ namespace $rootnamespace$
 		/// Writes all the text to a given file.
 		/// Equivalent to <see cref="System.IO.File.WriteAllText(string, string, Encoding)(string, Encoding)"/>
 		/// </summary>
-		public static void WriteAllText(this FileInfo finfo, string text, Encoding encoding = null)
+		public static void WriteAllText(this FILE finfo, string text, Encoding encoding = null)
         {
             GuardNotNull(finfo);
 
@@ -90,7 +92,7 @@ namespace $rootnamespace$
         /// Reads all the bytes from a given file.
         /// Equivalent to <see cref="System.IO.File.ReadAllBytes(string)"/>
         /// </summary>        
-        public static BYTESSEGMENT ReadAllBytes(this FileInfo finfo)
+        public static BYTESSEGMENT ReadAllBytes(this FILE finfo)
         {
 			GuardExists(finfo);
 
@@ -104,7 +106,7 @@ namespace $rootnamespace$
         /// Writes all the bytes to a given file.
         /// Equivalent to <see cref="System.IO.File.WriteAllBytes(string, byte[])"/>
         /// </summary>        
-        public static void WriteAllBytes(this FileInfo finfo, IReadOnlyList<Byte> bytes)
+        public static void WriteAllBytes(this FILE finfo, IReadOnlyList<Byte> bytes)
         {
 			GuardNotNull(finfo);
 
@@ -119,7 +121,7 @@ namespace $rootnamespace$
         /// <summary>
         /// Computes the <see cref="System.Security.Cryptography.SHA512"/> on the contents of the given file.
         /// </summary>
-        public static Byte[] ComputeSha512(this FileInfo finfo)
+        public static Byte[] ComputeSha512(this FILE finfo)
         {
             GuardExists(finfo);
 
@@ -132,7 +134,7 @@ namespace $rootnamespace$
 		/// <summary>
 		/// Computes the <see cref="System.Security.Cryptography.SHA384"/> on the contents of the given file.
 		/// </summary>
-		public static Byte[] ComputeSha384(this FileInfo finfo)
+		public static Byte[] ComputeSha384(this FILE finfo)
         {
 			GuardExists(finfo);
 
@@ -145,7 +147,7 @@ namespace $rootnamespace$
 		/// <summary>
 		/// Computes the <see cref="System.Security.Cryptography.SHA256"/> on the contents of the given file.
 		/// </summary>
-		public static Byte[] ComputeSha256(this FileInfo finfo)
+		public static Byte[] ComputeSha256(this FILE finfo)
         {
 			GuardExists(finfo);
 
@@ -158,7 +160,7 @@ namespace $rootnamespace$
 		/// <summary>
 		/// Computes the <see cref="System.Security.Cryptography.MD5"/> on the contents of the given file.
 		/// </summary>
-		public static Byte[] ComputeMd5(this FileInfo finfo)
+		public static Byte[] ComputeMd5(this FILE finfo)
         {
 			GuardExists(finfo);
 
@@ -168,7 +170,7 @@ namespace $rootnamespace$
             }
         }
 
-        public static void WriteShortcutUri(this FileInfo finfo, Uri uri)
+        public static void WriteShortcutUri(this FILE finfo, Uri uri)
         {
             if (uri == null) throw new ArgumentNullException(nameof(uri));
 
@@ -197,7 +199,31 @@ namespace $rootnamespace$
             }            
         }
 
-        public static Uri ReadShortcutUri(this FileInfo finfo)
+        public static bool TryReadShortcutFile(this FILE shortcutFile, out FILE targetFile)
+        {
+            var uri = ReadShortcutUri(shortcutFile);
+
+            targetFile = null;
+            if (uri == null) return false;
+            if (!uri.IsFile) return false;
+
+            targetFile = new FILE(uri.LocalPath);
+            return targetFile.Exists;
+        }
+
+        public static bool TryReadShortcutDir(this FILE shortcutFile, out DIRECTORY targetDirectory)
+        {
+            var uri = ReadShortcutUri(shortcutFile);
+
+            targetDirectory = null;
+            if (uri == null) return false;
+            if (!uri.IsFile) return false;
+
+            targetDirectory = new DIRECTORY(uri.LocalPath);
+            return targetDirectory.Exists;
+        }
+
+        public static Uri ReadShortcutUri(this FILE finfo)
         {
             var lines = ReadAllLines(finfo);
 
@@ -211,6 +237,6 @@ namespace $rootnamespace$
             line = line.Trim();
 
             return Uri.TryCreate(line, UriKind.Absolute, out Uri uri) ? uri : null;        
-        }
+        }        
     }
 }

@@ -58,6 +58,14 @@ namespace CodeSugar.Tests
             }
         }
 
+
+        [Test]
+        public void TestPaths()
+        {
+            Assert.That(CodeSugarIO.SplitPath("\\abc/d\\e"), Is.EqualTo(new string[] { "abc", "d", "e" }));
+        }
+
+
         [TestCase("\\\\192.168.0.200\\temp\\xyz\\", "\\\\192.168.0.200")]
         [TestCase("\\\\192.168.0.200\\temp\\", "\\\\192.168.0.200")]
         [TestCase("\\\\X\\temp\\xyz\\", "\\\\X")]
@@ -341,7 +349,14 @@ namespace CodeSugar.Tests
 
             var finfo = AttachmentInfo.From("test.url").WriteObjectEx(f => f.WriteShortcutUri(uri));
 
-            Assert.That(finfo.ReadShortcutUri(), Is.EqualTo(uri));            
+            Assert.That(finfo.ReadShortcutUri(), Is.EqualTo(uri));
+
+            var finfo2 = AttachmentInfo.From("test2.url").WriteObjectEx(f => f.WriteShortcutUri(new Uri(finfo.FullName)));
+
+            if (finfo2.TryReadShortcutFile(out var targetFile))
+            {
+                finfo.FullNameEquals(targetFile);
+            }
         }
     }
 }

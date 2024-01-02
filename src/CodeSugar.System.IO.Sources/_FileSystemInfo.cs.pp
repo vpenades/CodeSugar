@@ -56,6 +56,7 @@ namespace $rootnamespace$
 		/// <exception cref="ArgumentNullException"></exception>
         public static void GuardExists(this SYSTEMENTRY info, string name = null)
         {
+            if (info == null) throw new ArgumentNullException(name);
             if (!info.Exists()) throw new ArgumentException($"'{info.FullName}' does not exist.", name ?? nameof(info));
         }  
 
@@ -90,6 +91,7 @@ namespace $rootnamespace$
 		/// <exception cref="ArgumentNullException"></exception>
 		public static void GuardExists(this SYSTEMENTRY info, [CallerArgumentExpression("info")] string name = null)
         {
+            if (info == null) throw new ArgumentNullException(name);
             if (!info.Exists()) throw new ArgumentException($"'{info.FullName}' does not exist.", name);
         }
 
@@ -108,14 +110,12 @@ namespace $rootnamespace$
         public static bool Exists(this SYSTEMENTRY info)
         {
             if (info == null) return false;
-
-            info.Refresh();
-
+            
             switch(info)
             {
                 case null: return false;
-                case FILE finfo: return finfo.Exists;
-                case DIRECTORY dinfo: return dinfo.Exists;
+                case FILE finfo: finfo.Refresh(); return finfo.Exists;
+                case DIRECTORY dinfo: dinfo.Refresh(); return dinfo.Exists;
                 default: throw new ArgumentException("Unknown type", nameof(info));
             }
         }
@@ -198,44 +198,9 @@ namespace $rootnamespace$
         /// <returns>true if an extension was found</returns>        
         public static bool TryGetCompositedExtension(this FILE finfo, int dots, out string extension)
         {
-            GuardNotNull(finfo);
-            
+            GuardNotNull(finfo);            
             return TryGetCompositedExtension(finfo.FullName, dots, out extension);
-        }
-
-        private static bool TryGetCompositedExtension(string fileName, int dots, out string extension)
-        {
-            if (dots < 1) throw new ArgumentOutOfRangeException(nameof(dots), "Must be equal or greater than 1");
-
-            var l = fileName.Length - 1;
-            var r = -1;
-
-            var invalidChars = System.IO.Path.GetInvalidFileNameChars();
-
-            while (dots > 0 && l >= 0)
-            {
-                var c = fileName[l];
-
-                if (Array.IndexOf(invalidChars, c) >= 0) break;
-
-                if (c == '.')
-                {
-                    r = l;
-                    --dots;
-                }
-
-                --l;
-            }
-
-            if (dots != 0)
-            {
-                extension = null;
-                return false;
-            }
-
-            extension = fileName.Substring(r);
-            return true;
-        }
+        }        
 
         public static void CopyTo(this FILE src, DIRECTORY dst, bool overwrite = false)        
         {

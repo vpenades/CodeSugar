@@ -38,6 +38,14 @@ namespace $rootnamespace$
                 .TrimEnd(System.IO.Path.DirectorySeparatorChar);
         }
 
+        public static string[] SplitPath(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path)) throw new ArgumentNullException(nameof(path));
+
+            path = path.Trim(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
+            return path.Split(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);        
+        }
+
         public static string ConcatenatePaths(string absolutePath, string[] relativePath)
         {
             if (string.IsNullOrWhiteSpace(absolutePath)) throw new ArgumentNullException(nameof(absolutePath));
@@ -133,6 +141,40 @@ namespace $rootnamespace$
                 if (x != y) return false;
             }
 
+            return true;
+        }
+
+        public static bool TryGetCompositedExtension(string fileName, int dots, out string extension)
+        {
+            if (dots < 1) throw new ArgumentOutOfRangeException(nameof(dots), "Must be equal or greater than 1");
+
+            var l = fileName.Length - 1;
+            var r = -1;
+
+            var invalidChars = System.IO.Path.GetInvalidFileNameChars();
+
+            while (dots > 0 && l >= 0)
+            {
+                var c = fileName[l];
+
+                if (Array.IndexOf(invalidChars, c) >= 0) break;
+
+                if (c == '.')
+                {
+                    r = l;
+                    --dots;
+                }
+
+                --l;
+            }
+
+            if (dots != 0)
+            {
+                extension = null;
+                return false;
+            }
+
+            extension = fileName.Substring(r);
             return true;
         }
     }
