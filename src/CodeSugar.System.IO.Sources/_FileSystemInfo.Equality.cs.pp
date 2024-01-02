@@ -60,6 +60,13 @@ namespace $rootnamespace$
             throw new ArgumentException("invalid path", nameof(baseDir));
         }        
 
+        public static bool EndsWith(this System.IO.FileInfo finfo, string tail)        
+        {
+            GuardNotNull(finfo);
+
+            return PathEndsWith(finfo.FullName, tail, FileSystemStringComparison);
+        }
+
         /// <summary>
         /// Checks whether <paramref name="xinfo"/> is contained within the children of <paramref name="baseDir"/>.
         /// </summary>

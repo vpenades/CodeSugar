@@ -145,6 +145,16 @@ namespace $rootnamespace$
         }
 
         /// <summary>
+        /// Gets the parent directory of the current instance.
+        /// </summary>
+        public static System.IO.DirectoryInfo GetParent(this System.IO.FileSystemInfo fsinfo)
+        {
+            if (fsinfo is System.IO.FileInfo finfo) return finfo.Directory;
+            if (fsinfo is System.IO.DirectoryInfo dinfo) return dinfo.Parent;
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Gets a <see cref="FILE"/> relative to the base directory.
         /// </summary>
         /// <param name="baseDir">the base directory</param>
@@ -161,7 +171,7 @@ namespace $rootnamespace$
             System.Diagnostics.Debug.Assert(!last.Contains(':'), "Use TryGetAlternateDataStream() instead");
             GuardIsValidFileName(last, true, nameof(relativePath));
 
-            var path = _GetPath(baseDir, relativePath);
+            var path = ConcatenatePaths(baseDir.FullName, relativePath);
             return new FILE(path);
         }        
 
@@ -175,36 +185,9 @@ namespace $rootnamespace$
         {
             GuardNotNull(baseDir);
 
-            var path = _GetPath(baseDir, relativePath);
+            var path = ConcatenatePaths(baseDir.FullName, relativePath);
             return new DIRECTORY(path);
-        }        
-
-        private static string _GetPath(DIRECTORY dinfo, string[] relativePath)
-        {
-            GuardNotNull(dinfo);
-
-            if (relativePath == null || relativePath.Length == 0) return dinfo.FullName;
-
-            var path = dinfo.FullName.TrimEnd(_DirectorySeparators);
-            foreach (var part in relativePath)
-            {
-                GuardIsValidFileName(part, false, nameof(relativePath));
-
-                if (part == ".") continue;
-
-                if (part == "..")
-                {
-                    var idx = path.LastIndexOfAny(_DirectorySeparators);
-                    if (idx < 0) throw new ArgumentException("invalid ..", nameof(relativePath));
-                    path = path.Substring(0, idx);                    
-                    continue;
-                }
-
-                path = System.IO.Path.Combine(path, part);
-            }
-
-            return path;
-        }        
+        }           
 
         /// <summary>
         /// Tries to get a composite extension of a file.

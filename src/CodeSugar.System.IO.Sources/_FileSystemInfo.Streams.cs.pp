@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 #nullable disable
@@ -21,6 +22,20 @@ namespace $rootnamespace$
     partial class CodeSugarIO    
     {
         /// <summary>
+        /// Reads all the text lines from the given file.
+        /// Equivalent to <see cref="System.IO.File.ReadAllLines(string, Encoding)"/>
+        /// </summary>        
+        public static IReadOnlyList<string> ReadAllLines(this FileInfo finfo, Encoding encoding = null)
+        {
+			GuardExists(finfo);
+
+            using(var s = finfo.OpenRead())
+            {
+                return s.ReadAllLines(encoding);
+            }
+        }
+
+        /// <summary>
         /// Reads all the text from the given file.
         /// Equivalent to <see cref="System.IO.File.ReadAllText(string, Encoding)"/>
         /// </summary>        
@@ -32,6 +47,27 @@ namespace $rootnamespace$
             {
                 return s.ReadAllText(encoding);
             }
+        }
+
+        public static void WriteAllLines(this FileInfo finfo, Encoding encoding, params string[] lines)
+        {
+            WriteAllLines(finfo, lines.AsEnumerable(), encoding);
+        }
+
+        /// <summary>
+		/// Writes all the text lines to a given file.
+		/// Equivalent to <see cref="System.IO.File.WriteAllLines(string, IEnumerabke<string>, Encoding)(string, Encoding)"/>
+		/// </summary>
+		public static void WriteAllLines(this FileInfo finfo, IEnumerable<string> lines, Encoding encoding = null)
+        {
+            GuardNotNull(finfo);
+
+            using(var s = finfo.OpenWrite())
+            {
+                s.WriteAllLines(lines, encoding);
+            }
+
+            finfo.Refresh();
         }
 
 		/// <summary>
@@ -130,6 +166,51 @@ namespace $rootnamespace$
             {
                 return s.ComputeMd5();
             }
+        }
+
+        public static void WriteShortcutUri(this FileInfo finfo, Uri uri)
+        {
+            if (uri == null) throw new ArgumentNullException(nameof(uri));
+
+            if (uri.IsFile)
+            {
+                WriteAllLines(finfo, null,
+                    "[{000214A0-0000-0000-C000-000000000046}]",
+                    "Prop3=19,11",
+                    "[InternetShortcut]",
+                    "IDList=",
+                    $"URL={uri.AbsoluteUri}",
+                    "IconIndex=1",
+                    "IconFile=" + uri.LocalPath.Replace('\\', '/')
+                    );
+            }
+            else
+            {
+                WriteAllLines(finfo, null,
+                    "[{000214A0-0000-0000-C000-000000000046}]",
+                    "Prop3=19,11",
+                    "[InternetShortcut]",
+                    "IDList=",
+                    $"URL={uri.AbsoluteUri}",
+                    "IconIndex=0"
+                    );
+            }            
+        }
+
+        public static Uri ReadShortcutUri(this FileInfo finfo)
+        {
+            var lines = ReadAllLines(finfo);
+
+            var line = lines.FirstOrDefault(l=> l.StartsWith("URL="));
+            if (line == null) return null;
+            line = line.Trim();
+            if (line.Length < 5) return null;
+
+            line = line.Substring(4); // remove "URL="
+
+            line = line.Trim();
+
+            return Uri.TryCreate(line, UriKind.Absolute, out Uri uri) ? uri : null;        
         }
     }
 }

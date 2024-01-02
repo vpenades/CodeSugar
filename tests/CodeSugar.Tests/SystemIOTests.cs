@@ -4,13 +4,20 @@ using System.Threading.Tasks;
 
 using NUnit.Framework;
 
-using CodeSugar;
-using ShellLink.Structures;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CodeSugar.Tests
 {
     public class Tests
     {
+        // these are drive names returned by various DriveInfo.GetDrives()
+        private static readonly IEnumerable<string> _WindowsDrives = new string[] { "C:\\", "D:\\" };
+
+        private static readonly IEnumerable<string> _UbuntuDrives = new string[] { "/", "/boot/efi", "/mnt", "/sys/fs/pstore", "/sys/fs/bpf", "/sys/kernel/tracing", "/snap/core20/2015" };
+
+        private static readonly IEnumerable<string> _MacOsDrives = new string[] { "/", "/System/Volumes/VM", "/System/Volumes/Preboot", "/System/Volumes/Data" };
+
         [Test]
         public void TestEnvironment()
         {
@@ -261,7 +268,13 @@ namespace CodeSugar.Tests
             m.WriteValues(1, 2, 3, 4);
             m.WriteValue(TypeCode.Int32);
 
-            Assert.Throws<ArgumentException>( ()=>m.WriteValue((0, 1)));
+            m.WriteString("Direct");
+            using (var bw = m.CreateBinaryWriter(true))
+            {
+                bw.Write("BinaryWriter");
+            }
+
+            Assert.Throws<ArgumentException>(() => m.WriteValue((0, 1)));
 
             m.Position = 0;            
 
@@ -279,6 +292,12 @@ namespace CodeSugar.Tests
             Assert.That(m.ReadValue<DateOnly>(), Is.EqualTo(d));
             Assert.That(m.ReadValues<int,int,int,int>(), Is.EqualTo((1,2,3,4)));
             Assert.That(m.ReadValue<TypeCode>(), Is.EqualTo(TypeCode.Int32));
+
+            using(var br = m.CreateBinaryReader(true))
+            {
+                Assert.That(br.ReadString(), Is.EqualTo("Direct"));
+            }
+            Assert.That(m.ReadString(), Is.EqualTo("BinaryWriter"));
 
             Assert.Throws<ArgumentException>(() => m.ReadValue<(int,int)>());
         }
@@ -312,6 +331,17 @@ namespace CodeSugar.Tests
                 var r = await m.ReadAllBytesAsync(System.Threading.CancellationToken.None);
                 Assert.That(r, Is.EqualTo(rnd));
             }
+        }
+
+
+        [Test]
+        public async Task TestShortcuts()
+        {
+            var uri = new Uri("http://www.google.com");
+
+            var finfo = AttachmentInfo.From("test.url").WriteObjectEx(f => f.WriteShortcutUri(uri));
+
+            Assert.That(finfo.ReadShortcutUri(), Is.EqualTo(uri));            
         }
     }
 }

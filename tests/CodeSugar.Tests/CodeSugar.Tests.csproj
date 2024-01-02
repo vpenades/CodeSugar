@@ -25,7 +25,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
-    <PackageReference Include="TestAttachments.NUnit" Version="4.0.0-Preview-20231128-1207" />
+    <PackageReference Include="TestAttachments.NUnit" Version="4.0.0-Preview-20240102-0955" />
   </ItemGroup>
 
 </Project>

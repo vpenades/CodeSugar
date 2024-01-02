@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
@@ -75,6 +76,38 @@ namespace $rootnamespace$
         #if NETSTANDARD || NETFRAMEWORK
         private static readonly Encoding UTF8NoBOM = new UTF8Encoding(false);
         #endif
+
+        public static IReadOnlyList<string> ReadAllLines(this STREAM stream, Encoding encoding = null)
+        {
+            using(var sr = CreateTextReader(stream, true, encoding))
+            {
+                string? line;
+                var lines = new List<string>();
+                
+                while ((line = sr.ReadLine()) != null)
+                {
+                    lines.Add(line);
+                }
+
+                return lines;
+            }
+        }
+
+        public static void WriteAllLines(this STREAM stream, Encoding encoding, params string[] lines)
+        {
+            WriteAllLines(stream, lines.AsEnumerable(), encoding);
+        }
+
+        public static void WriteAllLines(this STREAM stream, IEnumerable<string> lines, Encoding encoding = null)
+        {
+            using(var sw = CreateTextWriter(stream, true, encoding))
+            {
+                foreach(var line in lines)
+                {
+                    sw.WriteLine(line);
+                }
+            }
+        }
 
         /// <summary>
         /// Creates a <see cref="StreamWriter"/> from the given <see cref="STREAM"/>
