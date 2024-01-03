@@ -12,11 +12,11 @@ jobs:
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v3
     - name: define version suffix
-      run: echo "PACKAGE_VERSION=preview-$(date '+%Y%m%d-%H%M%S')+${GITHUB_SHA:0:6}"
+      run: echo "PACKAGE_VERSION=preview-$(date '+%Y%m%d-%H%M')"
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build -c Release --version-suffix $(PACKAGE_VERSION)
+      run: dotnet build -c Release --version-suffix %PACKAGE_VERSION%
     - name: Test
       run: dotnet test -c Release --no-build
     - name: Pack nugets
