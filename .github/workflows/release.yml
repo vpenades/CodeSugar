@@ -4,16 +4,11 @@ on: workflow_dispatch
     
 jobs:
   build:
-    runs-on: ubuntu-latest
-    env:
-      VersionSuffix: "preview-${{(date '+%Y%m%d-%H%M')}}"
+    runs-on: ubuntu-latest    
     timeout-minutes: 5
     steps:
-    - name: define version suffix
-      id: date
-      run: echo "::set-output name=date::$(date +'%Y%m%d-%H%M')"
-      env:
-        VersionSuffix: Preview-${{ steps.date.outputs.date }}
+    - name: define version suffix      
+      run: echo "VERSIONSUFFIX=Preview-$(date +'%Y%m%d-%H:%M:%S')" >> $GITHUB_ENV
     - name: Checkout
       uses: actions/checkout@v4
     - name: Setup .NET SDK
@@ -21,7 +16,7 @@ jobs:
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build -c Release --version-suffix $env:VersionSuffix
+      run: dotnet build -c Release --version-suffix ${{ env.VERSIONSUFFIX }}
     - name: Test
       run: dotnet test -c Release --no-build
     - name: Pack nugets
