@@ -61,7 +61,7 @@ namespace CodeSugar.Tests
         [Test]
         public void TestPaths()
         {
-            Assert.That(CodeSugarIO.SplitPath("\\abc/d\\e"), Is.EqualTo(new string[] { "abc", "d", "e" }));
+            Assert.That(CodeSugarIO.SplitPath("/abc/d/e"), Is.EqualTo(new string[] { "abc", "d", "e" }));
 
             if (CodeSugarIO.FileSystemIsCaseSensitive)
             {
@@ -76,6 +76,7 @@ namespace CodeSugar.Tests
 
                 if (Environment.OSVersion.Platform == PlatformID.Win32NT)
                 {
+                    Assert.That(CodeSugarIO.SplitPath("\\abc/d\\e"), Is.EqualTo(new string[] { "abc", "d", "e" }));
                     Assert.That(CodeSugarIO.ArePathsEqual("C:\\AbC/", "c:/aBc\\"));
                 }
             }            
