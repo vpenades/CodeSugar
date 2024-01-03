@@ -1,8 +1,6 @@
-name: Release to NuGet
+name: Build a preview and release it to Nuget
 
-on:
-  release:
-    types: [published]
+on: workflow_dispatch
     
 jobs:
   build:
