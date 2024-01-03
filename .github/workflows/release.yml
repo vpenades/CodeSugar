@@ -9,6 +9,11 @@ jobs:
       VersionSuffix: "preview-${{(date '+%Y%m%d-%H%M')}}"
     timeout-minutes: 5
     steps:
+    - name: define version suffix
+      id: date
+      run: echo "::set-output name=date::$(date +'%Y%m%d-%H%M')"
+      env:
+        VersionSuffix: Preview-${{ steps.date.outputs.date }}
     - name: Checkout
       uses: actions/checkout@v4
     - name: Setup .NET SDK
