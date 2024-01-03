@@ -18,8 +18,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeSugar.Proxy.NetStd21", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{53540609-2D6C-4939-A145-7D2E6E162F04}"
 	ProjectSection(SolutionItems) = preProject
-		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
 		README.md = README.md
+		.github\workflows\release.yml = .github\workflows\release.yml
+		.github\workflows\test.yml = .github\workflows\test.yml
 	EndProjectSection
 EndProject
 Global
