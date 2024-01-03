@@ -21,8 +21,6 @@ namespace CodeSugar.Tests
         [Test]
         public void TestEnvironment()
         {
-            
-
             // https://stackoverflow.com/questions/430256/how-do-i-determine-whether-the-filesystem-is-case-sensitive-in-net            
 
             // Ubuntu & mac:
@@ -38,6 +36,7 @@ namespace CodeSugar.Tests
 
             TestContext.WriteLine($"Separators {System.IO.Path.DirectorySeparatorChar} {System.IO.Path.AltDirectorySeparatorChar}");
             TestContext.WriteLine($"invalid name chars: " + string.Join(" ",System.IO.Path.GetInvalidFileNameChars()));
+            TestContext.WriteLine($"invalid path chars: " + string.Join(" ", System.IO.Path.GetInvalidPathChars()));
 
             var finfo = AttachmentInfo.From("test.txt").WriteAllText("hello");
 
@@ -63,6 +62,23 @@ namespace CodeSugar.Tests
         public void TestPaths()
         {
             Assert.That(CodeSugarIO.SplitPath("\\abc/d\\e"), Is.EqualTo(new string[] { "abc", "d", "e" }));
+
+            if (CodeSugarIO.FileSystemIsCaseSensitive)
+            {
+                Assert.That(CodeSugarIO.ArePathsEqual("c:/abc", "c:/abc/"));
+                Assert.That(CodeSugarIO.ArePathsEqual("c:/abc", "c:/abC/"), Is.Not.True);                
+            }
+            else
+            {
+                Assert.That(CodeSugarIO.ArePathsEqual("c:/abc", "c:/abc/"));
+                Assert.That(CodeSugarIO.ArePathsEqual("C:/abc", "c:/ABC/"));
+                Assert.That(CodeSugarIO.ArePathsEqual("c:/abc", "c:/abX/"), Is.Not.True);
+
+                if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                {
+                    Assert.That(CodeSugarIO.ArePathsEqual("C:\\AbC/", "c:/aBc\\"));
+                }
+            }            
         }
 
 
@@ -151,9 +167,9 @@ namespace CodeSugar.Tests
             Assert.That(System.Convert.ToHexString(readme_txt.ComputeSha512()),
                 Is.EqualTo("309ECC489C12D6EB4CC40F50C902F2B4D0ED77EE511A7C7A9BCD3CA86D4CD86F989DD35BC5FF499670DA34255B45B0CFD830E81F605DCF7DC5542E93AE9CD76F"));
 
-            Assert.That(readme_txt.Directory.ContainsFileOrDirectory(readme_txt));
+            Assert.That(readme_txt.Directory.IsParentOf(readme_txt));
 
-            Assert.That(readme_txt.GetRelativePath(readme_txt.Directory),
+            Assert.That(readme_txt.GetPathRelativeTo(readme_txt.Directory),
                 Is.EqualTo("readme.txt"));
 
             // Assert.That(readme_txt.GetRelativePath(readme_txt.Directory.Parent), Is.EqualTo("Resources\\readme.txt")); // equality
@@ -351,12 +367,12 @@ namespace CodeSugar.Tests
 
             Assert.That(finfo.ReadShortcutUri(), Is.EqualTo(uri));
 
-            var finfo2 = AttachmentInfo.From("test2.url").WriteObjectEx(f => f.WriteShortcutUri(new Uri(finfo.FullName)));
+            var finfo2 = AttachmentInfo.From("test2.url").WriteObjectEx(f => f.WriteShortcutUri(new Uri(finfo.FullName)));            
 
             if (finfo2.TryReadShortcutFile(out var targetFile))
             {
                 finfo.FullNameEquals(targetFile);
-            }
+            }            
         }
     }
 }

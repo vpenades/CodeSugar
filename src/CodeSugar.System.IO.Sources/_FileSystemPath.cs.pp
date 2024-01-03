@@ -23,6 +23,8 @@ namespace $rootnamespace$
 {
     partial class CodeSugarIO
     {
+        
+
         /// <summary>
         /// ensures that the path uses Path.DirectorySeparatorChar and it does not end with a path separator.
         /// </summary>
@@ -31,7 +33,9 @@ namespace $rootnamespace$
         /// </returns>
         public static string GetNormalizedPath(string path)
         {
-            if (path == null) return null;
+            if (string.IsNullOrWhiteSpace(path)) return String.Empty;
+
+            if (path.IndexOfAny(_InvalidPathChars) >= 0) throw new ArgumentException("invalid chars", nameof(path));
 
             return path
                 .Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar)
@@ -46,13 +50,31 @@ namespace $rootnamespace$
             return path.Split(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);        
         }
 
-        public static string ConcatenatePaths(string absolutePath, string[] relativePath)
+        public static (string path, string name) SplitDirectoryAndName(string path)        
         {
-            if (string.IsNullOrWhiteSpace(absolutePath)) throw new ArgumentNullException(nameof(absolutePath));
+            if (path == null) throw new ArgumentNullException(nameof(path));
 
-            if (relativePath == null || relativePath.Length == 0) return absolutePath;
+            // sanitize
+            path = path.Trim(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
 
-            var path = absolutePath.TrimEnd(_DirectorySeparators);
+            // find last separator
+            var idx = Math.Max(path.LastIndexOf(System.IO.Path.DirectorySeparatorChar), path.LastIndexOf(System.IO.Path.AltDirectorySeparatorChar));
+
+            if (idx < 0) return (null, path);
+
+            var name = path.Substring(idx + 1);            
+            path = path.Substring(0, idx);            
+
+            return (path, name);            
+        }
+
+        public static string ConcatenatePaths(string basePath, string[] relativePath)
+        {
+            if (string.IsNullOrWhiteSpace(basePath)) throw new ArgumentNullException(nameof(basePath));
+
+            if (relativePath == null || relativePath.Length == 0) return basePath;
+
+            var path = basePath.TrimEnd(_DirectorySeparators);
             foreach (var part in relativePath)
             {
                 GuardIsValidFileName(part, false, nameof(relativePath));

@@ -34,7 +34,7 @@ namespace $rootnamespace$
         {
             name ??= nameof(fileName);
             if (string.IsNullOrWhiteSpace(fileName)) throw new ArgumentNullException(name);
-            if (fileName.IndexOfAny(_InvalidChars) >= 0) throw new ArgumentException($"{fileName} contains invalid chars", name);
+            if (fileName.IndexOfAny(_InvalidNameChars) >= 0) throw new ArgumentException($"{fileName} contains invalid chars", name);
             if (checkForInvalidNames)
             {
                 if (fileName == "." || fileName == "..") throw new ArgumentException($"{fileName} is an invalid file name", name);
@@ -69,7 +69,7 @@ namespace $rootnamespace$
 		public static void GuardIsValidFileName(string fileName, bool checkForInvalidNames, [CallerArgumentExpression("info")] string name = null)
         {
             if (string.IsNullOrWhiteSpace(fileName)) throw new ArgumentNullException(nameof(fileName));
-            if (fileName.IndexOfAny(_InvalidChars) >= 0) throw new ArgumentException($"{fileName} contains invalid chars", nameof(fileName));
+            if (fileName.IndexOfAny(_InvalidNameChars) >= 0) throw new ArgumentException($"{fileName} contains invalid chars", nameof(fileName));
             if (checkForInvalidNames)
             {
                 if (fileName == "." || fileName == "..") throw new ArgumentException($"{fileName} is an invalid file name", name);
@@ -118,6 +118,18 @@ namespace $rootnamespace$
                 case DIRECTORY dinfo: dinfo.Refresh(); return dinfo.Exists;
                 default: throw new ArgumentException("Unknown type", nameof(info));
             }
+        }
+
+        public static DIRECTORY GetSpecialFolder(this System.Environment.SpecialFolder folder)
+        {
+            var path = System.Environment.GetFolderPath(folder);
+            return new DIRECTORY(path);
+        }
+
+        public static DIRECTORY GetSpecialFolder(this System.Environment.SpecialFolder folder, System.Environment.SpecialFolderOption options)
+        {
+            var path = System.Environment.GetFolderPath(folder, options);
+            return new DIRECTORY(path);
         }
 
         /// <summary>
@@ -216,7 +228,32 @@ namespace $rootnamespace$
             GuardNotNull(dst);
             src.CopyTo(dst.FullName, overwrite);        
             dst.Refresh();
-        }        
+        }
+
+        public static void Rename(this FILE finfo, string newName, bool overwrite)
+        {
+            GuardNotNull(finfo);
+
+            var newPath = System.IO.Path.Combine(finfo.Directory.FullName, newName);
+
+            finfo.MoveTo(newPath, overwrite);
+
+            finfo.Refresh();
+        }
+
+        #if NETSTANDARD
+        public static void MoveTo(this FILE finfo, string newPath, bool overwrite)
+        {
+            var dstInfo = new FILE(newPath);
+
+            if (overwrite && dstInfo.Exists)
+            {
+                dstInfo.Delete();
+            }
+
+            finfo.MoveTo(dstInfo.FullName);
+        }
+        #endif
 
         #endregion
     }

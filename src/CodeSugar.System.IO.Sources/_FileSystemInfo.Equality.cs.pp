@@ -32,7 +32,11 @@ namespace $rootnamespace$
         public static string GetNormalizedFullName(this System.IO.FileSystemInfo finfo)
         {
             GuardNotNull(finfo);
-            return GetNormalizedPath(finfo.FullName);
+
+            return finfo
+                .FullName
+                .Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar)
+                .TrimEnd(System.IO.Path.DirectorySeparatorChar);
         }
 
         /// <summary>
@@ -42,7 +46,7 @@ namespace $rootnamespace$
         /// <param name="baseDir"></param>
         /// <returns>A relative path.</returns>
         /// <exception cref="ArgumentException"></exception>
-        public static string GetRelativePath(this FILE finfo, DIRECTORY baseDir)
+        public static string GetPathRelativeTo(this FILE finfo, DIRECTORY baseDir)
         {
             GuardNotNull(finfo);
             GuardNotNull(baseDir);
@@ -53,7 +57,7 @@ namespace $rootnamespace$
 
             while(baseDir != null)
             {
-                if (baseDir.ContainsFileOrDirectory(finfo)) return path.Substring(baseDir.FullName.Length).TrimStart(_DirectorySeparators);
+                if (baseDir.IsParentOf(finfo)) return path.Substring(baseDir.FullName.Length).TrimStart(_DirectorySeparators);
                 baseDir = baseDir.Parent;
             }
 
@@ -73,7 +77,7 @@ namespace $rootnamespace$
         /// <param name="baseDir">The base directory</param>
         /// <param name="xinfo">A <see cref="FILE"/> or <see cref="DIRECTORY"/></param>
         /// <returns>true if <paramref name="xinfo"/> is a child.</returns>
-        public static bool ContainsFileOrDirectory(this DIRECTORY baseDir, SYSTEMENTRY xinfo)
+        public static bool IsParentOf(this DIRECTORY baseDir, SYSTEMENTRY xinfo)
         {
             GuardNotNull(baseDir);
             GuardNotNull(xinfo);
