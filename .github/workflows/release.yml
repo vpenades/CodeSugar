@@ -5,18 +5,18 @@ on: workflow_dispatch
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      VersionSuffix: "preview-${(date '+%Y%m%d-%H%M')}"
     timeout-minutes: 5
     steps:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v3
-    - name: define version suffix
-      run: echo "VERSION_SUFFIX=${preview-$(date '+%Y%m%d-%H%M')}"
+      uses: actions/setup-dotnet@v3    
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build -c Release --version-suffix ${VERSION_SUFFIX}
+      run: dotnet build -c Release --version-suffix $env:VersionSuffix
     - name: Test
       run: dotnet test -c Release --no-build
     - name: Pack nugets
