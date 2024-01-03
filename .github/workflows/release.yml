@@ -8,7 +8,7 @@ jobs:
     timeout-minutes: 5
     steps:
     - name: define version suffix      
-      run: echo "VERSIONSUFFIX=Preview-$(date +'%Y%m%d-%H:%M:%S')" >> $GITHUB_ENV
+      run: echo "VERSIONSUFFIX=Preview-$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
     - name: Checkout
       uses: actions/checkout@v4
     - name: Setup .NET SDK
