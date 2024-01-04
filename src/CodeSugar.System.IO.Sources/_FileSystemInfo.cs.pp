@@ -180,7 +180,7 @@ namespace $rootnamespace$
             // handle special cases for file name
 
             var last = relativePath[relativePath.Length-1];
-            System.Diagnostics.Debug.Assert(!last.Contains(':'), "Use TryGetAlternateDataStream() instead");
+            System.Diagnostics.Debug.Assert(Environment.OSVersion.Platform != PlatformID.Win32NT || !last.Contains(':'), "Use TryGetAlternateDataStream() instead");
             GuardIsValidFileName(last, true, nameof(relativePath));
 
             var path = ConcatenatePaths(baseDir.FullName, relativePath);
