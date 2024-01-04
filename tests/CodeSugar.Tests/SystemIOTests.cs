@@ -11,6 +11,8 @@ namespace CodeSugar.Tests
 {
     public class Tests
     {
+        public static bool IsWindowsPlatform => Environment.OSVersion.Platform == PlatformID.Win32NT;
+
         // these are drive names returned by various DriveInfo.GetDrives()
         private static readonly IEnumerable<string> _WindowsDrives = new string[] { "C:\\", "D:\\" };
 
@@ -72,14 +74,14 @@ namespace CodeSugar.Tests
             {
                 Assert.That(CodeSugarIO.ArePathsEqual("c:/abc", "c:/abc/"));
                 Assert.That(CodeSugarIO.ArePathsEqual("C:/abc", "c:/ABC/"));
-                Assert.That(CodeSugarIO.ArePathsEqual("c:/abc", "c:/abX/"), Is.Not.True);
+                Assert.That(CodeSugarIO.ArePathsEqual("c:/abc", "c:/abX/"), Is.Not.True);                
+            }
 
-                if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-                {
-                    Assert.That(CodeSugarIO.SplitPath("\\abc/d\\e"), Is.EqualTo(new string[] { "abc", "d", "e" }));
-                    Assert.That(CodeSugarIO.ArePathsEqual("C:\\AbC/", "c:/aBc\\"));
-                }
-            }            
+            if (IsWindowsPlatform)
+            {
+                Assert.That(CodeSugarIO.SplitPath("\\abc/d\\e"), Is.EqualTo(new string[] { "abc", "d", "e" }));
+                Assert.That(CodeSugarIO.ArePathsEqual("C:\\AbC/", "c:/aBc\\"));
+            }
         }
 
 
@@ -185,18 +187,20 @@ namespace CodeSugar.Tests
             Assert.That(() => readme_txt.Directory.GetFile("."), Throws.Exception);            
             Assert.That(() => readme_txt.Directory.GetFile("/"), Throws.Exception);
 
-            // ubuntu & mac
-            // Assert.That(() => readme_txt.Directory.GetFile(":"), Throws.Exception);
-            // Assert.That(() => readme_txt.Directory.GetFile("*"), Throws.Exception);
-            // Assert.That(() => readme_txt.Directory.GetFile("?"), Throws.Exception);
-            // Assert.That(() => readme_txt.Directory.GetFile("\\"), Throws.Exception);
+            if (IsWindowsPlatform)
+            {
+                Assert.That(() => readme_txt.Directory.GetFile(":"), Throws.Exception);
+                Assert.That(() => readme_txt.Directory.GetFile("*"), Throws.Exception);
+                Assert.That(() => readme_txt.Directory.GetFile("?"), Throws.Exception);
+                Assert.That(() => readme_txt.Directory.GetFile("\\"), Throws.Exception);
+            }
         }
 
 
         [Test]
         public void TestAlternateDataStreams()
         {
-            if (Environment.OSVersion.Platform != PlatformID.Win32NT) return;
+            if (!IsWindowsPlatform) return;
 
             // https://arstechnica.com/civis/threads/is-winfs-vulnerable-to-alternate-data-streams.468008/
             // https://blog.j2i.net/2021/12/11/working-with-alternative-data-streamsthe-hidden-part-of-your-windows-file-system-on-windows/
