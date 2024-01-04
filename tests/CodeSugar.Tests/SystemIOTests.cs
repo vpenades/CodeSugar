@@ -360,7 +360,7 @@ namespace CodeSugar.Tests
 
 
         [Test]
-        public async Task TestShortcuts()
+        public void TestShortcuts()
         {
             var uri = new Uri("http://www.google.com");
 
