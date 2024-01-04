@@ -11,8 +11,8 @@ echo Building 1.0.0-%VERSIONSUFFIX%
 
 :: ============================================= DOTNET builder
 
-dotnet build -restore:true -c:Release --version-suffix %VERSIONSUFFIX% ..\CodeSugar.sln
-dotnet pack -c:Release --version-suffix %VERSIONSUFFIX% ..\CodeSugar.sln
+dotnet build -c:Release --version-suffix %VERSIONSUFFIX% ..\CodeSugar.sln
+// dotnet pack -c:Release --version-suffix %VERSIONSUFFIX% ..\CodeSugar.sln
 
 :: ============================================= Copy output
 
