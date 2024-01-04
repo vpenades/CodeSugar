@@ -182,11 +182,11 @@ namespace CodeSugar.Tests
             Assert.That(dcomparer.Equals(tmp0, tmp1));
             
             Assert.That(() => readme_txt.Directory.GetFile(".."), Throws.Exception);
-            Assert.That(() => readme_txt.Directory.GetFile("."), Throws.Exception);
-            Assert.That(() => readme_txt.Directory.GetFile(":"), Throws.Exception);            
+            Assert.That(() => readme_txt.Directory.GetFile("."), Throws.Exception);            
             Assert.That(() => readme_txt.Directory.GetFile("/"), Throws.Exception);
 
             // ubuntu & mac
+            // Assert.That(() => readme_txt.Directory.GetFile(":"), Throws.Exception);
             // Assert.That(() => readme_txt.Directory.GetFile("*"), Throws.Exception);
             // Assert.That(() => readme_txt.Directory.GetFile("?"), Throws.Exception);
             // Assert.That(() => readme_txt.Directory.GetFile("\\"), Throws.Exception);
