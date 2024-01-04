@@ -66,7 +66,7 @@ namespace $rootnamespace$
 		/// Checks whether a <see cref="SYSTEMENTRY"/> is not null.
 		/// </summary>        
 		/// <exception cref="ArgumentNullException"></exception>
-		public static void GuardIsValidFileName(string fileName, bool checkForInvalidNames, [CallerArgumentExpression("info")] string name = null)
+		public static void GuardIsValidFileName(string fileName, bool checkForInvalidNames, [CallerArgumentExpression("fileName")] string name = null)
         {
             if (string.IsNullOrWhiteSpace(fileName)) throw new ArgumentNullException(nameof(fileName));
             if (fileName.IndexOfAny(_InvalidNameChars) >= 0) throw new ArgumentException($"{fileName} contains invalid chars", nameof(fileName));
