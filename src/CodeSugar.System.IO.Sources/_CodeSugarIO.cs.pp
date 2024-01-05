@@ -29,7 +29,7 @@ namespace $rootnamespace$
 
         private static readonly char[] _InvalidNameChars = System.IO.Path.GetInvalidFileNameChars();    
 
-        private static readonly char[] _InvalidPathChars = System.IO.Path.GetInvalidPathChars();    
+        private static readonly char[] _InvalidPathChars = System.IO.Path.GetInvalidPathChars();        
         
         #if NETSTANDARD
         private static string _processPath;

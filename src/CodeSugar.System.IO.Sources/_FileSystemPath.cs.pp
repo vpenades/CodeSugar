@@ -23,6 +23,19 @@ namespace $rootnamespace$
 {
     partial class CodeSugarIO
     {
+        public static bool IsDirectorySeparatorChar(Char character)
+        {
+            return character == System.IO.Path.DirectorySeparatorChar || character == System.IO.Path.AltDirectorySeparatorChar;        
+        }
+
+        public static bool PathStartsWithNetworkDrivePrefix(string path)
+        {
+            if (path == null || path.Length < 2) return false;
+
+            if (!IsDirectorySeparatorChar(path[0])) return false;
+            if (!IsDirectorySeparatorChar(path[1])) return false;
+            return true;
+        }
         
 
         /// <summary>
@@ -37,33 +50,84 @@ namespace $rootnamespace$
 
             if (path.IndexOfAny(_InvalidPathChars) >= 0) throw new ArgumentException("invalid chars", nameof(path));
 
-            return path
-                .Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar)
-                .TrimEnd(System.IO.Path.DirectorySeparatorChar);
+            path = path.Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar);
+
+            // unlike GetNormalizedFullName, this method can handle both absolute and relative paths
+
+            if (PathStartsWithNetworkDrivePrefix(path))
+            {
+                path = path.TrimEnd(System.IO.Path.DirectorySeparatorChar);
+            }
+            else
+            {
+                path = path.Trim(System.IO.Path.DirectorySeparatorChar);
+            }
+
+            return path;
         }
 
         public static string[] SplitPath(string path)
         {
             if (string.IsNullOrWhiteSpace(path)) throw new ArgumentNullException(nameof(path));
 
+            // subtract network prefix
+
+            string networkPrefix = null;
+
+            if (PathStartsWithNetworkDrivePrefix(path))
+            {
+                networkPrefix = path.Substring(0,2);
+                path = path.Substring(2);
+            }
+
+            // sanitize
+            
             path = path.Trim(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
-            return path.Split(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);        
+            var parts = path.Split(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
+
+            // restore network prefix
+
+            if (networkPrefix != null)
+            {
+                parts[0] = networkPrefix + parts[0];
+            }
+
+            return parts;            
         }
 
         public static (string path, string name) SplitDirectoryAndName(string path)        
         {
             if (path == null) throw new ArgumentNullException(nameof(path));
 
+            // subtract network prefix
+
+            string networkPrefix = null;
+
+            if (PathStartsWithNetworkDrivePrefix(path))
+            {
+                networkPrefix = path.Substring(0,2);
+                path = path.Substring(2);
+            }
+
             // sanitize
+
             path = path.Trim(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
 
             // find last separator
+
             var idx = Math.Max(path.LastIndexOf(System.IO.Path.DirectorySeparatorChar), path.LastIndexOf(System.IO.Path.AltDirectorySeparatorChar));
 
             if (idx < 0) return (null, path);
 
-            var name = path.Substring(idx + 1);            
-            path = path.Substring(0, idx);            
+            var name = path.Substring(idx + 1);
+            path = path.Substring(0, idx);
+
+            // restore network prefix
+
+            if (networkPrefix != null)
+            {
+                path = networkPrefix + path;
+            }
 
             return (path, name);            
         }

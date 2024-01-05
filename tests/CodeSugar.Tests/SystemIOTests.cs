@@ -65,6 +65,11 @@ namespace CodeSugar.Tests
         {
             Assert.That(CodeSugarIO.SplitPath("/abc/d/e"), Is.EqualTo(new string[] { "abc", "d", "e" }));
 
+            Assert.That(CodeSugarIO.SplitPath("//network/abc/d/e"), Is.EqualTo(new string[] { "//network", "abc", "d", "e" }));
+
+            Assert.That(CodeSugarIO.SplitDirectoryAndName("/abc/d/e"), Is.EqualTo(("abc/d", "e")));
+            Assert.That(CodeSugarIO.SplitDirectoryAndName("//network/abc/d/e"), Is.EqualTo(( "//network/abc/d", "e" )));
+
             if (CodeSugarIO.FileSystemIsCaseSensitive)
             {
                 Assert.That(CodeSugarIO.ArePathsEqual("c:/abc", "c:/abc/"));
