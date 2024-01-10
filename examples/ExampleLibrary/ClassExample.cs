@@ -1,8 +1,8 @@
 ﻿using System;
 
-using ExampleLibrary;
 
-namespace LibraryExample
+
+namespace ExampleLibrary
 {
     public class ClassExample
     {
@@ -17,5 +17,11 @@ namespace LibraryExample
             }
         }
 
+
+        public void Other()
+        {
+            ContentFilesExample.ExampleInternals.GetFileText("hello");
+            ExampleReader.GetDataText();            
+        }
     }
 }

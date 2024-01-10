@@ -57,6 +57,12 @@ Afterwards, the extensions should be readily available:
     }
 ```
 
+### External references
+
+- [Content Files Nuget Example](https://www.nuget.org/packages/ContentFilesExample)
+  - [github](https://github.com/NuGet/Samples/tree/main/ContentFilesExample)
+  - [nuget issue](https://github.com/NuGet/Home/issues/7919)
+
 
 
 
