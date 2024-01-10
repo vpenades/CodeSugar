@@ -73,12 +73,12 @@
   <ItemGroup>
     <Content Include="*.cs.pp">
       <PackagePath>$(ContentTargetFolders)\cs\$(TargetFramework)</PackagePath>
-      <BuildAction>Compile</BuildAction>
+      <BuildAction>None</BuildAction>
       <Pack>true</Pack>
     </Content>
     <Content Include="*.cs">
       <PackagePath>$(ContentTargetFolders)\cs\$(TargetFramework)</PackagePath>
-      <BuildAction>Compile</BuildAction>
+      <BuildAction>None</BuildAction>
       <Pack>true</Pack>
     </Content>
   </ItemGroup>
