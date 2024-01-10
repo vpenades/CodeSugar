@@ -49,5 +49,17 @@ namespace $rootnamespace$
         }
 
         #endif
+
+        public static System.IO.Compression.ZipArchive CreateZipArchive(this System.IO.FileInfo finfo)
+        {
+            GuardNotNull(finfo);
+            return System.IO.Compression.ZipFile.Open(finfo.FullName, System.IO.Compression.ZipArchiveMode.Create);
+        }
+
+        public static System.IO.Compression.ZipArchive OpenReadZipArchive(this System.IO.FileInfo finfo)
+        {
+            GuardExists(finfo);
+            return System.IO.Compression.ZipFile.Open(finfo.FullName, System.IO.Compression.ZipArchiveMode.Read);
+        }
     }
 }

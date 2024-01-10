@@ -384,5 +384,25 @@ namespace CodeSugar.Tests
                 finfo.FullNameEquals(targetFile);
             }            
         }
+
+        [Test]
+        public void TestZip()
+        {
+            using (var context = new AttachmentDirectory("tests"))
+            {
+                using(var zip = context.Directory.GetFile("test.zip").CreateZipArchive())
+                {
+                    zip.CreateEntry("readme.txt").WriteAllText("hello world");
+                }
+
+                using (var zip = context.Directory.GetFile("test.zip").OpenReadZipArchive())
+                {
+                    var txt = zip.GetEntry("readme.txt").ReadAllText();
+                    Assert.That(txt, Is.EqualTo("hello world"));
+                }
+            }
+
+        }
+
     }
 }
