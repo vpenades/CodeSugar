@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>    
+    <RootNamespace>ExampleWpfApp</RootNamespace> <!-- for some reason, namespace must be defined -->    
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CodeSugar.System.IO.Sources" Version="1.0.0-Preview-20240105-084731" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>
