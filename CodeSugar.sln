@@ -24,10 +24,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "examples", "examples", "{8243CE1E-839C-456B-A5D4-874963D8C525}"
+	ProjectSection(SolutionItems) = preProject
+		examples\Directory.Build.props = examples\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleLibrary", "examples\ExampleLibrary\ExampleLibrary.csproj", "{B76C7C60-0363-4EB3-A075-19C8B7C74AD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleWpfApp", "examples\ExampleWpfApp\ExampleWpfApp.csproj", "{6C012E64-4C4B-408F-B1D5-ACCCF8B4A1C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleWpfApp", "examples\ExampleWpfApp\ExampleWpfApp.csproj", "{6C012E64-4C4B-408F-B1D5-ACCCF8B4A1C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

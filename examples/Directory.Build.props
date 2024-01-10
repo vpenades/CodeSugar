@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  
+  <!-- https://blog.johnnyreilly.com/2021/07/14/directory-build-props-c-sharp-9-for-all -->
+
+  <!-- Legal =================================================================================== -->
+
+  <PropertyGroup>
+    <Authors>Vicente Penades</Authors>
+    <Company>Vicente Penades</Company>
+    <Copyright>Copyright (c) 2024 Vicente Penades</Copyright>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <!-- Configuration =================================================================================== -->
+
+  <PropertyGroup>    
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  
+</Project>
