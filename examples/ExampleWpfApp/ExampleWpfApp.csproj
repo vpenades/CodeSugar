@@ -9,6 +9,10 @@
     <RootNamespace>ExampleWpfApp</RootNamespace> <!-- for some reason, namespace must be defined -->    
   </PropertyGroup>
 
+  <PropertyGroup>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting> <!-- required to build on linux -->
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="CodeSugar.System.IO.Sources" Version="1.0.0-Preview-20240105-084731" PrivateAssets="all" />
   </ItemGroup>
