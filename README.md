@@ -18,6 +18,45 @@ Another advantage is that the namespace of the extension classes are automatical
 
 The disadvantage is that, since there's no external package reference, and the classes are declared as internal, the code is not propagated transitively, so you need to reference these packages on _every_ project you want the extensions to be available.
 
+### Source code injection considerations
+
+There's different ways of adding source code straight into projects. One is this method of using Content Only nuget packages. The other one ise using Source Generator projects.
+
+I've chosen Content Only packages since it seems a more straightforward solution.
+
+### Instructions
+
+These packages are consumed in a similar way than an analyser:
+
+```xml
+ <PropertyGroup>
+   <!-- for some reason, some projects require RootNamespace to be defined, in order for the templates to be applied. -->
+   <RootNamespace>YourProjectNamespace</RootNamespace> 
+ </PropertyGroup>
+
+ <ItemGroup>
+    <!-- PrivateAssets="all" prevents your project from depending on CodeSugar packages, in the same way analyzers do. -->
+    <PackageReference Include="CodeSugar.System.IO.Sources" Version="1.0.0-Preview-20240105-084731" PrivateAssets="all" />
+  </ItemGroup>
+```
+
+Immediately after adding the package, it's recomended to build the project for Visual Studio intellisense to notice about the newly added files.
+
+Afterwards, the extensions should be readily available:
+
+```c#
+    public void ExampleOfStreamWrite()
+    {
+        using(var m = new System.IO.MemoryStream())
+        {
+            m.WriteAllBytes(new byte[1024]);
+            m.WriteValue<int>(10);
+            m.WriteValue<float>(0.1f);
+            m.WriteString("hello world");
+        }
+    }
+```
+
 
 
 
