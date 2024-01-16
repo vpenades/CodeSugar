@@ -185,14 +185,27 @@ namespace $rootnamespace$
 
             var path = ConcatenatePaths(baseDir.FullName, relativePath);
             return new FILE(path);
-        }        
+        }
+
+        /// <summary>
+		/// Gets or creates <see cref="DIRECTORY"/> relative to the base directory.
+		/// </summary>
+		/// <param name="baseDir">the base directory</param>
+		/// <param name="relativePath">the relative path parts</param>
+		/// <returns>a new <see cref="DIRECTORY"/> instance.</returns>
+		public static DIRECTORY UseDirectory(this DIRECTORY baseDir, params string[] relativePath)
+        {
+            baseDir = GetDirectory(baseDir, relativePath);
+            baseDir?.Create();
+            return baseDir;
+        }
 
 		/// <summary>
 		/// Gets a <see cref="DIRECTORY"/> relative to the base directory.
 		/// </summary>
 		/// <param name="baseDir">the base directory</param>
 		/// <param name="relativePath">the relative path parts</param>
-		/// <returns>a new <see cref="FILE"/> instance.</returns>
+		/// <returns>a new <see cref="DIRECTORY"/> instance.</returns>
 		public static DIRECTORY GetDirectory(this DIRECTORY baseDir, params string[] relativePath)
         {
             GuardNotNull(baseDir);
