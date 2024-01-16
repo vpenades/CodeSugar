@@ -12,6 +12,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\src\CodeSugar.System.Sources\*.cs" LinkBase="CodeSugar" />
+    <Compile Include="..\..\src\CodeSugar.System.Sources\*.cs.pp" LinkBase="CodeSugar" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="..\..\src\CodeSugar.System.IO.Sources\*.cs" LinkBase="CodeSugarIO" />
     <Compile Include="..\..\src\CodeSugar.System.IO.Sources\*.cs.pp" LinkBase="CodeSugarIO" />
   </ItemGroup>

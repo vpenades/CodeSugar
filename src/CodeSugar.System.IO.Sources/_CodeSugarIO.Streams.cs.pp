@@ -23,7 +23,7 @@ namespace System.IO
 namespace $rootnamespace$
 #endif
 {
-    partial class CodeSugarIO
+    partial class CodeSugarForSystemIO
     {
         #region diagnostics
 

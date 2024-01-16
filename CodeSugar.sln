@@ -32,6 +32,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleLibrary", "examples\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleWpfApp", "examples\ExampleWpfApp\ExampleWpfApp.csproj", "{6C012E64-4C4B-408F-B1D5-ACCCF8B4A1C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeSugar.System.Sources", "src\CodeSugar.System.Sources\CodeSugar.System.Sources.csproj", "{1DB7CCAE-652D-44BE-9941-13DE7A1A0ACD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,10 @@ Global
 		{6C012E64-4C4B-408F-B1D5-ACCCF8B4A1C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C012E64-4C4B-408F-B1D5-ACCCF8B4A1C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C012E64-4C4B-408F-B1D5-ACCCF8B4A1C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DB7CCAE-652D-44BE-9941-13DE7A1A0ACD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DB7CCAE-652D-44BE-9941-13DE7A1A0ACD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DB7CCAE-652D-44BE-9941-13DE7A1A0ACD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DB7CCAE-652D-44BE-9941-13DE7A1A0ACD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -68,6 +74,7 @@ Global
 		{270B2BC7-8669-478B-B189-3E3BAE26E9E9} = {096F443D-3205-4914-8E40-3A2186B71134}
 		{B76C7C60-0363-4EB3-A075-19C8B7C74AD0} = {8243CE1E-839C-456B-A5D4-874963D8C525}
 		{6C012E64-4C4B-408F-B1D5-ACCCF8B4A1C6} = {8243CE1E-839C-456B-A5D4-874963D8C525}
+		{1DB7CCAE-652D-44BE-9941-13DE7A1A0ACD} = {36A264B8-92D1-48DD-8054-115FF0856E50}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {12BE1319-4F6D-4472-82CA-678A7F50C6B4}

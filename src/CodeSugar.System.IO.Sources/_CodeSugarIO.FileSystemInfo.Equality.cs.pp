@@ -21,7 +21,7 @@ namespace System.IO
 namespace $rootnamespace$
 #endif
 {
-    partial class CodeSugarIO
+    partial class CodeSugarForSystemIO
     {
         /// <summary>
         /// ensures that the path uses Path.DirectorySeparatorChar and it does not end with a path separator.

@@ -7,8 +7,12 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 
+
+
 namespace CodeSugar.Tests
 {
+    using CODESUGARIO = CodeSugarForSystemIO;
+
     public class Tests
     {
         public static bool IsWindowsPlatform => Environment.OSVersion.Platform == PlatformID.Win32NT;
@@ -34,7 +38,7 @@ namespace CodeSugar.Tests
             //      invalid name chars: " < > |                             : * ? \ /
 
             TestContext.WriteLine($"{Environment.OSVersion.Platform}");
-            TestContext.WriteLine($" comparison: {CodeSugarIO.FileSystemStringComparison}");
+            TestContext.WriteLine($" comparison: {CODESUGARIO.FileSystemStringComparison}");
 
             TestContext.WriteLine($"Separators {System.IO.Path.DirectorySeparatorChar} {System.IO.Path.AltDirectorySeparatorChar}");
             TestContext.WriteLine($"invalid name chars: " + string.Join(" ",System.IO.Path.GetInvalidFileNameChars()));
@@ -63,29 +67,29 @@ namespace CodeSugar.Tests
         [Test]
         public void TestPaths()
         {
-            Assert.That(CodeSugarIO.SplitPath("/abc/d/e"), Is.EqualTo(new string[] { "abc", "d", "e" }));
+            Assert.That(CODESUGARIO.SplitPath("/abc/d/e"), Is.EqualTo(new string[] { "abc", "d", "e" }));
 
-            Assert.That(CodeSugarIO.SplitPath("//network/abc/d/e"), Is.EqualTo(new string[] { "//network", "abc", "d", "e" }));
+            Assert.That(CODESUGARIO.SplitPath("//network/abc/d/e"), Is.EqualTo(new string[] { "//network", "abc", "d", "e" }));
 
-            Assert.That(CodeSugarIO.SplitDirectoryAndName("/abc/d/e"), Is.EqualTo(("abc/d", "e")));
-            Assert.That(CodeSugarIO.SplitDirectoryAndName("//network/abc/d/e"), Is.EqualTo(( "//network/abc/d", "e" )));
+            Assert.That(CODESUGARIO.SplitDirectoryAndName("/abc/d/e"), Is.EqualTo(("abc/d", "e")));
+            Assert.That(CODESUGARIO.SplitDirectoryAndName("//network/abc/d/e"), Is.EqualTo(( "//network/abc/d", "e" )));
 
-            if (CodeSugarIO.FileSystemIsCaseSensitive)
+            if (CODESUGARIO.FileSystemIsCaseSensitive)
             {
-                Assert.That(CodeSugarIO.ArePathsEqual("c:/abc", "c:/abc/"));
-                Assert.That(CodeSugarIO.ArePathsEqual("c:/abc", "c:/abC/"), Is.Not.True);                
+                Assert.That(CODESUGARIO.ArePathsEqual("c:/abc", "c:/abc/"));
+                Assert.That(CODESUGARIO.ArePathsEqual("c:/abc", "c:/abC/"), Is.Not.True);                
             }
             else
             {
-                Assert.That(CodeSugarIO.ArePathsEqual("c:/abc", "c:/abc/"));
-                Assert.That(CodeSugarIO.ArePathsEqual("C:/abc", "c:/ABC/"));
-                Assert.That(CodeSugarIO.ArePathsEqual("c:/abc", "c:/abX/"), Is.Not.True);                
+                Assert.That(CODESUGARIO.ArePathsEqual("c:/abc", "c:/abc/"));
+                Assert.That(CODESUGARIO.ArePathsEqual("C:/abc", "c:/ABC/"));
+                Assert.That(CODESUGARIO.ArePathsEqual("c:/abc", "c:/abX/"), Is.Not.True);                
             }
 
             if (IsWindowsPlatform)
             {
-                Assert.That(CodeSugarIO.SplitPath("\\abc/d\\e"), Is.EqualTo(new string[] { "abc", "d", "e" }));
-                Assert.That(CodeSugarIO.ArePathsEqual("C:\\AbC/", "c:/aBc\\"));
+                Assert.That(CODESUGARIO.SplitPath("\\abc/d\\e"), Is.EqualTo(new string[] { "abc", "d", "e" }));
+                Assert.That(CODESUGARIO.ArePathsEqual("C:\\AbC/", "c:/aBc\\"));
             }
         }
 
@@ -182,7 +186,7 @@ namespace CodeSugar.Tests
 
             // Assert.That(readme_txt.GetRelativePath(readme_txt.Directory.Parent), Is.EqualTo("Resources\\readme.txt")); // equality
 
-            var dcomparer = CodeSugarIO.GetFullNameComparer<DirectoryInfo>();
+            var dcomparer = CODESUGARIO.GetFullNameComparer<DirectoryInfo>();
 
             var tmp0 = new System.IO.DirectoryInfo("temp\\");
             var tmp1 = tmp0.GetDirectory("a", "..", ".", "b", "..");
@@ -258,8 +262,8 @@ namespace CodeSugar.Tests
 
             TestContext.WriteLine($"OS file system is case sensitive: {isCaseSensitiveOS}");
 
-            var fcomparer = CodeSugarIO.GetFullNameComparer<FileInfo>();
-            var dcomparer = CodeSugarIO.GetFullNameComparer<DirectoryInfo>();
+            var fcomparer = CODESUGARIO.GetFullNameComparer<FileInfo>();
+            var dcomparer = CODESUGARIO.GetFullNameComparer<DirectoryInfo>();
             
             Assert.That(fcomparer.Equals(readme_txt_0, readme_txt_1), Is.Not.EqualTo(isCaseSensitiveOS));
 
@@ -373,16 +377,39 @@ namespace CodeSugar.Tests
         {
             var uri = new Uri("http://www.google.com");
 
-            var finfo = AttachmentInfo.From("test.url").WriteObjectEx(f => f.WriteShortcutUri(uri));
+            var finfo = AttachmentInfo.From("test.url").WriteObjectEx(f => f.WriteShortcut(uri));
 
             Assert.That(finfo.ReadShortcutUri(), Is.EqualTo(uri));
 
-            var finfo2 = AttachmentInfo.From("test2.url").WriteObjectEx(f => f.WriteShortcutUri(new Uri(finfo.FullName)));            
+            var finfo2 = AttachmentInfo.From("test2.url").WriteObjectEx(f => f.WriteShortcut(new Uri(finfo.FullName)));            
 
             if (finfo2.TryReadShortcutFile(out var targetFile))
             {
                 finfo.FullNameEquals(targetFile);
-            }            
+            }
+
+            // test resolve file:
+
+            var textFile = AttachmentInfo
+                .From("readme.txt")
+                .WriteAllText("Hello world");
+
+            var url1 = AttachmentInfo.From("readme.1.url").WriteShortcut(textFile.FullName);
+            var url2 = AttachmentInfo.From("readme.2.url").WriteShortcut(url1.FullName);
+
+            var resolvedFile = url2.ResolveShortcutFile();
+
+            Assert.That(resolvedFile, Is.EqualTo(textFile));
+
+            // test resolve file:            
+
+            url1 = AttachmentInfo.From("dir.1.url").WriteShortcut(textFile.Directory.FullName);
+            url2 = AttachmentInfo.From("dir.2.url").WriteShortcut(url1.FullName);
+
+            var resolvedDir = url2.ResolveShortcutDir();
+
+            Assert.That(resolvedDir, Is.EqualTo(textFile.Directory));
+
         }
 
         [Test]
@@ -390,12 +417,16 @@ namespace CodeSugar.Tests
         {
             using (var context = new AttachmentDirectory("tests"))
             {
-                using(var zip = context.Directory.GetFile("test.zip").CreateZipArchive())
+                var zpath = context.Directory.GetFile("test.zip");
+
+                zpath.Delete();
+
+                using (var zip = zpath.CreateZipArchive())
                 {
                     zip.CreateEntry("readme.txt").WriteAllText("hello world");
-                }
+                }                
 
-                using (var zip = context.Directory.GetFile("test.zip").OpenReadZipArchive())
+                using (var zip = zpath.OpenReadZipArchive())
                 {
                     var txt = zip.GetEntry("readme.txt").ReadAllText();
                     Assert.That(txt, Is.EqualTo("hello world"));

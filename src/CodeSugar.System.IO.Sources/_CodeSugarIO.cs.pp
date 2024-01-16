@@ -18,8 +18,8 @@ namespace System.IO
 namespace $rootnamespace$
 #endif
 {
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("SharpGLTF.CodeGen", "1.0.0.0")]
-    internal static partial class CodeSugarIO    
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("CodeSugar.CodeGen", "1.0.0.0")]
+    internal static partial class CodeSugarForSystemIO    
     {
     #region constants
 

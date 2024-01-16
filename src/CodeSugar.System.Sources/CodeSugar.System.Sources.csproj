@@ -11,7 +11,7 @@
   -->
 
   <!-- nuget source transformation .PP files: https://haacked.com/archive/2010/11/19/nuget-transformation.aspx/ -->
-  
+
   <ItemGroup>
     <None Include="..\CodeSugar.png" Link="CodeSugar.png" Pack="true" PackagePath="\" />
     <None Include="readme.md" Pack="true" PackagePath="\" />
@@ -22,47 +22,48 @@
     <PackageReadmeFile>readme.md</PackageReadmeFile>
   </PropertyGroup>
 
-  <PropertyGroup>    
+  <PropertyGroup>
     <Description>
-      Quality of life internal extensions for System.IO.Stream, System.IO.FileInfo and System.IO.DirectoryInfo
+      Quality of life internal extensions for System namespace
     </Description>
   </PropertyGroup>
 
   <PropertyGroup>
     <VersionPrefix>1.0.0</VersionPrefix>
-    <TargetFramework>netstandard2.1</TargetFramework>
-  </PropertyGroup>  
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
 
   <!-- ===============================================================================================
                                   Source Only package configuration
    =============================================================================================== -->
 
   <PropertyGroup>
-    
+
     <!-- setup source only package -->
 
     <NoBuild>true</NoBuild>
     <IsPackable>true</IsPackable>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild> <!-- prevents NETSDK1085 error -->
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <!-- prevents NETSDK1085 error -->
     <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
 
     <ContentTargetFolders>contentFiles</ContentTargetFolders>
-    
+
     <!-- disable all kinds of errors and warnings produced by this cfg -->
 
     <NoWarn>CS8021</NoWarn>
-    <NoPackageAnalysis>true</NoPackageAnalysis>    
+    <NoPackageAnalysis>true</NoPackageAnalysis>
     <WarnOnPackingNonPackableProject>false</WarnOnPackingNonPackableProject>
 
-    <!-- prevents NU5017 error -->    
+    <!-- prevents NU5017 error -->
     <DebugType>none</DebugType>
     <IncludeSymbols>false</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    
+
   </PropertyGroup>
 
   <ItemGroup>
@@ -81,6 +82,6 @@
       <BuildAction>Compile</BuildAction>
       <Pack>true</Pack>
     </Content>
-  </ItemGroup>  
+  </ItemGroup>
 
 </Project>

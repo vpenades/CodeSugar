@@ -18,7 +18,7 @@ namespace System.IO
 namespace $rootnamespace$
 #endif
 {
-    partial class CodeSugarIO
+    partial class CodeSugarForSystemIO
     {
         public static string ReadAllText(this ZIPENTRY entry)
         {
