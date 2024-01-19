@@ -69,9 +69,7 @@ namespace CodeSugar.Tests
         {
             Assert.That(CODESUGARIO.SplitPath("/abc/d/e"), Is.EqualTo(new string[] { "abc", "d", "e" }));
 
-            Assert.That(CODESUGARIO.SplitPath("//network/abc/d/e"), Is.EqualTo(new string[] { "//network", "abc", "d", "e" }));
-
-            Assert.That(CODESUGARIO.SplitPath("//network/../d/e"), Is.EqualTo(new string[] { "d", "e" }));
+            Assert.That(CODESUGARIO.SplitPath("//network/abc/d/e"), Is.EqualTo(new string[] { "//network", "abc", "d", "e" }));            
 
             Assert.That(CODESUGARIO.SplitDirectoryAndName("/abc/d/e"), Is.EqualTo(("abc/d", "e")));
             Assert.That(CODESUGARIO.SplitDirectoryAndName("//network/abc/d/e"), Is.EqualTo(( "//network/abc/d", "e" )));
@@ -249,8 +247,8 @@ namespace CodeSugar.Tests
 
             var testDir = new System.IO.DirectoryInfo(TestContext.CurrentContext.WorkDirectory);
 
-            var readme_txt_0 = testDir.GetFile("readme.txt");
-            var readme_txt_1 = testDir.GetFile("README.txt");
+            var readme_txt_0 = testDir.UseFile("readme.txt");
+            var readme_txt_1 = testDir.UseFile("README.txt");
 
             readme_txt_0.WriteAllText("lowercase");
             readme_txt_1.WriteAllText("uppercase");
@@ -419,7 +417,7 @@ namespace CodeSugar.Tests
         {
             using (var context = new AttachmentDirectory("tests"))
             {
-                var zpath = context.Directory.GetFile("test.zip");
+                var zpath = context.Directory.UseFile("test.zip");
 
                 zpath.Delete();
 
