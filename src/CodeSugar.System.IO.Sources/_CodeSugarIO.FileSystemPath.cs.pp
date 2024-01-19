@@ -132,7 +132,7 @@ namespace $rootnamespace$
             return (path, name);            
         }
 
-        public static string ConcatenatePaths(string basePath, string[] relativePath)
+        public static string ConcatenatePaths(string basePath, params string[] relativePath)
         {
             if (string.IsNullOrWhiteSpace(basePath)) throw new ArgumentNullException(nameof(basePath));
 

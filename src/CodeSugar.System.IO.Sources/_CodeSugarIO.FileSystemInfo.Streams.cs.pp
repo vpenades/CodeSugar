@@ -64,6 +64,8 @@ namespace $rootnamespace$
         {
             GuardNotNull(finfo);
 
+            EnsureDirectoryExists(finfo.Directory);
+
             using(var s = finfo.OpenWrite())
             {
                 s.WriteAllLines(lines, encoding);
@@ -79,6 +81,8 @@ namespace $rootnamespace$
 		public static void WriteAllText(this FILE finfo, string text, Encoding encoding = null)
         {
             GuardNotNull(finfo);
+
+            EnsureDirectoryExists(finfo.Directory);
 
             using(var s = finfo.OpenWrite())
             {
@@ -109,6 +113,8 @@ namespace $rootnamespace$
         public static void WriteAllBytes(this FILE finfo, IReadOnlyList<Byte> bytes)
         {
 			GuardNotNull(finfo);
+
+            EnsureDirectoryExists(finfo.Directory);
 
             using(var s = finfo.OpenWrite())
             {

@@ -120,6 +120,27 @@ namespace $rootnamespace$
             }
         }
 
+        /// <summary>
+        /// Ensures that <paramref name="directory"/> exists in the file system.
+        /// </summary>
+        /// <returns>true if it needd to create the directory</returns>
+        public static bool EnsureDirectoryExists(this DIRECTORY directory)
+        {
+            GuardNotNull(directory);
+
+            directory.Refresh();
+            return _EnsureDirectoryExists(directory);
+        }
+
+        private static bool _EnsureDirectoryExists(this DIRECTORY directory)
+        {
+            GuardNotNull(directory);
+            
+            if (directory.Exists) return false;
+            directory.Create();
+            return true;
+        }
+
         public static DIRECTORY GetSpecialFolder(this System.Environment.SpecialFolder folder)
         {
             var path = System.Environment.GetFolderPath(folder);
@@ -167,12 +188,31 @@ namespace $rootnamespace$
         }
 
         /// <summary>
-        /// Gets a <see cref="FILE"/> relative to the base directory.
+        /// Gets an existing <see cref="FILE"/> relative to the base directory.
         /// </summary>
         /// <param name="baseDir">the base directory</param>
         /// <param name="relativePath">the relative path parts</param>
         /// <returns>a new <see cref="FILE"/> instance.</returns>
         public static FILE GetFile(this DIRECTORY baseDir, params string[] relativePath)
+        {
+            return _CreateFileInfo(baseDir, false, relativePath);
+        }
+
+        /// <summary>
+        /// Gets a <see cref="FILE"/> relative to the base directory.
+        /// </summary>
+        /// <remarks>
+        /// the requested file my axist in the file system or not.
+        /// </remarks>
+        /// <param name="baseDir">the base directory</param>
+        /// <param name="relativePath">the relative path parts</param>
+        /// <returns>a new <see cref="FILE"/> instance.</returns>
+        public static FILE UseFile(this DIRECTORY baseDir, params string[] relativePath)
+        {
+            return _CreateFileInfo(baseDir, true, relativePath);
+        }
+        
+        public static FILE _CreateFileInfo(this DIRECTORY baseDir, bool canCreate, params string[] relativePath)
         {
             GuardNotNull(baseDir);
             if (relativePath == null || relativePath.Length == 0) throw new ArgumentNullException(nameof(relativePath));
@@ -184,7 +224,16 @@ namespace $rootnamespace$
             GuardIsValidFileName(last, true, nameof(relativePath));
 
             var path = ConcatenatePaths(baseDir.FullName, relativePath);
-            return new FILE(path);
+            var finfo = new FILE(path);
+
+            if (canCreate) _EnsureDirectoryExists(finfo.Directory);
+            else
+            {
+                // In release mode, let's be a bit forgiving:
+                System.Diagnostics.Debug.Assert(finfo.Exists,$"{finfo.FullName} does not exist. Use 'UseFile()' instead.");
+            }            
+
+            return finfo;
         }
 
         /// <summary>
@@ -195,9 +244,7 @@ namespace $rootnamespace$
 		/// <returns>a new <see cref="DIRECTORY"/> instance.</returns>
 		public static DIRECTORY UseDirectory(this DIRECTORY baseDir, params string[] relativePath)
         {
-            baseDir = GetDirectory(baseDir, relativePath);
-            baseDir?.Create();
-            return baseDir;
+            return _CreateDirectoryInfo(baseDir, true, relativePath);
         }
 
 		/// <summary>
@@ -208,11 +255,25 @@ namespace $rootnamespace$
 		/// <returns>a new <see cref="DIRECTORY"/> instance.</returns>
 		public static DIRECTORY GetDirectory(this DIRECTORY baseDir, params string[] relativePath)
         {
+            return _CreateDirectoryInfo(baseDir, false, relativePath);
+        }
+
+        private static DIRECTORY _CreateDirectoryInfo(this DIRECTORY baseDir, bool canCreate, params string[] relativePath)
+        {
             GuardNotNull(baseDir);
 
             var path = ConcatenatePaths(baseDir.FullName, relativePath);
-            return new DIRECTORY(path);
-        }           
+            baseDir = new DIRECTORY(path);            
+
+            if (canCreate) _EnsureDirectoryExists(baseDir);
+            else
+            {
+                // In release mode, let's be a bit forgiving:                
+                System.Diagnostics.Debug.Assert(baseDir.Exists,$"{baseDir.FullName} does not exist. Use 'UseDirectory()' instead.");
+            }
+
+            return baseDir;
+        }
 
         /// <summary>
         /// Tries to get a composite extension of a file.

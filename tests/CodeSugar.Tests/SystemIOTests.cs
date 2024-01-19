@@ -71,6 +71,8 @@ namespace CodeSugar.Tests
 
             Assert.That(CODESUGARIO.SplitPath("//network/abc/d/e"), Is.EqualTo(new string[] { "//network", "abc", "d", "e" }));
 
+            Assert.That(CODESUGARIO.SplitPath("//network/../d/e"), Is.EqualTo(new string[] { "d", "e" }));
+
             Assert.That(CODESUGARIO.SplitDirectoryAndName("/abc/d/e"), Is.EqualTo(("abc/d", "e")));
             Assert.That(CODESUGARIO.SplitDirectoryAndName("//network/abc/d/e"), Is.EqualTo(( "//network/abc/d", "e" )));
 
@@ -112,9 +114,9 @@ namespace CodeSugar.Tests
             someDir // create a FileInfo with an ADS which also contains a ":" in the path.
                 .GetFile("readme.txt")
                 .TryGetAlternateDataStream("data.bin", out var someFile);
-            */
+            */            
 
-            var someFile = someDir.GetFile("readme.txt");
+            var someFile = new System.IO.FileInfo(CODESUGARIO.ConcatenatePaths(someDir.FullName, "readme.txt"));
 
             // var xroot = System.IO.Path.GetPathRoot(path);
             // var xdrive = new System.IO.DriveInfo(xroot);            
@@ -189,7 +191,7 @@ namespace CodeSugar.Tests
             var dcomparer = CODESUGARIO.GetFullNameComparer<DirectoryInfo>();
 
             var tmp0 = new System.IO.DirectoryInfo("temp\\");
-            var tmp1 = tmp0.GetDirectory("a", "..", ".", "b", "..");
+            var tmp1 = tmp0.UseDirectory("a", "..", ".", "b", "..");
             Assert.That(dcomparer.Equals(tmp0, tmp1));
             
             Assert.That(() => readme_txt.Directory.GetFile(".."), Throws.Exception);
