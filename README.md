@@ -57,6 +57,15 @@ Afterwards, the extensions should be readily available:
     }
 ```
 
+### Compiling issues
+
+The nuget templating system copies the .cs generated code into the Obj directory, in a fairly long path, which ca look like this:
+
+```C:\Users\CurrentUser\Desktop\MyProjects\CurrentSolution\Src\SomeProject\obj\Debug\net8.0\NuGet\335213469D559D6E09240088A99B3E9B5ADBC7AC\CodeSugar.System.IO.Sources\1.0.0-Preview-20240119-092135\_CodeSugarIO.DriveInfo.cs```
+
+Which can exceed the maximum number of characters supported by a file path, which will result in a ```MSB4018	The "ProduceContentAssets" task failed unexpectedly.``` Error.
+
+
 ### External references
 
 - [Content Files Nuget Example](https://www.nuget.org/packages/ContentFilesExample)
