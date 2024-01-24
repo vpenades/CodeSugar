@@ -37,50 +37,6 @@
                                   Source Only package configuration
    =============================================================================================== -->
 
-  <PropertyGroup>
-    
-    <!-- setup source only package -->
-
-    <NoBuild>true</NoBuild>
-    <IsPackable>true</IsPackable>
-    <IncludeBuildOutput>false</IncludeBuildOutput>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild> <!-- prevents NETSDK1085 error -->
-    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
-    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
-    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
-
-    <ContentTargetFolders>contentFiles</ContentTargetFolders>
-    
-    <!-- disable all kinds of errors and warnings produced by this cfg -->
-
-    <NoWarn>CS8021</NoWarn>
-    <NoPackageAnalysis>true</NoPackageAnalysis>    
-    <WarnOnPackingNonPackableProject>false</WarnOnPackingNonPackableProject>
-
-    <!-- prevents NU5017 error -->    
-    <DebugType>none</DebugType>
-    <IncludeSymbols>false</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    
-  </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="*.cs.pp" />
-    <Compile Remove="*.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="*.cs.pp">
-      <PackagePath>$(ContentTargetFolders)\cs\$(TargetFramework)</PackagePath>
-      <BuildAction>Compile</BuildAction>
-      <Pack>true</Pack>
-    </Content>
-    <Content Include="*.cs">
-      <PackagePath>$(ContentTargetFolders)\cs\$(TargetFramework)</PackagePath>
-      <BuildAction>Compile</BuildAction>
-      <Pack>true</Pack>
-    </Content>
-  </ItemGroup>  
+  <Import Project="..\SourcesPackage.props"/>
 
 </Project>

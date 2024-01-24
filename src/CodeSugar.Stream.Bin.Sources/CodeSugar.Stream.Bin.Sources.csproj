@@ -10,13 +10,13 @@
   NU5017 - https://github.com/NuGet/Home/issues/10372
   -->
 
+  <!-- nuget source transformation .PP files: https://haacked.com/archive/2010/11/19/nuget-transformation.aspx/ -->
+
   <PropertyGroup>
     <!-- not ready yet -->
     <IsPackable>false</IsPackable>
-  </PropertyGroup>  
+  </PropertyGroup>
 
-  <!-- nuget source transformation .PP files: https://haacked.com/archive/2010/11/19/nuget-transformation.aspx/ -->
-  
   <ItemGroup>
     <None Include="..\CodeSugar.png" Link="CodeSugar.png" Pack="true" PackagePath="\" />
     <None Include="readme.md" Pack="true" PackagePath="\" />
@@ -27,19 +27,16 @@
     <PackageReadmeFile>readme.md</PackageReadmeFile>
   </PropertyGroup>
 
-  <PropertyGroup>    
+  <PropertyGroup>
     <Description>
-      Quality of life internal extensions for FileProviders extensions.
-      
-      Requirements: 
-      - Microsoft.Extensions.FileProviders.Abstractions
+      Quality of life internal extensions for System.IO.Stream binary serialization
     </Description>
   </PropertyGroup>
 
   <PropertyGroup>
     <VersionPrefix>1.0.0</VersionPrefix>
     <TargetFramework>netstandard2.1</TargetFramework>
-  </PropertyGroup>  
+  </PropertyGroup>
 
   <!-- ===============================================================================================
                                   Source Only package configuration

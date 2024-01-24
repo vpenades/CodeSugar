@@ -12,18 +12,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\src\CodeSugar.System.Sources\*.cs" LinkBase="CodeSugar" />
-    <Compile Include="..\..\src\CodeSugar.System.Sources\*.cs.pp" LinkBase="CodeSugar" />
+    <Compile Include="..\..\src\CodeSugar.Sys.Sources\*.cs" LinkBase="CodeSugar" />
+    <Compile Include="..\..\src\CodeSugar.Sys.Sources\*.cs.pp" LinkBase="CodeSugar" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\src\CodeSugar.System.IO.Sources\*.cs" LinkBase="CodeSugarIO" />
-    <Compile Include="..\..\src\CodeSugar.System.IO.Sources\*.cs.pp" LinkBase="CodeSugarIO" />
+    <Compile Include="..\..\src\CodeSugar.Sys.IO.Sources\*.cs" LinkBase="CodeSugarIO" />
+    <Compile Include="..\..\src\CodeSugar.Sys.IO.Sources\*.cs.pp" LinkBase="CodeSugarIO" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\src\CodeSugar.MSExt.FileProviders\*.cs" LinkBase="CodeSugarFileProviders" />
-    <Compile Include="..\..\src\CodeSugar.MSExt.FileProviders\*.cs.pp" LinkBase="CodeSugarFileProviders" />
+    <Compile Include="..\..\src\CodeSugar.Stream.Bin.Sources\*.cs" LinkBase="CodeSugarStreamBin" />
+    <Compile Include="..\..\src\CodeSugar.Stream.Bin.Sources\*.cs.pp" LinkBase="CodeSugarStreamBin" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\src\CodeSugar.FileProviders.Sources\*.cs" LinkBase="CodeSugarFileProviders" />
+    <Compile Include="..\..\src\CodeSugar.FileProviders.Sources\*.cs.pp" LinkBase="CodeSugarFileProviders" />
   </ItemGroup>
 
   <ItemGroup>

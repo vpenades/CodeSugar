@@ -53,6 +53,7 @@ namespace $rootnamespace$
         public static System.IO.Compression.ZipArchive CreateZipArchive(this System.IO.FileInfo finfo)
         {
             GuardNotNull(finfo);
+            if (finfo.Exists) finfo.Delete(); // zip create fails if it already exists
             return System.IO.Compression.ZipFile.Open(finfo.FullName, System.IO.Compression.ZipArchiveMode.Create);
         }
 

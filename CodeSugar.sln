@@ -3,11 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeSugar.System.IO.Sources", "src\CodeSugar.System.IO.Sources\CodeSugar.System.IO.Sources.csproj", "{0BB8DA7B-F588-4F9D-8870-4D3A079FABB5}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{36A264B8-92D1-48DD-8054-115FF0856E50}"
 	ProjectSection(SolutionItems) = preProject
 		src\Directory.Build.props = src\Directory.Build.props
+		src\SourcesPackage.props = src\SourcesPackage.props
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeSugar.Tests", "tests\CodeSugar.Tests\CodeSugar.Tests.csproj", "{62FC9075-CBE7-4FF1-BA34-93625D1CDE9A}"
@@ -32,9 +31,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleLibrary", "examples\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleWpfApp", "examples\ExampleWpfApp\ExampleWpfApp.csproj", "{6C012E64-4C4B-408F-B1D5-ACCCF8B4A1C6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeSugar.System.Sources", "src\CodeSugar.System.Sources\CodeSugar.System.Sources.csproj", "{1DB7CCAE-652D-44BE-9941-13DE7A1A0ACD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeSugar.FileProviders.Sources", "src\CodeSugar.FileProviders.Sources\CodeSugar.FileProviders.Sources.csproj", "{49A9BEFA-D74B-4152-8F0F-44D675B59366}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeSugar.MSExt.FileProviders", "src\CodeSugar.MSExt.FileProviders\CodeSugar.MSExt.FileProviders.csproj", "{E7B9DDFD-2C7B-47D7-9FC4-6532C76AC19E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeSugar.Sys.IO.Sources", "src\CodeSugar.Sys.IO.Sources\CodeSugar.Sys.IO.Sources.csproj", "{36D2F82F-CE33-4D24-99B8-5A0E7B1DC37E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeSugar.Sys.Sources", "src\CodeSugar.Sys.Sources\CodeSugar.Sys.Sources.csproj", "{4B97CC62-0E68-4176-9074-CCC78BBD98D4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeSugar.Stream.Bin.Sources", "src\CodeSugar.Stream.Bin.Sources\CodeSugar.Stream.Bin.Sources.csproj", "{0CCDBACB-DAED-49BC-9512-627244E2A251}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -42,10 +45,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0BB8DA7B-F588-4F9D-8870-4D3A079FABB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0BB8DA7B-F588-4F9D-8870-4D3A079FABB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0BB8DA7B-F588-4F9D-8870-4D3A079FABB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0BB8DA7B-F588-4F9D-8870-4D3A079FABB5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{62FC9075-CBE7-4FF1-BA34-93625D1CDE9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{62FC9075-CBE7-4FF1-BA34-93625D1CDE9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62FC9075-CBE7-4FF1-BA34-93625D1CDE9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -62,26 +61,35 @@ Global
 		{6C012E64-4C4B-408F-B1D5-ACCCF8B4A1C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C012E64-4C4B-408F-B1D5-ACCCF8B4A1C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C012E64-4C4B-408F-B1D5-ACCCF8B4A1C6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1DB7CCAE-652D-44BE-9941-13DE7A1A0ACD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1DB7CCAE-652D-44BE-9941-13DE7A1A0ACD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1DB7CCAE-652D-44BE-9941-13DE7A1A0ACD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1DB7CCAE-652D-44BE-9941-13DE7A1A0ACD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E7B9DDFD-2C7B-47D7-9FC4-6532C76AC19E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E7B9DDFD-2C7B-47D7-9FC4-6532C76AC19E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E7B9DDFD-2C7B-47D7-9FC4-6532C76AC19E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E7B9DDFD-2C7B-47D7-9FC4-6532C76AC19E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49A9BEFA-D74B-4152-8F0F-44D675B59366}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49A9BEFA-D74B-4152-8F0F-44D675B59366}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49A9BEFA-D74B-4152-8F0F-44D675B59366}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49A9BEFA-D74B-4152-8F0F-44D675B59366}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36D2F82F-CE33-4D24-99B8-5A0E7B1DC37E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36D2F82F-CE33-4D24-99B8-5A0E7B1DC37E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36D2F82F-CE33-4D24-99B8-5A0E7B1DC37E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36D2F82F-CE33-4D24-99B8-5A0E7B1DC37E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B97CC62-0E68-4176-9074-CCC78BBD98D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B97CC62-0E68-4176-9074-CCC78BBD98D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B97CC62-0E68-4176-9074-CCC78BBD98D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B97CC62-0E68-4176-9074-CCC78BBD98D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CCDBACB-DAED-49BC-9512-627244E2A251}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CCDBACB-DAED-49BC-9512-627244E2A251}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CCDBACB-DAED-49BC-9512-627244E2A251}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CCDBACB-DAED-49BC-9512-627244E2A251}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{0BB8DA7B-F588-4F9D-8870-4D3A079FABB5} = {36A264B8-92D1-48DD-8054-115FF0856E50}
 		{62FC9075-CBE7-4FF1-BA34-93625D1CDE9A} = {096F443D-3205-4914-8E40-3A2186B71134}
 		{270B2BC7-8669-478B-B189-3E3BAE26E9E9} = {096F443D-3205-4914-8E40-3A2186B71134}
 		{B76C7C60-0363-4EB3-A075-19C8B7C74AD0} = {8243CE1E-839C-456B-A5D4-874963D8C525}
 		{6C012E64-4C4B-408F-B1D5-ACCCF8B4A1C6} = {8243CE1E-839C-456B-A5D4-874963D8C525}
-		{1DB7CCAE-652D-44BE-9941-13DE7A1A0ACD} = {36A264B8-92D1-48DD-8054-115FF0856E50}
-		{E7B9DDFD-2C7B-47D7-9FC4-6532C76AC19E} = {36A264B8-92D1-48DD-8054-115FF0856E50}
+		{49A9BEFA-D74B-4152-8F0F-44D675B59366} = {36A264B8-92D1-48DD-8054-115FF0856E50}
+		{36D2F82F-CE33-4D24-99B8-5A0E7B1DC37E} = {36A264B8-92D1-48DD-8054-115FF0856E50}
+		{4B97CC62-0E68-4176-9074-CCC78BBD98D4} = {36A264B8-92D1-48DD-8054-115FF0856E50}
+		{0CCDBACB-DAED-49BC-9512-627244E2A251} = {36A264B8-92D1-48DD-8054-115FF0856E50}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {12BE1319-4F6D-4472-82CA-678A7F50C6B4}

@@ -1,0 +1,76 @@
+﻿<Project> 
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)CodeSugar.png" Link="CodeSugar.png" Pack="true" PackagePath="\" />    
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackageIcon>CodeSugar.png</PackageIcon>    
+  </PropertyGroup>
+  
+  
+  <!-- ===============================================================================================
+                                  Source Only package configuration
+   =============================================================================================== -->
+
+  <!--
+  Conceptually based on: https://github.com/adamralph/liteguard
+  https://www.nuget.org/packages/ContentFilesExample/ at https://github.com/dotnet/sdk/issues/1100
+  https://medium.com/@attilah/source-code-only-nuget-packages-8f34a8fb4738
+  https://haacked.com/archive/2013/02/10/a-caveat-with-nuget-source-code-packages.aspx/
+  https://blog.csmac.nz/speciality-nuget-packing/
+  https://github.com/NuGet/docs.microsoft.com-nuget/issues/2938
+  NU5017 error - https://github.com/NuGet/Home/issues/10372
+  -->
+
+  <PropertyGroup>
+    
+    <!-- setup source only package -->
+
+    <NoBuild>true</NoBuild>
+    <IsPackable>true</IsPackable>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild> <!-- prevents NETSDK1085 error -->
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+
+    <ContentTargetFolders>contentFiles</ContentTargetFolders>
+    
+    <!-- disable all kinds of errors and warnings produced by this cfg -->
+
+    <NoWarn>CS8021</NoWarn>
+    <NoPackageAnalysis>true</NoPackageAnalysis>    
+    <WarnOnPackingNonPackableProject>false</WarnOnPackingNonPackableProject>
+
+    <!-- prevents NU5017 error -->    
+    <DebugType>none</DebugType>
+    <IncludeSymbols>false</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    
+  </PropertyGroup>
+
+
+
+  <!-- nuget source transformation .PP files: https://haacked.com/archive/2010/11/19/nuget-transformation.aspx/ -->
+
+  <ItemGroup>
+    <None Remove="*.cs.pp" />
+    <Compile Remove="*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="*.cs.pp">
+      <PackagePath>$(ContentTargetFolders)\cs\$(TargetFramework)</PackagePath>
+      <BuildAction>Compile</BuildAction>
+      <Pack>true</Pack>
+    </Content>
+    <Content Include="*.cs">
+      <PackagePath>$(ContentTargetFolders)\cs\$(TargetFramework)</PackagePath>
+      <BuildAction>Compile</BuildAction>
+      <Pack>true</Pack>
+    </Content>
+  </ItemGroup>  
+
+</Project>

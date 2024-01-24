@@ -38,9 +38,12 @@ namespace $rootnamespace$
             {
                 if (baseDir is XDIRECTORY xdir) return FindEntry(xdir, relativePath);
 
-                if (IsPhysical(baseDir))
+                if (IsPhysical(baseDir))                
                 {
-                    throw new NotImplementedException("we can use a facade");            
+                    var dinfo = new System.IO.DirectoryInfo(baseDir.PhysicalPath);
+                    
+
+                    throw new NotImplementedException("we can use a facade here");            
                 }
             }
             
