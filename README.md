@@ -65,6 +65,10 @@ The nuget templating system copies the .cs generated code into the Obj directory
 
 Which can exceed the maximum number of characters supported by a file path, which will result in a ```MSB4018	The "ProduceContentAssets" task failed unexpectedly.``` Error.
 
+# References
+
+- [NuGet and long file name support](https://github.com/NuGet/Home/issues/3324)
+
 
 ### External references
 

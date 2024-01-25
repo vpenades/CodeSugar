@@ -123,6 +123,19 @@ namespace $rootnamespace$
         /// <summary>
         /// Ensures that <paramref name="directory"/> exists in the file system.
         /// </summary>
+        /// <returns>the same directory passed as argument, so it can be used fluently.</returns>
+        public static DIRECTORY EnsureCreated(this DIRECTORY directory)
+        {
+            GuardNotNull(directory);
+
+            directory.Refresh();
+            _EnsureDirectoryExists(directory);
+            return directory;
+        }
+
+        /// <summary>
+        /// Ensures that <paramref name="directory"/> exists in the file system.
+        /// </summary>
         /// <returns>true if it needd to create the directory</returns>
         public static bool EnsureDirectoryExists(this DIRECTORY directory)
         {
@@ -235,11 +248,12 @@ namespace $rootnamespace$
             var finfo = new FILE(path);
 
             if (canCreate) _EnsureDirectoryExists(finfo.Directory);
+            /*
             else
             {
                 // In release mode, let's be a bit forgiving:
                 System.Diagnostics.Debug.Assert(finfo.Exists,$"{finfo.FullName} does not exist. Use 'UseFile()' instead.");
-            }            
+            } */           
 
             return finfo;
         }

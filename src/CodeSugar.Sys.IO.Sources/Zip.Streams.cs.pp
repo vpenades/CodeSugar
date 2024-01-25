@@ -18,8 +18,34 @@ namespace System.IO
 namespace $rootnamespace$
 #endif
 {
-    partial class CodeSugarForSystemIO
+    partial class CodeSugarForSystemIO    
     {
+        public static void CopyToFile(this ZIPENTRY entry, System.IO.FileInfo dst)
+        {
+            GuardReadable(entry);
+
+            using(var dstS = dst.OpenWrite())
+            {
+                using(var srcS = entry.Open())
+                {
+                    srcS.CopyTo(dstS);
+                }
+            }
+        }
+
+        public static void CopyFromFile(this ZIPENTRY entry, System.IO.FileInfo src)
+        {
+            GaurdWriteable(entry);
+
+            using(var srcS = dst.OpenRead())
+            {
+                using(var dstS = entry.Open())
+                {
+                    srcS.CopyTo(dstS);
+                }
+            }
+        }
+
         public static string ReadAllText(this ZIPENTRY entry)
         {
             GuardReadable(entry);
@@ -48,7 +74,7 @@ namespace $rootnamespace$
             {
                 return s.ReadAllBytes();
             }
-        }
+        }        
 
         public static void WriteAllBytes(this ZIPENTRY entry, IReadOnlyList<Byte> bytes)
         {
