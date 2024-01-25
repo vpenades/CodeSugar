@@ -17,13 +17,11 @@
 
   <!-- nuget source transformation .PP files: https://haacked.com/archive/2010/11/19/nuget-transformation.aspx/ -->
   
-  <ItemGroup>
-    <None Include="..\CodeSugar.png" Link="CodeSugar.png" Pack="true" PackagePath="\" />
+  <ItemGroup>    
     <None Include="readme.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
-  <PropertyGroup>
-    <PackageIcon>CodeSugar.png</PackageIcon>
+  <PropertyGroup>    
     <PackageReadmeFile>readme.md</PackageReadmeFile>
   </PropertyGroup>
 

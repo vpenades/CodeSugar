@@ -81,7 +81,7 @@ namespace $rootnamespace$
         {
             using(var sr = CreateTextReader(stream, true, encoding))
             {
-                string? line;
+                string line;
                 var lines = new List<string>();
                 
                 while ((line = sr.ReadLine()) != null)

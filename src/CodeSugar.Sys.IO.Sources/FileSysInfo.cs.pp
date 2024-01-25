@@ -182,13 +182,21 @@ namespace $rootnamespace$
         /// </summary>
         public static System.IO.DirectoryInfo GetParent(this System.IO.FileSystemInfo fsinfo)
         {
-            if (fsinfo is System.IO.FileInfo finfo) return finfo.Directory;
-            if (fsinfo is System.IO.DirectoryInfo dinfo) return dinfo.Parent;
-            throw new NotImplementedException();
-        }
+            return GetParentOrNull(fsinfo) ?? throw new NotImplementedException();
+        }        
 
         /// <summary>
-        /// Gets an existing <see cref="FILE"/> relative to the base directory.
+        /// Gets the parent directory of the current instance, or null if it has no parent.
+        /// </summary>
+        public static System.IO.DirectoryInfo GetParentOrNull(this System.IO.FileSystemInfo fsinfo)
+        {
+            if (fsinfo is System.IO.FileInfo finfo) return finfo.Directory;
+            if (fsinfo is System.IO.DirectoryInfo dinfo) return dinfo.Parent;
+            return null;
+        }     
+
+        /// <summary>
+        /// Gets a <see cref="FILE"/> relative to the base directory.
         /// </summary>
         /// <param name="baseDir">the base directory</param>
         /// <param name="relativePath">the relative path parts</param>
@@ -196,7 +204,7 @@ namespace $rootnamespace$
         public static FILE GetFile(this DIRECTORY baseDir, params string[] relativePath)
         {
             return _CreateFileInfo(baseDir, false, relativePath);
-        }
+        }        
 
         /// <summary>
         /// Gets a <see cref="FILE"/> relative to the base directory.
@@ -212,7 +220,7 @@ namespace $rootnamespace$
             return _CreateFileInfo(baseDir, true, relativePath);
         }
         
-        public static FILE _CreateFileInfo(this DIRECTORY baseDir, bool canCreate, params string[] relativePath)
+        private static FILE _CreateFileInfo(this DIRECTORY baseDir, bool canCreate, params string[] relativePath)
         {
             GuardNotNull(baseDir);
             if (relativePath == null || relativePath.Length == 0) throw new ArgumentNullException(nameof(relativePath));
@@ -237,17 +245,6 @@ namespace $rootnamespace$
         }
 
         /// <summary>
-		/// Gets or creates <see cref="DIRECTORY"/> relative to the base directory.
-		/// </summary>
-		/// <param name="baseDir">the base directory</param>
-		/// <param name="relativePath">the relative path parts</param>
-		/// <returns>a new <see cref="DIRECTORY"/> instance.</returns>
-		public static DIRECTORY UseDirectory(this DIRECTORY baseDir, params string[] relativePath)
-        {
-            return _CreateDirectoryInfo(baseDir, true, relativePath);
-        }
-
-		/// <summary>
 		/// Gets a <see cref="DIRECTORY"/> relative to the base directory.
 		/// </summary>
 		/// <param name="baseDir">the base directory</param>
@@ -255,10 +252,21 @@ namespace $rootnamespace$
 		/// <returns>a new <see cref="DIRECTORY"/> instance.</returns>
 		public static DIRECTORY GetDirectory(this DIRECTORY baseDir, params string[] relativePath)
         {
-            return _CreateDirectoryInfo(baseDir, false, relativePath);
+            return _CreateDirectoryInfo(baseDir, false, false, relativePath);
         }
 
-        private static DIRECTORY _CreateDirectoryInfo(this DIRECTORY baseDir, bool canCreate, params string[] relativePath)
+        /// <summary>
+		/// Uses an existing <see cref="DIRECTORY"/> relative to the base directory.
+		/// </summary>
+		/// <param name="baseDir">the base directory</param>
+		/// <param name="relativePath">the relative path parts</param>
+		/// <returns>a new <see cref="DIRECTORY"/> instance.</returns>
+		public static DIRECTORY UseDirectory(this DIRECTORY baseDir, params string[] relativePath)
+        {
+            return _CreateDirectoryInfo(baseDir, false, true, relativePath);
+        }        
+
+        private static DIRECTORY _CreateDirectoryInfo(this DIRECTORY baseDir, bool mustExist, bool canCreate, params string[] relativePath)
         {
             GuardNotNull(baseDir);
 
@@ -266,7 +274,7 @@ namespace $rootnamespace$
             baseDir = new DIRECTORY(path);            
 
             if (canCreate) _EnsureDirectoryExists(baseDir);
-            else
+            else if (mustExist)
             {
                 // In release mode, let's be a bit forgiving:                
                 System.Diagnostics.Debug.Assert(baseDir.Exists,$"{baseDir.FullName} does not exist. Use 'UseDirectory()' instead.");

@@ -39,10 +39,10 @@ namespace $rootnamespace$
         
 
         /// <summary>
-        /// ensures that the path uses Path.DirectorySeparatorChar and it does not end with a path separator.
+        /// Ensures that the path uses the appropiate Path.DirectorySeparatorChar and it does not end with a path separator.
         /// </summary>
         /// <returns>
-        /// a normalized path that is suited to be used for path string comparison.
+        /// A normalized path that is suited to be used for path string comparison.
         /// </returns>
         public static string GetNormalizedPath(string path)
         {
@@ -82,8 +82,8 @@ namespace $rootnamespace$
 
             // sanitize
             
-            path = path.Trim(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
-            var parts = path.Split(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
+            path = path.Trim(_DirectorySeparators);
+            var parts = path.Split(_DirectorySeparators);
 
             // restore network prefix
 
@@ -111,11 +111,11 @@ namespace $rootnamespace$
 
             // sanitize
 
-            path = path.Trim(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
+            path = path.Trim(_DirectorySeparators);
 
             // find last separator
 
-            var idx = Math.Max(path.LastIndexOf(System.IO.Path.DirectorySeparatorChar), path.LastIndexOf(System.IO.Path.AltDirectorySeparatorChar));
+            var idx = path.LastIndexOfAny(_DirectorySeparators);
 
             if (idx < 0) return (null, path);
 
@@ -137,6 +137,16 @@ namespace $rootnamespace$
             if (string.IsNullOrWhiteSpace(basePath)) throw new ArgumentNullException(nameof(basePath));
 
             if (relativePath == null || relativePath.Length == 0) return basePath;
+
+            if (relativePath.Length == 1)
+            {
+                var rp = relativePath[0].Trim(_DirectorySeparators);
+                if (rp.IndexOfAny(_DirectorySeparators)>=0)
+                {
+                    var parts = SplitPath(rp);
+                    if (parts.Length != 1) return ConcatenatePaths(basePath, parts);
+                }
+            }
 
             var path = basePath.TrimEnd(_DirectorySeparators);
             foreach (var part in relativePath)
