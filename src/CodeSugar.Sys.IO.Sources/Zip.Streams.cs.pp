@@ -23,6 +23,7 @@ namespace $rootnamespace$
         public static void CopyToFile(this ZIPENTRY entry, System.IO.FileInfo dst)
         {
             GuardReadable(entry);
+            GuardNotNull(dst);
 
             using(var dstS = dst.OpenWrite())
             {
@@ -34,10 +35,11 @@ namespace $rootnamespace$
         }
 
         public static void CopyFromFile(this ZIPENTRY entry, System.IO.FileInfo src)
-        {
-            GaurdWriteable(entry);
+        {            
+            GuardWriteable(entry);
+            GuardExists(src);
 
-            using(var srcS = dst.OpenRead())
+            using(var srcS = src.OpenRead())
             {
                 using(var dstS = entry.Open())
                 {
