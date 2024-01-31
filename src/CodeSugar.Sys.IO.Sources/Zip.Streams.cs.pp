@@ -20,6 +20,29 @@ namespace $rootnamespace$
 {
     partial class CodeSugarForSystemIO    
     {
+        /// <summary>
+        /// extracts the stream of the entry and copies it to a MemoryStream
+        /// </summary>
+        /// <remarks>
+        /// by default a zip entry returns a compressed stream that does not support Seek operations.
+        /// </remarks>
+        public static System.IO.MemoryStream ToMemoryStream(this ZIPENTRY entry)
+        {
+            GuardReadable(entry);            
+
+            var m = new System.IO.MemoryStream();
+
+            using(var s = entry.Open())
+            {                
+                s.CopyTo(m);
+            }
+
+            m.Position = 0;
+
+            return m;
+        }
+
+
         public static void CopyToFile(this ZIPENTRY entry, System.IO.FileInfo dst)
         {
             GuardReadable(entry);

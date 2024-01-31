@@ -43,6 +43,12 @@
                                   Source Only package configuration
    =============================================================================================== -->
 
-  <Import Project="..\SourcesPackage.props"/>
+  <Import Project="..\SourcesPackage.props" />
+
+  <ItemGroup>
+    <Content Update="_Physical.cs.pp">
+      <PackagePath>$(ContentTargetFolders)\cs\$(TargetFramework)</PackagePath>
+    </Content>
+  </ItemGroup>
 
 </Project>

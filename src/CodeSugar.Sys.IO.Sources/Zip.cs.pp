@@ -3,10 +3,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 #nullable disable
 
+using ZIPARCHIVE = System.IO.Compression.ZipArchive;
 using ZIPENTRY = System.IO.Compression.ZipArchiveEntry;
 using BYTESSEGMENT = System.ArraySegment<byte>;
 
@@ -50,17 +52,35 @@ namespace $rootnamespace$
 
         #endif
 
-        public static System.IO.Compression.ZipArchive CreateZipArchive(this System.IO.FileInfo finfo, System.Text.Encoding entryNameEncoding = null)
+        public static ZIPARCHIVE CreateZipArchive(this System.IO.FileInfo finfo, System.Text.Encoding entryNameEncoding = null)
         {
             GuardNotNull(finfo);
             if (finfo.Exists) finfo.Delete(); // zip create fails if it already exists
             return System.IO.Compression.ZipFile.Open(finfo.FullName, System.IO.Compression.ZipArchiveMode.Create, entryNameEncoding);
         }
 
-        public static System.IO.Compression.ZipArchive OpenReadZipArchive(this System.IO.FileInfo finfo, System.Text.Encoding entryNameEncoding = null)
+        public static ZIPARCHIVE OpenReadZipArchive(this System.IO.FileInfo finfo, System.Text.Encoding entryNameEncoding = null)
         {
             GuardExists(finfo);
             return System.IO.Compression.ZipFile.Open(finfo.FullName, System.IO.Compression.ZipArchiveMode.Read, entryNameEncoding);
+        }
+
+        public static Dictionary<string,BYTESSEGMENT> ToDictionary(this ZIPARCHIVE archive)
+        {
+            if (archive == null) throw new ArgumentNullException(nameof(archive));
+
+            return archive.Entries.ToDictionary(entry => entry.FullName, entry => entry.ReadAllBytes());
+        }
+
+        public static void AddEntries(this ZIPARCHIVE archive, IReadOnlyDictionary<string,BYTESSEGMENT> entries)
+        {
+            if (archive == null) throw new ArgumentNullException(nameof(archive));
+            if (entries == null) throw new ArgumentNullException(nameof(entries));
+            
+            foreach(var entry in entries)
+            {
+                archive.CreateEntry(entry.Key).WriteAllBytes(entry.Value);
+            }        
         }
     }
 }

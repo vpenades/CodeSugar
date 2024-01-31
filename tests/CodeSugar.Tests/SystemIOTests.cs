@@ -430,8 +430,12 @@ namespace CodeSugar.Tests
                 {
                     var txt = zip.GetEntry("readme.txt").ReadAllText();
                     Assert.That(txt, Is.EqualTo("hello world"));
+
+                    var dict = zip.ToDictionary();
+                    Assert.That(dict.ContainsKey("readme.txt"));
                 }
-            }
+            }            
+
 
         }
 
