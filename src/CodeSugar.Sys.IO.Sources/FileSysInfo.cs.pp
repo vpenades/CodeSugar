@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 
 using FILE = System.IO.FileInfo;
 using DIRECTORY = System.IO.DirectoryInfo;
-using SYSTEMENTRY = System.IO.FileSystemInfo;
+using FILEORDIR = System.IO.FileSystemInfo;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -24,72 +24,43 @@ namespace $rootnamespace$
     {
 		#region diagnostics
 
-        #if !NET
+        #if !NET        
 
         /// <summary>
-		/// Checks whether a <see cref="SYSTEMENTRY"/> is not null.
+		/// Checks whether a <see cref="FILEORDIR"/> is not null.
 		/// </summary>        
 		/// <exception cref="ArgumentNullException"></exception>
-		public static void GuardIsValidFileName(string fileName, bool checkForInvalidNames, string name = null)
-        {
-            name ??= nameof(fileName);
-            if (string.IsNullOrWhiteSpace(fileName)) throw new ArgumentNullException(name);
-            if (fileName.IndexOfAny(_InvalidNameChars) >= 0) throw new ArgumentException($"{fileName} contains invalid chars", name);
-            if (checkForInvalidNames)
-            {
-                if (fileName == "." || fileName == "..") throw new ArgumentException($"{fileName} is an invalid file name", name);
-            }
-        }
-
-        /// <summary>
-		/// Checks whether a <see cref="SYSTEMENTRY"/> is not null.
-		/// </summary>        
-		/// <exception cref="ArgumentNullException"></exception>
-        public static void GuardNotNull(this SYSTEMENTRY info, string name = null)
+        public static void GuardNotNull(this FILEORDIR info, string name = null)
         {
             if (info == null) throw new ArgumentNullException(name ?? nameof(info));
         }        
 
         /// <summary>
-		/// Checks whether a <see cref="SYSTEMENTRY"/> exists in the file system.
+		/// Checks whether a <see cref="FILEORDIR"/> exists in the file system.
 		/// </summary>        
 		/// <exception cref="ArgumentNullException"></exception>
-        public static void GuardExists(this SYSTEMENTRY info, string name = null)
+        public static void GuardExists(this FILEORDIR info, string name = null)
         {
             if (info == null) throw new ArgumentNullException(name);
             if (!info.Exists()) throw new ArgumentException($"'{info.FullName}' does not exist.", name ?? nameof(info));
         }  
 
-        #else
-
-        /// <summary>
-		/// Checks whether a <see cref="SYSTEMENTRY"/> is not null.
-		/// </summary>        
-		/// <exception cref="ArgumentNullException"></exception>
-		public static void GuardIsValidFileName(string fileName, bool checkForInvalidNames, [CallerArgumentExpression("fileName")] string name = null)
-        {
-            if (string.IsNullOrWhiteSpace(fileName)) throw new ArgumentNullException(nameof(fileName));
-            if (fileName.IndexOfAny(_InvalidNameChars) >= 0) throw new ArgumentException($"{fileName} contains invalid chars", nameof(fileName));
-            if (checkForInvalidNames)
-            {
-                if (fileName == "." || fileName == "..") throw new ArgumentException($"{fileName} is an invalid file name", name);
-            }
-        }
+        #else        
 
 		/// <summary>
-		/// Checks whether a <see cref="SYSTEMENTRY"/> is not null.
+		/// Checks whether a <see cref="FILEORDIR"/> is not null.
 		/// </summary>        
 		/// <exception cref="ArgumentNullException"></exception>
-		public static void GuardNotNull(this SYSTEMENTRY info, [CallerArgumentExpression("info")] string name = null)
+		public static void GuardNotNull(this FILEORDIR info, [CallerArgumentExpression("info")] string name = null)
         {
             if (info == null) throw new ArgumentNullException(name);            
         }
 
 		/// <summary>
-		/// Checks whether a <see cref="SYSTEMENTRY"/> exists in the file system.
+		/// Checks whether a <see cref="FILEORDIR"/> exists in the file system.
 		/// </summary>        
 		/// <exception cref="ArgumentNullException"></exception>
-		public static void GuardExists(this SYSTEMENTRY info, [CallerArgumentExpression("info")] string name = null)
+		public static void GuardExists(this FILEORDIR info, [CallerArgumentExpression("info")] string name = null)
         {
             if (info == null) throw new ArgumentNullException(name);
             if (!info.Exists()) throw new ArgumentException($"'{info.FullName}' does not exist.", name);
@@ -107,7 +78,7 @@ namespace $rootnamespace$
         /// <param name="info">A <see cref="FILE"/> or a <see cref="DIRECTORY"/> object.</param>
         /// <returns>true if it exists in the file system</returns>
         /// <exception cref="ArgumentException"></exception>
-        public static bool Exists(this SYSTEMENTRY info)
+        public static bool Exists(this FILEORDIR info)
         {
             if (info == null) return false;
             
@@ -193,7 +164,7 @@ namespace $rootnamespace$
         /// <summary>
         /// Gets the parent directory of the current instance.
         /// </summary>
-        public static System.IO.DirectoryInfo GetParent(this System.IO.FileSystemInfo fsinfo)
+        public static System.IO.DirectoryInfo GetParent(this FILEORDIR fsinfo)
         {
             return GetParentOrNull(fsinfo) ?? throw new NotImplementedException();
         }        
@@ -201,7 +172,7 @@ namespace $rootnamespace$
         /// <summary>
         /// Gets the parent directory of the current instance, or null if it has no parent.
         /// </summary>
-        public static System.IO.DirectoryInfo GetParentOrNull(this System.IO.FileSystemInfo fsinfo)
+        public static System.IO.DirectoryInfo GetParentOrNull(this FILEORDIR fsinfo)
         {
             if (fsinfo is System.IO.FileInfo finfo) return finfo.Directory;
             if (fsinfo is System.IO.DirectoryInfo dinfo) return dinfo.Parent;
@@ -295,6 +266,14 @@ namespace $rootnamespace$
             }
 
             return baseDir;
+        }
+
+        public static bool HasExtension(this FILE finfo, string extension)
+        {
+            if (string.IsNullOrEmpty(extension)) throw new ArgumentNullException(nameof(extension));
+            if (!extension.StartsWith('.')) extension = '.' + extension;
+
+            return finfo.Name.EndsWith(extension, StringComparison.OrdinalIgnoreCase); // even in case sensitive operating systems, a .jpg is a .jpg            
         }
 
         /// <summary>

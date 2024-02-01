@@ -23,6 +23,45 @@ namespace $rootnamespace$
 {
     partial class CodeSugarForSystemIO
     {
+        #region diagnostics
+
+        #if !NET
+
+        /// <summary>
+		/// Checks whether a <see cref="SYSTEMENTRY"/> is not null.
+		/// </summary>        
+		/// <exception cref="ArgumentNullException"></exception>
+		public static void GuardIsValidFileName(string fileName, bool checkForInvalidNames, string name = null)
+        {
+            name ??= nameof(fileName);
+            if (string.IsNullOrWhiteSpace(fileName)) throw new ArgumentNullException(name);
+            if (fileName.IndexOfAny(_InvalidNameChars) >= 0) throw new ArgumentException($"{fileName} contains invalid chars", name);
+            if (checkForInvalidNames)
+            {
+                if (fileName == "." || fileName == "..") throw new ArgumentException($"{fileName} is an invalid file name", name);
+            }
+        }        
+
+        #else
+
+        /// <summary>
+		/// Checks whether a <see cref="SYSTEMENTRY"/> is not null.
+		/// </summary>        
+		/// <exception cref="ArgumentNullException"></exception>
+		public static void GuardIsValidFileName(string fileName, bool checkForInvalidNames, [CallerArgumentExpression("fileName")] string name = null)
+        {
+            if (string.IsNullOrWhiteSpace(fileName)) throw new ArgumentNullException(nameof(fileName));
+            if (fileName.IndexOfAny(_InvalidNameChars) >= 0) throw new ArgumentException($"{fileName} contains invalid chars", nameof(fileName));
+            if (checkForInvalidNames)
+            {
+                if (fileName == "." || fileName == "..") throw new ArgumentException($"{fileName} is an invalid file name", name);
+            }
+        }
+
+        #endif
+
+        #endregion
+
         public static bool IsDirectorySeparatorChar(Char character)
         {
             return character == System.IO.Path.DirectorySeparatorChar || character == System.IO.Path.AltDirectorySeparatorChar;        

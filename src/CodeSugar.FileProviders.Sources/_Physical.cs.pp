@@ -31,7 +31,7 @@ namespace $rootnamespace$
 
                 public long Length => File?.Length ?? 0;
 
-                public string? PhysicalPath => File?.FullName;
+                public string PhysicalPath => File?.FullName;
 
                 public string Name => File?.Name;
 

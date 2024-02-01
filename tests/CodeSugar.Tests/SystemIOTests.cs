@@ -13,8 +13,14 @@ namespace CodeSugar.Tests
 {
     using CODESUGARIO = CodeSugarForSystemIO;
 
-    public class Tests
+    public class SystemIOTests : IProgress<string>
     {
+        public void Report(string value)
+        {
+            value ??= string.Empty;
+            TestContext.Progress.WriteLine(value);
+        }
+
         public static bool IsWindowsPlatform => Environment.OSVersion.Platform == PlatformID.Win32NT;
 
         // these are drive names returned by various DriveInfo.GetDrives()
@@ -397,7 +403,7 @@ namespace CodeSugar.Tests
             var url1 = AttachmentInfo.From("readme.1.url").WriteShortcut(textFile.FullName);
             var url2 = AttachmentInfo.From("readme.2.url").WriteShortcut(url1.FullName);
 
-            var resolvedFile = url2.ResolveShortcutFile();
+            Assert.That(url2.TryResolveShortcutFile(out var resolvedFile));
 
             Assert.That(resolvedFile, Is.EqualTo(textFile));
 
@@ -406,7 +412,7 @@ namespace CodeSugar.Tests
             url1 = AttachmentInfo.From("dir.1.url").WriteShortcut(textFile.Directory.FullName);
             url2 = AttachmentInfo.From("dir.2.url").WriteShortcut(url1.FullName);
 
-            var resolvedDir = url2.ResolveShortcutDir();
+            Assert.That(url2.TryResolveShortcutDir(out var resolvedDir));
 
             Assert.That(resolvedDir, Is.EqualTo(textFile.Directory));
 
@@ -439,5 +445,6 @@ namespace CodeSugar.Tests
 
         }
 
+        
     }
 }

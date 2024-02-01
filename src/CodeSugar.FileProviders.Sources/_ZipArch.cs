@@ -34,7 +34,7 @@ namespace $rootnamespace$
 
             public long Length => Entry?.Length ?? 0;
 
-            public string? PhysicalPath => null;
+            public string PhysicalPath => null;
 
             public string Name => Entry.Name;
 

@@ -11,7 +11,8 @@ using System.Runtime.CompilerServices;
 
 using FILE = System.IO.FileInfo;
 using DIRECTORY = System.IO.DirectoryInfo;
-using BYTESSEGMENT = System.ArraySegment<byte>;
+using FILEORDIR = System.IO.FileSystemInfo;
+
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -23,9 +24,10 @@ namespace $rootnamespace$
 {
     partial class CodeSugarForSystemIO    
     {
-        public static void WriteShortcut(this FILE finfo, System.IO.FileSystemInfo target)
+        public static void WriteShortcut(this FILE finfo, FILEORDIR target)
         {
-            if (target == null) throw new ArgumentNullException(nameof(target));
+            GuardNotNull(finfo);
+            GuardNotNull(target);
 
             var uri = new Uri(target.FullName, UriKind.Absolute);
             WriteShortcut(finfo, uri);
@@ -33,6 +35,8 @@ namespace $rootnamespace$
 
         public static void WriteShortcut(this FILE finfo, Uri uri)
         {
+            GuardNotNull(finfo);
+
             if (uri == null) throw new ArgumentNullException(nameof(uri));
 
             if (uri.IsFile)
@@ -64,73 +68,106 @@ namespace $rootnamespace$
         {
             GuardExists(shortcutFile);
 
-            var circularBarrier = new HashSet<FILE>(GetFullNameComparer<FILE>());
+            HashSet<FILE> circularBarrier = null; 
 
             while(true)            
             {
-                if (circularBarrier.Contains(shortcutFile)) throw new ArgumentException("circular shortcut detected.",nameof(shortcutFile));
+                if (circularBarrier?.Contains(shortcutFile) ?? false) throw new ArgumentException("circular shortcut detected.",nameof(shortcutFile));
 
-                var uri = ReadShortcutUri(shortcutFile);
-
-                circularBarrier.Add(shortcutFile);
+                var uri = ReadShortcutUri(shortcutFile);                
 
                 if (!uri.IsFile) return uri;
-                if (!uri.LocalPath.EndsWith(".url",StringComparison.OrdinalIgnoreCase)) return uri;
+                if (!uri.LocalPath.EndsWith(".url",StringComparison.OrdinalIgnoreCase)) return uri;                
                 
                 // keep digging:
-                shortcutFile = new FILE(uri.LocalPath);
 
-                // TODO: check circular
+                circularBarrier ??= new HashSet<FILE>(GetFullNameComparer<FILE>());
+                circularBarrier.Add(shortcutFile);
+
+                shortcutFile = new FILE(uri.LocalPath);                
             }
         }
 
-        public static FILE ResolveShortcutFile(this FILE shortcutFile)
+        public static bool TryResolveShortcutFile(this FILE shortcutOrFile, out FILE actualFile)
         {
-            GuardExists(shortcutFile);
+            GuardNotNull(shortcutOrFile);
 
-            if (!shortcutFile.Name.EndsWith(".url",StringComparison.OrdinalIgnoreCase)) return shortcutFile;
+            actualFile = null;
 
-            var circularBarrier = new HashSet<FILE>(GetFullNameComparer<FILE>());
+            if (!shortcutOrFile.HasExtension(".url")) // it's not a shortcut, or the shortcut has a close enough name
+            {
+                if (shortcutOrFile.Exists) { actualFile = shortcutOrFile; return true; } // no shortcut at all.
+
+                // try alternate shortcut name
+                var altFile = shortcutOrFile.FullName + ".url";
+                if (TryResolveShortcutFile(new FILE(altFile), out actualFile)) return true;
+
+                // try alternate shortcut name
+                altFile = System.IO.Path.ChangeExtension(shortcutOrFile.FullName , ".url");
+                if (TryResolveShortcutFile(new FILE(altFile), out actualFile)) return true;
+
+                return false;
+            }            
+
+            HashSet<FILE> circularBarrier = null;
 
             while(true)
             {
-                if (circularBarrier.Contains(shortcutFile)) throw new ArgumentException("circular shortcut detected.",nameof(shortcutFile));
+                if (!shortcutOrFile.Exists) return false;
 
-                var uri = ReadShortcutUri(shortcutFile);
+                if (circularBarrier?.Contains(shortcutOrFile) ?? false) throw new ArgumentException("circular shortcut detected.",nameof(shortcutOrFile));                
 
-                circularBarrier.Add(shortcutFile);
+                var uri = ReadShortcutUri(shortcutOrFile);                
 
-                if (!uri.IsFile) throw new ArgumentException($"{uri} not a file url", nameof(shortcutFile));
-                if (!uri.LocalPath.EndsWith(".url",StringComparison.OrdinalIgnoreCase)) return new FILE(uri.LocalPath);
+                if (!uri.IsFile) return false; // not a file
+
+                var file = new FILE(uri.LocalPath);
+
+                if (!file.HasExtension(".url")) { actualFile = file; return true; }
                 
                 // keep digging:
-                shortcutFile = new FILE(uri.LocalPath);
 
-                // TODO: check circular
+                circularBarrier ??= new HashSet<FILE>(GetFullNameComparer<FILE>());
+                circularBarrier.Add(shortcutOrFile);
+
+                shortcutOrFile = file;                
             }
         }
 
-        public static DIRECTORY ResolveShortcutDir(this FILE shortcutFile)
+        public static bool TryResolveShortcutDir(this FILEORDIR shortcutOrDir, out DIRECTORY actualDirectory)
         {
-            GuardExists(shortcutFile);
-            
-            var circularBarrier = new HashSet<FILE>(GetFullNameComparer<FILE>());
+            GuardNotNull(shortcutOrDir);
+
+            actualDirectory = null;
+
+            HashSet<FILEORDIR> circularBarrier = null;            
 
             while(true)
             {
-                if (circularBarrier.Contains(shortcutFile)) throw new ArgumentException("circular shortcut detected.",nameof(shortcutFile));
+                if (!shortcutOrDir.Exists()) return false;
 
-                var uri = ReadShortcutUri(shortcutFile);
+                if (shortcutOrDir is DIRECTORY dir) { actualDirectory = dir; return true; }
 
-                circularBarrier.Add(shortcutFile);
+                if (circularBarrier?.Contains(shortcutOrDir) ?? false) throw new ArgumentException("circular shortcut detected.",nameof(shortcutOrDir));
 
-                if (!uri.IsFile) throw new ArgumentException($"{uri} not a file url", nameof(shortcutFile));
-                if (!uri.LocalPath.EndsWith(".url",StringComparison.OrdinalIgnoreCase)) return new DIRECTORY(uri.LocalPath);
+                if (!(shortcutOrDir is FILE file)) return false;
+
+                var uri = ReadShortcutUri(file);
+
+                if (!uri.IsFile) return false; // not a file or dir
+
+                if (!uri.LocalPath.EndsWith(".url",StringComparison.OrdinalIgnoreCase))
+                {
+                    actualDirectory = new DIRECTORY(uri.LocalPath);
+                    return true;
+                }
                 
                 // keep digging:
-                shortcutFile = new FILE(uri.LocalPath);
 
-                // TODO: check circular
+                circularBarrier ??= new HashSet<FILEORDIR>(GetFullNameComparer<FILEORDIR>());
+                circularBarrier.Add(shortcutOrDir);
+
+                shortcutOrDir = new FILE(uri.LocalPath);                
             }
         }
 
