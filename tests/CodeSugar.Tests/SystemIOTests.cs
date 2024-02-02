@@ -6,6 +6,7 @@ using NUnit.Framework;
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 
 
 
@@ -13,14 +14,8 @@ namespace CodeSugar.Tests
 {
     using CODESUGARIO = CodeSugarForSystemIO;
 
-    public class SystemIOTests : IProgress<string>
+    public class SystemIOTests
     {
-        public void Report(string value)
-        {
-            value ??= string.Empty;
-            TestContext.Progress.WriteLine(value);
-        }
-
         public static bool IsWindowsPlatform => Environment.OSVersion.Platform == PlatformID.Win32NT;
 
         // these are drive names returned by various DriveInfo.GetDrives()
