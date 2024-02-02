@@ -31,7 +31,7 @@
     <IsPackable>true</IsPackable>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild> <!-- prevents NETSDK1085 error -->
+    <GeneratePackageOnBuild Condition=" $(IsPackable) != 'false' ">true</GeneratePackageOnBuild> <!-- prevents NETSDK1085 error -->
     <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>

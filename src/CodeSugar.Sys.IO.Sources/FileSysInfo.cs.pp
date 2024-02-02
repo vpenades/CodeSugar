@@ -206,15 +206,16 @@ namespace $rootnamespace$
         
         private static FILE _CreateFileInfo(this DIRECTORY baseDir, bool canCreate, params string[] relativePath)
         {
-            GuardNotNull(baseDir);
-            if (relativePath == null || relativePath.Length == 0) throw new ArgumentNullException(nameof(relativePath));
+            GuardNotNull(baseDir);           
             
             // handle special cases for file name
+            if (relativePath == null || relativePath.Length == 0) throw new ArgumentNullException(nameof(relativePath));
+            var last = System.IO.Path.GetFileName(relativePath[relativePath.Length-1]);
+            System.Diagnostics.Debug.Assert(Environment.OSVersion.Platform != PlatformID.Win32NT || !last.Contains(':'), "Use TryGetAlternateDataStream() instead");            
 
-            var last = relativePath[relativePath.Length-1];
-            System.Diagnostics.Debug.Assert(Environment.OSVersion.Platform != PlatformID.Win32NT || !last.Contains(':'), "Use TryGetAlternateDataStream() instead");
             GuardIsValidFileName(last, true, nameof(relativePath));
 
+            // concatenate
             var path = ConcatenatePaths(baseDir.FullName, relativePath);
             var finfo = new FILE(path);
 
@@ -255,6 +256,7 @@ namespace $rootnamespace$
         {
             GuardNotNull(baseDir);
 
+            // concatenate
             var path = ConcatenatePaths(baseDir.FullName, relativePath);
             baseDir = new DIRECTORY(path);            
 
