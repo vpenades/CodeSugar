@@ -10,13 +10,8 @@
   NU5017 - https://github.com/NuGet/Home/issues/10372
   -->
 
-  <PropertyGroup>
-    <!-- not ready yet -->
-    <IsPackable>false</IsPackable>
-  </PropertyGroup>  
+  <!-- nuget source transformation .PP files: https://haacked.com/archive/2010/11/19/nuget-transformation.aspx/ --> 
 
-  <!-- nuget source transformation .PP files: https://haacked.com/archive/2010/11/19/nuget-transformation.aspx/ -->
-  
   <ItemGroup>    
     <None Include="readme.md" Pack="true" PackagePath="\" />
   </ItemGroup>
@@ -25,19 +20,16 @@
     <PackageReadmeFile>readme.md</PackageReadmeFile>
   </PropertyGroup>
 
-  <PropertyGroup>    
+  <PropertyGroup>
     <Description>
-      Quality of life internal extensions for FileProviders extensions.
-      
-      Requirements: 
-      - Microsoft.Extensions.FileProviders.Abstractions
+      Quality of life internal extensions for System namespace
     </Description>
   </PropertyGroup>
 
   <PropertyGroup>
     <VersionPrefix>1.0.0</VersionPrefix>
     <TargetFramework>netstandard2.1</TargetFramework>
-  </PropertyGroup>  
+  </PropertyGroup>
 
   <!-- ===============================================================================================
                                   Source Only package configuration
