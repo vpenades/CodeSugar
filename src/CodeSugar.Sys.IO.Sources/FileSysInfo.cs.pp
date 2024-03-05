@@ -177,7 +177,18 @@ namespace $rootnamespace$
             if (fsinfo is System.IO.FileInfo finfo) return finfo.Directory;
             if (fsinfo is System.IO.DirectoryInfo dinfo) return dinfo.Parent;
             return null;
-        }     
+        }
+
+        /// <summary>
+        /// Defines a <see cref="FILE"/> relative to the base directory.
+        /// </summary>
+        /// <param name="baseDir">the base directory</param>
+        /// <param name="relativePath">the relative path parts</param>
+        /// <returns>a new <see cref="FILE"/> instance.</returns>
+        public static FILE DefineFile(this DIRECTORY baseDir, params string[] relativePath)
+        {
+            return _CreateFileInfo(baseDir, false, relativePath);
+        }        
 
         /// <summary>
         /// Gets a <see cref="FILE"/> relative to the base directory.
@@ -228,6 +239,17 @@ namespace $rootnamespace$
             } */           
 
             return finfo;
+        }
+
+        /// <summary>
+		/// Defines a <see cref="DIRECTORY"/> relative to the base directory.
+		/// </summary>
+		/// <param name="baseDir">the base directory</param>
+		/// <param name="relativePath">the relative path parts</param>
+		/// <returns>a new <see cref="DIRECTORY"/> instance.</returns>
+		public static DIRECTORY DefineDirectory(this DIRECTORY baseDir, params string[] relativePath)
+        {
+            return _CreateDirectoryInfo(baseDir, false, false, relativePath);
         }
 
         /// <summary>
