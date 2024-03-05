@@ -23,7 +23,7 @@ namespace $rootnamespace$
 {
     partial class CodeSugarForSystemIO
     {
-    /// <summary>
+        /// <summary>
         /// Opens a file only if it's a media file, like an image, a video or a text document. Executables and scripts are explicitly omitted
         /// </summary>
         /// <param name="finfo">the file to open</param>

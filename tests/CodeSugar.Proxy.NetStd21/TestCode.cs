@@ -11,7 +11,11 @@ namespace CodeSugar.Proxy.NetStd21
     {
         internal static partial class CodeSugarForFileProviders
         {
+            static void Test()
+            {
             
+
+            }
         }
     }
 }

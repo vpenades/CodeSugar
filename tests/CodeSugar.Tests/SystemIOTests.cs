@@ -440,6 +440,27 @@ namespace CodeSugar.Tests
 
         }
 
-        
+
+        [Test]
+        public async Task TestEnumeration()
+        {
+            var rinfo = ResourceInfo.From("readme.txt");
+
+            var file = await rinfo.File.Directory.Parent.FindFirstFileAsync(f => f.Name == "readme.txt", System.Threading.CancellationToken.None);
+            Assert.That(file, Is.Not.Null);
+            
+            var files = await rinfo.File.Directory.Parent.FindAllFilesAsync(f => f.Name == "readme.txt", System.Threading.CancellationToken.None);
+            Assert.That(files, Is.Not.Null);
+            Assert.That(files.Count, Is.AtLeast(1));
+
+            var dir = await rinfo.File.Directory.Parent.FindFirstDirectoryAsync(d => d.Name == "Resources", System.Threading.CancellationToken.None);
+            Assert.That(dir, Is.Not.Null);
+
+            var dirs = await rinfo.File.Directory.Parent.FindAllDirectoriesAsync(d => d.Name == "Resources", System.Threading.CancellationToken.None);
+            Assert.That(dirs, Is.Not.Null);
+            Assert.That(dirs.Count, Is.AtLeast(1));
+        }
+
+
     }
 }
