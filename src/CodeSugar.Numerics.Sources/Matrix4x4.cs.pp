@@ -30,6 +30,26 @@ namespace $rootnamespace$
             var det = matrix.GetDeterminant();
             var volume = Math.Abs(det);            
             return MathF.Pow(volume, 1f / 3f);
-        }        
+        }
+
+        [DebuggerStepThrough]
+        [MethodImpl(AGRESSIVE)]
+        public static Matrix4x4 InvertedFast(this Matrix4x4 matrix)
+        {
+            System.Diagnostics.Debug.Assert(IsFinite(matrix), "matrix is not finite.");            
+            System.Diagnostics.Debug.Assert(Math.Abs(Math.Abs(matrix.GetDeterminant())-1) < 0.01f, "matrix is not normalized.");
+
+            // http://content.gpwiki.org/index.php/MathGem:Fast_Matrix_Inversion
+            // R' = transpose(R)
+            // M = R' * (- (R' * T))
+
+            var t = matrix.Translation;
+            matrix.Translation = Vector3.Zero;
+            matrix = Matrix4x4.Transpose(matrix);
+
+            matrix.Translation = -Vector3.Transform(t, matrix);
+
+            return matrix;
+        }
     }
 }

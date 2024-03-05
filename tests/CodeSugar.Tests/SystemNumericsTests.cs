@@ -15,8 +15,18 @@ namespace CodeSugar
 {
     internal class SystemNumericsTests
     {
-        [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveOptimization)]
+
+        private static void _TestEquality(Vector3 a, Vector3 b, float tolerance)
+        {
+            // Assert.That(a, Has.Length.EqualTo(1)); // should work because Vector3 HAS length
+
+            // Assert.That(Vector3.Distance(a, b), Is.LessThanOrEqualTo(tolerance));
+
+            Assert.That(a.X, Is.EqualTo(b.X).Within(tolerance));
+            Assert.That(a.Y, Is.EqualTo(b.Y).Within(tolerance));
+            Assert.That(a.Z, Is.EqualTo(b.Z).Within(tolerance));
+        }
+        
 
         [Test]
         public void TestConvert()
@@ -84,6 +94,19 @@ namespace CodeSugar
             Assert.That(Matrix4x4.CreateScale(7).GetVolumeScale(), Is.EqualTo(7).Within(0.000001f));
             Assert.That(Matrix4x4.CreateScale(0.5f).GetVolumeScale(), Is.EqualTo(0.5f));
             Assert.That(Matrix4x4.CreateScale(0.1f).GetVolumeScale(), Is.EqualTo(0.1f).Within(0.0000001f));            
+        }
+
+        [Test]
+        public void TestInvert()
+        {
+            var m = Matrix4x4.CreateFromAxisAngle(Vector3.UnitY, 1);
+            m.Translation = new Vector3(1, 2, 3);
+
+            Assert.That(Matrix4x4.Invert(m, out var im));           
+
+            var imm = m.InvertedFast();
+
+            _TestEquality(im.Translation, imm.Translation, 0.0001f);
         }
     }
 }
