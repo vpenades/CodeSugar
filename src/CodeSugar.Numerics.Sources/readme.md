@@ -1,7 +1,7 @@
 
 ## CodeSugar overview
 
-This is a collection of commonly used extension methods for `System.IO.Stream`, `System.IO.FileInfo` and `System.IO.DirectoryInfo`
+This is a collection of commonly used extension methods for `System.Numerics.Vectors`
 
 ## How it works
 
@@ -17,20 +17,10 @@ This behaviour can be changed by declaring this in your project:
 </PropertyGroup>
 ```
 
-which will set the namespace to `CodeSugar.IO`
+which will set the namespace to `CodeSugar.Numerics`
 
 ## extension methods available
 
-- Stream
-  - `string ReadAllText();`
-  - `void WriteAllText(string text);`
-  - `ArraySegment<Byte> ReadAllBytes();`
-  - `void WriteAllBytes(IReadOnlyList<Byte> bytes);`
-  - And more...
 
-- DirectoryInfo
-  - `FileInfo GetFile(params string[] name);`
-  - `DirectoryInfo GetDirectory(params string[] name);`	
-  - And more...
 	
 
