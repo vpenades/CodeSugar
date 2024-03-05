@@ -18,8 +18,13 @@ namespace CodeSugar
 
         private static void _TestEquality(Vector3 a, Vector3 b, float tolerance)
         {
-            // Assert.That(a, Has.Length.EqualTo(1)); // should work because Vector3 HAS length
+            // Assert.That(a, Has.Length.EqualTo(1).Within(0.0001f)); // should work because Vector3 HAS length
+            // Assert.That(a, Is.EqualTo(b).WithinSquare(tolerance));
+            // Assert.That(a, Is.EqualTo(b).WithinDistance(tolerance));
+            // Assert.That(a, Is.EqualTo(b).Within(0,0.0001f,0));
 
+
+            // Assert.That(b-a, Has.Length.LessThan(0.1f));
             // Assert.That(Vector3.Distance(a, b), Is.LessThanOrEqualTo(tolerance));
 
             Assert.That(a.X, Is.EqualTo(b.X).Within(tolerance));
