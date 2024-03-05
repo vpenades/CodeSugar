@@ -20,5 +20,6 @@ namespace $rootnamespace$
 {    
     internal static partial class CodeSugarForNumerics
     {
+        
     }
 }

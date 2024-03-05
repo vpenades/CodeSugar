@@ -19,7 +19,7 @@ namespace $rootnamespace$
     internal static partial class CodeSugarForNumerics    
     { 
         [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AGRESSIVE)]
         public static void Deconstruct(this Vector2 v, out float x, out float y)
         {
             x = v.X;
@@ -27,7 +27,7 @@ namespace $rootnamespace$
         }
 
         [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AGRESSIVE)]
         public static void Deconstruct(this Vector3 v, out Vector2 xy, out float z)
         {
             xy = new Vector2(v.X, v.Y);
@@ -35,7 +35,7 @@ namespace $rootnamespace$
         }
 
         [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AGRESSIVE)]
         public static void Deconstruct(this Vector3 v, out float x, out float y, out float z)
         {
             x = v.X;
@@ -44,7 +44,7 @@ namespace $rootnamespace$
         }
 
         [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AGRESSIVE)]
         public static void Deconstruct(this Vector4 v, out Vector3 xyz, out float w)
         {
             xyz = new Vector3(v.X, v.Y, v.Z);
@@ -52,7 +52,7 @@ namespace $rootnamespace$
         }
 
         [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AGRESSIVE)]
         public static void Deconstruct(this Vector4 v, out float x, out float y, out float z, out float w)
         {
             x = v.X;
@@ -62,7 +62,7 @@ namespace $rootnamespace$
         }
 
         [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AGRESSIVE)]
         public static void Deconstruct(this Plane p, out Vector3 normal, out float d)
         {
             normal = p.Normal;
@@ -70,7 +70,7 @@ namespace $rootnamespace$
         }
 
         [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AGRESSIVE)]
         public static void Deconstruct(this Plane p, out float x, out float y, out float z, out float d)
         {
             x = p.Normal.X;
@@ -80,7 +80,7 @@ namespace $rootnamespace$
         }        
 
         [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AGRESSIVE)]
         public static void Deconstruct(this Matrix3x2 m, out Vector3 column1, out Vector3 column2)
         {
             column1 = new Vector3(m.M11,m.M21,m.M31);
@@ -88,7 +88,7 @@ namespace $rootnamespace$
         }
 
         [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AGRESSIVE)]
         public static void Deconstruct(this Matrix3x2 m, out Vector2 row1, out Vector2 row2, out Vector2 row3)
         {
             row1 = new Vector2(m.M11,m.M12);

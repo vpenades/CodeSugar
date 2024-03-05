@@ -21,49 +21,49 @@ namespace $rootnamespace$
     internal static partial class CodeSugarForNumerics
     {
         [System.Diagnostics.DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AGRESSIVE)]
         public static bool IsFinite(this float val)
         {            
             return float.IsFinite(val);            
         }
 
         [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AGRESSIVE)]
         public static bool IsFinite(this Vector2 v)
         {
             return float.IsFinite(v.X) && float.IsFinite(v.Y);
         }
 
         [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AGRESSIVE)]
         public static bool IsFinite(this Vector3 v)
         {
             return float.IsFinite(v.X) && float.IsFinite(v.Y) && float.IsFinite(v.Z);
         }
 
         [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AGRESSIVE)]
         public static bool IsFinite(this Vector4 v)
         {
             return float.IsFinite(v.X) && float.IsFinite(v.Y) && float.IsFinite(v.Z) && float.IsFinite(v.W);
         }
 
         [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AGRESSIVE)]
         public static bool IsFinite(this Quaternion v)
         {
             return float.IsFinite(v.X) && float.IsFinite(v.Y) && float.IsFinite(v.Z) && float.IsFinite(v.W);
         }
 
         [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AGRESSIVE)]
         public static bool IsFinite(this Plane v)
         {
             return IsFinite(v.Normal) && float.IsFinite(v.D);
         }
 
         [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AGRESSIVE)]
         public static bool IsFinite(this Matrix3x2 v)
         {
             if (!float.IsFinite(v.M11)) return false;
@@ -76,7 +76,7 @@ namespace $rootnamespace$
         }
 
         [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AGRESSIVE)]
         public static bool IsFinite(this Matrix4x4 v)
         {
             if (!float.IsFinite(v.M11)) return false;

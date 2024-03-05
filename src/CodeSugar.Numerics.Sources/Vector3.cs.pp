@@ -21,7 +21,7 @@ namespace $rootnamespace$
     internal static partial class CodeSugarForNumerics
     {
         [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AGRESSIVE)]
         public static int DominantAxis(this Vector3 v)
         {
             v = Vector3.Abs(v);

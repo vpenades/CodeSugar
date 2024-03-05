@@ -18,10 +18,10 @@ namespace System.Numerics
 namespace $rootnamespace$
 #endif
 {    
-    internal static partial class CodeSugarForNumerics
+    internal static partial class CodeSugarForNumerics    
     {
         [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AGRESSIVE)]
         public static int DominantAxis(this Vector2 v)
         {
             v = Vector2.Abs(v);

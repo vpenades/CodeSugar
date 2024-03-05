@@ -19,7 +19,7 @@ namespace $rootnamespace$
     internal static partial class CodeSugarForNumerics
     {
         [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AGRESSIVE)]
         public static IEnumerable<float> Enumerate(this Vector2 v)
         {
             yield return v.X;
@@ -27,7 +27,7 @@ namespace $rootnamespace$
         }
 
         [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AGRESSIVE)]
         public static IEnumerable<float> Enumerate(this Vector3 v)
         {
             yield return v.X;
@@ -36,7 +36,7 @@ namespace $rootnamespace$
         }
 
         [DebuggerStepThrough]
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(AGRESSIVE)]
         public static IEnumerable<float> Enumerate(this Vector4 v)
         {
             yield return v.X;

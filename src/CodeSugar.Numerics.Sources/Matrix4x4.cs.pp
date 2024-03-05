@@ -20,16 +20,15 @@ namespace $rootnamespace$
 {    
     internal static partial class CodeSugarForNumerics
     {
-        private const float SCALEDECOMPOSITIONEPSILON = 0.00001f;
-
-        public static Single DecomposeScale(this Matrix4x4 matrix)
+        [DebuggerStepThrough]
+        [MethodImpl(AGRESSIVE)]
+        public static Single GetVolumeScale(this in Matrix4x4 matrix)
         {
+            System.Diagnostics.Debug.Assert(IsFinite(matrix), "matrix is not finite.");
+
+            // the determinant also represents the signed volume defined by the three axes
             var det = matrix.GetDeterminant();
-            var volume = Math.Abs(det);
-
-            if (Math.Abs(volume - 1) < SCALEDECOMPOSITIONEPSILON) return 1;
-
-            // scale is the cubic root of volume:            
+            var volume = Math.Abs(det);            
             return MathF.Pow(volume, 1f / 3f);
         }        
     }

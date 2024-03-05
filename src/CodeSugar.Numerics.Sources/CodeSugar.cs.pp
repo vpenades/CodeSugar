@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Numerics;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+
+using METHODOPTIONS = System.Runtime.CompilerServices.MethodImplOptions;
 
 #nullable disable
 
@@ -18,7 +22,13 @@ namespace $rootnamespace$
 {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("CodeSugar.CodeGen", "1.0.0.0")]
     internal static partial class CodeSugarForNumerics
-    {        
+    {
+        #if NETSTANDARD1_6_OR_GREATER
+        private const METHODOPTIONS AGRESSIVE = METHODOPTIONS.AggressiveInlining;
+        #else
+        private const METHODOPTIONS AGRESSIVE = METHODOPTIONS.AggressiveInlining | METHODOPTIONS.AggressiveOptimization;
+        #endif
+
         
     }
 }
