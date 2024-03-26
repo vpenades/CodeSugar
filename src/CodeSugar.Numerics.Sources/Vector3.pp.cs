@@ -6,8 +6,6 @@ using System.Numerics;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-using UNSAFE = System.Runtime.CompilerServices.Unsafe;
-
 #nullable disable
 
 #if CODESUGAR_USECODESUGARNAMESPACE
@@ -20,11 +18,17 @@ namespace $rootnamespace$
 {    
     internal static partial class CodeSugarForNumerics
     {
+        [Conditional("DEBUG")]
+        private static void _AssertFinite(in Vector3 v)
+        {
+            System.Diagnostics.Debug.Assert(v.IsFinite(), "v is not finite");
+        }
+
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
         public static int DominantAxis(this Vector3 v)
         {
-            System.Diagnostics.Debug.Assert(v.IsFinite(), "v is not finite");
+            _AssertFinite(v);
 
             v = Vector3.Abs(v);
             return v.X >= v.Y ? v.X >= v.Z ? 0 : 2 : v.Y >= v.Z ? 1 : 2;
@@ -34,7 +38,7 @@ namespace $rootnamespace$
         [MethodImpl(AGRESSIVE)]
         public static float ManhattanLength(this Vector3 v)
         {
-            System.Diagnostics.Debug.Assert(v.IsFinite(), "v is not finite");
+            _AssertFinite(v);
 
             v = Vector3.Abs(v);
             return v.X + v.Y + v.Z;
@@ -43,8 +47,8 @@ namespace $rootnamespace$
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
         public static Vector3 WithLength(this Vector3 v, float newLen)
-        {        
-            System.Diagnostics.Debug.Assert(v.IsFinite(), "v is not finite");
+        {
+            _AssertFinite(v);
 
             return (v == Vector3.Zero ? Vector3.UnitX : Vector3.Normalize(v)) * newLen;
         }
@@ -53,8 +57,8 @@ namespace $rootnamespace$
         [MethodImpl(AGRESSIVE)]
         public static float Angle(this Vector3 a, Vector3 b)
         {
-            System.Diagnostics.Debug.Assert(a.IsFinite(), "a is not finite");
-            System.Diagnostics.Debug.Assert(b.IsFinite(), "b is not finite");
+            _AssertFinite(a);
+            _AssertFinite(b);
 
             if (a == Vector3.Zero || b == Vector3.Zero) return 0;
 
@@ -79,7 +83,7 @@ namespace $rootnamespace$
 
             foreach (var p in points)
             {
-                System.Diagnostics.Debug.Assert(IsFinite(p), $"{(int)c} is not finite");
+                System.Diagnostics.Debug.Assert(IsFinite(p), $"points[{(int)c}] is not finite");
 
                 x += p.X;
                 y += p.Y;

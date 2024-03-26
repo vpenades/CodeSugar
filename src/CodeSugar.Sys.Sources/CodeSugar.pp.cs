@@ -2,24 +2,25 @@
 
 using System;
 using System.Collections.Generic;
-using System.Numerics;
-using System.Diagnostics;
+using System.Text;
+using System.IO;
 using System.Runtime.CompilerServices;
 
-using UNSAFE = System.Runtime.CompilerServices.Unsafe;
+using RTINTEROPSVCS = System.Runtime.InteropServices;
 
 #nullable disable
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
 #elif CODESUGAR_USESYSTEMNAMESPACE
-namespace System.Numerics
+namespace System
 #else
 namespace $rootnamespace$
 #endif
-{    
-    internal static partial class CodeSugarForNumerics
-    {
+{
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("CodeSugar.CodeGen", "1.0.0.0")]
+    internal static partial class CodeSugarForSystem
+    {        
         
     }
 }

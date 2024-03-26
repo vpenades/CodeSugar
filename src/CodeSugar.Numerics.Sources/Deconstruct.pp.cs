@@ -1,7 +1,6 @@
 ﻿// Copyright (c) CodeSugar 2024 Vicente Penades
 
 using System;
-using System.Collections.Generic;
 using System.Numerics;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;

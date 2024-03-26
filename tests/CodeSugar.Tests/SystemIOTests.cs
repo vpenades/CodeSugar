@@ -398,9 +398,9 @@ namespace CodeSugar.Tests
             var url1 = AttachmentInfo.From("readme.1.url").WriteShortcut(textFile.FullName);
             var url2 = AttachmentInfo.From("readme.2.url").WriteShortcut(url1.FullName);
 
-            Assert.That(url2.TryResolveShortcutFile(out var resolvedFile));
+            Assert.That(url2.TryResolveShortcutFile(out var resolvedFile));            
 
-            Assert.That(resolvedFile, Is.EqualTo(textFile));
+            Assert.That(resolvedFile.FullNameEquals(textFile));
 
             // test resolve file:            
 
@@ -409,7 +409,7 @@ namespace CodeSugar.Tests
 
             Assert.That(url2.TryResolveShortcutDir(out var resolvedDir));
 
-            Assert.That(resolvedDir, Is.EqualTo(textFile.Directory));
+            Assert.That(resolvedDir.FullNameEquals(textFile.Directory));
 
         }
 

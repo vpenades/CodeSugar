@@ -39,14 +39,25 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="8.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
-    <PackageReference Include="NUnit" Version="4.0.1" />
+    <PackageReference Include="NUnit" Version="4.1.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
-    <PackageReference Include="NUnit.Analyzers" Version="3.10.0">
+    <PackageReference Include="NUnit.Analyzers" Version="4.1.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="coverlet.collector" Version="6.0.0" />
+    <PackageReference Include="coverlet.collector" Version="6.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="TestAttachments.NUnit" Version="4.0.0-Preview-20240102-0955" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\CodeSugar.FileProviders.Sources\CodeSugar.FileProviders.Sources.csproj" />
+    <ProjectReference Include="..\..\src\CodeSugar.Numerics.Sources\CodeSugar.Numerics.Sources.csproj" />
+    <ProjectReference Include="..\..\src\CodeSugar.Stream.Bin.Sources\CodeSugar.Stream.Bin.Sources.csproj" />
+    <ProjectReference Include="..\..\src\CodeSugar.Sys.IO.Sources\CodeSugar.Sys.IO.Sources.csproj" />
+    <ProjectReference Include="..\..\src\CodeSugar.Sys.Sources\CodeSugar.Sys.Sources.csproj" />
   </ItemGroup>
 
 </Project>

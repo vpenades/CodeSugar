@@ -39,7 +39,7 @@ namespace CodeSugar
             var v = new Vector2(1, 2);
             var p = v.ConvertTo<System.Drawing.PointF>();
             Assert.That(p.X, Is.EqualTo(1));
-            Assert.That(p.Y, Is.EqualTo(2));
+            Assert.That(p.Y, Is.EqualTo(2));            
         }
 
         [Test]

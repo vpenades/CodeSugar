@@ -1,19 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <!--
-  Conceptually based on: https://github.com/adamralph/liteguard
-  https://www.nuget.org/packages/ContentFilesExample/ at https://github.com/dotnet/sdk/issues/1100
-  https://medium.com/@attilah/source-code-only-nuget-packages-8f34a8fb4738
-  https://haacked.com/archive/2013/02/10/a-caveat-with-nuget-source-code-packages.aspx/
-  https://blog.csmac.nz/speciality-nuget-packing/
-  https://github.com/NuGet/docs.microsoft.com-nuget/issues/2938
-  NU5017 - https://github.com/NuGet/Home/issues/10372
-  -->
+  <PropertyGroup>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <TargetFrameworks>netstandard2.1;net6.0</TargetFrameworks>
+    <LangVersion>8</LangVersion>
+  </PropertyGroup>
 
-  <!-- nuget source transformation .PP files: https://haacked.com/archive/2010/11/19/nuget-transformation.aspx/ --> 
+  <PropertyGroup>    
+    <IsPackable>true</IsPackable>
+    <IsPackableAsSources>true</IsPackableAsSources>
+  </PropertyGroup>
 
-  <ItemGroup>    
-    <None Include="readme.md" Pack="true" PackagePath="\" />
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);CODESUGAR_USECODESUGARNAMESPACE</DefineConstants>
+  </PropertyGroup>  
+
+  <ItemGroup>
+    <None Include="readme.md" Pack="true" PackagePath="\" />        
   </ItemGroup>
 
   <PropertyGroup>    
@@ -25,16 +28,5 @@
       Quality of life internal extensions for System namespace
     </Description>
   </PropertyGroup>
-
-  <PropertyGroup>
-    <VersionPrefix>1.0.0</VersionPrefix>
-    <TargetFramework>netstandard2.1</TargetFramework>
-  </PropertyGroup>
-
-  <!-- ===============================================================================================
-                                  Source Only package configuration
-   =============================================================================================== -->
-
-  <Import Project="..\SourcesPackage.props" />  
 
 </Project>

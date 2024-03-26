@@ -1,12 +1,6 @@
 ﻿<Project> 
 
-  <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)CodeSugar.png" Link="CodeSugar.png" Pack="true" PackagePath="\" />    
-  </ItemGroup>
-
-  <PropertyGroup>
-    <PackageIcon>CodeSugar.png</PackageIcon>    
-  </PropertyGroup>
+  
   
   
   <!-- ===============================================================================================

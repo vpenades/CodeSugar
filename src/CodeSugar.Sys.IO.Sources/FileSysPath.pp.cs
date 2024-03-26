@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
+using PATH = System.IO.Path;
 using FILE = System.IO.FileInfo;
 using DIRECTORY = System.IO.DirectoryInfo;
 using SYSTEMENTRY = System.IO.FileSystemInfo;
@@ -64,7 +65,7 @@ namespace $rootnamespace$
 
         public static bool IsDirectorySeparatorChar(Char character)
         {
-            return character == System.IO.Path.DirectorySeparatorChar || character == System.IO.Path.AltDirectorySeparatorChar;        
+            return character == PATH.DirectorySeparatorChar || character == PATH.AltDirectorySeparatorChar;        
         }
 
         public static bool PathStartsWithNetworkDrivePrefix(string path)
@@ -83,27 +84,41 @@ namespace $rootnamespace$
         /// <returns>
         /// A normalized path that is suited to be used for path string comparison.
         /// </returns>
+        public static string GetNormalizedFullyQualifiedPath(string path)
+        {
+            path = GetNormalizedPath(path);
+
+            if (PATH.IsPathFullyQualified(path)) return path;
+
+            path = PATH.GetFullPath(path);            
+
+            /*
+            path = PathStartsWithNetworkDrivePrefix(path)
+                ? path.TrimEnd(PATH.DirectorySeparatorChar)
+                : path.Trim(PATH.DirectorySeparatorChar);*/
+
+            return path;
+        }
+
+        /// <summary>
+        /// Ensures that the path uses the appropiate Path.DirectorySeparatorChar and it does not end with a path separator.
+        /// </summary>
+        /// <remarks>
+        /// This funcion can be used for both absolute and relative paths.
+        /// </remarks>
         public static string GetNormalizedPath(string path)
         {
             if (string.IsNullOrWhiteSpace(path)) return String.Empty;
 
             if (path.IndexOfAny(_InvalidPathChars) >= 0) throw new ArgumentException("invalid chars", nameof(path));
 
-            path = path.Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar);
-
-            // unlike GetNormalizedFullName, this method can handle both absolute and relative paths
-
-            if (PathStartsWithNetworkDrivePrefix(path))
-            {
-                path = path.TrimEnd(System.IO.Path.DirectorySeparatorChar);
-            }
-            else
-            {
-                path = path.Trim(System.IO.Path.DirectorySeparatorChar);
-            }
-
-            return path;
+            return path
+                .Replace(PATH.AltDirectorySeparatorChar, PATH.DirectorySeparatorChar)
+                .TrimEnd(PATH.DirectorySeparatorChar);
         }
+
+
+
 
         public static string[] SplitPath(string path)
         {
@@ -202,7 +217,7 @@ namespace $rootnamespace$
                     continue;
                 }
 
-                path = System.IO.Path.Combine(path, part);
+                path = PATH.Combine(path, part);
             }
 
             return path;
@@ -225,8 +240,8 @@ namespace $rootnamespace$
             if (pathX == null) return false;
             if (pathY == null) return false;               
 
-            pathX = GetNormalizedPath(pathX);
-            pathY = GetNormalizedPath(pathY);              
+            pathX = GetNormalizedFullyQualifiedPath(pathX);
+            pathY = GetNormalizedFullyQualifiedPath(pathY);              
 
             return string.Equals(pathX, pathY, comparer);
         }
@@ -244,20 +259,20 @@ namespace $rootnamespace$
         /// </summary>
         public static int GetPathHashCode(string path, StringComparison comparer)
         {
-            return path == null ? 0 : GetNormalizedPath(path).GetHashCode(comparer);
+            return path == null ? 0 : GetNormalizedFullyQualifiedPath(path).GetHashCode(comparer);
         }
 
         public static bool PathEndsWith(string path, string tail, StringComparison comparer)
         {
             while(tail.Length > 0)
             {
-                var x = tail[tail.Length - 1];
-                tail = tail.Substring(0, tail.Length - 1);
-
-                var y = path[path.Length - 1];
+                var path_curr = path[path.Length - 1];
                 path = path.Substring(0, path.Length - 1);
 
-                if (x == '?') continue;
+                var tail_curr = tail[tail.Length - 1];
+                tail = tail.Substring(0, tail.Length - 1);
+
+                if (tail_curr == '?') continue; // tail supports wildcards
 
                 switch(comparer)
                 {
@@ -267,13 +282,13 @@ namespace $rootnamespace$
                     case StringComparison.OrdinalIgnoreCase:                    
                     case StringComparison.CurrentCultureIgnoreCase:
                     case StringComparison.InvariantCultureIgnoreCase:
-                        x = char.ToUpperInvariant(x);
-                        y = char.ToUpperInvariant(y);
+                        tail_curr = char.ToUpperInvariant(tail_curr);
+                        path_curr = char.ToUpperInvariant(path_curr);
                         break;
                     default: throw new NotSupportedException();
                 }                
 
-                if (x != y) return false;
+                if (tail_curr != path_curr) return false;
             }
 
             return true;
@@ -286,7 +301,7 @@ namespace $rootnamespace$
             var l = fileName.Length - 1;
             var r = -1;
 
-            var invalidChars = System.IO.Path.GetInvalidFileNameChars();
+            var invalidChars = PATH.GetInvalidFileNameChars();
 
             while (dots > 0 && l >= 0)
             {

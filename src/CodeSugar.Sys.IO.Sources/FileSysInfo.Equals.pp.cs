@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
+using PATH = System.IO.Path;
 using FILE = System.IO.FileInfo;
 using DIRECTORY = System.IO.DirectoryInfo;
 using SYSTEMENTRY = System.IO.FileSystemInfo;
@@ -29,14 +30,14 @@ namespace $rootnamespace$
         /// <returns>
         /// a normalized path that is suited to be used for path string comparison.
         /// </returns>
-        public static string GetNormalizedFullName(this System.IO.FileSystemInfo finfo)
+        public static string GetNormalizedFullName(this SYSTEMENTRY finfo)
         {
             GuardNotNull(finfo);
 
             return finfo
                 .FullName
-                .Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar)
-                .TrimEnd(System.IO.Path.DirectorySeparatorChar);
+                .Replace(PATH.AltDirectorySeparatorChar, PATH.DirectorySeparatorChar)
+                .TrimEnd(PATH.DirectorySeparatorChar);
         }
 
         /// <summary>
@@ -64,7 +65,7 @@ namespace $rootnamespace$
             throw new ArgumentException("invalid path", nameof(baseDir));
         }        
 
-        public static bool EndsWith(this System.IO.FileInfo finfo, string tail)        
+        public static bool EndsWith(this FILE finfo, string tail)        
         {
             GuardNotNull(finfo);
 
@@ -82,65 +83,102 @@ namespace $rootnamespace$
             GuardNotNull(baseDir);
             GuardNotNull(xinfo);
 
-            return xinfo.FullNameStartsWith(baseDir.FullName);
+            var basePath = baseDir.FullName;
+
+            if (!IsDirectorySeparatorChar(basePath[basePath.Length-1])) basePath += PATH.DirectorySeparatorChar;
+
+            return xinfo.FullNameStartsWith(basePath);
         }
 
-		/// <summary>
-		/// Checks whether <paramref name="a"/> and <paramref name="b"/> have the same <see cref="SYSTEMENTRY.FullName"/>,
-		/// using case insensitive rules.
-		/// </summary>
-		/// <param name="a"></param>
-		/// <param name="b"></param>
-		/// <returns>True if they have an equivalent <see cref="SYSTEMENTRY.FullName"/></returns>
-		public static bool FullNameEquals(this SYSTEMENTRY a, SYSTEMENTRY b)
-        {
-            return _FileSystemInfoComparer<SYSTEMENTRY>.Default.Equals(a, b);
-        }
-
-		/// <summary>
-		/// Gets the hash code of <paramref name="x"/>.FullName, using case insensitive rules.
+        /// <summary>
+		/// Gets the hash code of <paramref name="x"/>.FullName,
+        /// using platform file system casing rules.
 		/// </summary>
 		/// <param name="x"></param>
 		/// <returns></returns>
 		public static int GetFullNameHashCode(this SYSTEMENTRY x)
         {
             return _FileSystemInfoComparer<SYSTEMENTRY>.Default.GetHashCode(x);
-		}
+        }
 
-		/// <summary>
-		/// Checks whether <paramref name="a"/> and <paramref name="path"/> have the same <see cref="SYSTEMENTRY.FullName"/>,
-		/// using case insensitive rules.
-		/// </summary>
-		/// <param name="a"></param>
-		/// <param name="bPath"></param>
-		/// <returns>True if they have an equivalent <see cref="SYSTEMENTRY.FullName"/></returns>
-		public static bool FullNameEquals(this SYSTEMENTRY a, string bPath)
+        /// <summary>
+        /// Checks whether <paramref name="a"/> and <paramref name="b"/> have the same <see cref="SYSTEMENTRY.FullName"/>,
+        /// using platform file system casing rules.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns>True if they have an equivalent <see cref="SYSTEMENTRY.FullName"/></returns>
+        public static bool FullNameEquals(this SYSTEMENTRY a, SYSTEMENTRY b)
+        {
+            return _FileSystemInfoComparer<SYSTEMENTRY>.Default.Equals(a, b);
+        }		
+
+        /// <summary>
+        /// Checks whether <paramref name="a"/> and <paramref name="path"/> have the same <see cref="SYSTEMENTRY.FullName"/>,
+        /// using platform file system casing rules.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="bPath"></param>
+        /// <returns>True if they have an equivalent <see cref="SYSTEMENTRY.FullName"/></returns>
+        public static bool FullNameEquals(this SYSTEMENTRY a, string bPath)
         {            
             if (a == null) return false;            
 
             var aPath = GetNormalizedFullName(a);
-
-            bPath = bPath.Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar);
+            bPath = GetNormalizedPath(bPath);
 
             return string.Equals(aPath, bPath, FileSystemStringComparison);
         }
 
-		/// <summary>
-		/// Checks whether <paramref name="a"/>.FullName starts with <paramref name="path"/>,
-		/// using case insensitive rules.
-		/// </summary>
-		/// <param name="a"></param>
-		/// <param name="path"></param>
-		/// <returns></returns>
-		public static bool FullNameStartsWith(this SYSTEMENTRY a, string path)
+        /// <summary>
+        /// Checks whether <paramref name="a"/>.FullName starts with <paramref name="path"/>,
+        /// using platform file system casing rules.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static bool FullNameStartsWith(this SYSTEMENTRY a, string path)
         {
             if (a == null) return false;
 
             var aPath = GetNormalizedFullName(a);
-            path = path.Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar);
+            path = GetNormalizedPath(path);
 
             return aPath.StartsWith(path, FileSystemStringComparison);
         }
+
+        /// <summary>
+        /// Checks whether <paramref name="a"/>.FullName ends with <paramref name="path"/>,
+        /// using platform file system casing rules.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static bool FullNameEndsWith(this SYSTEMENTRY a, string path)
+        {
+            if (a == null) return false;
+
+            var aPath = GetNormalizedFullName(a);
+            path = GetNormalizedPath(path);
+
+            return aPath.EndsWith(path, FileSystemStringComparison);
+        }
+
+        #region Linq
+
+        public static IEnumerable<T> FileSystemDistinct<T>(this IEnumerable<T> files)
+            where T : SYSTEMENTRY
+        {
+            return files.Distinct(GetFullNameComparer<T>());
+        }
+
+
+
+        public static Dictionary<TKey,TValue> FileSystemToDictionary<TSource,TKey,TValue>(this IEnumerable<TSource> collection, Func<TSource, TKey> keySelector, Func<TSource,TValue> valSelector)
+            where TKey: SYSTEMENTRY
+        {
+            return collection.ToDictionary(keySelector, valSelector, GetFullNameComparer<TKey>());
+        }        
 
         /// <summary>
 		/// Gets a <see cref="IEqualityComparer{T}"/> specialises in comparing <see cref="SYSTEMENTRY.FullName"/>
@@ -160,6 +198,10 @@ namespace $rootnamespace$
         {
             return _FileSystemInfoComparer<T>.GetInstance(comparison);
         }
+
+        #endregion
+
+        #region nested types
 
         private sealed class _FileSystemInfoComparer<T> : IEqualityComparer<T>
         where T : SYSTEMENTRY
@@ -210,5 +252,7 @@ namespace $rootnamespace$
                 return obj == null ? 0 : GetNormalizedFullName(obj).GetHashCode(_Comparison);
             }
         }
+
+        #endregion
     }
 }

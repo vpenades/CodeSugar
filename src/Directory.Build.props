@@ -26,7 +26,8 @@
 
   <PropertyGroup Condition="$(TargetFramework.StartsWith('net8.0'))">
     <IsAotCompatible>true</IsAotCompatible>
-  </PropertyGroup>
+  </PropertyGroup> 
+  
   
   <!-- Analysers =================================================================================== -->
 
@@ -35,6 +36,14 @@
   </PropertyGroup>  
   
   <!-- Packaging =================================================================================== -->
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)CodeSugar.png" Link="CodeSugar.png" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackageIcon>CodeSugar.png</PackageIcon>
+  </PropertyGroup>
 
   <PropertyGroup>
     

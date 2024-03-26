@@ -6,8 +6,6 @@ using System.Numerics;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-using UNSAFE = System.Runtime.CompilerServices.Unsafe;
-
 #nullable disable
 
 #if CODESUGAR_USECODESUGARNAMESPACE
@@ -29,42 +27,42 @@ namespace $rootnamespace$
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static bool IsFinite(this Vector2 v)
+        public static bool IsFinite(this in Vector2 v)
         {
             return float.IsFinite(v.X) && float.IsFinite(v.Y);
         }
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static bool IsFinite(this Vector3 v)
+        public static bool IsFinite(this in Vector3 v)
         {
             return float.IsFinite(v.X) && float.IsFinite(v.Y) && float.IsFinite(v.Z);
         }
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static bool IsFinite(this Vector4 v)
+        public static bool IsFinite(this in Vector4 v)
         {
             return float.IsFinite(v.X) && float.IsFinite(v.Y) && float.IsFinite(v.Z) && float.IsFinite(v.W);
         }
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static bool IsFinite(this Quaternion v)
+        public static bool IsFinite(this in Quaternion v)
         {
             return float.IsFinite(v.X) && float.IsFinite(v.Y) && float.IsFinite(v.Z) && float.IsFinite(v.W);
         }
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static bool IsFinite(this Plane v)
+        public static bool IsFinite(this in Plane v)
         {
             return IsFinite(v.Normal) && float.IsFinite(v.D);
         }
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static bool IsFinite(this Matrix3x2 v)
+        public static bool IsFinite(this in Matrix3x2 v)
         {
             if (!float.IsFinite(v.M11)) return false;
             if (!float.IsFinite(v.M12)) return false;
@@ -77,7 +75,7 @@ namespace $rootnamespace$
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static bool IsFinite(this Matrix4x4 v)
+        public static bool IsFinite(this in Matrix4x4 v)
         {
             if (!float.IsFinite(v.M11)) return false;
             if (!float.IsFinite(v.M12)) return false;
