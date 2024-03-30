@@ -222,7 +222,7 @@ namespace $rootnamespace$
             // handle special cases for file name
             if (relativePath == null || relativePath.Length == 0) throw new ArgumentNullException(nameof(relativePath));
             var last = System.IO.Path.GetFileName(relativePath[relativePath.Length-1]);
-            System.Diagnostics.Debug.Assert(Environment.OSVersion.Platform != PlatformID.Win32NT || !last.Contains(':'), "Use TryGetAlternateDataStream() instead");            
+            System.Diagnostics.Debug.Assert(System.Environment.OSVersion.Platform != System.PlatformID.Win32NT || !last.Contains(':'), "Use TryGetAlternateDataStream() instead");            
 
             GuardIsValidFileName(last, true, nameof(relativePath));
 

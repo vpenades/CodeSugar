@@ -64,7 +64,7 @@ namespace $rootnamespace$
             }
         }
 
-        public static Uri ResolveShortcutUri(this FILE shortcutFile)        
+        public static Uri ResolveShortcutUri(this FILE shortcutFile)
         {
             GuardExists(shortcutFile);
 
@@ -86,6 +86,11 @@ namespace $rootnamespace$
 
                 shortcutFile = new FILE(uri.LocalPath);                
             }
+        }
+
+        public static FILE ResolveShortcutFile(this FILE file)
+        {
+            return TryResolveShortcutFile(file, out var newFile) ? newFile : file;
         }
 
         public static bool TryResolveShortcutFile(this FILE shortcutOrFile, out FILE actualFile)
