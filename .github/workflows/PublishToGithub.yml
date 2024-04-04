@@ -1,0 +1,33 @@
+name: Build a preview and release it to Nuget
+
+on: workflow_dispatch
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest    
+    timeout-minutes: 5
+    steps:
+
+    - name: define version suffix      
+      run: echo "VERSIONSUFFIX=Preview-$(date +'%Y%m%d-%H%M%S')" >> $GITHUB_ENV
+
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4    
+
+    - name: Install dependencies
+      run: dotnet tool restore
+
+    - name: Install dependencies
+      run: dotnet restore    
+
+    - name: Test
+      run: dotnet test -c Release
+
+    - name: Pack nugets
+      run: dotnet PackAsSourcesNuget CodeSugar.sln -o . --version-suffix ${{ env.VERSIONSUFFIX }}
+
+    - name: Push to NuGet
+      run: dotnet nuget push "*.nupkg" --api-key ${{secrets.CodeSugar_PublishToGithub}} --source https://nuget.pkg.github.com/${{github.repository_owner}}
