@@ -20,22 +20,24 @@ namespace $rootnamespace$
 {    
     partial class CodeSugarForSystem
     {
-        /// <summary>
-        /// Gets the given service from a service provider, or default if the service does not exist.
-        /// </summary>
+        [Obsolete("Use GetServiceOrDefault instead", true)]
         public static T GetService<T>(this IServiceProvider serviceProvider)
         {
-            if (serviceProvider == null) return default;
-
-            var result = serviceProvider.GetService(typeof(T));
-
-            return result is T value
-                ? value
-                : default;
+            return serviceProvider.GetServiceOrDefault<T>();
         }
 
         /// <summary>
-        /// Tries to get a service from a service provider
+        /// Gets the given service object from a <see cref="IServiceProvider"/>, or <paramref name="defval"/> if the service does not exist.
+        /// </summary>
+        public static T GetServiceOrDefault<T>(this IServiceProvider serviceProvider, T defval = default)
+        {
+            return TryGetService<T>(serviceProvider, out var service)
+                ? service
+                : defval;
+        }
+
+        /// <summary>
+        /// Tries to get a service object from a <see cref="IServiceProvider"/>
         /// </summary>
         public static bool TryGetService<T>(this IServiceProvider serviceProvider, out T service)
         {
@@ -43,13 +45,21 @@ namespace $rootnamespace$
 
             if (serviceProvider == null) return false;
 
-            var result = serviceProvider.GetService(typeof(T));
+            #if !DEBUG
+            try {
+            #endif
 
-            if (result is T value)
-            {
-                service = value;
-                return true;
-            }            
+                var result = serviceProvider.GetService(typeof(T));
+
+                if (result is T value)
+                {
+                    service = value;
+                    return true;
+                }
+
+            #if !DEBUG
+            } catch { }
+            #endif
             
             return false;
         }

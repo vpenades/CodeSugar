@@ -11,6 +11,7 @@ using System.Runtime.CompilerServices;
 using FILE = System.IO.FileInfo;
 using DIRECTORY = System.IO.DirectoryInfo;
 using FILEORDIR = System.IO.FileSystemInfo;
+using SPECIALFOLDER = System.Environment.SpecialFolder;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -125,13 +126,13 @@ namespace $rootnamespace$
             return true;
         }
 
-        public static DIRECTORY GetSpecialFolder(this System.Environment.SpecialFolder folder)
+        public static DIRECTORY GetSpecialFolder(this SPECIALFOLDER folder)
         {
             var path = System.Environment.GetFolderPath(folder);
             return new DIRECTORY(path);
         }
 
-        public static DIRECTORY GetSpecialFolder(this System.Environment.SpecialFolder folder, System.Environment.SpecialFolderOption options)
+        public static DIRECTORY GetSpecialFolder(this SPECIALFOLDER folder, System.Environment.SpecialFolderOption options)
         {
             var path = System.Environment.GetFolderPath(folder, options);
             return new DIRECTORY(path);
@@ -164,7 +165,7 @@ namespace $rootnamespace$
         /// <summary>
         /// Gets the parent directory of the current instance.
         /// </summary>
-        public static System.IO.DirectoryInfo GetParent(this FILEORDIR fsinfo)
+        public static DIRECTORY GetParent(this FILEORDIR fsinfo)
         {
             return GetParentOrNull(fsinfo) ?? throw new NotImplementedException();
         }        
@@ -172,10 +173,10 @@ namespace $rootnamespace$
         /// <summary>
         /// Gets the parent directory of the current instance, or null if it has no parent.
         /// </summary>
-        public static System.IO.DirectoryInfo GetParentOrNull(this FILEORDIR fsinfo)
+        public static DIRECTORY GetParentOrNull(this FILEORDIR fsinfo)
         {
-            if (fsinfo is System.IO.FileInfo finfo) return finfo.Directory;
-            if (fsinfo is System.IO.DirectoryInfo dinfo) return dinfo.Parent;
+            if (fsinfo is FILE finfo) return finfo.Directory;
+            if (fsinfo is DIRECTORY dinfo) return dinfo.Parent;
             return null;
         }
 
@@ -253,7 +254,7 @@ namespace $rootnamespace$
         }
 
         /// <summary>
-		/// Gets a <see cref="DIRECTORY"/> relative to the base directory.
+		/// Gets an existing <see cref="DIRECTORY"/> relative to the base directory.
 		/// </summary>
 		/// <param name="baseDir">the base directory</param>
 		/// <param name="relativePath">the relative path parts</param>
@@ -264,7 +265,7 @@ namespace $rootnamespace$
         }
 
         /// <summary>
-		/// Uses an existing <see cref="DIRECTORY"/> relative to the base directory.
+		/// Uses a <see cref="DIRECTORY"/> relative to the base directory.
 		/// </summary>
 		/// <param name="baseDir">the base directory</param>
 		/// <param name="relativePath">the relative path parts</param>
@@ -313,7 +314,7 @@ namespace $rootnamespace$
             return TryGetCompositedExtension(finfo.FullName, dots, out extension);
         }        
 
-        public static void CopyTo(this FILE src, DIRECTORY dst, bool overwrite = false)        
+        public static void CopyTo(this FILE src, DIRECTORY dst, bool overwrite = false)
         {
             GuardExists(src);
             GuardNotNull(dst);
@@ -321,7 +322,7 @@ namespace $rootnamespace$
             src.CopyTo(dstf.FullName, overwrite);
         }
 
-        public static void CopyTo(this FILE src, FILE dst, bool overwrite = false)        
+        public static void CopyTo(this FILE src, FILE dst, bool overwrite = false)
         {
             GuardExists(src);
             GuardNotNull(dst);
