@@ -29,5 +29,5 @@ jobs:
     - name: Pack nugets
       run: dotnet PackAsSourcesNuget CodeSugar.sln -o . --version-suffix ${{ env.VERSIONSUFFIX }}
 
-    - name: Push to NuGet
+    - name: Push to Github
       run: dotnet nuget push "*.nupkg" --api-key ${{secrets.CodeSugar_PublishToGithub}} --source https://nuget.pkg.github.com/${{github.repository_owner}}
