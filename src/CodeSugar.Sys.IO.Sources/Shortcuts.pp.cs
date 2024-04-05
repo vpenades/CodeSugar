@@ -81,7 +81,7 @@ namespace $rootnamespace$
                 
                 // keep digging:
 
-                circularBarrier ??= new HashSet<FILE>(GetFullNameComparer<FILE>());
+                circularBarrier ??= new HashSet<FILE>(MatchCasing.PlatformDefault.GetFullNameComparer<FILE>());
                 circularBarrier.Add(shortcutFile);
 
                 shortcutFile = new FILE(uri.LocalPath);                
@@ -132,7 +132,7 @@ namespace $rootnamespace$
                 
                 // keep digging:
 
-                circularBarrier ??= new HashSet<FILE>(GetFullNameComparer<FILE>());
+                circularBarrier ??= new HashSet<FILE>(MatchCasing.PlatformDefault.GetFullNameComparer<FILE>());
                 circularBarrier.Add(shortcutOrFile);
 
                 shortcutOrFile = file;                
@@ -169,7 +169,7 @@ namespace $rootnamespace$
                 
                 // keep digging:
 
-                circularBarrier ??= new HashSet<FILEORDIR>(GetFullNameComparer<FILEORDIR>());
+                circularBarrier ??= new HashSet<FILEORDIR>(MatchCasing.PlatformDefault.GetFullNameComparer<FILEORDIR>());
                 circularBarrier.Add(shortcutOrDir);
 
                 shortcutOrDir = new FILE(uri.LocalPath);                

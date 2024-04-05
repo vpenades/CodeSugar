@@ -24,6 +24,28 @@ namespace $rootnamespace$
 {
     partial class CodeSugarForSystemIO
     {
+        public static StringComparer GetStringComparer(this MatchCasing casing)
+        {
+            switch (casing)
+            {
+                case MatchCasing.CaseInsensitive: return StringComparer.OrdinalIgnoreCase;
+                case MatchCasing.CaseSensitive: return StringComparer.Ordinal;
+                case MatchCasing.PlatformDefault: return FileSystemStringComparer;
+                default: throw new ArgumentOutOfRangeException(casing.ToString(), nameof(casing));
+            }
+        }
+
+        public static StringComparison GetStringComparison(this MatchCasing casing)
+        {
+            switch (casing)
+            {
+                case MatchCasing.CaseInsensitive: return StringComparison.OrdinalIgnoreCase;
+                case MatchCasing.CaseSensitive: return StringComparison.Ordinal;
+                case MatchCasing.PlatformDefault: return FileSystemStringComparison;
+                default: throw new ArgumentOutOfRangeException(casing.ToString(), nameof(casing));
+            }
+        }
+
         /// <summary>
         /// ensures that the path uses Path.DirectorySeparatorChar and it does not end with a path separator.
         /// </summary>
@@ -169,7 +191,7 @@ namespace $rootnamespace$
         public static IEnumerable<T> FileSystemDistinct<T>(this IEnumerable<T> files)
             where T : SYSTEMENTRY
         {
-            return files.Distinct(GetFullNameComparer<T>());
+            return files.Distinct(MatchCasing.PlatformDefault.GetFullNameComparer<T>());
         }
 
 
@@ -177,12 +199,10 @@ namespace $rootnamespace$
         public static Dictionary<TKey,TValue> FileSystemToDictionary<TSource,TKey,TValue>(this IEnumerable<TSource> collection, Func<TSource, TKey> keySelector, Func<TSource,TValue> valSelector)
             where TKey: SYSTEMENTRY
         {
-            return collection.ToDictionary(keySelector, valSelector, GetFullNameComparer<TKey>());
-        }        
+            return collection.ToDictionary(keySelector, valSelector, MatchCasing.PlatformDefault.GetFullNameComparer<TKey>());
+        }
 
-        /// <summary>
-		/// Gets a <see cref="IEqualityComparer{T}"/> specialises in comparing <see cref="SYSTEMENTRY.FullName"/>
-		/// </summary>		
+        [Obsolete("Use MatchCasing.PlatformDefault.GetFullNameComparer<T>()", true)]
 		public static IEqualityComparer<T> GetFullNameComparer<T>()
             where T:SYSTEMENTRY
         {
@@ -193,10 +213,10 @@ namespace $rootnamespace$
 		/// <summary>
 		/// Gets a <see cref="IEqualityComparer{T}"/> specialises in comparing <see cref="SYSTEMENTRY.FullName"/>
 		/// </summary>		
-		public static IEqualityComparer<T> GetFullNameComparer<T>(this StringComparison comparison)
+		public static IEqualityComparer<T> GetFullNameComparer<T>(this MatchCasing casing)
             where T:SYSTEMENTRY
         {
-            return _FileSystemInfoComparer<T>.GetInstance(comparison);
+            return _FileSystemInfoComparer<T>.GetInstance(casing);
         }
 
         #endregion
@@ -206,9 +226,20 @@ namespace $rootnamespace$
         private sealed class _FileSystemInfoComparer<T> : IEqualityComparer<T>
         where T : SYSTEMENTRY
         {
-            private static IEqualityComparer<T>[] _Comparers;			
+            private static IEqualityComparer<T>[] _Comparers;
 
-            public static IEqualityComparer<T> GetInstance(StringComparison comparison)            
+            public static IEqualityComparer<T> GetInstance(MatchCasing casing)
+            {
+                switch(casing)
+                {
+                    case MatchCasing.CaseInsensitive: return GetInstance(StringComparison.OrdinalIgnoreCase);
+                    case MatchCasing.CaseSensitive: return GetInstance(StringComparison.Ordinal);
+                    case MatchCasing.PlatformDefault: return GetInstance(FileSystemStringComparison);
+                    default: throw new ArgumentOutOfRangeException(casing.ToString(), nameof(casing));
+                }
+            }
+
+            public static IEqualityComparer<T> GetInstance(StringComparison comparison)
             {
                 if (_Comparers == null)
                 {

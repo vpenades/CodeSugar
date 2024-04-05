@@ -187,7 +187,7 @@ namespace CodeSugar.Tests
 
             // Assert.That(readme_txt.GetRelativePath(readme_txt.Directory.Parent), Is.EqualTo("Resources\\readme.txt")); // equality
 
-            var dcomparer = CODESUGARIO.GetFullNameComparer<DirectoryInfo>();
+            var dcomparer = MatchCasing.PlatformDefault.GetFullNameComparer<DirectoryInfo>();
 
             var tmp0 = new System.IO.DirectoryInfo("temp\\");
             var tmp1 = tmp0.UseDirectory("a", "..", ".", "b", "..");
@@ -263,8 +263,8 @@ namespace CodeSugar.Tests
 
             TestContext.WriteLine($"OS file system is case sensitive: {isCaseSensitiveOS}");
 
-            var fcomparer = CODESUGARIO.GetFullNameComparer<FileInfo>();
-            var dcomparer = CODESUGARIO.GetFullNameComparer<DirectoryInfo>();
+            var fcomparer = MatchCasing.PlatformDefault.GetFullNameComparer<FileInfo>();
+            var dcomparer = MatchCasing.PlatformDefault.GetFullNameComparer<DirectoryInfo>();
             
             Assert.That(fcomparer.Equals(readme_txt_0, readme_txt_1), Is.Not.EqualTo(isCaseSensitiveOS));
 
