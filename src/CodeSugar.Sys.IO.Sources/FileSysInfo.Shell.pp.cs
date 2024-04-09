@@ -48,6 +48,7 @@ namespace $rootnamespace$
 
             System.Diagnostics.Process.Start(psi)?.Dispose();
         }
+
         public static void ShellShowInExplorer(this DIRECTORY dirInfo)
         {
             if (System.Environment.OSVersion.Platform != System.PlatformID.Win32NT) return;
@@ -67,6 +68,7 @@ namespace $rootnamespace$
                 UseShellExecute = true
             };
         }
+
         private static System.Diagnostics.ProcessStartInfo GetProcessStartMedia(this FILE finfo)
         {
             if (finfo == null || !finfo.Exists) return null;
@@ -78,6 +80,7 @@ namespace $rootnamespace$
                 UseShellExecute = true                
             };
         }
+
         private static System.Diagnostics.ProcessStartInfo GetProcessStartInfo(this DIRECTORY dirInfo)
         {
             if (dirInfo == null || !dirInfo.Exists) return null;

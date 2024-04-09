@@ -48,7 +48,7 @@ namespace $rootnamespace$
             GuardReadable(entry);
             GuardNotNull(dst);
 
-            using(var dstS = dst.OpenWrite())
+            using(var dstS = dst.Create())
             {
                 using(var srcS = entry.Open())
                 {

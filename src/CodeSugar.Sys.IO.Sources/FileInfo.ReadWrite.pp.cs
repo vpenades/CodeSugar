@@ -10,7 +10,6 @@ using System.Runtime.CompilerServices;
 #nullable disable
 
 using FILE = System.IO.FileInfo;
-using DIRECTORY = System.IO.DirectoryInfo;
 using BYTESSEGMENT = System.ArraySegment<byte>;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
@@ -51,6 +50,10 @@ namespace $rootnamespace$
             }
         }
 
+        /// <summary>
+		/// Writes all the text lines to a given file.
+		/// Equivalent to <see cref="System.IO.File.WriteAllLines(string, IEnumerable{string})"/>
+		/// </summary>
         public static void WriteAllLines(this FILE finfo, Encoding encoding, params string[] lines)
         {
             WriteAllLines(finfo, lines.AsEnumerable(), encoding);
@@ -58,7 +61,7 @@ namespace $rootnamespace$
 
         /// <summary>
 		/// Writes all the text lines to a given file.
-		/// Equivalent to <see cref="System.IO.File.WriteAllLines(string, IEnumerabke<string>, Encoding)(string, Encoding)"/>
+		/// Equivalent to <see cref="System.IO.File.WriteAllLines(string, IEnumerable{string})"/>
 		/// </summary>
 		public static void WriteAllLines(this FILE finfo, IEnumerable<string> lines, Encoding encoding = null)
         {
@@ -66,7 +69,7 @@ namespace $rootnamespace$
 
             EnsureDirectoryExists(finfo.Directory);
 
-            using(var s = finfo.OpenWrite())
+            using(var s = finfo.Create())
             {
                 s.WriteAllLines(lines, encoding);
             }
@@ -76,7 +79,7 @@ namespace $rootnamespace$
 
 		/// <summary>
 		/// Writes all the text to a given file.
-		/// Equivalent to <see cref="System.IO.File.WriteAllText(string, string, Encoding)(string, Encoding)"/>
+		/// Equivalent to <see cref="System.IO.File.WriteAllText(string, string, Encoding)"/>
 		/// </summary>
 		public static void WriteAllText(this FILE finfo, string text, Encoding encoding = null)
         {
@@ -84,7 +87,7 @@ namespace $rootnamespace$
 
             EnsureDirectoryExists(finfo.Directory);
 
-            using(var s = finfo.OpenWrite())
+            using(var s = finfo.Create())
             {
                 s.WriteAllText(text, encoding);
             }
@@ -116,64 +119,12 @@ namespace $rootnamespace$
 
             EnsureDirectoryExists(finfo.Directory);
 
-            using(var s = finfo.OpenWrite())
+            using(var s = finfo.Create())
             {
                 s.WriteAllBytes(bytes);
             }
 
             finfo.Refresh();
-        }
-
-        /// <summary>
-        /// Computes the <see cref="System.Security.Cryptography.SHA512"/> on the contents of the given file.
-        /// </summary>
-        public static Byte[] ComputeSha512(this FILE finfo)
-        {
-            GuardExists(finfo);
-
-            using(var s = finfo.OpenRead())
-            {
-                return s.ComputeSha512();
-            }
-        }
-
-		/// <summary>
-		/// Computes the <see cref="System.Security.Cryptography.SHA384"/> on the contents of the given file.
-		/// </summary>
-		public static Byte[] ComputeSha384(this FILE finfo)
-        {
-			GuardExists(finfo);
-
-            using(var s = finfo.OpenRead())
-            {
-                return s.ComputeSha384();
-            }
-        }
-
-		/// <summary>
-		/// Computes the <see cref="System.Security.Cryptography.SHA256"/> on the contents of the given file.
-		/// </summary>
-		public static Byte[] ComputeSha256(this FILE finfo)
-        {
-			GuardExists(finfo);
-
-            using(var s = finfo.OpenRead())
-            {
-                return s.ComputeSha256();
-            }
-        }
-
-		/// <summary>
-		/// Computes the <see cref="System.Security.Cryptography.MD5"/> on the contents of the given file.
-		/// </summary>
-		public static Byte[] ComputeMd5(this FILE finfo)
-        {
-			GuardExists(finfo);
-
-            using(var s = finfo.OpenRead())
-            {
-                return s.ComputeMd5();
-            }
-        }
+        }        
     }
 }

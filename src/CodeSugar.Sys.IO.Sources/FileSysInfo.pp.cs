@@ -291,27 +291,6 @@ namespace $rootnamespace$
             }
 
             return baseDir;
-        }
-
-        public static bool HasExtension(this FILE finfo, string extension)
-        {
-            if (string.IsNullOrEmpty(extension)) throw new ArgumentNullException(nameof(extension));
-            if (!extension.StartsWith('.')) extension = '.' + extension;
-
-            return finfo.Name.EndsWith(extension, StringComparison.OrdinalIgnoreCase); // even in case sensitive operating systems, a .jpg is a .jpg            
-        }
-
-        /// <summary>
-        /// Tries to get a composite extension of a file.
-        /// </summary>
-        /// <param name="fileName">the filename from where to get the extension.</param>
-        /// <param name="dots">the number of dots used by the extension.</param>
-        /// <param name="extension">the resulting extension.</param>
-        /// <returns>true if an extension was found</returns>        
-        public static bool TryGetCompositedExtension(this FILE finfo, int dots, out string extension)
-        {
-            GuardNotNull(finfo);            
-            return TryGetCompositedExtension(finfo.FullName, dots, out extension);
         }        
 
         public static void CopyTo(this FILE src, DIRECTORY dst, bool overwrite = false)

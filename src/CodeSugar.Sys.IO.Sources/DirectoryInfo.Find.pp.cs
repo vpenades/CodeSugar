@@ -25,7 +25,6 @@ namespace $rootnamespace$
 {
     static partial class CodeSugarForSystemIO
     {
-        
         public static async Task<IReadOnlyList<DIRECTORY>> FindAllDirectoriesAsync(this DIRECTORY directoryInfo, Predicate<DIRECTORY> condition, CancellationToken ctoken)
         {
             if (directoryInfo == null || !directoryInfo.Exists) return Array.Empty<DIRECTORY>();            

@@ -8,11 +8,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
 
-
+using CODESUGARIO = CodeSugar.CodeSugarForSystemIO;
 
 namespace CodeSugar.Tests
 {
-    using CODESUGARIO = CodeSugarForSystemIO;
+    
 
     public class SystemIOTests
     {
@@ -461,6 +461,13 @@ namespace CodeSugar.Tests
             Assert.That(dirs.Count, Is.AtLeast(1));
         }
 
+
+        [Explicit]
+        [Test]
+        public void ShowOpenFileDialog()
+        {
+            var result = CodeSugar.Win32_OpenFileDialog.TryOpenFile(out var dstFile, "Open file", "text files|*.txt");
+        }
 
     }
 }

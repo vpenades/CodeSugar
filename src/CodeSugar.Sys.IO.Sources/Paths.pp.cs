@@ -117,9 +117,6 @@ namespace $rootnamespace$
                 .TrimEnd(PATH.DirectorySeparatorChar);
         }
 
-
-
-
         public static string[] SplitPath(string path)
         {
             if (string.IsNullOrWhiteSpace(path)) throw new ArgumentNullException(nameof(path));
@@ -294,38 +291,6 @@ namespace $rootnamespace$
             return true;
         }
 
-        public static bool TryGetCompositedExtension(string fileName, int dots, out string extension)
-        {
-            if (dots < 1) throw new ArgumentOutOfRangeException(nameof(dots), "Must be equal or greater than 1");
-
-            var l = fileName.Length - 1;
-            var r = -1;
-
-            var invalidChars = PATH.GetInvalidFileNameChars();
-
-            while (dots > 0 && l >= 0)
-            {
-                var c = fileName[l];
-
-                if (Array.IndexOf(invalidChars, c) >= 0) break;
-
-                if (c == '.')
-                {
-                    r = l;
-                    --dots;
-                }
-
-                --l;
-            }
-
-            if (dots != 0)
-            {
-                extension = null;
-                return false;
-            }
-
-            extension = fileName.Substring(r);
-            return true;
-        }
+        
     }
 }

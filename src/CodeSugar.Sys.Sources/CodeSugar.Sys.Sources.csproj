@@ -15,6 +15,10 @@
     <DefineConstants>$(DefineConstants);CODESUGAR_USECODESUGARNAMESPACE</DefineConstants>
   </PropertyGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="CodeSugar.Tests"/>
+  </ItemGroup>
+
   <PropertyGroup>
     <!-- not ready yet -->
     <IsPackable>false</IsPackable>

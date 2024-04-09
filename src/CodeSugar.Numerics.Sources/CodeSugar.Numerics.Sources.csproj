@@ -13,7 +13,11 @@
 
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);CODESUGAR_USECODESUGARNAMESPACE</DefineConstants>
-  </PropertyGroup>  
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="CodeSugar.Tests"/>
+  </ItemGroup>
 
   <ItemGroup>
     <None Include="readme.md" Pack="true" PackagePath="\" />        

@@ -21,7 +21,7 @@ namespace System.IO
 namespace $rootnamespace$
 #endif
 {
-    static partial class CodeSugarForSystemIO
+    static partial class CodeSugarForStreams
     {
         /// <summary>
         /// Reads bytes from the stream until the end of the stream or until the destination buffer is full.

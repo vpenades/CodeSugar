@@ -16,6 +16,10 @@
     <DefineConstants>$(DefineConstants);CODESUGAR_USECODESUGARNAMESPACE</DefineConstants>
   </PropertyGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="CodeSugar.Tests"/>
+  </ItemGroup>
+
   <!-- nuget source transformation .PP files: https://haacked.com/archive/2010/11/19/nuget-transformation.aspx/ -->
   
   <ItemGroup>    
