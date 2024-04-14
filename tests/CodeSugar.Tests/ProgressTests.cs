@@ -13,7 +13,7 @@ namespace CodeSugar.Tests
 {
     using CODESUGAR = CodeSugarForSystem;
 
-    public class SystemTests
+    public class ProgressTests
         : IProgress<string>
         , IProgress<int>
         , IProgress<(TraceEventType level, object value, string callerName)>

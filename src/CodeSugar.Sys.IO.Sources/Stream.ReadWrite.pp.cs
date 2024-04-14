@@ -66,15 +66,37 @@ namespace $rootnamespace$
             if (!stream.CanSeek) throw new ArgumentException("Can't seek strean", name);
         }
 
-        #endif
+#endif
+
+        #endregion
+
+        #region seeking
+
+        public static bool TrySetPosition(this STREAM stream, long position)
+        {
+            if (stream == null) return false;
+            if (!stream.CanSeek) return false;
+            if (position < 0) return false;
+
+            try
+            {
+                stream.Position = position;
+                return true;
+            }
+            catch (ObjectDisposedException) { }
+            catch (System.IO.IOException) { }
+            catch (System.NotSupportedException) { }
+
+            return false;
+        }
 
         #endregion
 
         #region text extensions
 
-        #if NETSTANDARD || NETFRAMEWORK
+#if NETSTANDARD || NETFRAMEWORK
         private static readonly Encoding UTF8NoBOM = new UTF8Encoding(false);
-        #endif
+#endif
 
         public static IReadOnlyList<string> ReadAllLines(this STREAM stream, Encoding encoding = null)
         {

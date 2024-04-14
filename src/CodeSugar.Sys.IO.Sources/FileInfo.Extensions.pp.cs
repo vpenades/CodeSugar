@@ -8,6 +8,7 @@ using System.IO;
 
 using FILE = System.IO.FileInfo;
 using PATH = System.IO.Path;
+using System.Linq;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -81,6 +82,28 @@ namespace $rootnamespace$
 
             extension = fileName.Substring(r);
             return true;
+        }
+
+        // https://www.lifewire.com/list-of-executable-file-extensions-2626061
+        private static readonly string[] _WindowsExecutableExtensions = new[] { "ex_", "exe", "dll", "com", "scr", "gadget", "u3p", "vbe", "jar", "jse" };
+
+        // although a .lnk file is essentially a windows link, it also supports command line arguments,
+        // which make it, in practice, fully scriptable and is being used to download and install malware
+        private static readonly string[] _WindowsScriptExtensions = new[] { "lnk", "bat", "cmd", "sh", "ps1", "reg", "rgs", "sct", "shb", "vb", "vbs", "vbscript", "ws", "wsf", "wsh" };
+        private static readonly string[] _WindowsShellExtensions = new[] { "cpl", "inf", "ins", "job", "msc", "pif", "shs" };
+        private static readonly string[] _WindowsInstallerExtensions = new[] { "inx", "isu", "cab", "msi", "msp", "mst", "paf" };
+
+        public static bool HasExecutableOrScriptExtension(this FILE finfo)
+        {
+            if (finfo == null) return false;
+            var ext = finfo.Extension.ToLowerInvariant().Trim('.');
+
+            if (_WindowsExecutableExtensions.Contains(ext)) return true;
+            if (_WindowsScriptExtensions.Contains(ext)) return true;
+            if (_WindowsShellExtensions.Contains(ext)) return true;
+            if (_WindowsInstallerExtensions.Contains(ext)) return true;
+
+            return false;
         }
     }
 }

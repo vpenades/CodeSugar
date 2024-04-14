@@ -7,6 +7,7 @@ using System.IO;
 #nullable disable
 
 using STREAM = System.IO.Stream;
+using MEMSTREAM = System.IO.MemoryStream;
 using LAZYHASHALGORYTHM = System.Lazy<System.Security.Cryptography.HashAlgorithm>;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
@@ -29,8 +30,7 @@ namespace $rootnamespace$
         /// </summary>
         public static Byte[] ComputeSha512(this STREAM stream)
         {
-            GuardReadable(stream);
-            return _Sha512Engine.Value.ComputeHash(stream);
+            return _ComputeHash(stream, _Sha512Engine.Value);
         }
 
         /// <summary>
@@ -38,8 +38,7 @@ namespace $rootnamespace$
         /// </summary>
         public static Byte[] ComputeSha384(this STREAM stream)
         {
-            GuardReadable(stream);
-            return _Sha384Engine.Value.ComputeHash(stream);
+            return _ComputeHash(stream, _Sha384Engine.Value);
         }
 
         /// <summary>
@@ -47,8 +46,7 @@ namespace $rootnamespace$
         /// </summary>
         public static Byte[] ComputeSha256(this STREAM stream)
         {
-            GuardReadable(stream);
-            return _Sha256Engine.Value.ComputeHash(stream);
+            return _ComputeHash(stream, _Sha256Engine.Value);
         }
 
         /// <summary>
@@ -56,8 +54,30 @@ namespace $rootnamespace$
         /// </summary>
         public static Byte[] ComputeMd5(this STREAM stream)
         {
-            GuardReadable(stream);
-            return _Md5Engine.Value.ComputeHash(stream);
+            return _ComputeHash(stream, _Md5Engine.Value);
         }        
+
+        private static Byte[] _ComputeHash(STREAM stream, System.Security.Cryptography.HashAlgorithm engine)
+        {
+            GuardReadable(stream);
+
+            if (stream is MEMSTREAM memStream)
+            {
+                if (memStream.TryGetBuffer(out var buff))
+                {
+                    buff = buff.Slice((int)memStream.Position);
+                    return engine.ComputeHash(buff.Array, buff.Offset, buff.Count);
+                }
+            }
+
+            var position = stream.CanSeek ? stream.Position : -1;
+
+            var value = engine.ComputeHash(stream);
+
+            // try restore stream's position
+            try { if (position >= 0) stream.Position = position; } catch { }
+
+            return value;
+        }
     }
 }
