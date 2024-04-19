@@ -24,6 +24,22 @@ namespace $rootnamespace$
     partial class CodeSugarForSystemIO
     {
         /// <summary>
+        /// Gets the <see cref="SYSTEMENTRY.FullName"/> wrapped with quotes '"'.
+        /// </summary>
+        /// <param name="entry"></param>
+        /// <param name="onlyIfRequired">if true, it will wrap with quotes only if the path contains namespaces</param>
+        /// <returns>the path, with quotes</returns>
+        public static string FullNameWithQuotes(this SYSTEMENTRY entry, bool onlyIfRequired = true)
+        {
+            GuardNotNull(entry);
+
+            var name = entry.FullName;
+            bool hasWhiteSpaces = name.Any(c => char.IsWhiteSpace(c));
+            if (hasWhiteSpaces || !onlyIfRequired) name = "\"" + name + "\"";
+            return name;
+        }
+
+        /// <summary>
         /// Opens a file only if it's a media file, like an image, a video or a text document. Executables and scripts are explicitly omitted
         /// </summary>
         /// <param name="finfo">the file to open</param>

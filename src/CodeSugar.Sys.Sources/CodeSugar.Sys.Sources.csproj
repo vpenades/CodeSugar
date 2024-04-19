@@ -13,10 +13,10 @@
 
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);CODESUGAR_USECODESUGARNAMESPACE</DefineConstants>
-  </PropertyGroup>
+  </PropertyGroup>  
 
   <ItemGroup>
-    <InternalsVisibleTo Include="CodeSugar.Tests"/>
+    <InternalsVisibleTo Include="CodeSugar.Tests" />
   </ItemGroup>
 
   <PropertyGroup>

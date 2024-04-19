@@ -21,6 +21,53 @@ namespace $rootnamespace$
 {
     partial class CodeSugarForSystemIO
     {
+        public static bool CheckHash(this FILE finfo, string hash)
+        {
+            if (string.IsNullOrWhiteSpace(hash)) throw new ArgumentNullException(hash);
+
+            byte[] bytes;
+
+            try
+            {
+                if (hash.EndsWith("=")) // decode as base64
+                {
+                    bytes = System.Convert.FromBase64String(hash);
+                    return CheckHash(finfo, bytes);
+                }
+            }
+            catch { }
+
+            if (hash.Length % 2 != 0) throw new ArgumentException("incorrect hash size for hex", nameof(hash));
+
+            bytes = new byte[hash.Length / 2];
+            for (int i = 0; i < hash.Length; i += 2)
+            {
+                bytes[i / 2] = Convert.ToByte(hash.Substring(i, 2), 16);
+            }
+            return CheckHash(finfo, bytes);
+
+
+            throw new ArgumentException("invalid hash", nameof(hash));
+        }
+
+        public static bool CheckHash(this FILE finfo, byte[] hash)
+        {
+            if (hash == null || hash.Length == 0) throw new ArgumentNullException(nameof(hash));
+
+            byte[] fileHash = null;
+
+            switch(hash.Length)
+            {
+                case 16: fileHash = ComputeMd5(finfo); break;
+                case 32: fileHash = ComputeSha256(finfo); break;
+                case 48: fileHash = ComputeSha384(finfo); break;
+                case 64: fileHash = ComputeSha512(finfo); break;
+                default: throw new ArgumentException($"invalid hash size {hash.Length}");
+            }
+
+            return hash.AsSpan().SequenceEqual(fileHash);
+        }
+
         /// <summary>
         /// Computes the <see cref="System.Security.Cryptography.SHA512"/> on the contents of the given file.
         /// </summary>
