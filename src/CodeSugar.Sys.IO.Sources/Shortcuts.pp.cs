@@ -38,6 +38,7 @@ namespace $rootnamespace$
             GuardNotNull(finfo);
 
             if (uri == null) throw new ArgumentNullException(nameof(uri));
+            if (!uri.IsAbsoluteUri) throw new ArgumentException("relative uris are not supported", nameof(uri)); // windows simply redirects to Bing.
 
             if (uri.IsFile)
             {
@@ -64,9 +65,10 @@ namespace $rootnamespace$
             }
         }
 
+        
         public static Uri ResolveShortcutUri(this FILE shortcutFile)
         {
-            GuardExists(shortcutFile);
+            GuardExists(shortcutFile);            
 
             HashSet<FILE> circularBarrier = null; 
 
@@ -202,6 +204,10 @@ namespace $rootnamespace$
 
         public static Uri ReadShortcutUri(this FILE finfo)
         {
+            GuardNotNull(finfo);
+
+            _CheckShortcutNotTemp(finfo);
+
             var lines = ReadAllLines(finfo);
 
             var line = lines.FirstOrDefault(l=> l.StartsWith("URL="));
@@ -213,7 +219,21 @@ namespace $rootnamespace$
 
             line = line.Trim();
 
-            return Uri.TryCreate(line, UriKind.Absolute, out Uri uri) ? uri : null;        
-        }        
+            if (!Uri.TryCreate(line, UriKind.Absolute, out Uri uri)) return null;
+
+            if (uri.IsFile)
+            {
+                var uriPath = uri.LocalPath;
+                
+            }
+
+            return uri;
+        }
+
+        private static void _CheckShortcutNotTemp(FILEORDIR target)
+        {
+            if (target is FILE file) target = file.Directory;
+            if (target is DIRECTORY dir && dir.IsTemp()) throw new System.Security.SecurityException("Shortcut resolution disallowed for Temp directory");
+        }
     }
 }

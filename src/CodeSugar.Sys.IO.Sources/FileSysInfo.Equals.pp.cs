@@ -13,6 +13,7 @@ using PATH = System.IO.Path;
 using FILE = System.IO.FileInfo;
 using DIRECTORY = System.IO.DirectoryInfo;
 using SYSTEMENTRY = System.IO.FileSystemInfo;
+using MATCHCASING = System.IO.MatchCasing;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -24,28 +25,6 @@ namespace $rootnamespace$
 {
     partial class CodeSugarForSystemIO
     {
-        public static StringComparer GetStringComparer(this MatchCasing casing)
-        {
-            switch (casing)
-            {
-                case MatchCasing.CaseInsensitive: return StringComparer.OrdinalIgnoreCase;
-                case MatchCasing.CaseSensitive: return StringComparer.Ordinal;
-                case MatchCasing.PlatformDefault: return FileSystemStringComparer;
-                default: throw new ArgumentOutOfRangeException(casing.ToString(), nameof(casing));
-            }
-        }
-
-        public static StringComparison GetStringComparison(this MatchCasing casing)
-        {
-            switch (casing)
-            {
-                case MatchCasing.CaseInsensitive: return StringComparison.OrdinalIgnoreCase;
-                case MatchCasing.CaseSensitive: return StringComparison.Ordinal;
-                case MatchCasing.PlatformDefault: return FileSystemStringComparison;
-                default: throw new ArgumentOutOfRangeException(casing.ToString(), nameof(casing));
-            }
-        }
-
         /// <summary>
         /// ensures that the path uses Path.DirectorySeparatorChar and it does not end with a path separator.
         /// </summary>
@@ -91,7 +70,7 @@ namespace $rootnamespace$
         {
             GuardNotNull(finfo);
 
-            return PathEndsWith(finfo.FullName, tail, FileSystemStringComparison);
+            return PathEndsWith(MATCHCASING.PlatformDefault, finfo.FullName, tail);
         }
 
         /// <summary>
@@ -143,13 +122,11 @@ namespace $rootnamespace$
         /// <param name="bPath"></param>
         /// <returns>True if they have an equivalent <see cref="SYSTEMENTRY.FullName"/></returns>
         public static bool FullNameEquals(this SYSTEMENTRY a, string bPath)
-        {            
-            if (a == null) return false;            
+        {
+            if (a == null && bPath == null) return true;
+            if (a == null) return false;
 
-            var aPath = GetNormalizedFullName(a);
-            bPath = GetNormalizedPath(bPath);
-
-            return string.Equals(aPath, bPath, FileSystemStringComparison);
+            return ArePathsEqual(MATCHCASING.PlatformDefault, a.FullName, bPath);
         }
 
         /// <summary>
@@ -161,12 +138,7 @@ namespace $rootnamespace$
         /// <returns></returns>
         public static bool FullNameStartsWith(this SYSTEMENTRY a, string path)
         {
-            if (a == null) return false;
-
-            var aPath = GetNormalizedFullName(a);
-            path = GetNormalizedPath(path);
-
-            return aPath.StartsWith(path, FileSystemStringComparison);
+            return PathStartsWith(MATCHCASING.PlatformDefault, a?.FullName, path);
         }
 
         /// <summary>
@@ -178,12 +150,7 @@ namespace $rootnamespace$
         /// <returns></returns>
         public static bool FullNameEndsWith(this SYSTEMENTRY a, string path)
         {
-            if (a == null) return false;
-
-            var aPath = GetNormalizedFullName(a);
-            path = GetNormalizedPath(path);
-
-            return aPath.EndsWith(path, FileSystemStringComparison);
+            return PathEndsWith(MATCHCASING.PlatformDefault, a?.FullName, path);
         }
 
         #region Linq
@@ -228,13 +195,13 @@ namespace $rootnamespace$
         {
             private static IEqualityComparer<T>[] _Comparers;
 
-            public static IEqualityComparer<T> GetInstance(MatchCasing casing)
+            public static IEqualityComparer<T> GetInstance(MATCHCASING casing)
             {
                 switch(casing)
                 {
-                    case MatchCasing.CaseInsensitive: return GetInstance(StringComparison.OrdinalIgnoreCase);
-                    case MatchCasing.CaseSensitive: return GetInstance(StringComparison.Ordinal);
-                    case MatchCasing.PlatformDefault: return GetInstance(FileSystemStringComparison);
+                    case MATCHCASING.CaseInsensitive: return GetInstance(StringComparison.OrdinalIgnoreCase);
+                    case MATCHCASING.CaseSensitive: return GetInstance(StringComparison.Ordinal);
+                    case MATCHCASING.PlatformDefault: return GetInstance(FileSystemStringComparison);
                     default: throw new ArgumentOutOfRangeException(casing.ToString(), nameof(casing));
                 }
             }

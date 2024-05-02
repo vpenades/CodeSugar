@@ -81,7 +81,8 @@ namespace $rootnamespace$
             return new System.Diagnostics.ProcessStartInfo()
             {
                 FileName = uri.OriginalString,
-                UseShellExecute = true
+                UseShellExecute = true,
+                ErrorDialog = false
             };
         }
 
@@ -93,7 +94,8 @@ namespace $rootnamespace$
             return new System.Diagnostics.ProcessStartInfo()
             {
                 FileName = finfo.FullName,
-                UseShellExecute = true                
+                UseShellExecute = true,
+                ErrorDialog = false
             };
         }
 
@@ -105,7 +107,8 @@ namespace $rootnamespace$
             {
                 FileName = dirInfo.FullName,
                 UseShellExecute = true,
-                Verb = "open"
+                Verb = "open",
+                ErrorDialog = false
             };
         }        
     }

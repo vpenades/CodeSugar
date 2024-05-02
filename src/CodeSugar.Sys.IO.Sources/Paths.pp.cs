@@ -1,18 +1,12 @@
 ﻿// Copyright (c) CodeSugar 2024 Vicente Penades
 
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
 
 #nullable disable
 
 using PATH = System.IO.Path;
-using FILE = System.IO.FileInfo;
-using DIRECTORY = System.IO.DirectoryInfo;
-using SYSTEMENTRY = System.IO.FileSystemInfo;
+using CASING = System.IO.MatchCasing;
+using System.Runtime.CompilerServices;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -29,7 +23,7 @@ namespace $rootnamespace$
         #if !NET
 
         /// <summary>
-		/// Checks whether a <see cref="SYSTEMENTRY"/> is not null.
+		/// Checks whether a path is valid.
 		/// </summary>        
 		/// <exception cref="ArgumentNullException"></exception>
 		public static void GuardIsValidFileName(string fileName, bool checkForInvalidNames, string name = null)
@@ -41,12 +35,12 @@ namespace $rootnamespace$
             {
                 if (fileName == "." || fileName == "..") throw new ArgumentException($"{fileName} is an invalid file name", name);
             }
-        }        
+        }
 
         #else
 
         /// <summary>
-		/// Checks whether a <see cref="SYSTEMENTRY"/> is not null.
+		/// Checks whether a path is valid.
 		/// </summary>        
 		/// <exception cref="ArgumentNullException"></exception>
 		public static void GuardIsValidFileName(string fileName, bool checkForInvalidNames, [CallerArgumentExpression("fileName")] string name = null)
@@ -62,6 +56,28 @@ namespace $rootnamespace$
         #endif
 
         #endregion
+
+        public static StringComparer GetStringComparer(this CASING casing)
+        {
+            switch (casing)
+            {
+                case CASING.CaseInsensitive: return StringComparer.OrdinalIgnoreCase;
+                case CASING.CaseSensitive: return StringComparer.Ordinal;
+                case CASING.PlatformDefault: return FileSystemStringComparer;
+                default: throw new ArgumentOutOfRangeException(casing.ToString(), nameof(casing));
+            }
+        }
+
+        public static StringComparison GetStringComparison(this CASING casing)
+        {
+            switch (casing)
+            {
+                case CASING.CaseInsensitive: return StringComparison.OrdinalIgnoreCase;
+                case CASING.CaseSensitive: return StringComparison.Ordinal;
+                case CASING.PlatformDefault: return FileSystemStringComparison;
+                default: throw new ArgumentOutOfRangeException(casing.ToString(), nameof(casing));
+            }
+        }
 
         public static bool IsDirectorySeparatorChar(Char character)
         {
@@ -146,7 +162,7 @@ namespace $rootnamespace$
             return parts;            
         }
 
-        public static (string path, string name) SplitDirectoryAndName(string path)        
+        public static (string path, string name) SplitDirectoryAndName(string path)
         {
             if (path == null) throw new ArgumentNullException(nameof(path));
 
@@ -218,20 +234,12 @@ namespace $rootnamespace$
             }
 
             return path;
-        }        
+        }                  
 
         /// <summary>
         /// determines if two file system paths are equal.
         /// </summary>
-        public static bool ArePathsEqual(string pathX, string pathY)
-        {
-            return ArePathsEqual(pathX, pathY, FileSystemStringComparison);
-        }        
-
-        /// <summary>
-        /// determines if two file system paths are equal.
-        /// </summary>
-        public static bool ArePathsEqual(string pathX, string pathY, StringComparison comparer)
+        public static bool ArePathsEqual(this CASING casing, string pathX, string pathY)
         {
             if (pathX == pathY) return true;
             if (pathX == null) return false;
@@ -240,28 +248,41 @@ namespace $rootnamespace$
             pathX = GetNormalizedFullyQualifiedPath(pathX);
             pathY = GetNormalizedFullyQualifiedPath(pathY);              
 
-            return string.Equals(pathX, pathY, comparer);
+            return string.Equals(pathX, pathY, GetStringComparison(casing));
         }
 
-        /// <summary>
-        /// calculates the hash code of a path, using the same rules used for path equality.
-        /// </summary>
-        public static int GetPathHashCode(string path)
+        public static bool PathStartsWith(this CASING casing, string path, string head)
         {
-            return GetPathHashCode(path, FileSystemStringComparison);
+            if (path == null && head == null) return true;
+            if (path == null) return false;
+            if (head == null) return true;
+
+            path = GetNormalizedFullyQualifiedPath(path);
+            head = GetNormalizedPath(head);
+
+            return path.StartsWith(head, GetStringComparison(casing));
         }
 
-        /// <summary>
-        /// calculates the hash code of a path, using the same rules used for path equality.
-        /// </summary>
-        public static int GetPathHashCode(string path, StringComparison comparer)
+        public static bool PathEndsWith(this CASING casing, string path, string tail)
         {
-            return path == null ? 0 : GetNormalizedFullyQualifiedPath(path).GetHashCode(comparer);
+            if (path == null && tail == null) return true;
+            if (path == null) return false;
+            if (tail == null) return true;
+
+            path = GetNormalizedFullyQualifiedPath(path);
+            tail = GetNormalizedPath(tail);
+
+            return path.EndsWith(tail, GetStringComparison(casing));
+
         }
 
-        public static bool PathEndsWith(string path, string tail, StringComparison comparer)
+        public static bool PathEndsWith(this CASING casing,  string path, string tail, bool tailHasWildcards)
         {
-            while(tail.Length > 0)
+            if (path == null && tail == null) return true;
+            if (path == null) return false;
+            if (tail == null) return true;
+
+            while (tail.Length > 0)
             {
                 var path_curr = path[path.Length - 1];
                 path = path.Substring(0, path.Length - 1);
@@ -271,26 +292,35 @@ namespace $rootnamespace$
 
                 if (tail_curr == '?') continue; // tail supports wildcards
 
-                switch(comparer)
+                switch (GetStringComparison(casing))
                 {
-                    case StringComparison.Ordinal: break;                    
+                    case StringComparison.Ordinal: break;
                     case StringComparison.CurrentCulture: break;
                     case StringComparison.InvariantCulture: break;
-                    case StringComparison.OrdinalIgnoreCase:                    
+                    case StringComparison.OrdinalIgnoreCase:
                     case StringComparison.CurrentCultureIgnoreCase:
                     case StringComparison.InvariantCultureIgnoreCase:
                         tail_curr = char.ToUpperInvariant(tail_curr);
                         path_curr = char.ToUpperInvariant(path_curr);
                         break;
                     default: throw new NotSupportedException();
-                }                
+                }
 
                 if (tail_curr != path_curr) return false;
             }
 
             return true;
-        }
+        }        
 
-        
+        /// <summary>
+        /// calculates the hash code of a path, using the same rules used for path equality.
+        /// </summary>
+        public static int GetPathHashCode(this CASING casing, string path)
+        {
+            if (string.IsNullOrEmpty(path)) return 0;
+            path = GetNormalizedFullyQualifiedPath(path);
+
+            return path.GetHashCode(GetStringComparison(casing));
+        }
     }
 }

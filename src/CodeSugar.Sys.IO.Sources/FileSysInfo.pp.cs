@@ -11,7 +11,6 @@ using System.Runtime.CompilerServices;
 using FILE = System.IO.FileInfo;
 using DIRECTORY = System.IO.DirectoryInfo;
 using FILEORDIR = System.IO.FileSystemInfo;
-using SPECIALFOLDER = System.Environment.SpecialFolder;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -92,51 +91,7 @@ namespace $rootnamespace$
             }
         }
 
-        /// <summary>
-        /// Ensures that <paramref name="directory"/> exists in the file system.
-        /// </summary>
-        /// <returns>the same directory passed as argument, so it can be used fluently.</returns>
-        public static DIRECTORY EnsureCreated(this DIRECTORY directory)
-        {
-            GuardNotNull(directory);
-
-            directory.Refresh();
-            _EnsureDirectoryExists(directory);
-            return directory;
-        }
-
-        /// <summary>
-        /// Ensures that <paramref name="directory"/> exists in the file system.
-        /// </summary>
-        /// <returns>true if it needd to create the directory</returns>
-        public static bool EnsureDirectoryExists(this DIRECTORY directory)
-        {
-            GuardNotNull(directory);
-
-            directory.Refresh();
-            return _EnsureDirectoryExists(directory);
-        }
-
-        private static bool _EnsureDirectoryExists(this DIRECTORY directory)
-        {
-            GuardNotNull(directory);
-            
-            if (directory.Exists) return false;
-            directory.Create();
-            return true;
-        }
-
-        public static DIRECTORY GetSpecialFolder(this SPECIALFOLDER folder)
-        {
-            var path = System.Environment.GetFolderPath(folder);
-            return new DIRECTORY(path);
-        }
-
-        public static DIRECTORY GetSpecialFolder(this SPECIALFOLDER folder, System.Environment.SpecialFolderOption options)
-        {
-            var path = System.Environment.GetFolderPath(folder, options);
-            return new DIRECTORY(path);
-        }
+        
 
         /// <summary>
         /// Tries to get the Alternate Data Stream (ADS) from an existing file.

@@ -4,13 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using FILE = System.IO.FileInfo;
+using DRIVE = System.IO.DriveInfo;
 using DIRECTORY = System.IO.DirectoryInfo;
-using SYSTEMENTRY = System.IO.FileSystemInfo;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -33,7 +31,7 @@ namespace $rootnamespace$
         /// This only works on Windows.
         /// </para>
         /// </remarks>
-        public static bool TryGetDriveInfo(this System.IO.DirectoryInfo dinfo, out System.IO.DriveInfo drive)
+        public static bool TryGetDriveInfo(this DIRECTORY dinfo, out DRIVE drive)
         {
             drive = null;
 
@@ -52,14 +50,14 @@ namespace $rootnamespace$
             var interned = _TryGetInternedDriveInfo(root);
             if (interned != null) { drive = interned; return true; }
 
-            drive = new System.IO.DriveInfo(root);                
+            drive = new DRIVE(root);                
             return true;
         }
 
         /// <summary>
         /// Gets the drive or network name of the given object.
         /// </summary>
-        public static string GetDriveOrNetworkName(this System.IO.DirectoryInfo dinfo)
+        public static string GetDriveOrNetworkName(this DIRECTORY dinfo)
         {
             if (dinfo == null) return null;
             var root = dinfo.Root.GetNormalizedFullName();
@@ -71,13 +69,13 @@ namespace $rootnamespace$
         }
 
         // this is a helper method that allows reusing tha same System.IO.DriveInfo instanced mapped to System Drives.
-        private static System.IO.DriveInfo _TryGetInternedDriveInfo(string root)
+        private static DRIVE _TryGetInternedDriveInfo(string root)
         {
             if (_InternedFixedDrives == null) // initialize
             {
-                _InternedFixedDrives = new Dictionary<string,System.IO.DriveInfo>(FileSystemStringComparer);
+                _InternedFixedDrives = new Dictionary<string, DRIVE>(GetStringComparer(MatchCasing.PlatformDefault));
 
-                foreach(var d in System.IO.DriveInfo.GetDrives())
+                foreach(var d in DRIVE.GetDrives())
                 {
                     if (!d.IsReady) continue;
 

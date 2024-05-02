@@ -1,0 +1,100 @@
+﻿// Copyright (c) CodeSugar 2024 Vicente Penades
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+
+#nullable disable
+
+using FILE = System.IO.FileInfo;
+using DIRECTORY = System.IO.DirectoryInfo;
+using SPECIALFOLDER = System.Environment.SpecialFolder;
+using CASING = System.IO.MatchCasing;
+
+#if CODESUGAR_USECODESUGARNAMESPACE
+namespace CodeSugar
+#elif CODESUGAR_USESYSTEMNAMESPACE
+namespace System.IO
+#else
+namespace $rootnamespace$
+#endif
+{
+    static partial class CodeSugarForSystemIO
+    {
+        public static bool IsTempPath(this CASING casing, string path)
+        {
+            if (string.IsNullOrWhiteSpace(path)) return false;
+            
+            var temp = System.IO.Path.GetTempPath().TrimEnd(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
+            if (path.Length < temp.Length) return false;
+
+            path = path.Substring(0, temp.Length);            
+
+            return ArePathsEqual(casing, temp, path);
+        }
+
+        /// <summary>
+        /// Checks whether the directory is, or is inside the current Temp path.
+        /// </summary>
+        /// <param name="directory">The direcyory to check</param>
+        /// <returns>true if it's a temporary path</returns>
+        public static bool IsTemp(this DIRECTORY directory)
+        {
+            if (directory == null) return false;
+
+            return IsTempPath(CASING.PlatformDefault, directory.FullName);
+        }
+
+        /// <summary>
+        /// Ensures that <paramref name="directory"/> exists in the file system.
+        /// </summary>
+        /// <returns>the same directory passed as argument, so it can be used fluently.</returns>
+        public static DIRECTORY EnsureCreated(this DIRECTORY directory)
+        {
+            GuardNotNull(directory);
+
+            directory.Refresh();
+            _EnsureDirectoryExists(directory);
+            return directory;
+        }
+
+        /// <summary>
+        /// Ensures that <paramref name="directory"/> exists in the file system.
+        /// </summary>
+        /// <returns>true if it needd to create the directory</returns>
+        public static bool EnsureDirectoryExists(this DIRECTORY directory)
+        {
+            GuardNotNull(directory);
+
+            directory.Refresh();
+            return _EnsureDirectoryExists(directory);
+        }
+
+        private static bool _EnsureDirectoryExists(this DIRECTORY directory)
+        {
+            GuardNotNull(directory);
+
+            if (directory.Exists) return false;
+            directory.Create();
+            return true;
+        }
+
+        public static DIRECTORY GetSpecialFolder(this SPECIALFOLDER folder)
+        {
+            var path = System.Environment.GetFolderPath(folder);
+            return new DIRECTORY(path);
+        }
+
+        public static DIRECTORY GetSpecialFolder(this SPECIALFOLDER folder, System.Environment.SpecialFolderOption options)
+        {
+            var path = System.Environment.GetFolderPath(folder, options);
+            return new DIRECTORY(path);
+        }
+
+    }
+}

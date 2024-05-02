@@ -7,12 +7,17 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Runtime.CompilerServices;
+
 
 #nullable disable
 
 using FILE = System.IO.FileInfo;
+using FILEFILTER = System.Predicate<System.IO.FileInfo>;
 using DIRECTORY = System.IO.DirectoryInfo;
+using DIRECTORYFILTER = System.Predicate<System.IO.DirectoryInfo>;
+using SEARCHOPTION = System.IO.SearchOption;
+using CTOKEN = System.Threading.CancellationToken;
+using PPROGRESS = System.IProgress<int>;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -30,201 +35,222 @@ namespace $rootnamespace$
         // https://stackoverflow.com/questions/719020/is-there-an-async-version-of-directoryinfo-getfiles-directory-getdirectories-i            
         // https://gist.github.com/jnm2/46a642d2c9f2794ece0b095ba3d96270
 
-        public static async Task<IReadOnlyList<DIRECTORY>> FindAllDirectoriesAsync(this DIRECTORY directoryInfo, Predicate<DIRECTORY> selector, CancellationToken ctoken)
+        public static async Task<IReadOnlyList<DIRECTORY>> FindAllDirectoriesAsync(this DIRECTORY directoryInfo, DIRECTORYFILTER resultFilter, SEARCHOPTION option, CTOKEN ctoken, PPROGRESS percentProgress = null)
         {
-            return await FindAllDirectoriesAsync(directoryInfo, selector,d=>true,ctoken).ConfigureAwait(false);
+            return await FindAllDirectoriesAsync(directoryInfo, resultFilter, d=> option == SEARCHOPTION.AllDirectories, ctoken, percentProgress).ConfigureAwait(false);
         }
-
-        public static async Task<IReadOnlyList<DIRECTORY>> FindAllDirectoriesAsync(this DIRECTORY directoryInfo, Predicate<DIRECTORY> selector, Predicate<DIRECTORY> subdirSelector, CancellationToken ctoken)
+        public static async Task<IReadOnlyList<DIRECTORY>> FindAllDirectoriesAsync(this DIRECTORY directoryInfo, DIRECTORYFILTER resultFilter, DIRECTORYFILTER subdirFilter, CTOKEN ctoken, PPROGRESS percentProgress = null)
         {
             if (directoryInfo == null || !directoryInfo.Exists) return Array.Empty<DIRECTORY>();
-
-            selector ??= d => true;
+            if (resultFilter == null) throw new ArgumentNullException(nameof(resultFilter));
+            if (subdirFilter == null) throw new ArgumentNullException(nameof(subdirFilter));
 
             var result = new List<DIRECTORY>();
 
-            async Task _findAsync(DIRECTORY dinfo)
+            async Task _findAsync(DIRECTORY dinfo, int start, int count)
             {
+                if (dinfo == null || !dinfo.Exists) return;
+
                 ctoken.ThrowIfCancellationRequested();
+
+                __ReportDirectoryScanProgress(percentProgress, dinfo, start);
 
                 List<DIRECTORY> subdirs = null;
 
                 try
                 {
-                    subdirs = dinfo
-                        .EnumerateDirectories("*", SearchOption.TopDirectoryOnly)
-                        .ToList();
-
-                    result.AddRange(subdirs.Where(item => selector(item)));                    
+                    foreach (var info in dinfo.EnumerateDirectories())
+                    {
+                        if (resultFilter(info)) result.Add(info);
+                        if (subdirFilter(info)) { subdirs ??= new List<DIRECTORY>(); subdirs.Add(info); }
+                    }
                 }
-                catch (System.IO.DirectoryNotFoundException) { }
-                catch (System.Security.SecurityException) { }
+                catch (System.IO.DirectoryNotFoundException ex) { __ReportDirectoryScanException(percentProgress,ex); }
+                catch (System.Security.SecurityException ex) { __ReportDirectoryScanException(percentProgress, ex); }
 
-                if (subdirSelector == null) return;
+                if (subdirs == null) return;
 
-                foreach (var subdir in subdirs.Where(item => subdirSelector(item)))
-                {                    
-                    await _findAsync(subdir).ConfigureAwait(false);
+                for (int i = 0; i < subdirs.Count; ++i)
+                {
+                    var ss = start + count * (i + 0) / subdirs.Count;
+                    var cc = start + count * (i + 1) / subdirs.Count - ss;
+
+                    await _findAsync(subdirs[i], ss, cc).ConfigureAwait(false);
                 }
             }
 
-            await _findAsync(directoryInfo).ConfigureAwait(false);            
+            await _findAsync(directoryInfo, 0, 100).ConfigureAwait(false);            
 
             return result;
         }
 
 
-        public static async Task<DIRECTORY> FindFirstDirectoryAsync(this DIRECTORY directoryInfo, Predicate<DIRECTORY> selector, CancellationToken ctoken)
+        public static async Task<DIRECTORY> FindFirstDirectoryAsync(this DIRECTORY directoryInfo, DIRECTORYFILTER resultFilter, SEARCHOPTION option, CTOKEN ctoken, PPROGRESS percentProgress = null)
         {
-            return await FindFirstDirectoryAsync(directoryInfo, selector, d => true, ctoken).ConfigureAwait(false);
+            return await FindFirstDirectoryAsync(directoryInfo, resultFilter, d => option == SEARCHOPTION.AllDirectories, ctoken, percentProgress).ConfigureAwait(false);
         }
-        public static async Task<DIRECTORY> FindFirstDirectoryAsync(this DIRECTORY directoryInfo, Predicate<DIRECTORY> selector, Predicate<DIRECTORY> subdirSelector, CancellationToken ctoken)
+        public static async Task<DIRECTORY> FindFirstDirectoryAsync(this DIRECTORY directoryInfo, DIRECTORYFILTER resultFilter, DIRECTORYFILTER subdirFilter, CTOKEN ctoken, PPROGRESS percentProgress = null)
         {
-            if (directoryInfo == null || !directoryInfo.Exists) return null;            
+            if (directoryInfo == null || !directoryInfo.Exists) return null;
+            if (resultFilter == null) throw new ArgumentNullException(nameof(resultFilter));
+            if (subdirFilter == null) throw new ArgumentNullException(nameof(subdirFilter));            
 
-            selector ??= d => true;
-
-            async Task<DIRECTORY> _findAsync(DIRECTORY dinfo)
+            async Task<DIRECTORY> _findAsync(DIRECTORY dinfo, int start, int count)
             {
-                ctoken.ThrowIfCancellationRequested();                
+                if (dinfo == null || !dinfo.Exists) return null;
 
-                var subdirsCache = subdirSelector == null
-                    ? null
-                    : new List<DIRECTORY>();
+                ctoken.ThrowIfCancellationRequested();
 
-                try // first search in top directory, finish searching in a given directory before jumping to another one.
+                __ReportDirectoryScanProgress(percentProgress, dinfo, start);
+
+                List<DIRECTORY> subdirs = null;
+
+                try
                 {
-                    var subdirs = dinfo.EnumerateDirectories("*", SearchOption.TopDirectoryOnly);
-
-                    foreach (var subdir in subdirs)
+                    foreach (var info in dinfo.EnumerateDirectories())
                     {
-                        if (selector(subdir)) return subdir;
-                        subdirsCache?.Add(subdir);
+                        if (resultFilter(info)) return info;
+                        if (subdirFilter(info)) { subdirs ??= new List<DIRECTORY>(); subdirs.Add(info); }
                     }
-                }                
-                catch (System.IO.DirectoryNotFoundException) { }
-                catch (System.Security.SecurityException) { }
+                }
+                catch (System.IO.DirectoryNotFoundException ex) { __ReportDirectoryScanException(percentProgress, ex); }
+                catch (System.Security.SecurityException ex) { __ReportDirectoryScanException(percentProgress, ex); }
 
-                if (subdirsCache == null) return null;                
+                if (subdirs == null) return null;
 
-                // search in subdirectories
-
-                foreach (var subdir in subdirsCache)
+                for (int i = 0; i < subdirs.Count; ++i)
                 {
-                    var result = await _findAsync(subdir).ConfigureAwait(false);
-                    if (result != null) return result;
+                    var ss = start + count * (i + 0) / subdirs.Count;
+                    var cc = start + count * (i + 1) / subdirs.Count - ss;
+
+                    var rr = await _findAsync(subdirs[i], ss, cc).ConfigureAwait(false);
+                    if (rr != null) return rr;
                 }
 
                 return null;
             }
 
-            return await _findAsync(directoryInfo).ConfigureAwait(false);
+            return await _findAsync(directoryInfo, 0, 100).ConfigureAwait(false);
         }
 
 
-
-        public static async Task<IReadOnlyList<FILE>> FindAllFilesAsync(this DIRECTORY directoryInfo, Predicate<FILE> selector, CancellationToken ctoken)
+        public static async Task<IReadOnlyList<FILE>> FindAllFilesAsync(this DIRECTORY directoryInfo, FILEFILTER resultFilter, SEARCHOPTION option, CTOKEN ctoken, PPROGRESS percentProgress = null)
         {
-            return await FindAllFilesAsync(directoryInfo, selector, d => true, ctoken).ConfigureAwait(false);
+            return await FindAllFilesAsync(directoryInfo, resultFilter, d => option == SEARCHOPTION.AllDirectories, ctoken, percentProgress).ConfigureAwait(false);
         }
-        public static async Task<IReadOnlyList<FILE>> FindAllFilesAsync(this DIRECTORY directoryInfo, Predicate<FILE> selector, Predicate<DIRECTORY> subdirSelector, CancellationToken ctoken)
+        public static async Task<IReadOnlyList<FILE>> FindAllFilesAsync(this DIRECTORY directoryInfo, FILEFILTER resultFilter, DIRECTORYFILTER subdirFilter, CTOKEN ctoken, PPROGRESS percentProgress = null)
         {
             if (directoryInfo == null || !directoryInfo.Exists) return Array.Empty<FILE>();
-
-            selector ??= d => true;            
+            if (resultFilter == null) throw new ArgumentNullException(nameof(resultFilter));
+            if (subdirFilter == null) throw new ArgumentNullException(nameof(subdirFilter));            
 
             var result = new List<FILE>();
 
-            async Task _findAsync(DIRECTORY dinfo)
+            async Task _findAsync(DIRECTORY dinfo, int start, int count)
             {
-                ctoken.ThrowIfCancellationRequested();
-
-                try // find files in current directory
-                {
-                    var files = dinfo
-                        .EnumerateFiles("*", SearchOption.TopDirectoryOnly)
-                        .Where(item => selector(item));
-
-                    result.AddRange(files);
-                }
-                catch (System.IO.DirectoryNotFoundException) { }
-                catch (System.Security.SecurityException) { }
-
-                if (subdirSelector == null) return;
+                if (dinfo == null || !dinfo.Exists) return;
 
                 ctoken.ThrowIfCancellationRequested();
 
-                try // dig into subdirectories
-                {
-                    var subdirs = dinfo
-                        .EnumerateDirectories("*", SearchOption.TopDirectoryOnly)
-                        .Where(item => subdirSelector(item));
+                __ReportDirectoryScanProgress(percentProgress, dinfo, start);
 
-                    foreach (var subdir in subdirs)
+                List<DIRECTORY> subdirs = null;
+
+                try
+                {
+                    foreach (var info in dinfo.EnumerateFileSystemInfos())
                     {
-                        await _findAsync(subdir).ConfigureAwait(false);
+                        if (info is FILE finfo && resultFilter(finfo)) result.Add(finfo);
+                        else if (info is DIRECTORY subd && subdirFilter(subd)) { subdirs ??= new List<DIRECTORY>(); subdirs.Add(subd); }
                     }
                 }
-                catch (System.IO.DirectoryNotFoundException) { }
-                catch (System.Security.SecurityException) { }
+                catch (System.IO.DirectoryNotFoundException ex) { __ReportDirectoryScanException(percentProgress, ex); }
+                catch (System.Security.SecurityException ex) { __ReportDirectoryScanException(percentProgress, ex); }
+
+                if (subdirs == null) return;
+
+                for (int i = 0; i < subdirs.Count; ++i)
+                {
+                    var ss = start + count * (i + 0) / subdirs.Count;
+                    var cc = start + count * (i + 1) / subdirs.Count - ss;
+
+                    await _findAsync(subdirs[i], ss, cc).ConfigureAwait(false);
+                }
             }
 
-            await _findAsync(directoryInfo).ConfigureAwait(false);
+            await _findAsync(directoryInfo, 0, 100).ConfigureAwait(false);
 
             return result;
         }
+                
 
-
-        public static async Task<FILE> FindFirstFileAsync(this DIRECTORY directoryInfo, Predicate<FILE> selector, CancellationToken ctoken)
+        public static async Task<FILE> FindFirstFileAsync(this DIRECTORY directoryInfo, FILEFILTER resultFilter, SEARCHOPTION option, CTOKEN ctoken, PPROGRESS percentProgress = null)
         {
-            return await FindFirstFileAsync(directoryInfo, selector, d => true, ctoken).ConfigureAwait(false);
+            return await FindFirstFileAsync(directoryInfo, resultFilter, d => option == SEARCHOPTION.AllDirectories, ctoken, percentProgress).ConfigureAwait(false);
         }
-        public static async Task<FILE> FindFirstFileAsync(this DIRECTORY directoryInfo, Predicate<FILE> selector, Predicate<DIRECTORY> subdirSelector, CancellationToken ctoken)
+        public static async Task<FILE> FindFirstFileAsync(this DIRECTORY directoryInfo, FILEFILTER resultFilter, DIRECTORYFILTER subdirFilter, CTOKEN ctoken, PPROGRESS percentProgress = null)
         {
             if (directoryInfo == null || !directoryInfo.Exists) return null;
+            if (resultFilter == null) throw new ArgumentNullException(nameof(resultFilter));
+            if (subdirFilter == null) throw new ArgumentNullException(nameof(subdirFilter));            
 
-            selector ??= f => true;            
-
-            async Task<FILE> _findAsync(DIRECTORY dinfo)
+            async Task<FILE> _findAsync(DIRECTORY dinfo, int start, int count)
             {
-                ctoken.ThrowIfCancellationRequested();
-
-                try // find files in current directory
-                {
-                    var result = dinfo
-                        .EnumerateFiles("*", SearchOption.TopDirectoryOnly)
-                        .FirstOrDefault(item => selector(item));
-
-                    if (result != null) return result;
-                }
-                catch (System.IO.DirectoryNotFoundException) { }
-                catch (System.Security.SecurityException) { }
-
-                if (subdirSelector == null) return null;
+                if (dinfo == null || !dinfo.Exists) return null;
 
                 ctoken.ThrowIfCancellationRequested();
 
-                try // dig into subdirectories
-                {
-                    var subdirs = dinfo
-                        .EnumerateDirectories("*", SearchOption.TopDirectoryOnly)
-                        .Where(item => subdirSelector(item));
+                __ReportDirectoryScanProgress(percentProgress, dinfo, start);
 
-                    foreach (var subdir in subdirs)
+                List<DIRECTORY> subdirs = null;
+
+                try
+                {
+                    foreach (var info in dinfo.EnumerateFileSystemInfos())
                     {
-                        var result = await _findAsync(subdir).ConfigureAwait(false);
-
-                        if (result != null) return result;
+                        if (info is FILE finfo && resultFilter(finfo)) return finfo;
+                        else if (info is DIRECTORY subd && subdirFilter(subd)) { subdirs ??= new List<DIRECTORY>(); subdirs.Add(subd); }
                     }
                 }
-                catch (System.IO.DirectoryNotFoundException) { }
-                catch (System.Security.SecurityException) { }
+                catch (System.IO.DirectoryNotFoundException ex) { __ReportDirectoryScanException(percentProgress, ex); }
+                catch (System.Security.SecurityException ex) { __ReportDirectoryScanException(percentProgress, ex); }
+
+                if (subdirs == null) return null;
+
+                for (int i = 0; i < subdirs.Count; ++i)
+                {
+                    var ss = start + count * (i + 0) / subdirs.Count;
+                    var cc = start + count * (i + 1) / subdirs.Count - ss;
+
+                    var rr = await _findAsync(subdirs[i], ss, cc).ConfigureAwait(false);
+                    if (rr != null) return rr;
+                }
 
                 return null;
             }
 
-            return await _findAsync(directoryInfo).ConfigureAwait(false);
+            return await _findAsync(directoryInfo, 0, 100).ConfigureAwait(false);
+        }
+
+
+        private static void __ReportDirectoryScanProgress(PPROGRESS percentProgress, DIRECTORY dinfo, int percent)
+        {
+            if (percentProgress == null) return;            
+
+            System.Diagnostics.Debug.Assert(percent >= 0 && percent <= 100, $"Percent {percent} is out of bounds");
+
+            percentProgress.Report(percent);
+            if (percentProgress is IProgress<string> textProgress) textProgress.Report(dinfo.FullName);
+        }
+        private static void __ReportDirectoryScanException(PPROGRESS percentProgress, Exception ex)
+        {
+            if (ex == null) return;
+            switch(percentProgress)
+            {
+                case null: break;
+                case IProgress<Exception> pex: pex.Report(ex); break;
+                case IProgress<string> ptxt: ptxt.Report(ex.Message); break;
+            }
         }        
-        
     }
 }
