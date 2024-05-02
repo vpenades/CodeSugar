@@ -17,7 +17,7 @@ jobs:
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v4    
 
-    - name: Install dependencies
+    - name: Install tools
       run: dotnet tool restore
 
     - name: Install dependencies
