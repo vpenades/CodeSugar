@@ -7,17 +7,18 @@ jobs:
 
     runs-on: ${{ matrix.os }}
     strategy:
-      matrix:
-        dotnet-version: [ '6.0.x', '8.0.x' ]
+      matrix:        
         os: [windows-latest, ubuntu-latest, macos-latest]
 
     steps:
       - uses: actions/checkout@v4
   
-      - name: Setup dotnet ${{ matrix.dotnet-version }}
+      - name: Setup dotnet
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: ${{ matrix.dotnet-version }}
+          dotnet-version: |
+            6.0.x
+            8.0.x
 
       - name: Install tools
         run: dotnet tool restore
