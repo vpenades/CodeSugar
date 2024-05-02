@@ -14,8 +14,18 @@ namespace CodeSugar.Tests
 {
     
 
-    public class SystemIOTests
+    public class SystemIOTests : IProgress<int>
     {
+        public void Report(int value)
+        {
+            TestContext.Progress.WriteLine($"{value}%");
+        }
+
+        public void Report(string value)
+        {
+            TestContext.Progress.WriteLine(value);
+        }
+
         public static bool IsWindowsPlatform => Environment.OSVersion.Platform == PlatformID.Win32NT;
 
         // these are drive names returned by various DriveInfo.GetDrives()
@@ -68,6 +78,8 @@ namespace CodeSugar.Tests
         [Test]
         public void TestPaths()
         {
+            Assert.That(System.IO.MatchCasing.PlatformDefault.IsTempPath(System.IO.Path.GetTempPath()));
+
             Assert.That(CODESUGARIO.SplitPath("/abc/d/e"), Is.EqualTo(new string[] { "abc", "d", "e" }));
 
             Assert.That(CODESUGARIO.SplitPath("//network/abc/d/e"), Is.EqualTo(new string[] { "//network", "abc", "d", "e" }));            
@@ -77,20 +89,20 @@ namespace CodeSugar.Tests
 
             if (CODESUGARIO.FileSystemIsCaseSensitive)
             {
-                Assert.That(CODESUGARIO.ArePathsEqual("c:/abc", "c:/abc/"));
-                Assert.That(CODESUGARIO.ArePathsEqual("c:/abc", "c:/abC/"), Is.Not.True);                
+                Assert.That(MatchCasing.PlatformDefault.ArePathsEqual("c:/abc", "c:/abc/"));
+                Assert.That(MatchCasing.PlatformDefault.ArePathsEqual("c:/abc", "c:/abC/"), Is.Not.True);                
             }
             else
             {
-                Assert.That(CODESUGARIO.ArePathsEqual("c:/abc", "c:/abc/"));
-                Assert.That(CODESUGARIO.ArePathsEqual("C:/abc", "c:/ABC/"));
-                Assert.That(CODESUGARIO.ArePathsEqual("c:/abc", "c:/abX/"), Is.Not.True);                
+                Assert.That(MatchCasing.PlatformDefault.ArePathsEqual("c:/abc", "c:/abc/"));
+                Assert.That(MatchCasing.PlatformDefault.ArePathsEqual("C:/abc", "c:/ABC/"));
+                Assert.That(MatchCasing.PlatformDefault.ArePathsEqual("c:/abc", "c:/abX/"), Is.Not.True);                
             }
 
             if (IsWindowsPlatform)
             {
                 Assert.That(CODESUGARIO.SplitPath("\\abc/d\\e"), Is.EqualTo(new string[] { "abc", "d", "e" }));
-                Assert.That(CODESUGARIO.ArePathsEqual("C:\\AbC/", "c:/aBc\\"));
+                Assert.That(MatchCasing.PlatformDefault.ArePathsEqual( "C:\\AbC/", "c:/aBc\\"));
             }
         }
 
@@ -357,19 +369,19 @@ namespace CodeSugar.Tests
         [Test]
         public async Task TestEnumeration()
         {
-            var rinfo = ResourceInfo.From("readme.txt");
+            var rinfo = ResourceInfo.From("readme.txt");            
 
-            var file = await rinfo.File.Directory.Parent.FindFirstFileAsync(f => f.Name == "readme.txt", System.Threading.CancellationToken.None);
+            var file = await rinfo.File.Directory.Parent.FindFirstFileAsync(f => f.Name == "readme.txt", SearchOption.AllDirectories, System.Threading.CancellationToken.None, this);
             Assert.That(file, Is.Not.Null);
             
-            var files = await rinfo.File.Directory.Parent.FindAllFilesAsync(f => f.Name == "readme.txt", System.Threading.CancellationToken.None);
+            var files = await rinfo.File.Directory.Parent.FindAllFilesAsync(f => f.Name == "readme.txt", SearchOption.AllDirectories, System.Threading.CancellationToken.None, this);
             Assert.That(files, Is.Not.Null);
             Assert.That(files.Count, Is.AtLeast(1));
 
-            var dir = await rinfo.File.Directory.Parent.FindFirstDirectoryAsync(d => d.Name == "Resources", System.Threading.CancellationToken.None);
+            var dir = await rinfo.File.Directory.Parent.FindFirstDirectoryAsync(d => d.Name == "Resources", SearchOption.AllDirectories, System.Threading.CancellationToken.None, this);
             Assert.That(dir, Is.Not.Null);
 
-            var dirs = await rinfo.File.Directory.Parent.FindAllDirectoriesAsync(d => d.Name == "Resources", System.Threading.CancellationToken.None);
+            var dirs = await rinfo.File.Directory.Parent.FindAllDirectoriesAsync(d => d.Name == "Resources", SearchOption.AllDirectories, System.Threading.CancellationToken.None, this);
             Assert.That(dirs, Is.Not.Null);
             Assert.That(dirs.Count, Is.AtLeast(1));
         }
@@ -382,5 +394,6 @@ namespace CodeSugar.Tests
             var result = CodeSugar.Win32_OpenFileDialog.TryOpenFile(out var dstFile, "Open file", "text files|*.txt");
         }
 
+        
     }
 }

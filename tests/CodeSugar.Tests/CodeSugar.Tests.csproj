@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="8.0.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.9.0" />
     <PackageReference Include="NUnit" Version="4.1.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.5.0" />
     <PackageReference Include="NUnit.Analyzers" Version="4.1.0">
@@ -34,6 +34,7 @@
     <ProjectReference Include="..\..\src\CodeSugar.Stream.Bin.Sources\CodeSugar.Stream.Bin.Sources.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Sys.IO.Sources\CodeSugar.Sys.IO.Sources.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Sys.Sources\CodeSugar.Sys.Sources.csproj" />
+    <ProjectReference Include="..\..\src\CodeSugar.Sys.Text.Sources\CodeSugar.Sys.Text.Sources.csproj" />
   </ItemGroup>
 
 </Project>

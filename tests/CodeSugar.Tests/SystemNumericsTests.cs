@@ -7,8 +7,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-using NuGet.Frameworks;
-
 using NUnit.Framework;
 
 namespace CodeSugar
@@ -36,10 +34,27 @@ namespace CodeSugar
         [Test]
         public void TestConvert()
         {
-            var v = new Vector2(1, 2);
-            var p = v.ConvertTo<System.Drawing.PointF>();
-            Assert.That(p.X, Is.EqualTo(1));
-            Assert.That(p.Y, Is.EqualTo(2));            
+            var v2 = new Vector2(1, 2);
+            var p2 = v2.ConvertTo<System.Drawing.PointF>();
+            var v2v = p2.ConvertToVector2();
+            Assert.That(v2, Is.EqualTo(v2v));
+
+            var v3 = new Vector3(1, 2, 3);
+            var p3 = v3.ConvertTo<TestVector3Fields>();
+            var v3v = p3.ConvertToVector3();
+            Assert.That(v3, Is.EqualTo(v3v));
+
+            v3 = new Vector3(1, 2, 3);
+            var p3v = v3.ConvertTo<TestVector3Properties>();
+            v3v = p3v.ConvertToVector3();
+            Assert.That(v3, Is.EqualTo(v3v));
+
+            var v4 = new Vector4(1, 2, 3, 4);
+            var p4v = v4.ConvertTo<(float,float,float,float)>();
+            var v4v = p4v.ConvertToVector4();
+            Assert.That(v4, Is.EqualTo(v4v));
+
+            Assert.Throws(typeof(TypeInitializationException),()=> v3.ConvertTo<Double>());
         }
 
         [Test]
@@ -112,6 +127,22 @@ namespace CodeSugar
             var imm = m.InvertedFast();
 
             _TestEquality(im.Translation, imm.Translation, 0.0001f);
+        }
+
+        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+        struct TestVector3Fields
+        {
+            public float X;
+            public float Y;
+            public float Z;
+        }
+
+        [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+        struct TestVector3Properties
+        {
+            public float X { get; set; }
+            public float Y { get; set; }
+            public float Z { get; set; }
         }
     }
 }
