@@ -53,7 +53,7 @@ namespace $rootnamespace$
 
                 ctoken.ThrowIfCancellationRequested();
 
-                __ReportDirectoryScanProgress(percentProgress, dinfo, start);
+                __ReportDirectoryScanProgress(percentProgress, start, dinfo);
 
                 List<DIRECTORY> subdirs = null;
 
@@ -101,7 +101,7 @@ namespace $rootnamespace$
 
                 ctoken.ThrowIfCancellationRequested();
 
-                __ReportDirectoryScanProgress(percentProgress, dinfo, start);
+                __ReportDirectoryScanProgress(percentProgress, start, dinfo);
 
                 List<DIRECTORY> subdirs = null;
 
@@ -152,7 +152,7 @@ namespace $rootnamespace$
 
                 ctoken.ThrowIfCancellationRequested();
 
-                __ReportDirectoryScanProgress(percentProgress, dinfo, start);
+                __ReportDirectoryScanProgress(percentProgress, start, dinfo);
 
                 List<DIRECTORY> subdirs = null;
 
@@ -200,7 +200,7 @@ namespace $rootnamespace$
 
                 ctoken.ThrowIfCancellationRequested();
 
-                __ReportDirectoryScanProgress(percentProgress, dinfo, start);
+                __ReportDirectoryScanProgress(percentProgress, start, dinfo);
 
                 List<DIRECTORY> subdirs = null;
 
@@ -233,11 +233,17 @@ namespace $rootnamespace$
         }
 
 
-        private static void __ReportDirectoryScanProgress(PPROGRESS percentProgress, DIRECTORY dinfo, int percent)
+        private static void __ReportDirectoryScanProgress(PPROGRESS percentProgress, int percent, DIRECTORY dinfo)
         {
             if (percentProgress == null) return;            
 
             System.Diagnostics.Debug.Assert(percent >= 0 && percent <= 100, $"Percent {percent} is out of bounds");
+
+            if (percentProgress is IProgress<(int, string)> mixedProgress)
+            {
+                mixedProgress.Report((percent, dinfo.FullName));
+                return;
+            }
 
             percentProgress.Report(percent);
             if (percentProgress is IProgress<string> textProgress) textProgress.Report(dinfo.FullName);

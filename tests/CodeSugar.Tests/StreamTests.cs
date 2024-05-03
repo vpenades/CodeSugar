@@ -137,10 +137,18 @@ namespace CodeSugar
             Assert.That(rnd2.StreamEquals(rnd3, factory, buffLen), Is.True);
             Assert.That(rnd1.Position, Is.Zero);
             Assert.That(rnd2.Position, Is.Zero);
-
+            
+            // same length, same content, different streams
             var f1 = ResourceInfo.From("readme.txt").File;
             var f2 = ResourceInfo.From("readme.txt").File;
             Assert.That(f1.StreamEquals(f2, factory, buffLen), Is.True);
+
+            // same length but not same content
+            using var m1 = new System.IO.MemoryStream(); m1.WriteAllText("ABC"); m1.Position = 0;
+            using var m2 = new System.IO.MemoryStream(); m2.WriteAllText("CBA"); m2.Position = 0;
+            Assert.That(m1.StreamEquals(m2, factory, buffLen), Is.Not.True);
+            Assert.That(m1.Position, Is.Zero);
+            Assert.That(m2.Position, Is.Zero);
         }
     }
 }
