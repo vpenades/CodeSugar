@@ -12,11 +12,17 @@ Consuming packages as source code has advantages and disadvantages:
 
 The purpose of these packages is to pack many sparse but commonly used extension methods that can be easily consumed.
 
-This is ideal when you want to reuse tiny bits of code here and there, but you don't want to bloat your project with external dependencies that might create version conflicts downstream.
+Advantages
 
-Another advantage is that the namespace of the extension classes are automatically adjusted to the namespace of your project, which makes the extensions easier to use.
+- Reuse tiny bits of code here and there.
+- Don't bloat your project with external dependencies that might create version conflicts downstream.
+- Conditional Debug/Release support.
+- Namespace of the extension classes are automatically adjusted to the namespace of your project, which makes the extensions easier to use.
 
-The disadvantage is that, since there's no external package reference, and the classes are declared as internal, the code is not propagated transitively, so you need to reference these packages on _every_ project you want the extensions to be available.
+Disadvantages
+
+- Since there's no external package reference, and the classes are declared as internal, the code is not propagated transitively, so you need to reference these packages on _every_ project you want the extensions to be available.
+- It might fail if your project's path is very long due to how this kind of packages is consumed.
 
 ### Source code injection considerations
 
