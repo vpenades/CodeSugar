@@ -20,7 +20,13 @@ namespace $rootnamespace$
 {
     partial class CodeSugarForSystem
     {
-        public static T ConvertTo<T>(this System.IConvertible value)
+        public static string ToStringInvariant<T>(T value)
+            where T:IConvertible
+        {
+            return value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        }        
+
+        public static T ConvertToInvariant<T>(this System.IConvertible value)
             where T:IConvertible
         {
             switch(value)
