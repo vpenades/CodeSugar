@@ -20,6 +20,11 @@ namespace $rootnamespace$
 {
     static partial class CodeSugarForSystemIO
     {
+        public static bool HasAnyExtension(this FILE finfo, params string[] extensions)
+        {
+            return extensions.Any(ext => HasExtension(finfo, ext));
+        }
+
         public static bool HasExtension(this FILE finfo, string extension)
         {
             if (string.IsNullOrEmpty(extension)) throw new ArgumentNullException(nameof(extension));
@@ -85,10 +90,12 @@ namespace $rootnamespace$
         }
 
         // https://www.lifewire.com/list-of-executable-file-extensions-2626061
+
         private static readonly string[] _WindowsExecutableExtensions = new[] { "ex_", "exe", "dll", "com", "scr", "gadget", "u3p", "vbe", "jar", "jse" };
 
         // although a .lnk file is essentially a windows link, it also supports command line arguments,
         // which make it, in practice, fully scriptable and is being used to download and install malware
+
         private static readonly string[] _WindowsScriptExtensions = new[] { "lnk", "bat", "cmd", "sh", "ps1", "reg", "rgs", "sct", "shb", "vb", "vbs", "vbscript", "ws", "wsf", "wsh" };
         private static readonly string[] _WindowsShellExtensions = new[] { "cpl", "inf", "ins", "job", "msc", "pif", "shs" };
         private static readonly string[] _WindowsInstallerExtensions = new[] { "inx", "isu", "cab", "msi", "msp", "mst", "paf" };
