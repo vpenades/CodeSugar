@@ -43,17 +43,26 @@ namespace $rootnamespace$
         /// Opens a file only if it's a media file, like an image, a video or a text document. Executables and scripts are explicitly omitted
         /// </summary>
         /// <param name="finfo">the file to open</param>
-        public static void ShellOpenMedia(this FILE finfo)
+        public static bool ShellOpenMedia(this FILE finfo)
         {
-            var psi = GetProcessStartMedia(finfo);
-            if (psi != null) System.Diagnostics.Process.Start(psi)?.Dispose();
+            var psi = __GetProcessStartMedia(finfo);
+            if (psi == null) return false;
+
+            System.Diagnostics.Process.Start(psi)?.Dispose();
+
+            return true;
         }
 
-        public static void ShellShowInExplorer(this FILE finfo)
+        public static bool ShellShowInExplorer(this FILE finfo)
         {
-            if (System.Environment.OSVersion.Platform != System.PlatformID.Win32NT) return;
+            if (System.Environment.OSVersion.Platform != System.PlatformID.Win32NT) return false;
 
-            if (finfo == null || !finfo.Exists) return;
+            if (finfo == null) return false;
+
+            if (!finfo.Exists)
+            {
+                return ShellShowInExplorer(finfo.Directory);
+            }
 
             var psi = new System.Diagnostics.ProcessStartInfo()
             {
@@ -63,14 +72,21 @@ namespace $rootnamespace$
             };
 
             System.Diagnostics.Process.Start(psi)?.Dispose();
+
+            return true;
         }
 
-        public static void ShellShowInExplorer(this DIRECTORY dirInfo)
+        public static bool ShellShowInExplorer(this DIRECTORY dirInfo)
         {
-            if (System.Environment.OSVersion.Platform != System.PlatformID.Win32NT) return;
+            if (System.Environment.OSVersion.Platform != System.PlatformID.Win32NT) return false;
 
-            var psi = GetProcessStartInfo(dirInfo);
+            if (dirInfo == null) return false;
+            if (!dirInfo.Exists) return false;
+
+            var psi = __GetProcessStartInfo(dirInfo);
             if (psi != null) System.Diagnostics.Process.Start(psi)?.Dispose();
+
+            return true;
         }        
 
         private static System.Diagnostics.ProcessStartInfo GetProcessStartWeb(this Uri uri, bool allowLocalFiles = false)
@@ -86,20 +102,29 @@ namespace $rootnamespace$
             };
         }
 
-        private static System.Diagnostics.ProcessStartInfo GetProcessStartMedia(this FILE finfo)
+        /// <summary>
+        /// Creates a <see cref="System.Diagnostics.ProcessStartInfo"/> for media (audio/video/documents)
+        /// </summary>
+        /// <param name="finfo">an existing file</param>
+        /// <returns>A <see cref="System.Diagnostics.ProcessStartInfo"/> object, or null if the file does not exist or it's a script/executable</returns>
+        private static System.Diagnostics.ProcessStartInfo __GetProcessStartMedia(this FILE finfo)
         {
             if (finfo == null || !finfo.Exists) return null;
-            if (finfo.HasExecutableOrScriptExtension()) return null;
+
+            if (HasAnyExtension(finfo, ".lnk", ".url")) { System.Diagnostics.Debug.Fail("Resolve shortcut before calling"); return null; }
+
+            if (HasExecutableOrScriptExtension(finfo)) return null;            
 
             return new System.Diagnostics.ProcessStartInfo()
             {
                 FileName = finfo.FullName,
+                WorkingDirectory = finfo.Directory.FullName,
                 UseShellExecute = true,
                 ErrorDialog = false
             };
         }
 
-        private static System.Diagnostics.ProcessStartInfo GetProcessStartInfo(this DIRECTORY dirInfo)
+        private static System.Diagnostics.ProcessStartInfo __GetProcessStartInfo(this DIRECTORY dirInfo)
         {
             if (dirInfo == null || !dirInfo.Exists) return null;
 
