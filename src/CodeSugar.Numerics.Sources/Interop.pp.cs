@@ -203,22 +203,33 @@ namespace $rootnamespace$
             #endif        
         T> where T:unmanaged
         {
+            static __Reflection()
+            {
+                // this is not available in a number of frameworks, including Unity.
+                // System.Runtime.CompilerServices.Unsafe.SizeOf<T>();
+
+                // another way is this:                
+                // Span<T> span = stackalloc T[1];
+                // var buff = System.Runtime.InteropServices.MemoryMarshal.AsBytes<T>(span);
+                // ByteSize = buff.Length;
+
+                ByteSize = System.Runtime.InteropServices.Marshal.SizeOf<T>();
+            }
+
+            public static int ByteSize { get; }
+
+            /// <summary>
+            /// Check whether the templated structure is made exclusively of floats.
+            /// </summary>
+            /// <param name="count"></param>
+            /// <exception cref="InvalidOperationException"></exception>
             public static void CheckFloatSequence(int count)
             {
-                if (GetByteSize() != count * 4) throw new InvalidOperationException($"Must have a length of {count*4} bytes");
+                if (ByteSize != count * 4) throw new InvalidOperationException($"Must have a length of {count*4} bytes");
 
                 var types = GetFieldTypes();
                 if (types.Length != count || types.Any(t => t != typeof(float))) throw new InvalidOperationException($"Expected {count} floats");
-            }
-
-            public static int GetByteSize()
-            {
-                #if NET6_0_OR_GREATER
-                return System.Runtime.CompilerServices.Unsafe.SizeOf<T>();
-                #else
-                throw new NotSupportedException();
-                #endif
-            }
+            }            
 
             public static Type[] GetFieldTypes()
             {
