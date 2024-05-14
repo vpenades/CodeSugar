@@ -7,7 +7,6 @@ using System.Text;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Runtime.CompilerServices;
 
 using READABLEBLOCK_SPAM = System.ReadOnlySpan<byte>;
 using WRITEABLEBLOCK_SPAN = System.Span<byte>;

@@ -28,7 +28,7 @@ namespace $rootnamespace$
         /// <param name="stream">The source stream.</param>
         /// <param name="bytes">The destination buffer.</param>
         /// <returns>true if the bytes have successfully read, or false if EOF</returns>
-        public static bool TryReadBytes(this STREAM stream, Span<Byte> bytes)
+        private static bool TryReadBytes(this STREAM stream, Span<Byte> bytes)
         {
             if (stream == null) return false;
 
