@@ -1,0 +1,91 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <TargetFrameworks>netstandard2.1;net6.0</TargetFrameworks>
+    <LangVersion>8</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- not ready yet -->
+    <IsPackable>false</IsPackable>
+    <IsPackableAsSources>true</IsPackableAsSources>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);CODESUGAR_USECODESUGARNAMESPACE</DefineConstants>
+  </PropertyGroup>  
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="CodeSugar.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="readme.md" Pack="true" PackagePath="\" />
+  </ItemGroup>  
+
+  <PropertyGroup>    
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>
+      Quality of life internal extensions for binary serialization
+    </Description>
+  </PropertyGroup>
+
+  <!-- Templates -->
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <!-- TT control properties https://docs.microsoft.com/es-es/visualstudio/modeling/code-generation-in-a-build-process?view=vs-2019 -->
+    <TransformOnBuild>false</TransformOnBuild>
+    <OverwriteReadOnlyOutputFiles>false</OverwriteReadOnlyOutputFiles>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Update="ReadWrite.Array.pp.cs">
+      <DependentUpon>ReadWrite.Array.pp.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="ReadWrite.Span.pp.cs">
+      <DependentUpon>ReadWrite.Span.pp.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="ReadWrite.Stream.pp.cs">
+      <DependentUpon>ReadWrite.Stream.pp.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Update="ReadWrite.Interface.pp.cs">
+      <DependentUpon>ReadWrite.Interface.pp.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ReadWrite.Array.pp.tt">
+      <LastGenOutput>ReadWrite.Array.pp.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="ReadWrite.Span.pp.tt">
+      <LastGenOutput>ReadWrite.Span.pp.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="ReadWrite.Stream.pp.tt">
+      <LastGenOutput>ReadWrite.Stream.pp.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="ReadWrite.Interface.pp.tt">
+      <LastGenOutput>ReadWrite.Interface.pp.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+  </ItemGroup>
+
+</Project>

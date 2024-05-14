@@ -49,10 +49,12 @@ namespace CodeSugar
             v3v = p3v.ConvertToVector3();
             Assert.That(v3, Is.EqualTo(v3v));
 
+            /* no longer supported
             var v4 = new Vector4(1, 2, 3, 4);
             var p4v = v4.ConvertTo<(float,float,float,float)>();
             var v4v = p4v.ConvertToVector4();
             Assert.That(v4, Is.EqualTo(v4v));
+            */
 
             Assert.Throws(typeof(TypeInitializationException),()=> v3.ConvertTo<Double>());
         }

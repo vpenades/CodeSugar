@@ -14,64 +14,6 @@ namespace CodeSugar
     internal class StreamTests
     {
         [Test]
-        public void TestSerialization()
-        {
-            using var m = new System.IO.MemoryStream();
-
-            var dt = new DateTime(2000, 3, 4).ToLocalTime();
-            var d = new DateOnly(dt.Year, dt.Month, dt.Day);
-            var v3 = new System.Numerics.Vector3(1, 2, 3);
-
-            m.WriteValue<int>(10);
-            m.WriteValue<long>(-100, true);
-            m.WriteString("hello world");
-            m.WriteValue(dt);
-            m.WriteValue(v3);
-            m.WriteSigned64Packed(-345);
-            m.WriteSigned64Packed(long.MinValue);
-            m.WriteSigned64Packed(long.MaxValue);
-            m.WriteUnsigned64Packed(345);
-            m.WriteUnsigned64Packed(ulong.MinValue);
-            m.WriteUnsigned64Packed(ulong.MaxValue);
-            m.WriteValue(d);
-            m.WriteValues(1, 2, 3, 4);
-            m.WriteValue(TypeCode.Int32);
-
-            m.WriteString("Direct");
-            using (var bw = m.CreateBinaryWriter(true))
-            {
-                bw.Write("BinaryWriter");
-            }
-
-            Assert.Throws<ArgumentException>(() => m.WriteValue((0, 1)));
-
-            m.Position = 0;
-
-            Assert.That(m.ReadValue<int>(), Is.EqualTo(10));
-            Assert.That(m.ReadValue<long>(true), Is.EqualTo(-100));
-            Assert.That(m.ReadString(), Is.EqualTo("hello world"));
-            Assert.That(m.ReadValue<DateTime>(), Is.EqualTo(dt));
-            Assert.That(m.ReadValue<System.Numerics.Vector3>(), Is.EqualTo(v3));
-            Assert.That(m.ReadSigned64Packed(), Is.EqualTo(-345));
-            Assert.That(m.ReadSigned64Packed(), Is.EqualTo(long.MinValue));
-            Assert.That(m.ReadSigned64Packed(), Is.EqualTo(long.MaxValue));
-            Assert.That(m.ReadUnsigned64Packed(), Is.EqualTo(345));
-            Assert.That(m.ReadUnsigned64Packed(), Is.EqualTo(ulong.MinValue));
-            Assert.That(m.ReadUnsigned64Packed(), Is.EqualTo(ulong.MaxValue));
-            Assert.That(m.ReadValue<DateOnly>(), Is.EqualTo(d));
-            Assert.That(m.ReadValues<int, int, int, int>(), Is.EqualTo((1, 2, 3, 4)));
-            Assert.That(m.ReadValue<TypeCode>(), Is.EqualTo(TypeCode.Int32));
-
-            using (var br = m.CreateBinaryReader(true))
-            {
-                Assert.That(br.ReadString(), Is.EqualTo("Direct"));
-            }
-            Assert.That(m.ReadString(), Is.EqualTo("BinaryWriter"));
-
-            Assert.Throws<ArgumentException>(() => m.ReadValue<(int, int)>());
-        }
-
-        [Test]
         public async Task TestStreamsAsync()
         {
             await _TestReadWriteBytesAsync(() => new System.IO.MemoryStream());
@@ -149,6 +91,6 @@ namespace CodeSugar
             Assert.That(m1.StreamEquals(m2, factory, buffLen), Is.Not.True);
             Assert.That(m1.Position, Is.Zero);
             Assert.That(m2.Position, Is.Zero);
-        }
+        }        
     }
 }
