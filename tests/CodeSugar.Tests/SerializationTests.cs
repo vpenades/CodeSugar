@@ -158,9 +158,7 @@ namespace CodeSugar
 
             private static System.IO.Stream ReadFromStream(System.IO.Stream stream, ref System.Numerics.Vector3 v)
             {
-                stream = stream.ReadLeF32(out var x).ReadLeF32(out var y).ReadLeF32(out var z);
-                v = new System.Numerics.Vector3(x, y, z);
-                return stream;
+                return stream.ReadLeF32(out v.X).ReadLeF32(out v.Y).ReadLeF32(out v.Z);
             }
 
             private static ArraySegment<Byte> WriteToStream(ArraySegment<Byte> stream, System.Numerics.Vector3 v)
@@ -170,9 +168,7 @@ namespace CodeSugar
 
             private static ArraySegment<Byte> ReadFromStream(ArraySegment<Byte> stream, ref System.Numerics.Vector3 v)
             {
-                stream = stream.ReadLeF32(out var x).ReadLeF32(out var y).ReadLeF32(out var z);
-                v = new System.Numerics.Vector3(x, y, z);
-                return stream;
+                return stream.ReadLeF32(out v.X).ReadLeF32(out v.Y).ReadLeF32(out v.Z);
             }
 
             public void Check()
