@@ -27,8 +27,8 @@ jobs:
 
     - name: publish release tag
       # https://github.com/elgohr/Github-Release-Action
-      # https://github.com/softprops/action-gh-release      
-      uses: https://github.com/softprops/action-gh-release      
+      # https://github.com/softprops/action-gh-release
+      uses: softprops/action-gh-release@v2    
       with:
         # token: ${{ secrets.CODESUGAR_EMITRELEASETAG }}
         title: Draft release
