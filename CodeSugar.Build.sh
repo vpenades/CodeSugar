@@ -14,7 +14,7 @@ TIME_SHORT=$(date +'%H%M%S')
 PACKAGEVERSION="${PACKAGEVERSION/TIME/$TIME_SHORT}"
 
 # report semver
-echo package version: $PACKAGEVERSION";
+echo "package version: $PACKAGEVERSION";
 
 # build
 
