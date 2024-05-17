@@ -102,135 +102,7 @@ namespace $rootnamespace$
 
         #endregion
         
-
-        #region specialised - packed size
-
-        /// <summary>
-        /// Packs a <see cref="UInt64"/> value.
-        /// </summary>
-        /// <param name="target">The target memory.</param>
-        /// <param name="value">The value to pack.</param>
-        /// <remarks>
-        /// Stores the sign in the lowest bit to allow the same encoding strength on positive and negative values.
-        /// </remarks>
-        public static WRITEABLEBLOCK WritePackedS64(this WRITEABLEBLOCK target, long value)
-        {
-            var uval = (ulong)value;
-
-            if (value >= 0)
-            {
-                uval <<= 1;
-            }
-            else
-            {
-                uval = ~uval;
-                uval <<= 1;
-                uval |= 1;
-            }
-
-            return WritePackedU64(target, uval);
-        }
-
-        /// <summary>
-        /// Packs a <see cref="UInt64"/> value.
-        /// </summary>
-        /// <param name="target">The target memory.</param>
-        /// <param name="uValue">The value to pack.</param>
-        /// <remarks>
-        /// This is equivalent to <see cref="BinaryWriter.Write7BitEncodedInt64(long)"/>
-        /// </remarks>
-        public static WRITEABLEBLOCK WritePackedU64(this WRITEABLEBLOCK target, ulong uValue)
-        {
-            // if (target.Length < 10) throw new ArgumentException(nameof(target), "too short");
-
-            // Write out an int 7 bits at a time. The high bit of the byte,
-            // when on, tells reader to continue reading more bytes.
-            //
-            // Using the constants 0x7F and ~0x7F below offers smaller
-            // codegen than using the constant 0x80.            
-
-            
-
-            while (uValue > 0x7Fu)
-            {
-                target = target.WriteU8( (byte)((uint)uValue | ~0x7Fu) );
-                uValue >>= 7;
-            }
-
-            return target.WriteU8( (byte)uValue );
-        }
-
-        /// <summary>
-        /// Unpacks a <see cref="Int64"/> value.
-        /// </summary>
-        /// <param name="target">The target memory.</param>
-        /// <param name="result">the read value</param>
-        /// <returns>The target memory with pointer moved forward.</returns>
-        /// <remarks>
-        /// Stores the sign in the lowest bit to allow the same encoding strength on positive and negative values.
-        /// </remarks>        
-        public static READABLEBLOCK ReadPackedS64(this READABLEBLOCK source, out long result)
-        {
-            source = ReadPackedU64(source, out var uval);
-            var neg = (uval & 1) != 0;
-            uval >>= 1;
-            if (neg) uval = ~uval;
-            result = (long)uval;
-            return source;
-        }
-
-        /// <summary>
-        /// Unpacks a <see cref="UInt64"/> value.
-        /// </summary>
-        /// <param name="source">The source memory.</param>
-        /// <param name="result">the read value</param>
-        /// <returns>The source memory with pointer moved forward.</returns>
-        /// <remarks>
-        /// This is equivalent to <see cref="BinaryReader.Read7BitEncodedInt64"/>
-        /// </remarks>        
-        public static READABLEBLOCK ReadPackedU64(this READABLEBLOCK source, out ulong result)
-        {
-            result = 0;
-            byte readValue;            
-
-            // Read the integer 7 bits at a time. The high bit
-            // of the byte when on means to continue reading more bytes.
-            //
-            // There are two failure cases: we've read more than 10 bytes,
-            // or the tenth byte is about to cause integer overflow.
-            // This means that we can read the first 9 bytes without
-            // worrying about integer overflow.
-
-            const int MaxBytesWithoutOverflow = 9;
-            for (int shift = 0; shift < MaxBytesWithoutOverflow * 7; shift += 7)
-            {                
-                source = source.ReadU8(out readValue);
-                
-                result |= (readValue & 0x7Ful) << shift;
-
-                if (readValue <= 0x7Fu)
-                {
-                    return source; // early exit
-                }
-            }
-
-            // Read the 10th byte. Since we already read 63 bits,
-            // the value of this byte must fit within 1 bit (64 - 63),
-            // and it must not have the high bit set.
-
-            source = source.ReadU8(out readValue);            
-            if (readValue > 0b_1u)
-            {
-                throw new FormatException("invalid encoding");
-            }
-
-            result |= (ulong)readValue << (MaxBytesWithoutOverflow * 7);
-            return source;
-        }
-
-        #endregion
-
-        #region fixed endianness
+        #region primitives
 
         public static WRITEABLEBLOCK WriteBool(this WRITEABLEBLOCK source, bool value) { return WriteU8(source, value ? (Byte)255 : (Byte)0); }
         public static READABLEBLOCK ReadBool(this READABLEBLOCK source, out bool value)
@@ -379,6 +251,134 @@ namespace $rootnamespace$
         public static READABLEBLOCK ReadBeF64(this READABLEBLOCK target, out Double value) => ReadEndian(target, out value, true);
 
         #endregion
+        
+
+        #region specialised - packed size
+
+        /// <summary>
+        /// Packs a <see cref="UInt64"/> value.
+        /// </summary>
+        /// <param name="target">The target memory.</param>
+        /// <param name="value">The value to pack.</param>
+        /// <remarks>
+        /// Stores the sign in the lowest bit to allow the same encoding strength on positive and negative values.
+        /// </remarks>
+        public static WRITEABLEBLOCK WritePackedS64(this WRITEABLEBLOCK target, long value)
+        {
+            var uval = (ulong)value;
+
+            if (value >= 0)
+            {
+                uval <<= 1;
+            }
+            else
+            {
+                uval = ~uval;
+                uval <<= 1;
+                uval |= 1;
+            }
+
+            return WritePackedU64(target, uval);
+        }
+
+        /// <summary>
+        /// Packs a <see cref="UInt64"/> value.
+        /// </summary>
+        /// <param name="target">The target memory.</param>
+        /// <param name="uValue">The value to pack.</param>
+        /// <remarks>
+        /// This is equivalent to <see cref="BinaryWriter.Write7BitEncodedInt64(long)"/>
+        /// </remarks>
+        public static WRITEABLEBLOCK WritePackedU64(this WRITEABLEBLOCK target, ulong uValue)
+        {
+            // if (target.Length < 10) throw new ArgumentException(nameof(target), "too short");
+
+            // Write out an int 7 bits at a time. The high bit of the byte,
+            // when on, tells reader to continue reading more bytes.
+            //
+            // Using the constants 0x7F and ~0x7F below offers smaller
+            // codegen than using the constant 0x80.            
+
+            
+
+            while (uValue > 0x7Fu)
+            {
+                target = target.WriteU8( (byte)((uint)uValue | ~0x7Fu) );
+                uValue >>= 7;
+            }
+
+            return target.WriteU8( (byte)uValue );
+        }
+
+        /// <summary>
+        /// Unpacks a <see cref="Int64"/> value.
+        /// </summary>
+        /// <param name="target">The target memory.</param>
+        /// <param name="result">the read value</param>
+        /// <returns>The target memory with pointer moved forward.</returns>
+        /// <remarks>
+        /// Stores the sign in the lowest bit to allow the same encoding strength on positive and negative values.
+        /// </remarks>        
+        public static READABLEBLOCK ReadPackedS64(this READABLEBLOCK source, out long result)
+        {
+            source = ReadPackedU64(source, out var uval);
+            var neg = (uval & 1) != 0;
+            uval >>= 1;
+            if (neg) uval = ~uval;
+            result = (long)uval;
+            return source;
+        }
+
+        /// <summary>
+        /// Unpacks a <see cref="UInt64"/> value.
+        /// </summary>
+        /// <param name="source">The source memory.</param>
+        /// <param name="result">the read value</param>
+        /// <returns>The source memory with pointer moved forward.</returns>
+        /// <remarks>
+        /// This is equivalent to <see cref="BinaryReader.Read7BitEncodedInt64"/>
+        /// </remarks>        
+        public static READABLEBLOCK ReadPackedU64(this READABLEBLOCK source, out ulong result)
+        {
+            result = 0;
+            byte readValue;            
+
+            // Read the integer 7 bits at a time. The high bit
+            // of the byte when on means to continue reading more bytes.
+            //
+            // There are two failure cases: we've read more than 10 bytes,
+            // or the tenth byte is about to cause integer overflow.
+            // This means that we can read the first 9 bytes without
+            // worrying about integer overflow.
+
+            const int MaxBytesWithoutOverflow = 9;
+            for (int shift = 0; shift < MaxBytesWithoutOverflow * 7; shift += 7)
+            {                
+                source = source.ReadU8(out readValue);
+                
+                result |= (readValue & 0x7Ful) << shift;
+
+                if (readValue <= 0x7Fu)
+                {
+                    return source; // early exit
+                }
+            }
+
+            // Read the 10th byte. Since we already read 63 bits,
+            // the value of this byte must fit within 1 bit (64 - 63),
+            // and it must not have the high bit set.
+
+            source = source.ReadU8(out readValue);            
+            if (readValue > 0b_1u)
+            {
+                throw new FormatException("invalid encoding");
+            }
+
+            result |= (ulong)readValue << (MaxBytesWithoutOverflow * 7);
+            return source;
+        }
+
+        #endregion        
 
         #region specialised - time
 

@@ -34,6 +34,7 @@ namespace $rootnamespace$
     static partial class CodeSugarForSerialization
     {
 <#@ include file="ReadWrite.Body.Numerics.t4" #>
+<#@ include file="ReadWrite.Body.Primitives.t4" #>
 <#@ include file="ReadWrite.body.t4" #>
     }
 }

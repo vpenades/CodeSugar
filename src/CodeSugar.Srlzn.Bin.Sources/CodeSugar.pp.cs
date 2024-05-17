@@ -25,6 +25,7 @@ namespace $rootnamespace$
 {
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
     [global::System.CodeDom.Compiler.GeneratedCode("CodeSugar.CodeGen", "1.0.0.0")]
+    [System.Diagnostics.DebuggerStepThrough]    
     static partial class CodeSugarForSerialization
     {
         #if NETSTANDARD1_6_OR_GREATER
