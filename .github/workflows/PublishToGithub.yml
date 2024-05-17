@@ -18,17 +18,16 @@ jobs:
 
     - name: Define Version
       run: |
-        PACKAGEVERSION="1.0.0-Prv-DATE-TIME"
-        # replace date
+        #define constants
         DATE_SHORT=$(date +'%Y%m%d')
-        PACKAGEVERSION="${PACKAGEVERSION/DATE/$DATE_SHORT}"
-        # replace time
         TIME_SHORT=$(date +'%H%M%S')
+        PACKAGEVERSION="1.0.0-Prv-DATE-TIME"        
+        # replace date and time        
+        PACKAGEVERSION="${PACKAGEVERSION/DATE/$DATE_SHORT}"        
         PACKAGEVERSION="${PACKAGEVERSION/TIME/$TIME_SHORT}"
         # report
         echo "package version: $PACKAGEVERSION";
-        echo "GHENV_PACKAGEVERSION=$PACKAGEVERSION" >> $GITHUB_ENV
-        
+        echo "GHENV_PACKAGEVERSION=$PACKAGEVERSION" >> $GITHUB_ENV        
 
     - name: Build
       run: |
