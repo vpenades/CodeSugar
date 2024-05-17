@@ -17,7 +17,7 @@ jobs:
     - name: Build
       run: |
         chmod +x ./CodeSugar.Build.sh
-        ./CodeSugar.Build.sh "Prv-DATE"
+        ./CodeSugar.Build.sh "1.0.0-Prv-DATE"
 
     - name: Push to NuGet
       run: dotnet nuget push "*.nupkg" --api-key ${{secrets.CodeSugar_PublishToNuget}} --source https://api.nuget.org/v3/index.json

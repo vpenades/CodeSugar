@@ -2,19 +2,19 @@
 
 # set input or default
 
-DEFAULTVERSIONSUFFIX="Test-DATE-TIME"
-VERSIONSUFFIX=${1:-$DEFAULTVERSIONSUFFIX}
+DEFAULTPACKAGEVERSION="1.0.0-Test-DATE-TIME"
+PACKAGEVERSION=${1:-$DEFAULTPACKAGEVERSION}
 
 # replace date
 DATE_SHORT=$(date +'%Y%m%d')
-VERSIONSUFFIX="${VERSIONSUFFIX/DATE/$DATE_SHORT}"
+PACKAGEVERSION="${PACKAGEVERSION/DATE/$DATE_SHORT}"
 
 # replace time
 TIME_SHORT=$(date +'%H%M%S')
-VERSIONSUFFIX="${VERSIONSUFFIX/TIME/$TIME_SHORT}"
+PACKAGEVERSION="${PACKAGEVERSION/TIME/$TIME_SHORT}"
 
 # report semver
-echo "version suffix: $VERSIONSUFFIX";
+echo package version: $PACKAGEVERSION";
 
 # build
 
@@ -22,4 +22,4 @@ dotnet tool restore
 dornet restore
 
 dotnet test -c Release CodeSugar.sln
-dotnet PackAsSourcesNuget CodeSugar.sln -o . --version-suffix $VERSIONSUFFIX
+dotnet PackAsSourcesNuget CodeSugar.sln -o . --package-version $PACKAGEVERSION
