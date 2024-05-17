@@ -22,10 +22,18 @@ jobs:
     - name: Push to Github
       run: dotnet nuget push "*.nupkg" --api-key ${{secrets.CodeSugar_PublishToGithub}} --source https://nuget.pkg.github.com/${{github.repository_owner}}
 
+    - name: Generate Changelog
+      run: echo "# Good things have arrived" > ${{ github.workspace }}-CHANGELOG.txt
+
     - name: publish release tag
-      uses: elgohr/Github-Release-Action@v5
-      env:
-        GH_TOKEN: ${{ secrets.CODESUGAR_EMITRELEASETAG }}
+      # https://github.com/elgohr/Github-Release-Action
+      # https://github.com/softprops/action-gh-release      
+      uses: https://github.com/softprops/action-gh-release      
       with:
-        title: Preview release
+        # token: ${{ secrets.CODESUGAR_EMITRELEASETAG }}
+        title: Draft release
+        draft: true
+        prerelease: true
+        generate_release_notes: true
+        make_latest: false
       
