@@ -30,7 +30,7 @@ jobs:
       # https://github.com/softprops/action-gh-release
       uses: softprops/action-gh-release@v2    
       with:
-        # token: ${{ secrets.CODESUGAR_EMITRELEASETAG }}
+        token: ${{ secrets.CODESUGAR_EMITRELEASETAG }}
         title: Draft release
         draft: true
         prerelease: true
