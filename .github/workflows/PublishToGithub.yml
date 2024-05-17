@@ -14,22 +14,36 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v4    
+      uses: actions/setup-dotnet@v4
+
+    - name: Define Version
+      run: |
+        PACKAGEVERSION="1.0.0-Prv-DATE-TIME"
+        # replace date
+        DATE_SHORT=$(date +'%Y%m%d')
+        PACKAGEVERSION="${PACKAGEVERSION/DATE/$DATE_SHORT}"
+        # replace time
+        TIME_SHORT=$(date +'%H%M%S')
+        PACKAGEVERSION="${PACKAGEVERSION/TIME/$TIME_SHORT}"
+        # report
+        echo "package version: $PACKAGEVERSION";
+        echo "GHENV_PACKAGEVERSION=$PACKAGEVERSION" >> $GITHUB_ENV
+        
 
     - name: Build
       run: |
         chmod +x ./CodeSugar.Build.sh
-        ./CodeSugar.Build.sh "1.0.0-Prv-DATE-TIME"
+        ./CodeSugar.Build.sh $GHENV_PACKAGEVERSION
 
-    - name: Push to Github
-      run: dotnet nuget push "*.nupkg" --api-key ${{secrets.CodeSugar_PublishToGithub}} --source https://nuget.pkg.github.com/${{github.repository_owner}}    
+    # - name: Push to Github
+    #   run: dotnet nuget push "*.nupkg" --api-key ${{secrets.CodeSugar_PublishToGithub}} --source https://nuget.pkg.github.com/${{github.repository_owner}}    
 
     - name: publish release tag
       # https://github.com/elgohr/Github-Release-Action
       # https://github.com/softprops/action-gh-release
       uses: softprops/action-gh-release@v2    
-      with:        
-        draft: true
+      with:
+        name: "Prerelease $GHENV_PACKAGEVERSION"
         prerelease: true
         generate_release_notes: true
         make_latest: false
