@@ -34,14 +34,14 @@ jobs:
         chmod +x ./CodeSugar.Build.sh
         ./CodeSugar.Build.sh $GHENV_PACKAGEVERSION
 
-    # - name: Push to Github
-    #   run: dotnet nuget push "*.nupkg" --api-key ${{secrets.CodeSugar_PublishToGithub}} --source https://nuget.pkg.github.com/${{github.repository_owner}}        
+    - name: Push to Github
+      run: dotnet nuget push "*.nupkg" --api-key ${{secrets.CodeSugar_PublishToGithub}} --source https://nuget.pkg.github.com/${{github.repository_owner}}        
 
     - name: create tag
       uses: ./.github/workflows/PushGithubTag.yml@main
       with:
-        tag-name: some-value "${{env.GHENV_PACKAGEVERSION}}"
-        message: "Release version ${{env.GHENV_PACKAGEVERSION}}"
+        tag-name: some-value "Preview-${{env.GHENV_PACKAGEVERSION}}"
+        message: "Preview version Preview-${{env.GHENV_PACKAGEVERSION}}"
      
     # - name: create release
     #   # https://github.com/elgohr/Github-Release-Action
