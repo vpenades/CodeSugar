@@ -27,7 +27,7 @@ jobs:
         PACKAGEVERSION="${PACKAGEVERSION/TIME/$TIME_SHORT}"
         # report
         echo "package version: $PACKAGEVERSION";
-        echo "GHENV_PACKAGEVERSION=$PACKAGEVERSION" >> $GITHUB_ENV        
+        echo "GHENV_PACKAGEVERSION=$PACKAGEVERSION" >> $GITHUB_ENV
 
     - name: Build
       run: |
@@ -41,8 +41,8 @@ jobs:
       uses: rickstaa/action-create-tag@v1
       id: "tag_create"
       with:
-        tag: "Preview $GHENV_PACKAGEVERSION"
-        tag_exists_error: false
+        tag: "Preview ${GHENV_PACKAGEVERSION}"
+        tag_exists_error: true
         message: "Latest release"
 
     - name: create release
@@ -50,7 +50,8 @@ jobs:
       # https://github.com/softprops/action-gh-release
       uses: softprops/action-gh-release@v2
       if: startsWith(github.ref, 'refs/tags/') # this action requires a release tag
-      with:        
+      with:
+        tag_name: "Preview ${GHENV_PACKAGEVERSION}"
         prerelease: true
         generate_release_notes: true
         make_latest: false    
