@@ -32,7 +32,9 @@ jobs:
   build_job:
 
     runs-on: ubuntu-latest    
-    timeout-minutes: 1    
+    timeout-minutes: 1
+    permissions:
+      contents: write # required for pushing the tag
 
     steps:    
 
@@ -46,7 +48,7 @@ jobs:
         git tag -a "${{inputs.tag-name}}" -m "${{inputs.message}}"
         git push origin "${{inputs.tag-name}}"
 
-
+    # # alternative solution:
     # - name: create tag
     #   uses: rickstaa/action-create-tag@v1
     #   id: "tag_create"
