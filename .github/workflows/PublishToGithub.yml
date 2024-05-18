@@ -44,8 +44,8 @@ jobs:
     needs: build_job    
     uses: ./.github/workflows/PushGithubTag.yml
     with:
-      tag-name: some-value "${{ needs.build_job.outputs.tag-name }}"
-      message: "${{ needs.build_job.outputs.tag-message }}"
+      tag-name: "${{needs.build_job.outputs.tag-name}}"
+      message: "${{needs.build_job.outputs.tag-message}}"
      
     # - name: create release
     #   # https://github.com/elgohr/Github-Release-Action
