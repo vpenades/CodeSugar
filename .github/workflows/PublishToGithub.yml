@@ -38,7 +38,7 @@ jobs:
       run: dotnet nuget push "*.nupkg" --api-key ${{secrets.CodeSugar_PublishToGithub}} --source https://nuget.pkg.github.com/${{github.repository_owner}}        
 
     - name: create tag
-      uses: ./.github/workflows/PushGithubTag.yml@main
+      uses: ./.github/workflows/PushGithubTag.yml
       with:
         tag-name: some-value "Preview-${{env.GHENV_PACKAGEVERSION}}"
         message: "Preview version Preview-${{env.GHENV_PACKAGEVERSION}}"
