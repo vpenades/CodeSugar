@@ -3,7 +3,7 @@ name: Build a preview and release it to Github
 on: workflow_dispatch
     
 jobs:
-  build:
+  build_job:
     runs-on: ubuntu-latest    
     timeout-minutes: 5
     permissions:
@@ -37,11 +37,12 @@ jobs:
     - name: Push to Github
       run: dotnet nuget push "*.nupkg" --api-key ${{secrets.CodeSugar_PublishToGithub}} --source https://nuget.pkg.github.com/${{github.repository_owner}}        
 
-    - name: create tag
-      uses: ./.github/workflows/PushGithubTag.yml
-      with:
-        tag-name: some-value "Preview-${{env.GHENV_PACKAGEVERSION}}"
-        message: "Preview version Preview-${{env.GHENV_PACKAGEVERSION}}"
+  tag_job:
+    needs: build_job
+    uses: ./.github/workflows/PushGithubTag.yml
+    with:
+      tag-name: some-value "Preview-${{env.GHENV_PACKAGEVERSION}}"
+      message: "Preview version Preview-${{env.GHENV_PACKAGEVERSION}}"
      
     # - name: create release
     #   # https://github.com/elgohr/Github-Release-Action
