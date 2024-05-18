@@ -35,24 +35,14 @@ jobs:
         ./CodeSugar.Build.sh $GHENV_PACKAGEVERSION
 
     # - name: Push to Github
-    #   run: dotnet nuget push "*.nupkg" --api-key ${{secrets.CodeSugar_PublishToGithub}} --source https://nuget.pkg.github.com/${{github.repository_owner}}    
-
-    # - name: create tag
-    #   uses: rickstaa/action-create-tag@v1
-    #   id: "tag_create"
-    #   with:
-    #     tag: "Preview ${{ env.GHENV_PACKAGEVERSION }}"
-    #     tag_exists_error: true
-    #     message: "Latest release"
+    #   run: dotnet nuget push "*.nupkg" --api-key ${{secrets.CodeSugar_PublishToGithub}} --source https://nuget.pkg.github.com/${{github.repository_owner}}        
 
     - name: create tag
-      # https://github.com/orgs/community/discussions/40405
-      run: |
-          git config --global user.name "${{ github.actor }}"
-          git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
-          git tag -a "${{env.GHENV_PACKAGEVERSION}}" -m "Release version ${{env.GHENV_PACKAGEVERSION}}"
-          git push origin "${{env.GHENV_PACKAGEVERSION}}"
-
+      uses: ./.github/workflows/PushGithubTag.yml@main
+      with:
+        tag-name: some-value "${{env.GHENV_PACKAGEVERSION}}"
+        message: "Release version ${{env.GHENV_PACKAGEVERSION}}"
+     
     # - name: create release
     #   # https://github.com/elgohr/Github-Release-Action
     #   # https://github.com/softprops/action-gh-release
