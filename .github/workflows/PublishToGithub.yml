@@ -4,10 +4,11 @@ on: workflow_dispatch
     
 jobs:
   build_job:
-    runs-on: ubuntu-latest    
-    timeout-minutes: 5
-    permissions:
-      contents: write # required by softprops/action-gh-release@v2
+    runs-on: ubuntu-latest
+    outputs:
+      tag-name: "Preview-${{env.GHENV_PACKAGEVERSION}}"
+      tag-message: "new tag"
+    
     steps:    
 
     - name: Checkout
@@ -41,8 +42,8 @@ jobs:
     needs: build_job
     uses: ./.github/workflows/PushGithubTag.yml
     with:
-      tag-name: some-value "Preview-${{env.GHENV_PACKAGEVERSION}}"
-      message: "Preview version Preview-${{env.GHENV_PACKAGEVERSION}}"
+      tag-name: some-value "${{ needs.build_job.outputs.tag-name }}"
+      message: "${{ needs.build_job.outputs.tag-message }}"
      
     # - name: create release
     #   # https://github.com/elgohr/Github-Release-Action
