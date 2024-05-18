@@ -41,7 +41,7 @@ jobs:
       uses: rickstaa/action-create-tag@v1
       id: "tag_create"
       with:
-        tag: "Preview ${GHENV_PACKAGEVERSION}"
+        tag: "Preview ${{GHENV_PACKAGEVERSION}}"
         tag_exists_error: true
         message: "Latest release"
 
@@ -51,7 +51,7 @@ jobs:
       uses: softprops/action-gh-release@v2
       if: startsWith(github.ref, 'refs/tags/') # this action requires a release tag
       with:
-        tag_name: "Preview ${GHENV_PACKAGEVERSION}"
+        tag_name: "Preview ${{GHENV_PACKAGEVERSION}}"
         prerelease: true
         generate_release_notes: true
         make_latest: false    
