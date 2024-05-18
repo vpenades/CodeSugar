@@ -37,29 +37,29 @@ jobs:
     # - name: Push to Github
     #   run: dotnet nuget push "*.nupkg" --api-key ${{secrets.CodeSugar_PublishToGithub}} --source https://nuget.pkg.github.com/${{github.repository_owner}}    
 
-    - name: create tag
-      uses: rickstaa/action-create-tag@v1
-      id: "tag_create"
-      with:
-        tag: "Preview ${{ env.GHENV_PACKAGEVERSION }}"
-        tag_exists_error: true
-        message: "Latest release"
-
     # - name: create tag
-    #   run: |
-    #       git config --global user.name "${{ github.actor }}"
-    #       git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
-    #       git tag -a ${GHENV_PACKAGEVERSION} -m "Release version ${{GHENV_PACKAGEVERSION}}"
-    #       git push origin  ${GHENV_PACKAGEVERSION}
+    #   uses: rickstaa/action-create-tag@v1
+    #   id: "tag_create"
+    #   with:
+    #     tag: "Preview ${{ env.GHENV_PACKAGEVERSION }}"
+    #     tag_exists_error: true
+    #     message: "Latest release"
 
-    - name: create release
-      # https://github.com/elgohr/Github-Release-Action
-      # https://github.com/softprops/action-gh-release
-      uses: softprops/action-gh-release@v2
-      if: startsWith(github.ref, 'refs/tags/') # this action requires a release tag
-      with:
-        tag_name: "Preview ${{ env.GHENV_PACKAGEVERSION}}"
-        prerelease: true
-        generate_release_notes: true
-        make_latest: false    
+    - name: create tag
+      run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+          git tag -a ${GHENV_PACKAGEVERSION} -m "Release version ${{GHENV_PACKAGEVERSION}}"
+          git push origin  ${GHENV_PACKAGEVERSION}
+
+    # - name: create release
+    #   # https://github.com/elgohr/Github-Release-Action
+    #   # https://github.com/softprops/action-gh-release
+    #   uses: softprops/action-gh-release@v2
+    #   if: startsWith(github.ref, 'refs/tags/') # this action requires a release tag
+    #   with:
+    #     tag_name: "Preview ${{ env.GHENV_PACKAGEVERSION}}"
+    #     prerelease: true
+    #     generate_release_notes: true
+    #     make_latest: false    
       
