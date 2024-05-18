@@ -37,10 +37,19 @@ jobs:
     # - name: Push to Github
     #   run: dotnet nuget push "*.nupkg" --api-key ${{secrets.CodeSugar_PublishToGithub}} --source https://nuget.pkg.github.com/${{github.repository_owner}}    
 
-    - name: publish release tag
+    - name: create tag
+      uses: rickstaa/action-create-tag@v1
+      id: "tag_create"
+      with:
+        tag: "Preview $GHENV_PACKAGEVERSION"
+        tag_exists_error: false
+        message: "Latest release"
+
+    - name: create release
       # https://github.com/elgohr/Github-Release-Action
       # https://github.com/softprops/action-gh-release
-      uses: softprops/action-gh-release@v2    
+      uses: softprops/action-gh-release@v2
+      if: startsWith(github.ref, 'refs/tags/') # this action requires a release tag
       with:        
         prerelease: true
         generate_release_notes: true
