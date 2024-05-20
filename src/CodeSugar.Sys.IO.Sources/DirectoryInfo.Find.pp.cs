@@ -53,7 +53,7 @@ namespace $rootnamespace$
 
                 ctoken.ThrowIfCancellationRequested();
 
-                __ReportDirectoryScanProgress(percentProgress, start, dinfo);
+                await __ReportDirectoryScanProgressAsync(percentProgress, start, dinfo).ConfigureAwait(false);
 
                 List<DIRECTORY> subdirs = null;
 
@@ -101,7 +101,7 @@ namespace $rootnamespace$
 
                 ctoken.ThrowIfCancellationRequested();
 
-                __ReportDirectoryScanProgress(percentProgress, start, dinfo);
+                await __ReportDirectoryScanProgressAsync(percentProgress, start, dinfo).ConfigureAwait(false);
 
                 List<DIRECTORY> subdirs = null;
 
@@ -152,7 +152,7 @@ namespace $rootnamespace$
 
                 ctoken.ThrowIfCancellationRequested();
 
-                __ReportDirectoryScanProgress(percentProgress, start, dinfo);
+                await __ReportDirectoryScanProgressAsync(percentProgress, start, dinfo).ConfigureAwait(false);
 
                 List<DIRECTORY> subdirs = null;
 
@@ -200,7 +200,7 @@ namespace $rootnamespace$
 
                 ctoken.ThrowIfCancellationRequested();
 
-                __ReportDirectoryScanProgress(percentProgress, start, dinfo);
+                await __ReportDirectoryScanProgressAsync(percentProgress, start, dinfo).ConfigureAwait(false);
 
                 List<DIRECTORY> subdirs = null;
 
@@ -233,7 +233,7 @@ namespace $rootnamespace$
         }
 
 
-        private static void __ReportDirectoryScanProgress(PPROGRESS percentProgress, int percent, DIRECTORY dinfo)
+        private static async Task __ReportDirectoryScanProgressAsync(PPROGRESS percentProgress, int percent, DIRECTORY dinfo)
         {
             if (percentProgress == null) return;            
 
@@ -247,6 +247,8 @@ namespace $rootnamespace$
 
             percentProgress.Report(percent);
             if (percentProgress is IProgress<string> textProgress) textProgress.Report(dinfo.FullName);
+
+            await Task.Yield();
         }
         private static void __ReportDirectoryScanException(PPROGRESS percentProgress, Exception ex)
         {

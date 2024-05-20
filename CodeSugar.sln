@@ -15,11 +15,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{096F443D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{53540609-2D6C-4939-A145-7D2E6E162F04}"
 	ProjectSection(SolutionItems) = preProject
+		.github\actions\PushGithubTag\action.yml = .github\actions\PushGithubTag\action.yml
 		CodeSugar.Build.sh = CodeSugar.Build.sh
 		.github\workflows\FormatSemver.sh = .github\workflows\FormatSemver.sh
 		.github\workflows\PublishToGithub.yml = .github\workflows\PublishToGithub.yml
 		.github\workflows\PublishToNuget.yml = .github\workflows\PublishToNuget.yml
-		.github\workflows\PushGithubTag.yml = .github\workflows\PushGithubTag.yml
 		README.md = README.md
 		.github\workflows\test.yml = .github\workflows\test.yml
 	EndProjectSection

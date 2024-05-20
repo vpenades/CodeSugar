@@ -1,18 +1,16 @@
-name: Build a preview and release it to Nuget
+name: Build a preview and release it to Github
 
 on: workflow_dispatch
     
 jobs:
-  
-  build_job: #---------------------------------------------------------------------------------------
+
+  build:
 
     runs-on: ubuntu-latest
-    outputs:
-      # parameters to pass to tag creation job
-      tag-name: "Preview-${{env.GHENV_PACKAGEVERSION}}"
-      tag-message: "new tag"
+    permissions:
+      contents: write # required for pushing the tag    
     
-    steps:    
+    steps:
 
     - name: Checkout
       uses: actions/checkout@v4
@@ -33,12 +31,8 @@ jobs:
     - name: Push to NuGet
       run: dotnet nuget push "*.nupkg" --api-key ${{secrets.CodeSugar_PublishToNuget}} --source https://api.nuget.org/v3/index.json
 
-  tag_job: #---------------------------------------------------------------------------------------
-
-    needs: build_job    
-    permissions:
-      contents: write # required for pushing the tag    
-    uses: ./.github/workflows/PushGithubTag.yml
-    with:
-      tag-name: "${{needs.build_job.outputs.tag-name}}"
-      message: "${{needs.build_job.outputs.tag-message}}"
+    - name: create tag
+      uses: ./.github/actions/PushGithubTag
+      with:
+        tag-name: "${{env.GHENV_PACKAGEVERSION}}"
+        message: "new tag for ${{env.GHENV_PACKAGEVERSION}}"

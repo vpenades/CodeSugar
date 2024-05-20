@@ -11,6 +11,7 @@ using System.Runtime.CompilerServices;
 using FILE = System.IO.FileInfo;
 using DIRECTORY = System.IO.DirectoryInfo;
 using FILEORDIR = System.IO.FileSystemInfo;
+using System.Linq;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -136,17 +137,6 @@ namespace $rootnamespace$
         }
 
         /// <summary>
-        /// Defines a <see cref="FILE"/> relative to the base directory.
-        /// </summary>
-        /// <param name="baseDir">the base directory</param>
-        /// <param name="relativePath">the relative path parts</param>
-        /// <returns>a new <see cref="FILE"/> instance.</returns>
-        public static FILE DefineFile(this DIRECTORY baseDir, params string[] relativePath)
-        {
-            return _CreateFileInfo(baseDir, false, relativePath);
-        }        
-
-        /// <summary>
         /// Gets a <see cref="FILE"/> relative to the base directory.
         /// </summary>
         /// <param name="baseDir">the base directory</param>
@@ -154,14 +144,17 @@ namespace $rootnamespace$
         /// <returns>a new <see cref="FILE"/> instance.</returns>
         public static FILE GetFile(this DIRECTORY baseDir, params string[] relativePath)
         {
-            return _CreateFileInfo(baseDir, false, relativePath);
+            var finfo = _CreateFileInfo(baseDir, false, relativePath);
+            System.Diagnostics.Debug.Assert(finfo != null && finfo.Exists, $"File {relativePath.Last()} does not exist.");
+            return finfo;
         }        
 
         /// <summary>
         /// Gets a <see cref="FILE"/> relative to the base directory.
         /// </summary>
         /// <remarks>
-        /// the requested file my axist in the file system or not.
+        /// If the base directory does not exists, it is created.
+        /// The requested file may exist in the file system or not.
         /// </remarks>
         /// <param name="baseDir">the base directory</param>
         /// <param name="relativePath">the relative path parts</param>
@@ -170,7 +163,18 @@ namespace $rootnamespace$
         {
             return _CreateFileInfo(baseDir, true, relativePath);
         }
-        
+
+        /// <summary>
+        /// Defines a <see cref="FILE"/> relative to the base directory.
+        /// </summary>
+        /// <param name="baseDir">the base directory</param>
+        /// <param name="relativePath">the relative path parts</param>
+        /// <returns>a new <see cref="FILE"/> instance.</returns>
+        public static FILE DefineFile(this DIRECTORY baseDir, params string[] relativePath)
+        {
+            return _CreateFileInfo(baseDir, false, relativePath);
+        }
+
         private static FILE _CreateFileInfo(this DIRECTORY baseDir, bool canCreate, params string[] relativePath)
         {
             GuardNotNull(baseDir);           
@@ -187,26 +191,11 @@ namespace $rootnamespace$
             var finfo = new FILE(path);
 
             if (canCreate) _EnsureDirectoryExists(finfo.Directory);
-            /*
-            else
-            {
-                // In release mode, let's be a bit forgiving:
-                System.Diagnostics.Debug.Assert(finfo.Exists,$"{finfo.FullName} does not exist. Use 'UseFile()' instead.");
-            } */           
 
             return finfo;
         }
 
-        /// <summary>
-		/// Defines a <see cref="DIRECTORY"/> relative to the base directory.
-		/// </summary>
-		/// <param name="baseDir">the base directory</param>
-		/// <param name="relativePath">the relative path parts</param>
-		/// <returns>a new <see cref="DIRECTORY"/> instance.</returns>
-		public static DIRECTORY DefineDirectory(this DIRECTORY baseDir, params string[] relativePath)
-        {
-            return _CreateDirectoryInfo(baseDir, false, false, relativePath);
-        }
+        
 
         /// <summary>
 		/// Gets an existing <see cref="DIRECTORY"/> relative to the base directory.
@@ -228,7 +217,18 @@ namespace $rootnamespace$
 		public static DIRECTORY UseDirectory(this DIRECTORY baseDir, params string[] relativePath)
         {
             return _CreateDirectoryInfo(baseDir, false, true, relativePath);
-        }        
+        }
+
+        /// <summary>
+		/// Defines a <see cref="DIRECTORY"/> relative to the base directory.
+		/// </summary>
+		/// <param name="baseDir">the base directory</param>
+		/// <param name="relativePath">the relative path parts</param>
+		/// <returns>a new <see cref="DIRECTORY"/> instance.</returns>
+		public static DIRECTORY DefineDirectory(this DIRECTORY baseDir, params string[] relativePath)
+        {
+            return _CreateDirectoryInfo(baseDir, false, false, relativePath);
+        }
 
         private static DIRECTORY _CreateDirectoryInfo(this DIRECTORY baseDir, bool mustExist, bool canCreate, params string[] relativePath)
         {
