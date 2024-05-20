@@ -38,7 +38,7 @@ jobs:
 
 
     - name: create tag
-      uses: ./.github/actions/PushGithubTag
+      uses: ./.github/actions/PushGithubTag.yml
       with:
         tag-name: "Preview-test-${{env.GHENV_PACKAGEVERSION}}"
         message: "new tag"
