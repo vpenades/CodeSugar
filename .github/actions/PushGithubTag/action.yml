@@ -2,22 +2,17 @@ name: 'Push Github Tag'
 description: 'Pushes a new github tag from Master'
 
 inputs:
-  tag-name:
-    type: string
+  tag-name:    
     description: 'name of the tag'
     required: true
     default: 'tag'
-  message:
-    type: string
+  message:    
     description: 'message'
     required: false
     default: 'message'      
 
 runs:
-  using: 'composite'
-
-  permissions:
-    contents: write # required for pushing the tag
+  using: 'composite'  
 
   steps:    
 
@@ -30,6 +25,7 @@ runs:
       git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
       git tag -a "${{inputs.tag-name}}" -m "${{inputs.message}}"
       git push origin "${{inputs.tag-name}}"
+    shell: bash
 
   # # alternative solution:
   # # https://github.com/rickstaa/action-create-tag

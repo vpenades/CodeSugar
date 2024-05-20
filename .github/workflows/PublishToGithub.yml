@@ -7,6 +7,9 @@ jobs:
   build_job: #---------------------------------------------------------------------------------------
 
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # required for pushing the tag
+
     outputs:
       # parameters to pass to tag creation job
       tag-name: "Preview-${{env.GHENV_PACKAGEVERSION}}"
