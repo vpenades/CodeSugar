@@ -30,24 +30,28 @@ jobs:
         chmod +x ./CodeSugar.Build.sh
         ./CodeSugar.Build.sh $GHENV_PACKAGEVERSION
 
-    - name: test
-      uses: ./.github/workflows/composite
-      with:
-        my-input: 'Hello World'
+    
 
 
     # - name: Push to Github
     #   run: dotnet nuget push "*.nupkg" --api-key ${{secrets.CodeSugar_PublishToGithub}} --source https://nuget.pkg.github.com/${{github.repository_owner}}        
 
-  tag_job: #---------------------------------------------------------------------------------------
 
-    needs: build_job    
-    permissions:
-      contents: write # required for pushing the tag    
-    uses: ./.github/workflows/PushGithubTag.yml
-    with:
-      tag-name: "${{needs.build_job.outputs.tag-name}}"
-      message: "${{needs.build_job.outputs.tag-message}}"
+    - name: create tag
+      uses: ./.github/actions/PushGithubTag
+      with:
+        tag-name: "Preview-test-${{env.GHENV_PACKAGEVERSION}}"
+        message: "new tag"
+
+  # tag_job: #---------------------------------------------------------------------------------------
+
+  #   needs: build_job    
+  #   permissions:
+  #     contents: write # required for pushing the tag    
+  #   uses: ./.github/workflows/PushGithubTag.yml
+  #   with:
+  #     tag-name: "${{needs.build_job.outputs.tag-name}}"
+  #     message: "${{needs.build_job.outputs.tag-message}}"
      
     # - name: create release
     #   # https://github.com/elgohr/Github-Release-Action
