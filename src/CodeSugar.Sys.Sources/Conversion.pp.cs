@@ -22,7 +22,7 @@ namespace $rootnamespace$
         {
             encoding ??= Encoding.UTF8;            
             var bytes = encoding.GetBytes(plainText);
-            return ToHexString(bytes);
+            return ConvertToHexString(bytes);
         }        
         public static string ConvertToHexString(this IReadOnlyList<Byte> bytes)
         {
