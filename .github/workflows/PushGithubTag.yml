@@ -49,6 +49,7 @@ jobs:
         git push origin "${{inputs.tag-name}}"
 
     # # alternative solution:
+    # # https://github.com/rickstaa/action-create-tag
     # - name: create tag
     #   uses: rickstaa/action-create-tag@v1
     #   id: "tag_create"

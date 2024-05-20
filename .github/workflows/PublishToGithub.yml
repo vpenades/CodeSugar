@@ -3,9 +3,12 @@ name: Build a preview and release it to Github
 on: workflow_dispatch
     
 jobs:
-  build_job:
+
+  build_job: #---------------------------------------------------------------------------------------
+
     runs-on: ubuntu-latest
     outputs:
+      # parameters to pass to tag creation job
       tag-name: "Preview-${{env.GHENV_PACKAGEVERSION}}"
       tag-message: "new tag"
     
@@ -17,18 +20,10 @@ jobs:
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v4
 
-    - name: Define Version
+    - name: Define Version at GHENV_PACKAGEVERSION
       run: |
-        #define constants
-        DATE_SHORT=$(date +'%Y%m%d')
-        TIME_SHORT=$(date +'%H%M%S')
-        PACKAGEVERSION="1.0.0-Prv-DATE-TIME"        
-        # replace date and time        
-        PACKAGEVERSION="${PACKAGEVERSION/DATE/$DATE_SHORT}"        
-        PACKAGEVERSION="${PACKAGEVERSION/TIME/$TIME_SHORT}"
-        # report
-        echo "package version: $PACKAGEVERSION";
-        echo "GHENV_PACKAGEVERSION=$PACKAGEVERSION" >> $GITHUB_ENV
+        chmod +x ./.github/workflows/FormatSemver.sh
+        ./.github/workflows/FormatSemver.sh "1.0.0-Prv-DATE-TIME" >> $GITHUB_ENV
 
     - name: Build
       run: |
@@ -38,10 +33,11 @@ jobs:
     - name: Push to Github
       run: dotnet nuget push "*.nupkg" --api-key ${{secrets.CodeSugar_PublishToGithub}} --source https://nuget.pkg.github.com/${{github.repository_owner}}        
 
-  tag_job:
-    permissions:
-      contents: write # required for pushing the tag
+  tag_job: #---------------------------------------------------------------------------------------
+
     needs: build_job    
+    permissions:
+      contents: write # required for pushing the tag    
     uses: ./.github/workflows/PushGithubTag.yml
     with:
       tag-name: "${{needs.build_job.outputs.tag-name}}"
