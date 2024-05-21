@@ -1,4 +1,4 @@
-name: Build a preview and release it to Github
+name: Build a preview and release it to NUGET
 
 on: workflow_dispatch
     
