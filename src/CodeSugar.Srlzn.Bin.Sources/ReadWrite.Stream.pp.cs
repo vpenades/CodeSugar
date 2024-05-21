@@ -101,6 +101,7 @@ namespace $rootnamespace$
         }   
 
         #endregion
+        
         #region primitives
 
         public static WRITEABLEBLOCK WriteBool(this WRITEABLEBLOCK source, bool value) { return WriteU8(source, value ? (Byte)255 : (Byte)0); }

@@ -41,7 +41,7 @@ namespace $rootnamespace$
         public static WRITEABLEBLOCK_SPAN WriteEndian<T>(this WRITEABLEBLOCK_SPAN target, T value, bool targetIsBigEndian)
             where T : unmanaged
         {
-            if (targetIsBigEndian == System.BitConverter.IsLittleEndian) return WritePlatform(target, value);
+            if (targetIsBigEndian != System.BitConverter.IsLittleEndian) return WritePlatform(target, value);
 
             Span<T> span = stackalloc T[1];
             span[0] = value;
@@ -61,7 +61,7 @@ namespace $rootnamespace$
         public static READABLEBLOCK_SPAM ReadEndian<T>(this READABLEBLOCK_SPAM source, out T value, bool sourceIsBigEndian)
             where T : unmanaged
         {
-            if (sourceIsBigEndian == System.BitConverter.IsLittleEndian) return ReadPlatform(source, out value);
+            if (sourceIsBigEndian != System.BitConverter.IsLittleEndian) return ReadPlatform(source, out value);
 
             Span<T> span = stackalloc T[1];
 
@@ -128,7 +128,7 @@ namespace $rootnamespace$
         public static WRITEABLEBLOCK_ARRAY WriteEndian<T>(this WRITEABLEBLOCK_ARRAY target, T value, bool targetIsBigEndian)
             where T : unmanaged
         {
-            if (targetIsBigEndian == System.BitConverter.IsLittleEndian) return WritePlatform(target, value);
+            if (targetIsBigEndian != System.BitConverter.IsLittleEndian) return WritePlatform(target, value);
 
             Span<T> span = stackalloc T[1];
             span[0] = value;
@@ -148,7 +148,7 @@ namespace $rootnamespace$
         public static READABLEBLOCK_ARRAY ReadEndian<T>(this READABLEBLOCK_ARRAY source, out T value, bool sourceIsBigEndian)
             where T : unmanaged
         {
-            if (sourceIsBigEndian == System.BitConverter.IsLittleEndian) return ReadPlatform(source, out value);
+            if (sourceIsBigEndian != System.BitConverter.IsLittleEndian) return ReadPlatform(source, out value);
 
             Span<T> span = stackalloc T[1];
 
@@ -216,7 +216,7 @@ namespace $rootnamespace$
         public static WRITEABLEBLOCK_STREAM WriteEndian<T>(this WRITEABLEBLOCK_STREAM stream, T value, bool streamIsBigEndian)
             where T : unmanaged
         {
-            if (streamIsBigEndian == System.BitConverter.IsLittleEndian) return WritePlatform(stream, value);
+            if (streamIsBigEndian != System.BitConverter.IsLittleEndian) return WritePlatform(stream, value);
 
             Span<T> span = stackalloc T[1];
             var buff = System.Runtime.InteropServices.MemoryMarshal.AsBytes(span);
@@ -239,7 +239,7 @@ namespace $rootnamespace$
         public static READABLEBLOCK_STREAM ReadEndian<T>(this READABLEBLOCK_STREAM stream, out T value, bool streamIsBigEndian)
             where T : unmanaged
         {
-            if (streamIsBigEndian == System.BitConverter.IsLittleEndian) return ReadPlatform(stream, out value);
+            if (streamIsBigEndian != System.BitConverter.IsLittleEndian) return ReadPlatform(stream, out value);
 
             Span<T> span = stackalloc T[1];
             var buff = System.Runtime.InteropServices.MemoryMarshal.AsBytes<T>(span);
@@ -321,7 +321,7 @@ namespace $rootnamespace$
         public static IProgress<Byte> WriteEndian<T>(this IProgress<Byte> stream, T value, bool streamIsBigEndian)
             where T : unmanaged
         {
-            if (streamIsBigEndian == System.BitConverter.IsLittleEndian) return WritePlatform(stream, value);
+            if (streamIsBigEndian != System.BitConverter.IsLittleEndian) return WritePlatform(stream, value);
 
             Span<T> span = stackalloc T[1];
             var buff = System.Runtime.InteropServices.MemoryMarshal.AsBytes(span);
@@ -370,7 +370,7 @@ namespace $rootnamespace$
         public static IEnumerator<Byte> ReadEndian<T>(this IEnumerator<Byte> stream, out T value, bool streamIsBigEndian)
             where T : unmanaged
         {
-            if (streamIsBigEndian == System.BitConverter.IsLittleEndian) return ReadPlatform(stream, out value);
+            if (streamIsBigEndian != System.BitConverter.IsLittleEndian) return ReadPlatform(stream, out value);
 
             Span<T> span = stackalloc T[1];
             var buff = System.Runtime.InteropServices.MemoryMarshal.AsBytes<T>(span);

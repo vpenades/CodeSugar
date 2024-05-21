@@ -32,6 +32,35 @@ namespace CodeSugar
             }
         }
 
+
+        [Test]
+        public void TestEndianness()
+        {
+            var list = new List<byte>();
+
+            list.AsStatefulProgressWriter().WriteLeS32(100).WriteBeS32(100);
+
+            Assert.That(list, Is.EqualTo(new byte[] { 100, 0, 0, 0, 0, 0, 0, 100 }));
+        }
+
+        [Test]
+        public void TestBinaryWriterCompat()
+        {
+            using(var m = new System.IO.MemoryStream())
+            {
+                using (var w = new System.IO.BinaryWriter(m, System.Text.Encoding.UTF8, true))
+                {
+                    w.Write((Int32)100);
+                    w.Write((short)100);
+                }
+
+                m.Position = 0;
+
+                m.ReadLeS32(out var v1); Assert.That(v1, Is.EqualTo(100));
+                m.ReadLeS16(out var v2); Assert.That(v2, Is.EqualTo(100));
+            }
+        }
+
         [Test]
         public void TestSerializationStream()
         {
