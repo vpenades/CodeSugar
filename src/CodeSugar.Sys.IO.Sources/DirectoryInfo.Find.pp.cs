@@ -16,8 +16,9 @@ using FILEFILTER = System.Predicate<System.IO.FileInfo>;
 using DIRECTORY = System.IO.DirectoryInfo;
 using DIRECTORYFILTER = System.Predicate<System.IO.DirectoryInfo>;
 using SEARCHOPTION = System.IO.SearchOption;
-using CTOKEN = System.Threading.CancellationToken;
 using PPROGRESS = System.IProgress<int>;
+using CTOKEN = System.Threading.CancellationToken;
+
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -47,13 +48,19 @@ namespace $rootnamespace$
 
             var result = new List<DIRECTORY>();
 
-            async Task _findAsync(DIRECTORY dinfo, int start, int count)
+            var context = new __DirectoryScanStateSlice(100, percentProgress, ctoken);
+
+            await _findAsync(directoryInfo, context).ConfigureAwait(false);
+
+            context.ReportCompleted();
+
+            return result;
+
+            async Task _findAsync(DIRECTORY dinfo, __DirectoryScanStateSlice slice)
             {
-                if (dinfo == null || !dinfo.Exists) return;
+                if (dinfo == null || !dinfo.Exists) return;                
 
-                ctoken.ThrowIfCancellationRequested();
-
-                await __ReportDirectoryScanProgressAsync(percentProgress, start, dinfo).ConfigureAwait(false);
+                await slice.UpdateAsync(dinfo).ConfigureAwait(false);
 
                 List<DIRECTORY> subdirs = null;
 
@@ -65,23 +72,16 @@ namespace $rootnamespace$
                         if (subdirFilter(info)) { subdirs ??= new List<DIRECTORY>(); subdirs.Add(info); }
                     }
                 }
-                catch (System.IO.DirectoryNotFoundException ex) { __ReportDirectoryScanException(percentProgress,ex); }
-                catch (System.Security.SecurityException ex) { __ReportDirectoryScanException(percentProgress, ex); }
+                catch (System.IO.DirectoryNotFoundException ex) { slice.ReportException(ex); }
+                catch (System.Security.SecurityException ex) { slice.ReportException(ex); }
 
                 if (subdirs == null) return;
 
                 for (int i = 0; i < subdirs.Count; ++i)
                 {
-                    var ss = start + count * (i + 0) / subdirs.Count;
-                    var cc = start + count * (i + 1) / subdirs.Count - ss;
-
-                    await _findAsync(subdirs[i], ss, cc).ConfigureAwait(false);
+                    await _findAsync(subdirs[i], slice.Next(i,subdirs.Count)).ConfigureAwait(false);
                 }
-            }
-
-            await _findAsync(directoryInfo, 0, 100).ConfigureAwait(false);            
-
-            return result;
+            }            
         }
 
 
@@ -93,15 +93,21 @@ namespace $rootnamespace$
         {
             if (directoryInfo == null || !directoryInfo.Exists) return null;
             if (resultFilter == null) throw new ArgumentNullException(nameof(resultFilter));
-            if (subdirFilter == null) throw new ArgumentNullException(nameof(subdirFilter));            
+            if (subdirFilter == null) throw new ArgumentNullException(nameof(subdirFilter));
 
-            async Task<DIRECTORY> _findAsync(DIRECTORY dinfo, int start, int count)
+            var context = new __DirectoryScanStateSlice(100, percentProgress, ctoken);
+
+            var result = await _findAsync(directoryInfo, context).ConfigureAwait(false);
+
+            context.ReportCompleted();
+
+            return result;
+
+            async Task<DIRECTORY> _findAsync(DIRECTORY dinfo, __DirectoryScanStateSlice slice)
             {
-                if (dinfo == null || !dinfo.Exists) return null;
+                if (dinfo == null || !dinfo.Exists) return null;                
 
-                ctoken.ThrowIfCancellationRequested();
-
-                await __ReportDirectoryScanProgressAsync(percentProgress, start, dinfo).ConfigureAwait(false);
+                await slice.UpdateAsync(dinfo).ConfigureAwait(false);
 
                 List<DIRECTORY> subdirs = null;
 
@@ -113,24 +119,19 @@ namespace $rootnamespace$
                         if (subdirFilter(info)) { subdirs ??= new List<DIRECTORY>(); subdirs.Add(info); }
                     }
                 }
-                catch (System.IO.DirectoryNotFoundException ex) { __ReportDirectoryScanException(percentProgress, ex); }
-                catch (System.Security.SecurityException ex) { __ReportDirectoryScanException(percentProgress, ex); }
+                catch (System.IO.DirectoryNotFoundException ex) { slice.ReportException(ex); }
+                catch (System.Security.SecurityException ex) { slice.ReportException(ex); }
 
                 if (subdirs == null) return null;
 
                 for (int i = 0; i < subdirs.Count; ++i)
                 {
-                    var ss = start + count * (i + 0) / subdirs.Count;
-                    var cc = start + count * (i + 1) / subdirs.Count - ss;
-
-                    var rr = await _findAsync(subdirs[i], ss, cc).ConfigureAwait(false);
+                    var rr = await _findAsync(subdirs[i], slice.Next(i,subdirs.Count)).ConfigureAwait(false);
                     if (rr != null) return rr;
                 }
 
                 return null;
-            }
-
-            return await _findAsync(directoryInfo, 0, 100).ConfigureAwait(false);
+            }            
         }
 
 
@@ -146,13 +147,19 @@ namespace $rootnamespace$
 
             var result = new List<FILE>();
 
-            async Task _findAsync(DIRECTORY dinfo, int start, int count)
+            var context = new __DirectoryScanStateSlice(100, percentProgress, ctoken);
+
+            await _findAsync(directoryInfo, context).ConfigureAwait(false);
+
+            context.ReportCompleted();
+
+            return result;
+
+            async Task _findAsync(DIRECTORY dinfo, __DirectoryScanStateSlice slice)
             {
-                if (dinfo == null || !dinfo.Exists) return;
+                if (dinfo == null || !dinfo.Exists) return;                
 
-                ctoken.ThrowIfCancellationRequested();
-
-                await __ReportDirectoryScanProgressAsync(percentProgress, start, dinfo).ConfigureAwait(false);
+                await slice.UpdateAsync(dinfo).ConfigureAwait(false);
 
                 List<DIRECTORY> subdirs = null;
 
@@ -164,23 +171,16 @@ namespace $rootnamespace$
                         else if (info is DIRECTORY subd && subdirFilter(subd)) { subdirs ??= new List<DIRECTORY>(); subdirs.Add(subd); }
                     }
                 }
-                catch (System.IO.DirectoryNotFoundException ex) { __ReportDirectoryScanException(percentProgress, ex); }
-                catch (System.Security.SecurityException ex) { __ReportDirectoryScanException(percentProgress, ex); }
+                catch (System.IO.DirectoryNotFoundException ex) { slice.ReportException(ex); }
+                catch (System.Security.SecurityException ex) { slice.ReportException(ex); }
 
                 if (subdirs == null) return;
 
                 for (int i = 0; i < subdirs.Count; ++i)
                 {
-                    var ss = start + count * (i + 0) / subdirs.Count;
-                    var cc = start + count * (i + 1) / subdirs.Count - ss;
-
-                    await _findAsync(subdirs[i], ss, cc).ConfigureAwait(false);
+                    await _findAsync(subdirs[i], slice.Next(i,subdirs.Count)).ConfigureAwait(false);
                 }
-            }
-
-            await _findAsync(directoryInfo, 0, 100).ConfigureAwait(false);
-
-            return result;
+            }            
         }
                 
 
@@ -192,15 +192,21 @@ namespace $rootnamespace$
         {
             if (directoryInfo == null || !directoryInfo.Exists) return null;
             if (resultFilter == null) throw new ArgumentNullException(nameof(resultFilter));
-            if (subdirFilter == null) throw new ArgumentNullException(nameof(subdirFilter));            
+            if (subdirFilter == null) throw new ArgumentNullException(nameof(subdirFilter));
 
-            async Task<FILE> _findAsync(DIRECTORY dinfo, int start, int count)
+            var context = new __DirectoryScanStateSlice(100, percentProgress, ctoken);
+
+            var result = await _findAsync(directoryInfo, context).ConfigureAwait(false);
+
+            context.ReportCompleted();
+
+            return result;
+
+            async Task<FILE> _findAsync(DIRECTORY dinfo, __DirectoryScanStateSlice slice)
             {
-                if (dinfo == null || !dinfo.Exists) return null;
+                if (dinfo == null || !dinfo.Exists) return null;                
 
-                ctoken.ThrowIfCancellationRequested();
-
-                await __ReportDirectoryScanProgressAsync(percentProgress, start, dinfo).ConfigureAwait(false);
+                await slice.UpdateAsync(dinfo).ConfigureAwait(false);
 
                 List<DIRECTORY> subdirs = null;
 
@@ -212,53 +218,99 @@ namespace $rootnamespace$
                         else if (info is DIRECTORY subd && subdirFilter(subd)) { subdirs ??= new List<DIRECTORY>(); subdirs.Add(subd); }
                     }
                 }
-                catch (System.IO.DirectoryNotFoundException ex) { __ReportDirectoryScanException(percentProgress, ex); }
-                catch (System.Security.SecurityException ex) { __ReportDirectoryScanException(percentProgress, ex); }
+                catch (System.IO.DirectoryNotFoundException ex) { slice.ReportException(ex); }
+                catch (System.Security.SecurityException ex) { slice.ReportException(ex); }
 
                 if (subdirs == null) return null;
 
                 for (int i = 0; i < subdirs.Count; ++i)
                 {
-                    var ss = start + count * (i + 0) / subdirs.Count;
-                    var cc = start + count * (i + 1) / subdirs.Count - ss;
-
-                    var rr = await _findAsync(subdirs[i], ss, cc).ConfigureAwait(false);
+                    var rr = await _findAsync(subdirs[i], slice.Next(i,subdirs.Count)).ConfigureAwait(false);
                     if (rr != null) return rr;
                 }
 
                 return null;
-            }
-
-            return await _findAsync(directoryInfo, 0, 100).ConfigureAwait(false);
+            }            
         }
 
 
-        private static async Task __ReportDirectoryScanProgressAsync(PPROGRESS percentProgress, int percent, DIRECTORY dinfo)
+        private readonly struct __DirectoryScanStateSlice
         {
-            if (percentProgress == null) return;            
-
-            System.Diagnostics.Debug.Assert(percent >= 0 && percent <= 100, $"Percent {percent} is out of bounds");
-
-            if (percentProgress is IProgress<(int, string)> mixedProgress)
+            public __DirectoryScanStateSlice(int count, PPROGRESS progress, CTOKEN token)
             {
-                mixedProgress.Report((percent, dinfo.FullName));
-                return;
+                _Start = 0;
+                _Count = count;
+                _Progress = progress;
+                _Token = token;
             }
 
-            percentProgress.Report(percent);
-            if (percentProgress is IProgress<string> textProgress) textProgress.Report(dinfo.FullName);
+            private __DirectoryScanStateSlice(int start, int count, PPROGRESS progress, CTOKEN token)
+            {
+                _Start = start;
+                _Count = count;
+                _Progress = progress;
+                _Token = token;
+            }
 
-            await Task.Yield();
+            private readonly PPROGRESS _Progress;
+            private readonly CTOKEN _Token;
+
+            private readonly int _Start;
+            private readonly int _Count;
+
+            public async Task UpdateAsync(DIRECTORY dinfo)
+            {
+                _Token.ThrowIfCancellationRequested();
+                _ReportProgress(_Progress, _Start, dinfo.FullName);
+
+                await Task.Yield();
+            }
+
+            public void ReportCompleted()
+            {
+                _ReportProgress(_Progress, 100, string.Empty);
+            }
+
+            private static void _ReportProgress(PPROGRESS progress, int percent, string msg)
+            {
+                System.Diagnostics.Debug.Assert(percent >= 0 && percent <= 100, $"Percent {percent} is out of bounds");
+
+                switch (progress)
+                {
+                    case null: break;
+
+                    case IProgress<(int, string)> mixedProgress:
+                        mixedProgress.Report((percent, msg));
+                        break;
+
+                    case IProgress<string> textProgress:
+                        progress.Report(percent);
+                        textProgress.Report(msg);
+                        break;
+
+                    default: progress.Report(percent); break;
+                }
+            }
+
+            public void ReportException(Exception ex)
+            {
+                if (ex == null) return;
+                switch (_Progress)
+                {
+                    case null: break;
+                    case IProgress<Exception> pex: pex.Report(ex); break;
+                    case IProgress<(System.Diagnostics.TraceEventType level, string msg)> pex: pex.Report((System.Diagnostics.TraceEventType.Error, ex.Message)); break;
+                    case IProgress<string> ptxt: ptxt.Report(ex.Message); break;
+                }
+            }
+
+            public __DirectoryScanStateSlice Next(int index, int count)
+            {
+                var ss = this._Start + this._Count * (index + 0) / count;
+                var cc = this._Start + this._Count * (index + 1) / count - ss;
+
+                return new __DirectoryScanStateSlice(ss, cc, this._Progress, this._Token);
+            }            
         }
-        private static void __ReportDirectoryScanException(PPROGRESS percentProgress, Exception ex)
-        {
-            if (ex == null) return;
-            switch(percentProgress)
-            {
-                case null: break;
-                case IProgress<Exception> pex: pex.Report(ex); break;
-                case IProgress<string> ptxt: ptxt.Report(ex.Message); break;
-            }
-        }        
     }
 }

@@ -79,10 +79,10 @@ namespace $rootnamespace$
         /// <param name="baseDir">The base directory</param>
         /// <param name="xinfo">A <see cref="FILE"/> or <see cref="DIRECTORY"/></param>
         /// <returns>true if <paramref name="xinfo"/> is a child.</returns>
-        public static bool IsParentOf(this DIRECTORY baseDir, SYSTEMENTRY xinfo)
+        public static bool IsParentOf(this DIRECTORY baseDir, SYSTEMENTRY xinfo) // TODO: maybe we could use System.IO.SearchOption to define first or all levels
         {
             GuardNotNull(baseDir);
-            GuardNotNull(xinfo);
+            GuardNotNull(xinfo);            
 
             var basePath = baseDir.FullName;
 
