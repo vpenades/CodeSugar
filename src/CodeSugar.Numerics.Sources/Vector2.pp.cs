@@ -45,7 +45,14 @@ namespace $rootnamespace$
             System.Diagnostics.Debug.Assert(v.IsFinite(), "v is not finite");
 
             return (v == Vector2.Zero ? Vector2.UnitX : Vector2.Normalize(v)) * newLen;
-        }        
+        }
+
+        [DebuggerStepThrough]
+        [MethodImpl(AGRESSIVE)]
+        public static float Angle(this in Vector2 v)
+        {
+            return MathF.Atan2(v.Y, v.X);
+        }
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
@@ -76,7 +83,7 @@ namespace $rootnamespace$
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static Vector2 Centroid(this System.Collections.Generic.IEnumerable<Vector2> points)        
+        public static Vector2 Centroid(this System.Collections.Generic.IEnumerable<Vector2> points)
         {
             if (points == null) return Vector2.Zero;
 

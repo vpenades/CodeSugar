@@ -55,7 +55,7 @@ namespace $rootnamespace$
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static float Angle(this Vector3 a, Vector3 b)
+        public static float Angle(this Vector3 a, Vector3 b) // AngleWith ?
         {
             _AssertFinite(a);
             _AssertFinite(b);
