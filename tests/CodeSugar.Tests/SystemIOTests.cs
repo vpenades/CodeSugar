@@ -80,12 +80,17 @@ namespace CodeSugar.Tests
         {
             Assert.That(System.IO.MatchCasing.PlatformDefault.IsTempPath(System.IO.Path.GetTempPath()));
 
-            Assert.That(CODESUGARIO.SplitPath("/abc/d/e"), Is.EqualTo(new string[] { "abc", "d", "e" }));
+            Assert.That(CODESUGARIO.SplitPath("/abc/d/e"),
+                Is.EqualTo(new string[] { "abc", "d", "e" }));
 
-            Assert.That(CODESUGARIO.SplitPath("//network/abc/d/e"), Is.EqualTo(new string[] { "//network", "abc", "d", "e" }));            
+            Assert.That(CODESUGARIO.SplitPath("//network/abc/d/e"),
+                Is.EqualTo(new string[] { "//network", "abc", "d", "e" }));            
 
-            Assert.That(CODESUGARIO.SplitDirectoryAndName("/abc/d/e"), Is.EqualTo(("abc/d", "e")));
-            Assert.That(CODESUGARIO.SplitDirectoryAndName("//network/abc/d/e"), Is.EqualTo(( "//network/abc/d", "e" )));
+            Assert.That(CODESUGARIO.SplitDirectoryAndName("/abc/d/e"),
+                Is.EqualTo(("abc/d", "e")));
+
+            Assert.That(CODESUGARIO.SplitDirectoryAndName("//network/abc/d/e"),
+                Is.EqualTo(( "//network/abc/d", "e" )));
 
             if (CODESUGARIO.FileSystemIsCaseSensitive)
             {
@@ -202,20 +207,25 @@ namespace CodeSugar.Tests
             var dcomparer = MatchCasing.PlatformDefault.GetFullNameComparer<DirectoryInfo>();
 
             var tmp0 = new System.IO.DirectoryInfo("temp\\");
-            var tmp1 = tmp0.UseDirectory("a", "..", ".", "b", "..");
+            var tmp1 = tmp0.DefineDirectory("a", "..", ".", "b", "..");
             Assert.That(dcomparer.Equals(tmp0, tmp1));
+
+            Assert.That(() => readme_txt.Directory.DefineFile(" abc"), Throws.Exception);
+            Assert.That(() => readme_txt.Directory.DefineFile("abc "), Throws.Exception);
+            Assert.That(() => readme_txt.Directory.DefineFile("abc ", "readme.txt"), Throws.Exception);
+
+            Assert.That(() => readme_txt.Directory.DefineFile(".."), Throws.Exception);
+            Assert.That(() => readme_txt.Directory.DefineFile("."), Throws.Exception);            
+            Assert.That(() => readme_txt.Directory.DefineFile("/"), Throws.Exception);
             
-            Assert.That(() => readme_txt.Directory.GetFile(".."), Throws.Exception);
-            Assert.That(() => readme_txt.Directory.GetFile("."), Throws.Exception);            
-            Assert.That(() => readme_txt.Directory.GetFile("/"), Throws.Exception);
 
             if (IsWindowsPlatform)
             {
-                Assert.That(() => readme_txt.Directory.GetFile(":"), Throws.Exception);
-                Assert.That(() => readme_txt.Directory.GetFile("*"), Throws.Exception);
-                Assert.That(() => readme_txt.Directory.GetFile("?"), Throws.Exception);
-                Assert.That(() => readme_txt.Directory.GetFile("\\"), Throws.Exception);
-            }
+                Assert.That(() => readme_txt.Directory.DefineFile(":"), Throws.Exception);
+                Assert.That(() => readme_txt.Directory.DefineFile("*"), Throws.Exception);
+                Assert.That(() => readme_txt.Directory.DefineFile("?"), Throws.Exception);
+                Assert.That(() => readme_txt.Directory.DefineFile("\\"), Throws.Exception);
+            }            
         }
 
 

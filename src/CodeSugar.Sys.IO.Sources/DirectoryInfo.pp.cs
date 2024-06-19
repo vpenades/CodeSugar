@@ -80,6 +80,11 @@ namespace $rootnamespace$
             GuardNotNull(directory);
 
             if (directory.Exists) return false;
+
+            // prevent creation of directories with leading/trailing whitespaces
+            // (which can actually exist, but mess up windows explorer navigation)
+            GuardIsValidFileName(directory.Name, false, nameof(directory));
+
             directory.Create();
             return true;
         }

@@ -18,42 +18,30 @@ namespace $rootnamespace$
 {
     partial class CodeSugarForSystemIO
     {
-        #region diagnostics
-
-        #if !NET
+        #region diagnostics        
 
         /// <summary>
 		/// Checks whether a path is valid.
 		/// </summary>        
 		/// <exception cref="ArgumentNullException"></exception>
-		public static void GuardIsValidFileName(string fileName, bool checkForInvalidNames, string name = null)
+		public static void GuardIsValidFileName(string fileName, bool checkForInvalidNames,
+            #if NET
+            [CallerArgumentExpression("fileName")]
+            #endif
+            string paramName = null)
         {
-            name ??= nameof(fileName);
-            if (string.IsNullOrWhiteSpace(fileName)) throw new ArgumentNullException(name);
-            if (fileName.IndexOfAny(_InvalidNameChars) >= 0) throw new ArgumentException($"{fileName} contains invalid chars", name);
+            if (string.IsNullOrWhiteSpace(fileName)) throw new ArgumentNullException(paramName);
+            if (fileName.IndexOfAny(_InvalidNameChars) >= 0) throw new ArgumentException($"'{fileName}' contains invalid chars", paramName);
+
+            // files and directories with leading/trailing white spaces can be
+            // effectively created, but in practice it messes with windows explorer.
+            if (Char.IsWhiteSpace(fileName[0]) || Char.IsWhiteSpace(fileName[fileName.Length - 1])) throw new ArgumentException($"'{fileName}' has leading or trailing white spaces", paramName);
+
             if (checkForInvalidNames)
             {
-                if (fileName == "." || fileName == "..") throw new ArgumentException($"{fileName} is an invalid file name", name);
+                if (fileName == "." || fileName == "..") throw new ArgumentException($"'{fileName}' is an invalid file name", paramName);
             }
-        }
-
-        #else
-
-        /// <summary>
-		/// Checks whether a path is valid.
-		/// </summary>        
-		/// <exception cref="ArgumentNullException"></exception>
-		public static void GuardIsValidFileName(string fileName, bool checkForInvalidNames, [CallerArgumentExpression("fileName")] string name = null)
-        {
-            if (string.IsNullOrWhiteSpace(fileName)) throw new ArgumentNullException(nameof(fileName));
-            if (fileName.IndexOfAny(_InvalidNameChars) >= 0) throw new ArgumentException($"{fileName} contains invalid chars", nameof(fileName));
-            if (checkForInvalidNames)
-            {
-                if (fileName == "." || fileName == "..") throw new ArgumentException($"{fileName} is an invalid file name", name);
-            }
-        }
-
-        #endif
+        }        
 
         #endregion
 
