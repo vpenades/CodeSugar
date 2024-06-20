@@ -21,35 +21,56 @@ namespace $rootnamespace$
 {
     partial class CodeSugarForSystemIO
     {
+        /// <summary>
+        /// Checks if the given file has the given hash.
+        /// </summary>
+        /// <param name="finfo">The file to check</param>
+        /// <param name="hash">The hash value</param>
+        /// <returns>true if the hash matches</returns>
+        /// <remarks>
+        /// The hash algorythm is selected based in the hash size.
+        /// </remarks>
         public static bool CheckHash(this FILE finfo, string hash)
         {
-            if (string.IsNullOrWhiteSpace(hash)) throw new ArgumentNullException(hash);
+            byte[] bytes = __DecodeBase64OrHex(hash);
+            return CheckHash(finfo, bytes);
+        }
+
+        private static Byte[] __DecodeBase64OrHex(string value)
+        {
+            if (string.IsNullOrWhiteSpace(value)) throw new ArgumentNullException(value);
 
             byte[] bytes;
 
             try
             {
-                if (hash.EndsWith("=")) // decode as base64
+                if (value.EndsWith("=")) // decode as base64
                 {
-                    bytes = System.Convert.FromBase64String(hash);
-                    return CheckHash(finfo, bytes);
+                    return System.Convert.FromBase64String(value);                    
                 }
             }
             catch { }
 
-            if (hash.Length % 2 != 0) throw new ArgumentException("incorrect hash size for hex", nameof(hash));
+            if (value.Length % 2 != 0) throw new ArgumentException("incorrect hash size for hex", nameof(value));
 
-            bytes = new byte[hash.Length / 2];
-            for (int i = 0; i < hash.Length; i += 2)
+            bytes = new byte[value.Length / 2];
+            for (int i = 0; i < value.Length; i += 2)
             {
-                bytes[i / 2] = Convert.ToByte(hash.Substring(i, 2), 16);
+                bytes[i / 2] = Convert.ToByte(value.Substring(i, 2), 16);
             }
-            return CheckHash(finfo, bytes);
 
-
-            throw new ArgumentException("invalid hash", nameof(hash));
+            return bytes;
         }
 
+        /// <summary>
+        /// Checks if the given file has the given hash.
+        /// </summary>
+        /// <param name="finfo">The file to check</param>
+        /// <param name="hash">The hash value</param>
+        /// <returns>true if the hash matches</returns>
+        /// <remarks>
+        /// The hash algorythm is selected based in the hash size.
+        /// </remarks>
         public static bool CheckHash(this FILE finfo, byte[] hash)
         {
             if (hash == null || hash.Length == 0) throw new ArgumentNullException(nameof(hash));
@@ -69,6 +90,22 @@ namespace $rootnamespace$
         }
 
         /// <summary>
+        /// Computes multiple hashes from the contents of the given file.
+        /// </summary>
+        /// <remarks>
+        /// The hashing algorythm is selected based in the length of the imput byte array.
+        /// </remarks>
+        public static void ComputeHashes(this FILE finfo, params Byte[][] result)
+        {
+            GuardExists(finfo);
+
+            using (var s = finfo.OpenRead())
+            {
+                ComputeHashes(s, result);
+            }
+        }
+
+        /// <summary>
         /// Computes the <see cref="System.Security.Cryptography.SHA512"/> on the contents of the given file.
         /// </summary>
         public static Byte[] ComputeSha512(this FILE finfo)
@@ -77,7 +114,7 @@ namespace $rootnamespace$
 
             using (var s = finfo.OpenRead())
             {
-                return s.ComputeSha512();
+                return ComputeSha512(s);
             }
         }
 
@@ -90,7 +127,7 @@ namespace $rootnamespace$
 
             using (var s = finfo.OpenRead())
             {
-                return s.ComputeSha384();
+                return ComputeSha384(s);
             }
         }
 
@@ -103,7 +140,7 @@ namespace $rootnamespace$
 
             using (var s = finfo.OpenRead())
             {
-                return s.ComputeSha256();
+                return ComputeSha256(s);
             }
         }
 
@@ -116,7 +153,7 @@ namespace $rootnamespace$
 
             using (var s = finfo.OpenRead())
             {
-                return s.ComputeMd5();
+                return ComputeMd5(s);
             }
         }
     }
