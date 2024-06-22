@@ -334,6 +334,9 @@ namespace $rootnamespace$
                     var r = src128[i];
                     dst128[i] = r * mul128 + add128;
                 }
+
+                src = src.Slice(src128.Length);
+                dst = dst.Slice(dst128.Length);
             }
 
             #endif
