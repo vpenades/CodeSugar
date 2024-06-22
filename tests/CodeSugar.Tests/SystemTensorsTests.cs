@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.Intrinsics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,6 +13,17 @@ namespace CodeSugar
 {
     internal class SystemTensorsTests
     {
+        [SetUp]
+        public void Initialize()
+        {
+            #if NET8_0_OR_GREATER
+            TestContext.WriteLine($"Vector512 HwdSupport:{Vector512.IsHardwareAccelerated}");
+            TestContext.WriteLine($"Vector256 HwdSupport:{Vector256.IsHardwareAccelerated}");
+            TestContext.WriteLine($"Vector128 HwdSupport:{Vector128.IsHardwareAccelerated}");
+            #endif
+        }
+            
+
         [Test]
         public void TestVector4MultiplyAdd()
         {
