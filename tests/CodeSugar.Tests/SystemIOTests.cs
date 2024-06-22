@@ -10,7 +10,7 @@ using System.Diagnostics;
 
 using CODESUGARIO = CodeSugar.CodeSugarForSystemIO;
 
-namespace CodeSugar.Tests
+namespace CodeSugar
 {
     
 

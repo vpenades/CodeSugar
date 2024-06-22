@@ -9,7 +9,7 @@ using System.Linq;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace CodeSugar.Tests
+namespace CodeSugar
 {
     using CODESUGAR = CodeSugarForSystem;
 

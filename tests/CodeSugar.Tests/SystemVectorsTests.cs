@@ -11,7 +11,7 @@ using NUnit.Framework;
 
 namespace CodeSugar
 {
-    internal class SystemNumericsTests
+    internal class SystemVectorsTests
     {
 
         private static void _TestEquality(Vector3 a, Vector3 b, float tolerance)
