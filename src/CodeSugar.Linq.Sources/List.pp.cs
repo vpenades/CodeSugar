@@ -25,25 +25,73 @@ namespace $rootnamespace$
 {
     partial class CodeSugarForLinq
     {
-        public static IReadOnlyList<TResult> ListSelect<TSource, TResult>(this IReadOnlyList<TSource> collection, Func<TSource, TResult> selector)
+        public static void AddRange<T>(this IList<T> collection, IEnumerable<T> items)
         {
-            if (collection == null) throw new ArgumentNullException(nameof(collection));
-            if (selector == null) throw new ArgumentNullException(nameof(selector));
-
-            return new _ListSelect<TSource, TResult>(collection, selector);
+            foreach (var item in items) collection.Add(item);
         }
 
-        public static IReadOnlyCollection<TResult> CollectionSelect<TSource, TResult>(this IReadOnlyCollection<TSource> collection, Func<TSource, TResult> selector)
+        public static void AddRange<T>(this IList<T> collection, ReadOnlySpan<T> items)
+        {
+            foreach (var item in items) collection.Add(item);
+        }
+
+        public static void CopyTo<T>(this IReadOnlyList<T> src, Span<T> dst)
+        {
+            CopyTo(src, 0, dst);
+        }
+
+        public static void CopyTo<T>(this IReadOnlyList<T> src, int srcIndex, Span<T> dst)
+        {
+            switch(src)
+            {
+                #if NET6_0_OR_GREATER
+                case List<T> list:
+                    {
+                        var srcSpan = System.Runtime.InteropServices.CollectionsMarshal.AsSpan(list);
+                        srcSpan = srcSpan.Slice(srcIndex, Math.Min(list.Count - srcIndex, dst.Length));
+                        srcSpan.CopyTo(dst);
+                        break;
+                    }
+                #endif
+
+                case ArraySegment<T> arraySegment:
+                    {
+                        var srcSpan = arraySegment.AsSpan();
+                        srcSpan = srcSpan.Slice(srcIndex, Math.Min(arraySegment.Count - srcIndex, dst.Length));
+                        srcSpan.CopyTo(dst);
+                        break;
+                    }
+
+                default:
+                    {
+                        var len = Math.Min(src.Count - srcIndex, dst.Length);
+                        for (int i = 0; i < len; i++) { dst[i] = src[i+srcIndex]; }
+                        break;
+                    }
+            }            
+        }
+
+
+
+        public static IReadOnlyList<TResult> SelectList<TSource, TResult>(this IReadOnlyList<TSource> collection, Func<TSource, TResult> selector)
         {
             if (collection == null) throw new ArgumentNullException(nameof(collection));
             if (selector == null) throw new ArgumentNullException(nameof(selector));
 
-            return new _CollectionSelect<TSource, TResult>(collection, selector);
+            return new _SelectList<TSource, TResult>(collection, selector);
+        }
+
+        public static IReadOnlyCollection<TResult> SelectCollection<TSource, TResult>(this IReadOnlyCollection<TSource> collection, Func<TSource, TResult> selector)
+        {
+            if (collection == null) throw new ArgumentNullException(nameof(collection));
+            if (selector == null) throw new ArgumentNullException(nameof(selector));
+
+            return new _SelectCollection<TSource, TResult>(collection, selector);
         }
         
-        private readonly struct _ListSelect<TSource, TResult> : IReadOnlyList<TResult>
+        private readonly struct _SelectList<TSource, TResult> : IReadOnlyList<TResult>
         {
-            public _ListSelect(IReadOnlyList<TSource> list, Func<TSource, TResult> selector)
+            public _SelectList(IReadOnlyList<TSource> list, Func<TSource, TResult> selector)
             {
                 _List = list;
                 _Selector = selector;
@@ -69,9 +117,9 @@ namespace $rootnamespace$
             }
         }
 
-        private readonly struct _CollectionSelect<TSource, TResult> : IReadOnlyCollection<TResult>
+        private readonly struct _SelectCollection<TSource, TResult> : IReadOnlyCollection<TResult>
         {
-            public _CollectionSelect(IReadOnlyCollection<TSource> list, Func<TSource, TResult> selector)
+            public _SelectCollection(IReadOnlyCollection<TSource> list, Func<TSource, TResult> selector)
             {
                 _List = list;
                 _Selector = selector;
