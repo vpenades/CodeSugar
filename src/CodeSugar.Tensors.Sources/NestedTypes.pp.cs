@@ -69,68 +69,6 @@ namespace $rootnamespace$
         }
 
 
-        [System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, Pack = 1)]
-        struct __Vector3x128
-        {
-            public const int RepeatXYZCount = 4;
-
-            #if NET6_0_OR_GREATER
-
-            public static __Vector3x128 Repeat(XYZ v)
-            {
-                return new __Vector3x128
-                {
-                    X = Vector128.Create(v.X, v.Y, v.Z, v.X),
-                    Y = Vector128.Create(v.Y, v.Z, v.X, v.Y),
-                    Z = Vector128.Create(v.Z, v.X, v.Y, v.Z)
-                };
-            }            
-
-            public Vector128<float> X;
-            public Vector128<float> Y;
-            public Vector128<float> Z;
-
-            #else
-
-            public static __Vector3x128 Repeat(XYZ v)
-            {
-                return new __Vector3x128
-                {
-                    X = new XYZW(v.X, v.Y, v.Z, v.X),
-                    Y = new XYZW(v.Y, v.Z, v.X, v.Y),
-                    Z = new XYZW(v.Z, v.X, v.Y, v.Z)
-                };
-            }      
-
-            public XYZW X;
-            public XYZW Y;
-            public XYZW Z;
-
-            #endif
-        }
-
-        #if NET6_0_OR_GREATER
-
-        [System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, Pack = 1)]
-        struct __Vector3x256
-        {
-            public const int RepeatXYZCount = 8;
-
-            public static __Vector3x256 Repeat(XYZ v)
-            {
-                return new __Vector3x256
-                {
-                    X = Vector256.Create(v.X, v.Y, v.Z, v.X, v.Y, v.Z, v.X, v.Y),
-                    Y = Vector256.Create(v.Z, v.X, v.Y, v.Z, v.X, v.Y, v.Z, v.X),
-                    Z = Vector256.Create(v.Y, v.Z, v.X, v.Y, v.Z, v.X, v.Y, v.Z)
-                };
-            }
-
-            public Vector256<float> X;
-            public Vector256<float> Y;
-            public Vector256<float> Z;
-        }
-
-        #endif
+                    
     }
 }

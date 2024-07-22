@@ -58,7 +58,7 @@ namespace $rootnamespace$
             return cast[0];
 
             #endif
-        }
-        
+        }        
+
     }
 }
