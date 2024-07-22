@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.VisualStudio.TestPlatform.Utilities;
+
 using NUnit.Framework;
 
 namespace CodeSugar
@@ -34,8 +36,22 @@ namespace CodeSugar
             "a b\r\n c".TrySplitAfterLast(out p1, null, out p2);
             Assert.That(p1, Is.EqualTo("a b"));
             Assert.That(p2, Is.EqualTo("c"));
+        }
 
+        [Test]
+        public void TestTokenize()
+        {
+            Func<char, char> blocks = (char c) => c == '{' ? '}' : default;
+            var split = CodeSugarForText.Tokenize("  abc { a b c } 123 ", null, blocks).ToArray();
 
+            Assert.That(split, Is.EqualTo(new[] { "abc", " a b c ", "123" }));
+
+            Assert.That(CodeSugarForText.Tokenize("abc 123"), Is.EqualTo(new[] { "abc", "123" }));
+
+            Assert.That(CodeSugarForText.Tokenize("abc"), Is.EqualTo(new[] { "abc" }));
+            
+
+            
         }
 
     }
