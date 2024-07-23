@@ -42,16 +42,39 @@ namespace CodeSugar
         public void TestTokenize()
         {
             Func<char, char> blocks = (char c) => c == '{' ? '}' : default;
-            var split = CodeSugarForText.Tokenize("  abc { a b c } 123 ", null, blocks).ToArray();
 
+            var split = CodeSugarForText.Tokenize("  abc { a b c } 123 ", null, blocks).ToArray();
             Assert.That(split, Is.EqualTo(new[] { "abc", " a b c ", "123" }));
+
+            split = CodeSugarForText.Tokenize("{abc } {} { abc}", null, blocks).ToArray();
+            Assert.That(split, Is.EqualTo(new[] { "abc ", string.Empty, " abc" }));
 
             Assert.That(CodeSugarForText.Tokenize("abc 123"), Is.EqualTo(new[] { "abc", "123" }));
 
-            Assert.That(CodeSugarForText.Tokenize("abc"), Is.EqualTo(new[] { "abc" }));
-            
+            Assert.That(CodeSugarForText.Tokenize("    abc     123    "), Is.EqualTo(new[] { "abc", "123" }));
 
-            
+            Assert.That(CodeSugarForText.Tokenize("abc"), Is.EqualTo(new[] { "abc" }));
+
+            Assert.That(CodeSugarForText.Tokenize("-a --b -c:hello -d:{hello world} -e",null, blocks), Is.EqualTo(new[] { "-a","--b","-c:hello","-d:hello world","-e" }));
+        }
+
+        [TestCase("")]
+        [TestCase("  ")]
+        [TestCase("abc")]
+        [TestCase("abc ")]
+        [TestCase("abc \"\" 123")]
+        [TestCase("   abc   123 ")]
+        [TestCase(" \"abc\"\"123\"\"abc\" \"\"\"123\" ")]
+        [TestCase("   abc   \" 123   \" ")]
+        [TestCase("-a --b -c:hello -d:\"hello world\" -e")]
+        [TestCase(" -d:\"hello\"xyz 123 \"\"  555  a\"\"b ")]
+        public void TestTokenizeCommandLine(string textLine)
+        {            
+            var refSplit = System.CommandLine.Parsing.CommandLineStringSplitter.Instance.Split(textLine).ToArray();
+
+            var impSplit = textLine.Tokenize(null, c=> c== '"' ? '"' : default).ToArray();
+
+            Assert.That(impSplit, Is.EqualTo(refSplit));
         }
 
     }

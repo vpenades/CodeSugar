@@ -32,16 +32,18 @@ namespace $rootnamespace$
             openBlock ??= c => default;
 
             var accum = new StringBuilder();
-            char endBlock = default;
+            var accumIsBlock = false;
+            char endBlock = default;            
 
             for (int i = 0; i < commandLineSentence.Length; ++i)
             {
                 var c = commandLineSentence[i];
 
-                // block mode
+                // is block state?
                 if (endBlock != default)
                 {
-                    if (c == endBlock) { endBlock = default; continue; } // exit block mode
+                    // exit block state
+                    if (c == endBlock) { endBlock = default; accumIsBlock = true; continue; }
 
                     accum.Append(c);
                     continue;
@@ -49,28 +51,31 @@ namespace $rootnamespace$
 
                 // check block start
                 var end = openBlock(c);
-                if (end != default) { endBlock = end; continue; }
-
-
-
-                // check whitespaces before token
-                if (accum.Length == 0 && separator(c)) continue;                
-
-                // check end token
-                if (separator(c) && endBlock == default)
+                if (end != default)
                 {
-                    if (accum.Length > 0)
+                    if (accumIsBlock)
                     {
                         yield return accum.ToString();
                         accum.Clear();
+                        accumIsBlock = false;
                     }
-                    continue;
+
+                    endBlock = end; continue;
                 }
 
-                accum.Append(c);
+                // non separator char
+                if (!separator(c)) { accum.Append(c); continue; }                
+
+                // break
+                if (accum.Length > 0 || accumIsBlock)
+                {                    
+                    yield return accum.ToString();
+                    accum.Clear();
+                    accumIsBlock = false;
+                }
             }
 
             if (accum.Length > 0) yield return accum.ToString();
-        }
+        }        
     }
 }
