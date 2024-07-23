@@ -115,9 +115,10 @@ namespace CodeSugar
         [TestCase("BGR", "RGBA")]
         [TestCase("RGB", "BGRA")]
         [TestCase("RGB", "ARGB")]
-        [TestCase("ARGB", "BGR")]
-        [TestCase("ARGB", "RGB")]
+        [TestCase("RGBA", "RGBA")]
         [TestCase("RGBA", "RGB")]
+        [TestCase("BGRA", "RGB")]
+        [TestCase("ARGB", "RGB")]        
         [TestCase("RGBA", "RGBA")]
         [TestCase("RGBA", "BGRA")]
         [TestCase("ARGB", "BGRA")]        
@@ -182,6 +183,16 @@ namespace CodeSugar
                         case "ARGB": src.ConvertRGBAtoARGB(dstXYZW, mul, add); break;
                     }
                     break;
+                case "BGRA":
+                    switch (dstFmt)
+                    {
+                        case "RGB": src.ConvertBGRAtoRGB(dstXYZ, mul3, add3); break;
+                        case "BGR": src.ConvertBGRAtoBGR(dstXYZ, mul3, add3); break;
+                        case "RGBA": src.ConvertBGRAtoRGBA(dstXYZW, mul, add); break;
+                        case "BGRA": src.ConvertBGRAtoBGRA(dstXYZW, mul, add); break;
+                        case "ARGB": src.ConvertBGRAtoARGB(dstXYZW, mul, add); break;
+                    }
+                    break;
                 case "ARGB":
                     switch (dstFmt)
                     {
@@ -197,7 +208,7 @@ namespace CodeSugar
 
         private static void _ConvertPixelsRef(ReadOnlySpan<byte> src, string srcFmt, Span<float> dst, string dstFmt, XYZW mul, XYZW add)
         {
-            IReadOnlyList<int> _Indices(string fmt)
+            IReadOnlyList<int> _ComponentIndices(string fmt)
             {
                 switch(fmt)
                 {
@@ -210,25 +221,30 @@ namespace CodeSugar
                 }
             }
 
-            var srcIdx = _Indices(srcFmt);
-            var dstIdx = _Indices(dstFmt);
+            var srcIdx = _ComponentIndices(srcFmt);
+            var dstIdx = _ComponentIndices(dstFmt);
 
             var len = Math.Min(src.Length / srcIdx.Count, dst.Length / dstIdx.Count);            
 
             dst.Fill(255); // missing alphas
 
+            // transfer bytes
+
             for(int i=0; i < len; ++i)
             {
                 for(int j =0; j < dstIdx.Count; ++j)
                 {
+                    // get from src
                     var val = j < srcIdx.Count
                         ? src[i * srcIdx.Count + srcIdx[j]]
                         : 255;
 
+                    // set to dst
                     dst[i * dstIdx.Count + dstIdx[j]] = val;
                 }                
             }
 
+            // convert to float, and apply MAD
             switch(dstIdx.Count)
             {
                 case 4:

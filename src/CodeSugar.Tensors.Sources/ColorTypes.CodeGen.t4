@@ -1,231 +1,5 @@
 ﻿<#+
 
-public class ColorConversionStaticFuncCodeGen
-{
-	public ColorConversionStaticFuncCodeGen(Action<string> lw, string srcColorType, string dstColorType, Dictionary<(string src, string dst, int vsize),int> helper)
-	{
-        _LineWriter = lw;
-		SrcColorType = srcColorType;
-		DstColorType = dstColorType;
-
-        _SimdVectorHelper = helper;
-	}
-
-    private readonly Action<string> _LineWriter;
-
-    private readonly Dictionary<(string src, string dst, int vsize),int> _SimdVectorHelper;
-
-	public string SrcColorType {get;}
-	public string DstColorType {get;}
-
-	public bool DstIs3Elements => DstColorType == "RGB" || DstColorType == "BGR";
-
-    public void WriteLine(string text) { _LineWriter(text); }
-
-    public void WriteLines(IEnumerable<string> lines)
-    {
-        foreach(var l in lines) WriteLine(l);
-    }
-
-    public void WriteStaticMethod(string srcElementType, bool useMAD)
-    {
-        WriteLines(EmitStaticMethod(srcElementType,useMAD));
-    }
-
-
-	public IEnumerable<string> EmitStaticMethod(string srcElementType, bool useMAD)
-	{
-		var madParams = string.Empty;
-        if (useMAD)
-        {
-            if (DstIs3Elements) madParams = ", Vector3 mul, Vector3 add";
-            else madParams = ", Vector4 mul, Vector4 add";        
-        }
-
-        var dstValueName = DstColorType.Length == 3 ? "Vector3" : "Vector4";
-
-		yield return $"public static void Convert{SrcColorType}to{DstColorType}(this ReadOnlySpan<{srcElementType}> src, Span<{dstValueName}> dst  {madParams})";
-		yield return "{";
-
-        // var constantAlpha =srcElementType=="float"?1:255;
-        // yield return $"const {srcElementType} defaultAlpha = {constantAlpha};";
-        
-
-        yield return "#if NET8_0_OR_GREATER";
-
-        yield return "if (false) {}"; // hack to handle if-else properly
-        foreach(var l in EmitSimdMethodBlock1X(16, srcElementType, useMAD)) yield return l;
-        yield return "";
-		foreach(var l in EmitSimdMethodBlock1X(8, srcElementType, useMAD)) yield return l;
-        yield return "";
-		foreach(var l in EmitSimdMethodBlock1X(4, srcElementType, useMAD)) yield return l;
-
-        yield return "#endif";	
-
-		
-
-        yield return "// fallback";
-        yield return "{";		
-
-        yield return $"while(src.Length >= {SrcColorType.Length})";
-        yield return "{";
-            foreach(var l in WriteFallbackConverter("src","dst", SrcColorType, DstColorType, srcElementType == "float" ? 1 : 255, useMAD)) yield return l;
-        
-            yield return $"src = src.Slice({SrcColorType.Length});";
-            yield return $"dst = dst.Slice(1);";
-        yield return "}";
-
-        yield return "}";
-
-		yield return "}";
-	}
-
-    private IEnumerable<string> EmitSimdMethodBlock1X(int vecSize, string srcElementType, bool useMAD)
-	{
-        if (!_SimdVectorHelper.TryGetValue((SrcColorType,DstColorType, vecSize), out var structSize)) yield break;
-
-        var dstValueName = DstColorType.Length == 3 ? "Vector3" : "Vector4";        
-
-		yield return $"else if (Vector{32*vecSize}.IsHardwareAccelerated)";
-        yield return "{";        
-
-		var currentType = $"__{SrcColorType}x{structSize}<{srcElementType}>";
-		
-        yield return $"var srcX = MMARSHALL.Cast<{srcElementType},{currentType}>(src);";
-		yield return $"var dstX = MMARSHALL.Cast<{dstValueName},VECTOR{vecSize}>(dst);"; // ".Slice(srcX.Length*{SrcColorType.Length});";                
-
-        // yield return $"System.Diagnostics.Debug.Assert(srcX.Length * {SrcColorType.Length} == dstX.Length);";
-
-        if (useMAD) yield return $"{currentType}.CopyTo{DstColorType}(srcX, dstX, mul, add);";
-        else yield return $"{currentType}.CopyTo{DstColorType}(srcX, dstX);";        
-
-        var weirdDiv = DstColorType.Length == 3 ? 1 : 4;
-
-        yield return $"var len = srcX.Length;";        
-        yield return $"src = src.Slice(len * {structSize * SrcColorType.Length});";
-        yield return $"dst = dst.Slice(len * {vecSize / weirdDiv});";
-
-        yield return "}";                
-	}	
-
-	// this is used as fallaback to copy color elements one by one
-    private static IEnumerable<string> WriteFallbackConverter(string srcArray, string dstArray, string srcColorFmt, string dstColorFmt, int alpha, bool useMAD)    
-    {
-        var vecTerms = new string[] {"X","Y","Z","W"};
-
-        yield return $"ref var curr = ref {dstArray}[0];";
-
-        var srcIndices = GetForwardOrder(srcColorFmt);
-        var dstIndices = GetReverseOrder(dstColorFmt);
-        
-        for(int i=0; i < dstIndices.Count; ++i)
-        {
-            var si = dstIndices[i];
-            var di = si < srcIndices.Count ? srcIndices[si] : -1;
-
-            var vecTerm = vecTerms[i];
-
-            if (di>= 0) yield return $"curr.{vecTerm} = (float){srcArray}[{di}];";
-            else yield return $"curr.{vecTerm} = {alpha};";
-        }
-
-        if (useMAD)
-        {
-            yield return $"curr *= mul;";
-            yield return $"curr += add;";
-        }
-    }
-
-	
-
-    public static IReadOnlyList<int> GetElementIndices(string srcFmt, string dstFmt, int repeat)
-    {
-        var srcIndices = GetForwardOrder(srcFmt);
-        var dstIndices = GetReverseOrder(dstFmt);
-
-        if (dstIndices.Count == 3)
-        {
-            var x = dstIndices[0];
-            var y = dstIndices[1];
-            var z = dstIndices[2];            
-
-            x = x >= 0 && x < srcIndices.Count ? srcIndices[x] : -1;
-            y = y >= 0 && y < srcIndices.Count ? srcIndices[y] : -1;
-            z = z >= 0 && z < srcIndices.Count ? srcIndices[z] : -1;            
-
-            var indices = new int[3*repeat];
-            var ii = 0;
-
-            for(int i=0; i < indices.Length; i+=3)
-            {
-                indices[i+0] = x >= 0 ? x + ii : -1;
-                indices[i+1] = y >= 0 ? y + ii : -1;
-                indices[i+2] = z >= 0 ? z + ii : -1;                
-                ii+= srcIndices.Count;
-            }    
-
-            return indices;
-        }
-
-        if (dstIndices.Count == 4)
-        {
-            var x = dstIndices[0];
-            var y = dstIndices[1];
-            var z = dstIndices[2];
-            var w = dstIndices[3];            
-
-            x = x >= 0 && x < srcIndices.Count ? srcIndices[x] : -1;
-            y = y >= 0 && y < srcIndices.Count ? srcIndices[y] : -1;
-            z = z >= 0 && z < srcIndices.Count ? srcIndices[z] : -1;
-            w = w >= 0 && w < srcIndices.Count ? srcIndices[w] : -1;
-
-            var indices = new int[4*repeat];
-            var ii = 0;
-
-            for(int i=0; i < indices.Length; i+=4)
-            {
-                indices[i+0] = x >= 0 ? x + ii : -1;
-                indices[i+1] = y >= 0 ? y + ii : -1;
-                indices[i+2] = z >= 0 ? z + ii : -1;
-                indices[i+3] = w >= 0 ? w + ii : -1;
-                ii+= srcIndices.Count;
-            }    
-
-            return indices;
-        }
-
-        throw new NotImplementedException();
-    }
-
-    
-    private static IReadOnlyList<int> GetForwardOrder(string format) // at which index is R located?
-    {
-        switch(format)
-        {
-            case "RGB": return new int[] {0,1,2};
-            case "BGR": return new int[] {2,1,0};
-            case "RGBA": return new int[] {0,1,2,3};
-            case "BGRA": return new int[] {2,1,0,3};
-            case "ARGB": return new int[] {1,2,3,0};
-            default: return new int[] {};
-        }
-    }
-
-    private static IReadOnlyList<int> GetReverseOrder(string format) // what's in that index?
-    {
-        switch(format)
-        {
-            case "RGB": return new int[] {0,1,2};
-            case "BGR": return new int[] {2,1,0};
-            case "RGBA": return new int[] {0,1,2,3};
-            case "BGRA": return new int[] {2,1,0,3};
-            case "ARGB": return new int[] {3,0,1,2};
-            default: return new int[] {};
-        }
-    }
-}
-
-
 public class ColorConversionStructuresCodeGen
 {
     public ColorConversionStructuresCodeGen(Action<string> lw, string srcColorType, int vectorSize)
@@ -314,6 +88,9 @@ public class ColorConversionStructuresCodeGen
 
             WriteLine("");
 
+            if (singleCount > 8) WriteLine("#if NET8_0_OR_GREATER");
+            else WriteLine("#if NET6_0_OR_GREATER");
+
             WriteLine("[MethodImpl(AGRESSIVE)]");
 
             if (repeats == 1) WriteLine($"private static void _ConvertTo{dstColorType}(in {SrcColorTypeName}<{srcElementType}> src, out {vectorType} dst)");
@@ -338,6 +115,8 @@ public class ColorConversionStructuresCodeGen
             }
 
             WriteLine("}");
+
+            WriteLine("#endif");
         }        
     }    
 
@@ -345,14 +124,14 @@ public class ColorConversionStructuresCodeGen
     {
         WriteLine("");
 
-        if (useMAD || VectorSize == 16) WriteLine("#if NET8_0_OR_GREATER");
-        else WriteLine("#if NET8_0_OR_GREATER");        
+        if (useMAD || currVectorSize > 8) WriteLine("#if NET8_0_OR_GREATER");
+        else WriteLine("#if NET6_0_OR_GREATER");        
 
         var madParams = string.Empty;
         if (useMAD)
         {
-            if (repeat == 3) madParams = ", Vector3 mul, Vector3 add";
-            else madParams = ", Vector4 mul, Vector4 add";        
+            if (repeat == 3) madParams = ", in XYZ mul, in XYZ add";
+            else madParams = ", in XYZW mul, in XYZW add";        
         }
 
         var vectorTypeName = $"VECTOR{currVectorSize}";
@@ -371,6 +150,7 @@ public class ColorConversionStructuresCodeGen
             {            
                 WriteLine($"var mul1 = mul.RepeatVector{currVectorSize*32}();");
                 WriteLine($"var add1 = add.RepeatVector{currVectorSize*32}();");
+                WriteLine("");
             }
 
             _WriteSection1X("Byte", dstColorType,useMAD);
@@ -383,6 +163,7 @@ public class ColorConversionStructuresCodeGen
             {            
                 WriteLine($"var mul3 = __Vector3x{currVectorSize*32}.Repeat(mul);");
                 WriteLine($"var add3 = __Vector3x{currVectorSize*32}.Repeat(add);");
+                WriteLine("");
             }
 
             _WriteSection3X("Byte", dstColorType,useMAD);
@@ -512,6 +293,232 @@ public class ColorConversionStructuresCodeGen
         return elements;
     }
 }
+
+public class ColorConversionStaticFuncCodeGen
+{
+	public ColorConversionStaticFuncCodeGen(Action<string> lw, string srcColorType, string dstColorType, Dictionary<(string src, string dst, int vsize),int> helper)
+	{
+        _LineWriter = lw;
+		SrcColorType = srcColorType;
+		DstColorType = dstColorType;
+
+        _SimdVectorHelper = helper;
+	}
+
+    private readonly Action<string> _LineWriter;
+
+    private readonly Dictionary<(string src, string dst, int vsize),int> _SimdVectorHelper;
+
+	public string SrcColorType {get;}
+	public string DstColorType {get;}
+
+	public bool DstIs3Elements => DstColorType == "RGB" || DstColorType == "BGR";
+
+    public void WriteLine(string text) { _LineWriter(text); }
+
+    public void WriteLines(IEnumerable<string> lines)
+    {
+        foreach(var l in lines) WriteLine(l);
+    }
+
+    public void WriteStaticMethod(string srcElementType, bool useMAD)
+    {
+        WriteLines(EmitStaticMethod(srcElementType,useMAD));
+    }
+
+
+	public IEnumerable<string> EmitStaticMethod(string srcElementType, bool useMAD)
+	{
+		var madParams = string.Empty;
+        if (useMAD)
+        {
+            if (DstIs3Elements) madParams = ", in XYZ mul, in XYZ add";
+            else madParams = ", in XYZW mul, in XYZW add";        
+        }
+
+        var dstValueName = DstColorType.Length == 3 ? "XYZ" : "XYZW";
+
+        yield return "";
+        yield return "/// <remarks>Copies <paramref name=\"src\"/> into <paramref name=\"dst\"/>, applying the appropiate color conversion.</remarks>";
+		yield return $"public static void Convert{SrcColorType}to{DstColorType}(this ReadOnlySpan<{srcElementType}> src, Span<{dstValueName}> dst{madParams})";
+		yield return "{";
+
+        yield return $"if (src.Length % {SrcColorType.Length} != 0) throw new ArgumentException(\"length is not multiple of {SrcColorType.Length}\", nameof(src));";
+        yield return $"if (src.Length > dst.Length * {SrcColorType.Length}) throw new ArgumentOutOfRangeException(nameof(src));";        
+        yield return "";
+
+        yield return "#if NET8_0_OR_GREATER";
+
+        yield return "if (false) {}"; // hack to handle if-else properly
+        foreach(var l in EmitSimdMethodBlock(16, srcElementType, useMAD)) yield return l;
+        yield return "";
+		foreach(var l in EmitSimdMethodBlock(8, srcElementType, useMAD)) yield return l;
+        yield return "";
+		foreach(var l in EmitSimdMethodBlock(4, srcElementType, useMAD)) yield return l;
+
+        yield return "#endif";	
+
+		
+
+        yield return "// fallback";
+        yield return "{";		
+
+        yield return $"while(src.Length >= {SrcColorType.Length})";
+        yield return "{";
+            foreach(var l in WriteFallbackConverter("src","dst", SrcColorType, DstColorType, srcElementType == "float" ? 1 : 255, useMAD)) yield return l;
+        
+            yield return $"src = src.Slice({SrcColorType.Length});";
+            yield return $"dst = dst.Slice(1);";
+        yield return "}";
+
+        yield return "}";
+
+		yield return "}";
+	}
+
+    private IEnumerable<string> EmitSimdMethodBlock(int vecSize, string srcElementType, bool useMAD)
+	{
+        if (!_SimdVectorHelper.TryGetValue((SrcColorType,DstColorType, vecSize), out var structSize)) yield break;
+
+        var dstValueName = DstColorType.Length == 3 ? "XYZ" : "XYZW";        
+
+		yield return $"else if (Vector{32*vecSize}.IsHardwareAccelerated)";
+        yield return "{";        
+
+		var currentType = $"__{SrcColorType}x{structSize}<{srcElementType}>";
+		
+        yield return $"var srcX = MMARSHALL.Cast<{srcElementType},{currentType}>(src);";
+		yield return $"var dstX = MMARSHALL.Cast<{dstValueName},VECTOR{vecSize}>(dst);"; // ".Slice(srcX.Length*{SrcColorType.Length});";
+
+        if (useMAD) yield return $"{currentType}.CopyTo{DstColorType}(srcX, dstX, mul, add);";
+        else yield return $"{currentType}.CopyTo{DstColorType}(srcX, dstX);";
+
+        yield return $"var len = srcX.Length * {structSize};";        
+        yield return $"src = src.Slice(len * {SrcColorType.Length});";
+        yield return $"dst = dst.Slice(len);";
+
+        yield return "}";                
+	}	
+
+	// this is used as fallaback to copy color elements one by one
+    private static IEnumerable<string> WriteFallbackConverter(string srcArray, string dstArray, string srcColorFmt, string dstColorFmt, int alpha, bool useMAD)    
+    {
+        var vecTerms = new string[] {"X","Y","Z","W"};
+
+        yield return $"ref var curr = ref {dstArray}[0];";
+
+        var srcIndices = GetForwardOrder(srcColorFmt);
+        var dstIndices = GetReverseOrder(dstColorFmt);
+        
+        for(int i=0; i < dstIndices.Count; ++i)
+        {
+            var si = dstIndices[i];
+            var di = si < srcIndices.Count ? srcIndices[si] : -1;
+
+            var vecTerm = vecTerms[i];
+
+            if (di>= 0) yield return $"curr.{vecTerm} = (float){srcArray}[{di}];";
+            else yield return $"curr.{vecTerm} = {alpha};";
+        }
+
+        if (useMAD)
+        {
+            yield return $"curr *= mul;";
+            yield return $"curr += add;";
+        }
+    }
+
+	
+
+    public static IReadOnlyList<int> GetElementIndices(string srcFmt, string dstFmt, int repeat)
+    {
+        var srcIndices = GetForwardOrder(srcFmt);
+        var dstIndices = GetReverseOrder(dstFmt);
+
+        if (dstIndices.Count == 3)
+        {
+            var x = dstIndices[0];
+            var y = dstIndices[1];
+            var z = dstIndices[2];            
+
+            x = x >= 0 && x < srcIndices.Count ? srcIndices[x] : -1;
+            y = y >= 0 && y < srcIndices.Count ? srcIndices[y] : -1;
+            z = z >= 0 && z < srcIndices.Count ? srcIndices[z] : -1;            
+
+            var indices = new int[3*repeat];
+            var ii = 0;
+
+            for(int i=0; i < indices.Length; i+=3)
+            {
+                indices[i+0] = x >= 0 ? x + ii : -1;
+                indices[i+1] = y >= 0 ? y + ii : -1;
+                indices[i+2] = z >= 0 ? z + ii : -1;                
+                ii+= srcIndices.Count;
+            }    
+
+            return indices;
+        }
+
+        if (dstIndices.Count == 4)
+        {
+            var x = dstIndices[0];
+            var y = dstIndices[1];
+            var z = dstIndices[2];
+            var w = dstIndices[3];            
+
+            x = x >= 0 && x < srcIndices.Count ? srcIndices[x] : -1;
+            y = y >= 0 && y < srcIndices.Count ? srcIndices[y] : -1;
+            z = z >= 0 && z < srcIndices.Count ? srcIndices[z] : -1;
+            w = w >= 0 && w < srcIndices.Count ? srcIndices[w] : -1;
+
+            var indices = new int[4*repeat];
+            var ii = 0;
+
+            for(int i=0; i < indices.Length; i+=4)
+            {
+                indices[i+0] = x >= 0 ? x + ii : -1;
+                indices[i+1] = y >= 0 ? y + ii : -1;
+                indices[i+2] = z >= 0 ? z + ii : -1;
+                indices[i+3] = w >= 0 ? w + ii : -1;
+                ii+= srcIndices.Count;
+            }    
+
+            return indices;
+        }
+
+        throw new NotImplementedException();
+    }
+
+    
+    private static IReadOnlyList<int> GetForwardOrder(string format) // at which index is R located?
+    {
+        switch(format)
+        {
+            case "RGB": return new int[] {0,1,2};
+            case "BGR": return new int[] {2,1,0};
+            case "RGBA": return new int[] {0,1,2,3};
+            case "BGRA": return new int[] {2,1,0,3};
+            case "ARGB": return new int[] {1,2,3,0};
+            default: return new int[] {};
+        }
+    }
+
+    private static IReadOnlyList<int> GetReverseOrder(string format) // what's in that index?
+    {
+        switch(format)
+        {
+            case "RGB": return new int[] {0,1,2};
+            case "BGR": return new int[] {2,1,0};
+            case "RGBA": return new int[] {0,1,2,3};
+            case "BGRA": return new int[] {2,1,0,3};
+            case "ARGB": return new int[] {3,0,1,2};
+            default: return new int[] {};
+        }
+    }
+}
+
+
+
 
 #>
 

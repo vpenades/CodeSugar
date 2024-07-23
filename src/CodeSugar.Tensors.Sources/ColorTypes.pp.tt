@@ -37,6 +37,8 @@ using VECTOR16 = System.Runtime.Intrinsics.Vector512<float>;
 #nullable disable
 
 using MMARSHALL = System.Runtime.InteropServices.MemoryMarshal;
+using XYZ = System.Numerics.Vector3;
+using XYZW = System.Numerics.Vector4;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -74,7 +76,7 @@ namespace $rootnamespace$
     foreach(var _srcColorType in formats)
     {
         WriteLine("");
-        WriteLine($"#region {_srcColorType}");        
+        WriteLine($"#region {_srcColorType}");
         
         foreach(int structSize in new int[] {2, 4, 8, 16})
         {
@@ -84,7 +86,7 @@ namespace $rootnamespace$
 
             // add the -compatible- vector SIMD conversion functions
 
-            WriteLine("#if NET8_0_OR_GREATER");
+            
 
             foreach(var _dstColorType in formats)                
             {
@@ -93,9 +95,7 @@ namespace $rootnamespace$
 
                 structsWriter.WriteConverter("byte", _dstColorType, 3);
                 structsWriter.WriteConverter("float", _dstColorType, 3);
-            }
-
-            WriteLine("#endif");
+            }            
 
             foreach(var kvp in structsWriter.AvailableConverters)     
             {
