@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 using NUnit.Framework;
 
+using XY = System.Numerics.Vector2;
+
 namespace CodeSugar
 {
     internal class SystemVectorsTests
@@ -129,6 +131,16 @@ namespace CodeSugar
             var imm = m.InvertedFast();
 
             _TestEquality(im.Translation, imm.Translation, 0.0001f);
+        }
+
+        [Test]
+        public void TestCollectionTransform()
+        {
+            var c1 = new XY[] { XY.Zero, XY.One };
+            var c2 = c1.ToList();
+
+            c1.InPlaceTransformBy(System.Numerics.Matrix3x2.Identity);
+            c2.InPlaceTransformBy(System.Numerics.Matrix3x2.Identity);            
         }
 
         [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Linq;
 
 #nullable disable
 
@@ -15,7 +16,9 @@ namespace System.Numerics
 #else
 namespace $rootnamespace$
 #endif
-{    
+{
+    using VECTOR2ENUMERATION = System.Collections.Generic.IEnumerable<System.Numerics.Vector2>;
+
     internal static partial class CodeSugarForNumerics    
     {
         [DebuggerStepThrough]
@@ -81,9 +84,8 @@ namespace $rootnamespace$
             return a.X * b.Y - a.Y * b.X;
         }
 
-        [DebuggerStepThrough]
-        [MethodImpl(AGRESSIVE)]
-        public static Vector2 Centroid(this System.Collections.Generic.IEnumerable<Vector2> points)
+        [DebuggerStepThrough]        
+        public static Vector2 Centroid(this VECTOR2ENUMERATION points)
         {
             if (points == null) return Vector2.Zero;
 
@@ -107,6 +109,71 @@ namespace $rootnamespace$
             y /= c;            
 
             return new Vector2((float)x, (float)y);
-        }    
+        }
+
+        [DebuggerStepThrough]
+        public static Vector2 Min(this VECTOR2ENUMERATION points)
+        {            
+            return points.Aggregate(new Vector2(float.MaxValue), (seed, value) => Vector2.Min(seed, value));
+        }
+
+        [DebuggerStepThrough]
+        public static Vector2 Max(this VECTOR2ENUMERATION points)
+        {
+            return points.Aggregate(new Vector2(float.MinValue), (seed, value) => Vector2.Max(seed, value));
+        }
+
+        [DebuggerStepThrough]
+        public static (Vector2 Min, Vector2 Max) MinMax(this VECTOR2ENUMERATION points)
+        {
+            return points.Aggregate((new Vector2(float.MaxValue), new Vector2(float.MinValue)), (seed, value) => (Vector2.Min(seed.Item1,value), Vector2.Max(seed.Item2, value)) );
+        }
+
+        [DebuggerStepThrough]
+        public static void InPlaceTransformBy(this Span<Vector2> collection, System.Numerics.Matrix3x2 matrix)            
+        {
+            if (collection == null) return;
+
+            for (int i = 0; i < collection.Length; i++)
+            {
+                collection[i] = Vector2.Transform(collection[i], matrix);
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static void InPlaceTransformNormalBy(this Span<Vector2> collection, System.Numerics.Matrix3x2 matrix)            
+        {
+            if (collection == null) return;
+
+            for (int i = 0; i < collection.Length; i++)
+            {
+                collection[i] = Vector2.TransformNormal(collection[i], matrix);
+            }
+        }
+
+
+        [DebuggerStepThrough]
+        public static void InPlaceTransformBy<TCollection>(this TCollection collection, System.Numerics.Matrix3x2 matrix)
+            where TCollection: IList<Vector2>
+        {
+            if (collection == null) return;
+
+            for(int i=0; i<collection.Count; i++)
+            {
+                collection[i] = Vector2.Transform(collection[i], matrix);
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static void InPlaceTransformNormalBy<TCollection>(this TCollection collection, System.Numerics.Matrix3x2 matrix)
+            where TCollection : IList<Vector2>
+        {
+            if (collection == null) return;
+
+            for (int i = 0; i < collection.Count; i++)
+            {
+                collection[i] = Vector2.TransformNormal(collection[i], matrix);
+            }
+        }
     }
 }
