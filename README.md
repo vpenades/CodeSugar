@@ -63,17 +63,20 @@ Afterwards, the extensions should be readily available:
     }
 ```
 
-### Compiling issues
+### Known MSBuild issues
 
-The nuget templating system copies the .cs generated code into the Obj directory, in a fairly long path, which ca look like this:
+1. Projects referencing a source package with templates requires to have a &lt;RootNamespace&gt; defined in the csproj, even if it
+matches the default value, otherwise msbuild is unable to generate the templates.
+
+2. Apparently, REbuilding a project containing templated source files does not work, only Build works.
+
+3. The nuget templating system copies the .cs generated code into the Obj directory, in a fairly long path, which looks like this:
 
 ```C:\Users\CurrentUser\Desktop\MyProjects\CurrentSolution\Src\SomeProject\obj\Debug\net8.0\NuGet\335213469D559D6E09240088A99B3E9B5ADBC7AC\CodeSugar.System.IO.Sources\1.0.0-Preview-20240119-092135\_CodeSugarIO.DriveInfo.cs```
 
 Which can exceed the maximum number of characters supported by a file path, which will result in a ```MSB4018	The "ProduceContentAssets" task failed unexpectedly.``` Error.
 
-# References
-
-- [NuGet and long file name support](https://github.com/NuGet/Home/issues/3324)
+[NuGet and long file name support](https://github.com/NuGet/Home/issues/3324)
 
 
 ### External references
