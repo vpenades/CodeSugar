@@ -74,6 +74,14 @@ namespace CodeSugar
             }
         }
 
+        [Test]
+        public void TestPathLengthLimits()
+        {
+            var tooBigPath = "c:\\" + string.Join("\\", Enumerable.Repeat("PathTooLong", 24));
+
+            var finfo = new System.IO.FileInfo(tooBigPath);
+        }
+
 
         [Test]
         public void TestPaths()

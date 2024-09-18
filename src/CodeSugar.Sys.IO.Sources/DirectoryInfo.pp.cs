@@ -26,6 +26,13 @@ namespace $rootnamespace$
 {
     static partial class CodeSugarForSystemIO
     {
+        public static void ThrowNotFound(this DIRECTORY dinfo, Exception innerException = null)
+        {
+            GuardNotNull(dinfo);
+            if (innerException == null) throw new System.IO.DirectoryNotFoundException(dinfo.FullName);
+            else throw new System.IO.DirectoryNotFoundException(dinfo.FullName, innerException);
+        }
+
         public static bool IsTempPath(this CASING casing, string path)
         {
             if (string.IsNullOrWhiteSpace(path)) return false;

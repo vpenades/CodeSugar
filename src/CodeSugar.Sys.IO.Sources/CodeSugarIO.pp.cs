@@ -39,29 +39,7 @@ namespace $rootnamespace$
 
         #region Properties
 
-        public static string ProcessPath
-        {
-            get
-            {            
-                #if NETSTANDARD
-
-                string _getProcessPath() => System.Diagnostics.Process.GetCurrentProcess()?.MainModule?.FileName;
-
-                string processPath = _processPath;
-                if (processPath == null)
-                {
-                    // The value is cached both as a performance optimization and to ensure that the API always returns
-                    // the same path in a given process.
-                    System.Threading.Interlocked.CompareExchange(ref _processPath, _getProcessPath() ?? String.Empty, null);
-                    processPath = _processPath;
-                    System.Diagnostics.Debug.Assert(processPath != null);
-                }
-                return (processPath.Length != 0) ? processPath : null;                
-                #else
-                return System.Environment.ProcessPath;
-                #endif                
-            }
-        }
+        public static string ProcessPath => _GetProcessPath();
 
         /// <summary>
         /// This file points to the file location where the application started.
@@ -100,6 +78,34 @@ namespace $rootnamespace$
                 : new char[] { System.IO.Path.DirectorySeparatorChar , System.IO.Path.AltDirectorySeparatorChar };
         }
 
+        #endregion
+
+        #region helpers
+
+        private static string _GetProcessPath()
+        {
+            #if NETSTANDARD
+
+            string _getProcessPath() => System.Diagnostics.Process.GetCurrentProcess()?.MainModule?.FileName;
+
+            string processPath = _processPath;
+            if (processPath == null)
+            {
+                // The value is cached both as a performance optimization and to ensure that the API always returns
+                // the same path in a given process.
+                System.Threading.Interlocked.CompareExchange(ref _processPath, _getProcessPath() ?? String.Empty, null);
+                processPath = _processPath;
+                System.Diagnostics.Debug.Assert(processPath != null);
+            }
+            return (processPath.Length != 0) ? processPath : null;
+
+            #else
+                
+            return System.Environment.ProcessPath;
+
+            #endif
+        }
+
         private static bool _CheckFileSystemCaseSensitive()
         {
             // credits: https://stackoverflow.com/a/56773947
@@ -119,10 +125,10 @@ namespace $rootnamespace$
             }
             else
             {
-               // A default.
-               return false;
+                // A default.
+                return false;
             }
-        }
+        }        
 
         #endregion
     }
