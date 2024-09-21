@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <VersionPrefix>1.0.0</VersionPrefix>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFrameworks>netstandard2.1;net6.0;net8.0-android</TargetFrameworks>
     <LangVersion>8</LangVersion>
   </PropertyGroup>
 
