@@ -59,5 +59,25 @@ namespace CodeSugar
                 Assert.That(root.FindEntry("subdir1", "FILE3.txt").Exists);
             }
         }
+
+        #nullable enable
+
+        private static void _TestMockup2(IDirectoryContents root)
+        {
+            Assert.That(root, Is.Not.Null);
+            Assert.That(root.Exists);
+
+            Assert.That(root.FindEntry("file2.txt").Exists);
+            Assert.That(root.FindEntry("subdir1", "file3.txt").Exists);
+            Assert.That(!root.FindEntry("subdir1", "missing.txt").Exists);
+            Assert.That(!root.FindEntry("subdir1", "missingSubdir", "file3.txt").Exists);
+
+            if (IsWindowsPlatform) // check windows case INsensitive
+            {
+                Assert.That(root.FindEntry("subdir1", "FILE3.txt").Exists);
+            }
+        }
+
+        #nullable restore
     }
 }
