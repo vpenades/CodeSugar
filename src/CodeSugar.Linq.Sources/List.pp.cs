@@ -9,13 +9,9 @@ using System.Collections;
 using System.Reflection;
 
 
-
-
 #if !NETSTANDARD
 using UNSAFE = System.Runtime.CompilerServices.Unsafe;
 #endif
-
-using METHODOPTIONS = System.Runtime.CompilerServices.MethodImplOptions;
 
 #nullable disable
 
@@ -29,7 +25,125 @@ namespace $rootnamespace$
 {
     partial class CodeSugarForLinq
     {
-        #region API
+        #region indexing
+
+        public static int IndexOf<TCollection, T>(this TCollection collection, Predicate<T> predicate)
+            where TCollection : IReadOnlyList<T>
+        {
+            switch (collection)
+            {
+                case null: return -1;
+
+                case T[] array:
+                    return Array.FindIndex(array, predicate);
+
+                case ArraySegment<T> segment:
+                    if (segment.Count == 0) return -1;
+                    var idx = Array.FindIndex(segment.Array, segment.Offset, segment.Count, predicate);
+                    return idx < 0 ? -1 : idx - segment.Offset;
+
+                case List<T> list:
+                    return list.FindIndex(predicate);
+            }
+
+            // fallback            
+
+            for (int i = 0; i < collection.Count; ++i)
+            {
+                if (predicate(collection[i])) return i;
+            }
+
+            return -1;
+        }
+
+        public static int IndexOf<TCollection, T>(this TCollection collection, T value, System.Collections.Generic.EqualityComparer<T> comparer = null)
+            where TCollection : IReadOnlyList<T>
+        {
+            switch (collection)
+            {
+                case null: return -1;                
+
+                case T[] array:
+                    return comparer == null
+                        ? Array.IndexOf(array, value)
+                        : Array.FindIndex(array, item => comparer.Equals(item, value));
+
+                case ArraySegment<T> segment:
+                    if (segment.Count == 0) return -1;
+                    var idx = comparer == null
+                        ? Array.IndexOf(segment.Array, value, segment.Offset, segment.Count)
+                        : Array.FindIndex(segment.Array, segment.Offset, segment.Count, item => comparer.Equals(item, value));
+                    return idx < 0 ? -1 : idx - segment.Offset;
+
+                case List<T> list:
+                    return comparer == null
+                        ? list.IndexOf(value)
+                        : list.FindIndex(item => comparer.Equals(item, value));
+            }
+
+            // fallback
+
+            comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
+
+            for (int i = 0; i < collection.Count; ++i)
+            {
+                if (comparer.Equals(collection[i], value)) return i;
+            }
+
+            return -1;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T AtLoop<T>(this T[] collection, int idx)
+        {
+            var len = collection.Length;
+            idx = idx >= 0 ? idx % len : len - (-idx - 1) % len - 1;
+            return collection[idx];
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T AtLoop<T>(this ArraySegment<T> collection, int idx)
+        {
+            var len = collection.Count;
+            idx = idx >= 0 ? idx % len : len - (-idx - 1) % len - 1;
+            return collection[idx];
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T AtLoop<T>(this Span<T> collection, int idx)
+        {
+            var len = collection.Length;
+            idx = idx >= 0 ? idx % len : len - (-idx - 1) % len - 1;
+            return collection[idx];
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T AtLoop<T>(this ReadOnlySpan<T> collection, int idx)
+        {
+            var len = collection.Length;
+            idx = idx >= 0 ? idx % len : len - (-idx - 1) % len - 1;
+            return collection[idx];
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T AtLoop<T>(this List<T> collection, int idx) // we cannot use IList<T> because it conflicts with IReadOnlyList<T>
+        {
+            var len = collection.Count;
+            idx = idx >= 0 ? idx % len : len - (-idx - 1) % len - 1;
+            return collection[idx];
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T AtLoop<T>(this IReadOnlyList<T> collection, int idx)
+        {
+            var len = collection.Count;
+            idx = idx >= 0 ? idx % len : len - (-idx - 1) % len - 1;
+            return collection[idx];
+        }
+
+        #endregion
+
+        #region casting
 
         public static bool TryCastToSpan<TCollection, T>(this TCollection collection, out ReadOnlySpan<T> span)
             where TCollection: IReadOnlyList<T>
@@ -52,31 +166,9 @@ namespace $rootnamespace$
             return false;
         }
 
-        public static int IndexOf<TCollection, T>(this TCollection collection, T value, System.Collections.Generic.EqualityComparer<T> comparer = null)
-            where TCollection: IReadOnlyList<T>
-        {
-            switch (collection)
-            {
-                case null: return -1;
-                case T[] array:
-                    return comparer == null
-                        ? Array.IndexOf(array, value)
-                        : Array.FindIndex(array, item => comparer.Equals(item, value));
-                case List<T> list:
-                    return comparer == null
-                        ? list.IndexOf(value)
-                        : list.FindIndex(item => comparer.Equals(item, value));                
-            }
+        #endregion
 
-            comparer ??= System.Collections.Generic.EqualityComparer<T>.Default;
-
-            for (int i=0; i < collection.Count; ++i)
-            {
-                if (comparer.Equals(collection[i], value)) return i;
-            }
-
-            return 1;
-        }
+        #region transfer
 
         public static void AddRange<T>(this IList<T> collection, IEnumerable<T> items)
         {
@@ -126,6 +218,34 @@ namespace $rootnamespace$
             }            
         }
 
+        #endregion
+
+        #region arrays
+
+        public static IReadOnlyList<T> Slice<T>(this IReadOnlyList<T> list, int offset)
+        {
+            return Slice<T>(list, offset, list.Count - offset);
+        }
+        public static IReadOnlyList<T> Slice<T>(this IReadOnlyList<T> list, int offset, int count)
+        {
+            switch (list)
+            {
+                case null: return Array.Empty<T>();
+                case T[] array: return new ArraySegment<T>(array, offset, count);
+                case ArraySegment<T> segment: return segment.Slice(offset, count);
+                case List<T> xlist: return new _SliceReadOnlyList<T, List<T>>(xlist, offset, count);
+
+                case _SliceReadOnlyList<T, List<T>> slice: return slice.Slice(offset, count);
+                case _SliceReadOnlyList<T, IReadOnlyList<T>> slice: return slice.Slice(offset, count);
+                    
+                default: return new _SliceReadOnlyList<T, IReadOnlyList<T>>(list, offset, count);
+            }
+        }
+
+        #endregion
+
+        #region Linq
+
         public static IList<TResult> SelectList<TSource, TResult>(this IList<TSource> collection, Func<TSource, TResult> getter, Func<TResult, TSource> setter)
         {
             if (getter == null) throw new ArgumentNullException(nameof(getter));
@@ -139,25 +259,7 @@ namespace $rootnamespace$
                 case List<TSource> list: return new _SelectWriteableList<TSource, TResult, List<TSource>>(list, getter, setter);
                 default: return new _SelectWriteableList<TSource, TResult, IList<TSource>>(collection, getter, setter);
             }
-        }
-
-        public static IReadOnlyList<T> Slice<T>(this IReadOnlyList<T> list, int offset)
-        {
-            return Slice<T>(list, offset, list.Count - offset);
-        }
-        public static IReadOnlyList<T> Slice<T>(this IReadOnlyList<T> list, int offset, int count)
-        {
-            switch(list)
-            {
-                case null: return Array.Empty<T>();
-                case T[] array: return new ArraySegment<T>(array, offset, count);
-                case ArraySegment<T> segment: return segment.Slice(offset, count);
-                case _SliceReadOnlyList<T, List<T>> slice: return slice.Slice(offset, count);
-                case _SliceReadOnlyList<T, IReadOnlyList<T>> slice: return slice.Slice(offset, count);
-                case List<T> xlist: return new _SliceReadOnlyList<T, List<T>>(xlist, offset, count);
-                default: return new _SliceReadOnlyList<T, IReadOnlyList<T>>(list, offset, count);
-            }
-        }        
+        }             
 
         public static IReadOnlyList<TResult> SelectList<TSource, TResult>(this IReadOnlyList<TSource> collection, Func<TSource, TResult> getter)
         {            
