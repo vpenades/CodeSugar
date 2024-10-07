@@ -9,7 +9,7 @@
   <PropertyGroup>
     <!-- not ready yet -->
     <IsPackable>false</IsPackable>
-    <IsPackableAsSources>false</IsPackableAsSources>
+    <IsPackableAsSources>true</IsPackableAsSources>
   </PropertyGroup>
 
   <PropertyGroup>

@@ -24,7 +24,7 @@ namespace $rootnamespace$
         #region API
 
         [return: NotNull]
-        public static XFILE ToFileProvider(this System.IO.Compression.ZipArchiveEntry entry)
+        public static XFILE ToFileIFileInfo(this System.IO.Compression.ZipArchiveEntry entry)
         {
             return entry == null
                 ? __NULLFILE

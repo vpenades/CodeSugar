@@ -9,12 +9,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Collections;
 
-#nullable disable
-
 using XFILE = Microsoft.Extensions.FileProviders.IFileInfo;
 using XDIRECTORY = Microsoft.Extensions.FileProviders.IDirectoryContents;
-using Microsoft.Extensions.FileProviders;
+using XPROVIDER = Microsoft.Extensions.FileProviders.IFileProvider;
 
+#nullable disable
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -34,6 +33,12 @@ namespace $rootnamespace$
                 : Microsoft.Extensions.FileProviders.NotFoundDirectoryContents.Singleton;
         }
 
+        /// <summary>
+        /// If <paramref name="xfile"/> is a directory, it tries to return its <paramref name="xdir"/>
+        /// </summary>
+        /// <param name="xfile">the input file</param>
+        /// <param name="xdir">the output directory contents</param>
+        /// <returns>true on success</returns>
         public static bool TryGetDirectoryContents(this XFILE xfile, out XDIRECTORY xdir)
         {
             // notice that we're not handling .Exist here, because if the file does not exist,
@@ -50,12 +55,12 @@ namespace $rootnamespace$
                     return true;
 
                 // it may be odd for a IFileInfo to also implement IFileProvider, but it may happen in the wild.
-                case IFileProvider asFP:
+                case XPROVIDER asFP:
                     xdir = asFP.GetDirectoryContents(string.Empty);
                     return true;
 
                 // easter egg: some implementations may choose to expose the IDirectoryContents as a service.
-                case IServiceProvider asSrv:
+                case System.IServiceProvider asSrv:
                     xdir = asSrv.GetService(typeof(XDIRECTORY)) as XDIRECTORY;
                     if (xdir != null) return true;
                     break;                
@@ -63,10 +68,11 @@ namespace $rootnamespace$
 
             // fallback for physical IFileInfo directories not implementing IDirectoryContents
             // (Microsoft.Extensions.FileProviders.Physical.8.0.0 and below)
-            if (IsPhysical(xfile))
+            if (IsPhysical(xfile) && System.IO.Path.IsPathFullyQualified(xfile.PhysicalPath))
             {
                 System.Diagnostics.Debug.Assert(xfile.IsDirectory);
-                xdir = ToIFileInfo(new DirectoryInfo(xfile.PhysicalPath)) as XDIRECTORY;
+                var dinfo = new DirectoryInfo(xfile.PhysicalPath);
+                xdir = ToIFileInfo(dinfo) as XDIRECTORY;
             }
 
             return xdir != null;
