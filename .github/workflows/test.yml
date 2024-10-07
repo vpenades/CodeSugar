@@ -20,6 +20,9 @@ jobs:
             6.0.x
             8.0.x
 
+      - name: Install Android workload
+        run: dotnet workload install maui-android
+
       - name: Install tools
         run: dotnet tool restore
 
