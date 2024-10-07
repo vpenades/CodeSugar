@@ -4,14 +4,17 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
-
-#nullable disable
+using System.Diagnostics.CodeAnalysis;
 
 using FILE = System.IO.FileInfo;
 using DIRECTORY = System.IO.DirectoryInfo;
 using FILEORDIR = System.IO.FileSystemInfo;
-using System.Linq;
+
+
+#nullable disable
+
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -121,9 +124,10 @@ namespace $rootnamespace$
         /// <summary>
         /// Gets the parent directory of the current instance.
         /// </summary>
+        [return: NotNull]
         public static DIRECTORY GetParent(this FILEORDIR fsinfo)
         {
-            return GetParentOrNull(fsinfo) ?? throw new NotImplementedException();
+            return GetParentOrNull(fsinfo) ?? throw new System.IO.DirectoryNotFoundException();
         }        
 
         /// <summary>
@@ -142,12 +146,13 @@ namespace $rootnamespace$
         /// <param name="baseDir">the base directory</param>
         /// <param name="relativePath">the relative path parts</param>
         /// <returns>a new <see cref="FILE"/> instance.</returns>
+        [return: NotNull]
         public static FILE GetFile(this DIRECTORY baseDir, params string[] relativePath)
         {
             var finfo = _CreateFileInfo(baseDir, false, relativePath);
             System.Diagnostics.Debug.Assert(finfo != null && finfo.Exists, $"File {relativePath.Last()} does not exist.");
-            return finfo;
-        }        
+            return finfo ?? throw new System.IO.FileNotFoundException();
+        }
 
         /// <summary>
         /// Gets a <see cref="FILE"/> relative to the base directory.
@@ -159,9 +164,10 @@ namespace $rootnamespace$
         /// <param name="baseDir">the base directory</param>
         /// <param name="relativePath">the relative path parts</param>
         /// <returns>a new <see cref="FILE"/> instance.</returns>
+        [return: NotNull]
         public static FILE UseFile(this DIRECTORY baseDir, params string[] relativePath)
         {
-            return _CreateFileInfo(baseDir, true, relativePath);
+            return _CreateFileInfo(baseDir, true, relativePath) ?? throw new System.IO.FileNotFoundException();
         }
 
         /// <summary>
@@ -170,11 +176,13 @@ namespace $rootnamespace$
         /// <param name="baseDir">the base directory</param>
         /// <param name="relativePath">the relative path parts</param>
         /// <returns>a new <see cref="FILE"/> instance.</returns>
+        [return: NotNull]
         public static FILE DefineFile(this DIRECTORY baseDir, params string[] relativePath)
         {
             return _CreateFileInfo(baseDir, false, relativePath);
         }
 
+        [return: NotNull]
         private static FILE _CreateFileInfo(this DIRECTORY baseDir, bool canCreate, params string[] relativePath)
         {
             GuardNotNull(baseDir);           
@@ -195,17 +203,19 @@ namespace $rootnamespace$
             return finfo;
         }
 
-        
+
 
         /// <summary>
-		/// Gets an existing <see cref="DIRECTORY"/> relative to the base directory.
-		/// </summary>
-		/// <param name="baseDir">the base directory</param>
-		/// <param name="relativePath">the relative path parts</param>
-		/// <returns>a new <see cref="DIRECTORY"/> instance.</returns>
-		public static DIRECTORY GetDirectory(this DIRECTORY baseDir, params string[] relativePath)
+        /// Gets an existing <see cref="DIRECTORY"/> relative to the base directory.
+        /// </summary>
+        /// <param name="baseDir">the base directory</param>
+        /// <param name="relativePath">the relative path parts</param>
+        /// <returns>a new <see cref="DIRECTORY"/> instance.</returns>
+        [return: NotNull]
+        public static DIRECTORY GetDirectory(this DIRECTORY baseDir, params string[] relativePath)
         {
-            return _CreateDirectoryInfo(baseDir, false, false, relativePath);
+            return _CreateDirectoryInfo(baseDir, false, false, relativePath)
+                ?? throw new System.IO.DirectoryNotFoundException();
         }
 
         /// <summary>
@@ -214,9 +224,11 @@ namespace $rootnamespace$
 		/// <param name="baseDir">the base directory</param>
 		/// <param name="relativePath">the relative path parts</param>
 		/// <returns>a new <see cref="DIRECTORY"/> instance.</returns>
-		public static DIRECTORY UseDirectory(this DIRECTORY baseDir, params string[] relativePath)
+        [return: NotNull]
+        public static DIRECTORY UseDirectory(this DIRECTORY baseDir, params string[] relativePath)
         {
-            return _CreateDirectoryInfo(baseDir, false, true, relativePath);
+            return _CreateDirectoryInfo(baseDir, false, true, relativePath)
+                ?? throw new System.IO.DirectoryNotFoundException();
         }
 
         /// <summary>
@@ -225,11 +237,14 @@ namespace $rootnamespace$
 		/// <param name="baseDir">the base directory</param>
 		/// <param name="relativePath">the relative path parts</param>
 		/// <returns>a new <see cref="DIRECTORY"/> instance.</returns>
-		public static DIRECTORY DefineDirectory(this DIRECTORY baseDir, params string[] relativePath)
+        [return: NotNull]
+        public static DIRECTORY DefineDirectory(this DIRECTORY baseDir, params string[] relativePath)
         {
-            return _CreateDirectoryInfo(baseDir, false, false, relativePath);
+            return _CreateDirectoryInfo(baseDir, false, false, relativePath)
+                ?? throw new System.IO.DirectoryNotFoundException();
         }
 
+        [return: NotNull]
         private static DIRECTORY _CreateDirectoryInfo(this DIRECTORY baseDir, bool mustExist, bool canCreate, params string[] relativePath)
         {
             GuardNotNull(baseDir);
