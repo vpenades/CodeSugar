@@ -4,6 +4,8 @@ using System;
 using System.Numerics;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Collections.Generic;
+
 
 #if !NETSTANDARD
 using UNSAFE = System.Runtime.CompilerServices.Unsafe;
@@ -59,6 +61,35 @@ namespace $rootnamespace$
 
             #endif
         }
-        
+
+        /// <summary>
+        /// sometimes you just need to force an enumeration to happen
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        public static void Yield<T>(this IEnumerable<T> collection)
+        {
+            using (var ptr = collection.GetEnumerator())
+            {
+                while (ptr.MoveNext()) { }
+            }
+        }
+
+        /// <summary>
+        /// sometimes you just need to force an enumeration to happen
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
+        {
+            using (var ptr = collection.GetEnumerator())
+            {
+                while (ptr.MoveNext())
+                {
+                    action(ptr.Current);
+                }
+            }
+        }
+
     }
 }
