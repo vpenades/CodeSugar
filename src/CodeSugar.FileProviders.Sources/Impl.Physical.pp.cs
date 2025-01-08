@@ -145,11 +145,20 @@ namespace $rootnamespace$
 
             public object GetService(Type serviceType)
             {
-                if (serviceType == typeof(MATCHCASING)) return FileSystemPathCasing;
-                if (serviceType == typeof(StringComparison)) return FileSystemPathComparison;
                 if (serviceType == typeof(FINFO)) return Info;
+                if (serviceType == typeof(MATCHCASING)) return FileSystemPathCasing;
+                if (serviceType == typeof(StringComparison)) return FileSystemPathComparison;                
+                if (serviceType == typeof(Action<ArraySegment<Byte>>)) return (Action<ArraySegment<Byte>>) _WriteBytes;
 
                 return null;
+            }
+
+            private void _WriteBytes(ArraySegment<Byte> bytes)
+            {
+                using(var s = Info.OpenWrite())
+                {
+                    if (bytes.Count > 0) s.Write(bytes.Array,bytes.Offset,bytes.Count);
+                }
             }
 
             #endregion
