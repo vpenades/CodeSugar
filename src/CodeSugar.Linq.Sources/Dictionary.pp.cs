@@ -33,5 +33,13 @@ namespace $rootnamespace$
             return kvPairs.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
 
+        public static void AddRange<TKey, TValue>(this Dictionary<TKey, TValue> dst, IEnumerable<KeyValuePair<TKey, TValue>> src)
+        {
+            foreach (var kvp in src)
+            {
+                dst.Add(kvp.Key, kvp.Value);
+            }
+        }
+
     }
 }
