@@ -113,11 +113,11 @@ namespace $rootnamespace$
             #region lifecycle
             public _ZipArchiveDirectory(_ZipArchive zip, string path)
             {
-                System.Diagnostics.Debug.Assert(path == string.Empty || !path.StartsWith('/'));
-                System.Diagnostics.Debug.Assert(path == string.Empty || path.EndsWith('/'));
+                System.Diagnostics.Debug.Assert(path == string.Empty || !path.StartsWith(System.IO.Path.DirectorySeparatorChar));
+                System.Diagnostics.Debug.Assert(path == string.Empty || path.EndsWith(System.IO.Path.DirectorySeparatorChar));
 
                 _Zip = zip;
-                _Path = _SanitizedPath(path.TrimEnd('/'));
+                _Path = _SanitizedPath(path).TrimEnd(System.IO.Path.DirectorySeparatorChar);
             }
 
             #endregion
@@ -154,14 +154,14 @@ namespace $rootnamespace$
             public IEnumerator<XFILE> GetEnumerator()
             {
                 var thisPath = _Path;
-                if (thisPath.Length > 0) thisPath += '/';
+                if (thisPath.Length > 0) thisPath += System.IO.Path.DirectorySeparatorChar;
                 return _EnumerateContents(_Zip, thisPath).GetEnumerator();
             }
 
             private static IEnumerable<XFILE> _EnumerateContents(_ZipArchive zip, string dirPath)
             {
-                System.Diagnostics.Debug.Assert(dirPath == string.Empty || !dirPath.StartsWith('/'));
-                System.Diagnostics.Debug.Assert(dirPath == string.Empty || dirPath.EndsWith('/'));
+                System.Diagnostics.Debug.Assert(dirPath == string.Empty || !dirPath.StartsWith(System.IO.Path.DirectorySeparatorChar));
+                System.Diagnostics.Debug.Assert(dirPath == string.Empty || dirPath.EndsWith(System.IO.Path.DirectorySeparatorChar));
 
                 HashSet<string> dirPaths = null;
 
@@ -180,7 +180,7 @@ namespace $rootnamespace$
                     }
 
                     // check if we can return a directory from a partial path
-                    var idx = entryPath.IndexOf('/', dirPath.Length + 1);
+                    var idx = entryPath.IndexOf(System.IO.Path.DirectorySeparatorChar, dirPath.Length + 1);
                     if (idx <= 0) continue;
                     entryPath = entryPath.Substring(0, idx + 1);
 
@@ -196,7 +196,7 @@ namespace $rootnamespace$
 
             private static string _SanitizedPath(string path)
             {
-                return path.Replace(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
+                return path.Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar);
             }
 
             #endregion
@@ -239,7 +239,7 @@ namespace $rootnamespace$
                 if (entry != null) return new _ZipArchiveFile(entry);
 
                 // try with directory:
-                if (subpath.Length > 0 && !subpath.EndsWith("/")) subpath += '/';
+                if (subpath.Length > 0 && !subpath.EndsWith(System.IO.Path.DirectorySeparatorChar)) subpath += System.IO.Path.DirectorySeparatorChar;
                 var dir = new _ZipArchiveDirectory(this, subpath);
 
                 return dir.Any()
