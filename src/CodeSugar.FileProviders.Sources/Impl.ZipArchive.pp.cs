@@ -76,7 +76,15 @@ namespace $rootnamespace$
 
             public string PhysicalPath => null;
 
-            public string Name => Entry.Name;
+            public string Name
+            {
+                get
+                {
+                    var name = Entry.FullName;
+                    var idx = name.LastIndexOfAny(_ZipArchiveDirectory._ZipDirSeparators);
+                    return idx < 0 ? name : name.Substring(idx + 1);
+                }
+            }
 
             public DateTimeOffset LastModified => Entry.LastWriteTime;
 
@@ -132,6 +140,8 @@ namespace $rootnamespace$
             public static readonly char ZipDirectorySeparator = '/';
             public static readonly char ZipAltDirectorySeparator = '\\';
 
+            public static readonly char[] _ZipDirSeparators = new char[] { ZipDirectorySeparator, ZipAltDirectorySeparator };
+
             #endregion
 
             #region properties            
@@ -142,7 +152,14 @@ namespace $rootnamespace$
 
             public string PhysicalPath => null;
 
-            public string Name => System.IO.Path.GetFileName(_Path);
+            public string Name
+            {
+                get
+                {
+                    var idx = _Path.LastIndexOfAny(_ZipDirSeparators);
+                    return idx < 0 ? _Path : _Path.Substring(idx + 1);
+                }
+            }
 
             public DateTimeOffset LastModified => _Zip.Entries[0].LastWriteTime;            
 
