@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Diagnostics.CodeAnalysis;
+using System.Collections;
+using System.Linq;
 
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Primitives;
@@ -12,9 +14,6 @@ using Microsoft.Extensions.Primitives;
 using XFILE = Microsoft.Extensions.FileProviders.IFileInfo;
 using XPROVIDER = Microsoft.Extensions.FileProviders.IFileProvider;
 using MATCHCASING = System.IO.MatchCasing;
-using System.Collections;
-using System.IO.Compression;
-using System.Linq;
 
 #nullable disable
 
@@ -112,12 +111,15 @@ namespace $rootnamespace$
         {
             #region lifecycle
             public _ZipArchiveDirectory(_ZipArchive zip, string path)
-            {
-                System.Diagnostics.Debug.Assert(path == string.Empty || !path.StartsWith(System.IO.Path.DirectorySeparatorChar));
-                System.Diagnostics.Debug.Assert(path == string.Empty || path.EndsWith(System.IO.Path.DirectorySeparatorChar));
+            {                
+                path = _SanitizedPath(path);
+
+                System.Diagnostics.Debug.Assert(path == string.Empty || !path.StartsWith(ZipDirectorySeparator));
+                System.Diagnostics.Debug.Assert(path == string.Empty || path.EndsWith(ZipDirectorySeparator));
+
+                _Path = path.TrimEnd(ZipDirectorySeparator);
 
                 _Zip = zip;
-                _Path = _SanitizedPath(path).TrimEnd(System.IO.Path.DirectorySeparatorChar);
             }
 
             #endregion
@@ -126,6 +128,8 @@ namespace $rootnamespace$
 
             private readonly _ZipArchive _Zip;
             private readonly string _Path;
+
+            private static readonly char ZipDirectorySeparator = '/';
 
             #endregion
 
@@ -139,7 +143,7 @@ namespace $rootnamespace$
 
             public string Name => System.IO.Path.GetFileName(_Path);
 
-            public DateTimeOffset LastModified => throw new NotImplementedException();
+            public DateTimeOffset LastModified => _Zip.Entries[0].LastWriteTime;            
 
             public bool IsDirectory => true;
 
@@ -147,27 +151,27 @@ namespace $rootnamespace$
 
             #region API
 
-            public Stream CreateReadStream() { throw new NotImplementedException(); }
+            public Stream CreateReadStream() { throw new NotSupportedException(); }
 
             IEnumerator IEnumerable.GetEnumerator() { return this.GetEnumerator(); }
 
             public IEnumerator<XFILE> GetEnumerator()
             {
                 var thisPath = _Path;
-                if (thisPath.Length > 0) thisPath += System.IO.Path.DirectorySeparatorChar;
+                if (thisPath.Length > 0) thisPath += ZipDirectorySeparator;
                 return _EnumerateContents(_Zip, thisPath).GetEnumerator();
             }
 
             private static IEnumerable<XFILE> _EnumerateContents(_ZipArchive zip, string dirPath)
             {
-                System.Diagnostics.Debug.Assert(dirPath == string.Empty || !dirPath.StartsWith(System.IO.Path.DirectorySeparatorChar));
-                System.Diagnostics.Debug.Assert(dirPath == string.Empty || dirPath.EndsWith(System.IO.Path.DirectorySeparatorChar));
+                System.Diagnostics.Debug.Assert(dirPath == string.Empty || !dirPath.StartsWith(ZipDirectorySeparator));
+                System.Diagnostics.Debug.Assert(dirPath == string.Empty || dirPath.EndsWith(ZipDirectorySeparator));
 
                 HashSet<string> dirPaths = null;
 
                 foreach (var entry in zip.Entries)
                 {
-                    var entryPath = _SanitizedPath(entry.FullName);
+                    var entryPath = _SanitizedPath(entry.FullName);                    
 
                     // check it's in the cone
                     if (!entryPath.StartsWith(dirPath)) continue;
@@ -180,7 +184,7 @@ namespace $rootnamespace$
                     }
 
                     // check if we can return a directory from a partial path
-                    var idx = entryPath.IndexOf(System.IO.Path.DirectorySeparatorChar, dirPath.Length + 1);
+                    var idx = entryPath.IndexOf(ZipDirectorySeparator, dirPath.Length + 1);
                     if (idx <= 0) continue;
                     entryPath = entryPath.Substring(0, idx + 1);
 
@@ -196,7 +200,16 @@ namespace $rootnamespace$
 
             private static string _SanitizedPath(string path)
             {
-                return path.Replace(System.IO.Path.AltDirectorySeparatorChar, System.IO.Path.DirectorySeparatorChar);
+                // in mac && linux both DirectorySeparatorChar and AltDirectorySeparatorChar are equal
+
+                if (System.IO.Path.DirectorySeparatorChar == ZipDirectorySeparator)
+                {
+                    return path.Replace('\\', ZipDirectorySeparator);
+                }
+                else
+                {
+                    return path.Replace(System.IO.Path.DirectorySeparatorChar, ZipDirectorySeparator);
+                }                
             }
 
             #endregion
