@@ -130,6 +130,7 @@ namespace $rootnamespace$
             private readonly string _Path;
 
             public static readonly char ZipDirectorySeparator = '/';
+            public static readonly char ZipAltDirectorySeparator = '\\';
 
             #endregion
 
@@ -176,8 +177,9 @@ namespace $rootnamespace$
                     // check it's in the cone
                     if (!entryPath.StartsWith(dirPath)) continue;
 
-                    // check if it's a file entry
-                    if (entryPath.Substring(dirPath.Length) == entry.Name)
+                    // check if it's a file name entry
+                    var entryName = entryPath.Substring(dirPath.Length);
+                    if (!(entryName.Contains(ZipDirectorySeparator) || entryName.Contains(ZipAltDirectorySeparator)))
                     {                        
                         yield return new _ZipArchiveFile(entry);
                         continue;
@@ -200,16 +202,9 @@ namespace $rootnamespace$
 
             private static string _SanitizedPath(string path)
             {
-                // in mac && linux both DirectorySeparatorChar and AltDirectorySeparatorChar are equal
+                // in mac && linux both DirectorySeparatorChar and AltDirectorySeparatorChar are equal, so we cannot use them
 
-                if (System.IO.Path.DirectorySeparatorChar == ZipDirectorySeparator)
-                {
-                    return path.Replace('\\', ZipDirectorySeparator);
-                }
-                else
-                {
-                    return path.Replace(System.IO.Path.DirectorySeparatorChar, ZipDirectorySeparator);
-                }                
+                return path.Replace(ZipAltDirectorySeparator, ZipDirectorySeparator);
             }
 
             #endregion

@@ -80,7 +80,7 @@ namespace CodeSugar
             content["a/b.bin"] = new byte[5];
             content["a\\b.bin"] = new byte[5]; // this is VERY malformed because it would extract to the same path
             content["c.bin"] = new byte[5];
-            content["b/c\\d\\c.bin"] = new byte[5];
+            content["b/c\\d\\c.bin"] = new byte[5]; // In Linux and Mac, Entry.Name reports "c\d\c.bin" instead of "c.bin"
 
             var m = new System.IO.MemoryStream();
 
