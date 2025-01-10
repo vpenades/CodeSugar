@@ -129,7 +129,7 @@ namespace $rootnamespace$
             private readonly _ZipArchive _Zip;
             private readonly string _Path;
 
-            private static readonly char ZipDirectorySeparator = '/';
+            public static readonly char ZipDirectorySeparator = '/';
 
             #endregion
 
@@ -252,7 +252,7 @@ namespace $rootnamespace$
                 if (entry != null) return new _ZipArchiveFile(entry);
 
                 // try with directory:
-                if (subpath.Length > 0 && !subpath.EndsWith(System.IO.Path.DirectorySeparatorChar)) subpath += System.IO.Path.DirectorySeparatorChar;
+                if (subpath.Length > 0 && !subpath.EndsWith(_ZipArchiveDirectory.ZipDirectorySeparator)) subpath += _ZipArchiveDirectory.ZipDirectorySeparator;
                 var dir = new _ZipArchiveDirectory(this, subpath);
 
                 return dir.Any()

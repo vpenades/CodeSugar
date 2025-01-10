@@ -18,7 +18,7 @@ namespace CodeSugar
 
             foreach(var entry in zip.Entries)
             {
-                TestContext.WriteLine(entry.FullName);
+                TestContext.WriteLine($"{entry.FullName} => {entry.Name}");
             }
 
             var provider = zip.ToFileIFileProvider();
