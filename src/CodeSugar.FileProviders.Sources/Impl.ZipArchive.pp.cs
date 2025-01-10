@@ -80,6 +80,8 @@ namespace $rootnamespace$
             {
                 get
                 {
+                    // https://github.com/dotnet/runtime/issues/1571#issuecomment-531148486
+
                     var name = Entry.FullName;
                     var idx = name.LastIndexOfAny(_ZipArchiveDirectory._ZipDirSeparators);
                     return idx < 0 ? name : name.Substring(idx + 1);
