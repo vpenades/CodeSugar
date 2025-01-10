@@ -35,7 +35,7 @@ which will set the namespace to `CodeSugar.IO`
 
 - [IAsyncDisposable](https://github.com/dotnet/runtime/issues/44673)
 - [async methods](https://github.com/dotnet/runtime/issues/37590)
-- [flesh](https://github.com/dotnet/runtime/issues/82008)
+- [flesh out fileprovider (PROPOSAL HERE)](https://github.com/dotnet/runtime/issues/82008)
 
 we need to be able to:
 - async operations
@@ -46,6 +46,7 @@ we need to be able to:
 - Refresh
 - Delete
 - Move
+- DebuggerDisplay
 
 ```c#
 
@@ -55,6 +56,18 @@ interface IParentDirectoryContainer
 }
 
 // meant for read only: https://github.com/dotnet/runtime/issues/82008#issuecomment-1426967449
+
+interface IReadStreamSource
+{
+    public Stream CreateReadStream(); // overlaps with IFileInfo
+    public async Task<Stream> CreateReadStreamAsync();
+}
+
+interface IWriteStreamSource
+{
+    public Stream CreateWriteStream();
+    public async Task<Stream> CreateWriteStreamAsync();
+}
 
 interface IFileStream
 {

@@ -79,7 +79,8 @@ namespace $rootnamespace$
             
             foreach(var entry in entries)
             {
-                archive.CreateEntry(entry.Key).WriteAllBytes(entry.Value);
+                var zipPath = entry.Key.Replace(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
+                archive.CreateEntry(zipPath).WriteAllBytes(entry.Value);
             }        
         }
     }

@@ -6,8 +6,15 @@ using System.Text;
 using System.IO;
 using System.Diagnostics.CodeAnalysis;
 
+using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Primitives;
+
 using XFILE = Microsoft.Extensions.FileProviders.IFileInfo;
+using XPROVIDER = Microsoft.Extensions.FileProviders.IFileProvider;
 using MATCHCASING = System.IO.MatchCasing;
+using System.Collections;
+using System.IO.Compression;
+using System.Linq;
 
 #nullable disable
 
@@ -31,6 +38,14 @@ namespace $rootnamespace$
                 : new _ZipArchiveFile(entry);
         }
 
+        [return: NotNull]
+        public static XPROVIDER ToFileIFileProvider(this System.IO.Compression.ZipArchive zip)
+        {
+            return zip == null
+                ? __NULLPROVIDER
+                : new _ZipArchive(zip);
+        }
+
         #endregion
 
         #region nested types
@@ -42,6 +57,7 @@ namespace $rootnamespace$
 
             public _ZipArchiveFile(System.IO.Compression.ZipArchiveEntry entry)
             {
+                System.Diagnostics.Debug.Assert(entry != null);
                 Entry = entry;
             }
 
@@ -57,7 +73,7 @@ namespace $rootnamespace$
 
             public bool Exists => Entry != null;
 
-            public long Length => Entry?.Length ?? 0;
+            public long Length => Entry.Length;
 
             public string PhysicalPath => null;
 
@@ -73,7 +89,7 @@ namespace $rootnamespace$
 
             public Stream CreateReadStream()
             {
-                if (Entry?.Archive == null) throw new ObjectDisposedException(nameof(Entry));
+                if (Entry.Archive == null) throw new ObjectDisposedException(nameof(Entry));
                 if (Entry.Archive.Mode == System.IO.Compression.ZipArchiveMode.Create) throw new System.IO.IOException("read is not supported");
 
                 return Entry.Open();
@@ -84,9 +100,157 @@ namespace $rootnamespace$
                 if (serviceType == typeof(MATCHCASING)) return MATCHCASING.CaseSensitive;
                 if (serviceType == typeof(StringComparison)) return StringComparison.Ordinal;
                 if (serviceType == typeof(System.IO.Compression.ZipArchiveEntry)) return Entry;
-                if (serviceType == typeof(System.IO.Compression.ZipArchive)) return Entry?.Archive;
+                if (serviceType == typeof(System.IO.Compression.ZipArchive)) return Entry.Archive;
                 return null;
             }
+
+            #endregion
+        }
+
+        [System.Diagnostics.DebuggerDisplay("{_Path}")]
+        private readonly struct _ZipArchiveDirectory : XFILE, IDirectoryContents
+        {
+            #region lifecycle
+            public _ZipArchiveDirectory(_ZipArchive zip, string path)
+            {
+                System.Diagnostics.Debug.Assert(path == string.Empty || !path.StartsWith('/'));
+                System.Diagnostics.Debug.Assert(path == string.Empty || path.EndsWith('/'));
+
+                _Zip = zip;
+                _Path = _SanitizedPath(path.TrimEnd('/'));
+            }
+
+            #endregion
+
+            #region data
+
+            private readonly _ZipArchive _Zip;
+            private readonly string _Path;
+
+            #endregion
+
+            #region properties            
+
+            public bool Exists => true;
+
+            public long Length => -1;
+
+            public string PhysicalPath => null;
+
+            public string Name => System.IO.Path.GetFileName(_Path);
+
+            public DateTimeOffset LastModified => throw new NotImplementedException();
+
+            public bool IsDirectory => true;
+
+            #endregion
+
+            #region API
+
+            public Stream CreateReadStream() { throw new NotImplementedException(); }
+
+            IEnumerator IEnumerable.GetEnumerator() { return this.GetEnumerator(); }
+
+            public IEnumerator<XFILE> GetEnumerator()
+            {
+                var thisPath = _Path;
+                if (thisPath.Length > 0) thisPath += '/';
+                return _EnumerateContents(_Zip, thisPath).GetEnumerator();
+            }
+
+            private static IEnumerable<XFILE> _EnumerateContents(_ZipArchive zip, string dirPath)
+            {
+                System.Diagnostics.Debug.Assert(dirPath == string.Empty || !dirPath.StartsWith('/'));
+                System.Diagnostics.Debug.Assert(dirPath == string.Empty || dirPath.EndsWith('/'));
+
+                HashSet<string> dirPaths = null;
+
+                foreach (var entry in zip.Entries)
+                {
+                    var entryPath = _SanitizedPath(entry.FullName);
+
+                    // check it's in the cone
+                    if (!entryPath.StartsWith(dirPath)) continue;
+
+                    // check if it's a file entry
+                    if (entryPath.Substring(dirPath.Length) == entry.Name)
+                    {                        
+                        yield return new _ZipArchiveFile(entry);
+                        continue;
+                    }
+
+                    // check if we can return a directory from a partial path
+                    var idx = entryPath.IndexOf('/', dirPath.Length + 1);
+                    if (idx <= 0) continue;
+                    entryPath = entryPath.Substring(0, idx + 1);
+
+                    // prevent returning the same directory more than once.
+                    dirPaths ??= new HashSet<string>();
+                    if (dirPaths.Contains(entryPath)) continue;
+                    dirPaths.Add(entryPath);
+
+                    // directory
+                    yield return new _ZipArchiveDirectory(zip, entryPath);
+                }
+            }
+
+            private static string _SanitizedPath(string path)
+            {
+                return path.Replace(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
+            }
+
+            #endregion
+        }        
+
+        private readonly struct _ZipArchive : XPROVIDER
+        {
+            #region lifecycle
+            public _ZipArchive(System.IO.Compression.ZipArchive archive)
+            {
+                _Archive = archive;
+            }
+
+            #endregion
+
+            #region data
+
+            [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
+            private readonly System.IO.Compression.ZipArchive _Archive;
+
+            [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)]
+            public System.Collections.ObjectModel.ReadOnlyCollection<System.IO.Compression.ZipArchiveEntry> Entries => _Archive.Entries;
+
+            #endregion
+
+            #region API
+
+            public IDirectoryContents GetDirectoryContents(string subpath)
+            {
+                return GetFileInfo(subpath) as IDirectoryContents
+                    ?? NotFoundDirectoryContents.Singleton;
+            }
+
+            public XFILE GetFileInfo(string subpath)
+            {
+                subpath ??= string.Empty;
+
+                // try with file:
+                var entry = _Archive.GetEntry(subpath);
+                if (entry != null) return new _ZipArchiveFile(entry);
+
+                // try with directory:
+                if (subpath.Length > 0 && !subpath.EndsWith("/")) subpath += '/';
+                var dir = new _ZipArchiveDirectory(this, subpath);
+
+                return dir.Any()
+                    ? dir
+                    : (XFILE)new NotFoundFileInfo(subpath);
+            }
+
+            public IChangeToken Watch(string filter)
+            {
+                throw new NotImplementedException();
+            }            
 
             #endregion
         }

@@ -10,6 +10,7 @@ using System.Runtime.CompilerServices;
 #nullable disable
 
 using XFILE = Microsoft.Extensions.FileProviders.IFileInfo;
+using XPROVIDER = Microsoft.Extensions.FileProviders.IFileProvider;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -25,6 +26,16 @@ namespace $rootnamespace$
 
         private static readonly XFILE __NULLFILE = new Microsoft.Extensions.FileProviders.NotFoundFileInfo("NULL");
 
+        private static readonly XPROVIDER __NULLPROVIDER = new Microsoft.Extensions.FileProviders.NullFileProvider();
+
         #endregion
+
+        public static Func<System.IO.Stream> GetReadStreamFunction(this XFILE xinfo)
+        {
+            GuardNotNull(xinfo);
+            if (xinfo.IsDirectory) throw new ArgumentException("directories don't have a stream", nameof(xinfo));
+
+            return xinfo.CreateReadStream;
+        }
     }
 }
