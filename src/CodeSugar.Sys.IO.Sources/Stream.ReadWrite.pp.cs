@@ -94,9 +94,9 @@ namespace $rootnamespace$
 
         #region text extensions
 
-#if NETSTANDARD || NETFRAMEWORK
+        #if NETSTANDARD || NETFRAMEWORK
         private static readonly Encoding UTF8NoBOM = new UTF8Encoding(false);
-#endif
+        #endif
 
         public static IReadOnlyList<string> ReadAllLines(this STREAM stream, Encoding encoding = null)
         {
