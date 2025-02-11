@@ -259,8 +259,11 @@ namespace $rootnamespace$
                 case List<TSource> list: return new _SelectWriteableList<TSource, TResult, List<TSource>>(list, getter, setter);
                 default: return new _SelectWriteableList<TSource, TResult, IList<TSource>>(collection, getter, setter);
             }
-        }             
+        }
 
+        #if NET9_0_OR_GREATER
+        [System.Runtime.CompilerServices.OverloadResolutionPriority(1)]
+        #endif
         public static IReadOnlyList<TResult> SelectList<TSource, TResult>(this IReadOnlyList<TSource> collection, Func<TSource, TResult> getter)
         {            
             if (getter == null) throw new ArgumentNullException(nameof(getter));            
