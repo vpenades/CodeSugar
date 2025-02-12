@@ -30,7 +30,7 @@ namespace $rootnamespace$
         #region API
 
         [return: NotNull]
-        public static XFILE ToFileIFileInfo(this System.IO.Compression.ZipArchiveEntry entry)
+        public static XFILE ToIFileInfo(this System.IO.Compression.ZipArchiveEntry entry)
         {
             return entry == null
                 ? __NULLFILE
@@ -38,7 +38,7 @@ namespace $rootnamespace$
         }
 
         [return: NotNull]
-        public static XPROVIDER ToFileIFileProvider(this System.IO.Compression.ZipArchive zip)
+        public static XPROVIDER ToIFileProvider(this System.IO.Compression.ZipArchive zip)
         {
             return zip == null
                 ? __NULLPROVIDER

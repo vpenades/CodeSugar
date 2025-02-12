@@ -15,13 +15,14 @@ namespace CodeSugar
         public void TestAccessingZip()
         {
             using var zip = _CreateTestZip();
+            Assert.That(zip, Is.Not.Null);
 
             foreach(var entry in zip.Entries)
             {
                 TestContext.WriteLine($"{entry.FullName} => {entry.Name}");
             }
 
-            var provider = zip.ToFileIFileProvider();
+            var provider = zip.ToIFileProvider();
             
             Assert.That(provider.GetFileInfo(string.Empty).IsDirectory);
 
@@ -58,7 +59,7 @@ namespace CodeSugar
         {
             using var zip = ZipFile.OpenRead(ResourceInfo.From("7zipCreated.zip"));
 
-            var provider = zip.ToFileIFileProvider();
+            var provider = zip.ToIFileProvider();
 
             Assert.That(provider.GetFileInfo(string.Empty).IsDirectory);
 
