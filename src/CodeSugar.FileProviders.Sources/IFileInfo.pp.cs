@@ -37,5 +37,20 @@ namespace $rootnamespace$
 
             return xinfo.CreateReadStream;
         }
+
+        public static Func<System.IO.Stream> GetWriteStreamFunction(this XFILE xinfo)
+        {
+            GuardNotNull(xinfo);
+            if (xinfo.IsDirectory) throw new ArgumentException("directories don't have a stream", nameof(xinfo));
+
+            if (!string.IsNullOrWhiteSpace(xinfo.PhysicalPath))
+            {
+                return new System.IO.FileInfo(xinfo.PhysicalPath).OpenWrite;
+            }            
+
+            // TODO: handle xinfo's IServiceProvider
+
+            return null;
+        }
     }
 }
