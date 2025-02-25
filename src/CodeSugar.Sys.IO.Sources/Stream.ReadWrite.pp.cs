@@ -98,6 +98,14 @@ namespace $rootnamespace$
         private static readonly Encoding UTF8NoBOM = new UTF8Encoding(false);
         #endif
 
+        public static IReadOnlyList<string> ReadAllLines(this Func<Stream> openStream, Encoding encoding = null)
+        {
+            using (var s = openStream())
+            {
+                return ReadAllLines(s, encoding);
+            }
+        }
+
         public static IReadOnlyList<string> ReadAllLines(this STREAM stream, Encoding encoding = null)
         {
             using(var sr = CreateTextReader(stream, true, encoding))
@@ -176,11 +184,19 @@ namespace $rootnamespace$
             }
         }
 
-		/// <summary>
-		/// Reads all the text from the given stream.
-		/// Equivalent to <see cref="System.IO.File.ReadAllText(string, Encoding)"/>
-		/// </summary>   
-		public static string ReadAllText(this STREAM stream, Encoding encoding = null)
+        public static string ReadAllText(this Func<Stream> openStream, Encoding encoding = null)
+        {
+            using (var s = openStream())
+            {
+                return ReadAllText(s, encoding);
+            }
+        }
+
+        /// <summary>
+        /// Reads all the text from the given stream.
+        /// Equivalent to <see cref="System.IO.File.ReadAllText(string, Encoding)"/>
+        /// </summary>   
+        public static string ReadAllText(this STREAM stream, Encoding encoding = null)
         {
             GuardReadable(stream);
 
@@ -273,6 +289,14 @@ namespace $rootnamespace$
                         pos += buf.Length;
                     }
                     break;
+            }
+        }
+
+        public static BYTESSEGMENT ReadAllBytes(this Func<STREAM> openStream)
+        {
+            using (var s = openStream())
+            {
+                return s.ReadAllBytes();
             }
         }
 
