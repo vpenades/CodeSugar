@@ -538,7 +538,7 @@ namespace $rootnamespace$
         #region collections
 
         public delegate WRITEABLEBLOCK ItemWriteInterfaceDelegate<T>(WRITEABLEBLOCK source, T item);
-        public delegate READABLEBLOCK ItemReadInterfaceDelegate<T>(READABLEBLOCK source, ref T item);
+        public delegate READABLEBLOCK ItemReadInterfaceDelegate<T>(READABLEBLOCK source, out T item);
 
         public static WRITEABLEBLOCK WriteList<T>(this WRITEABLEBLOCK target, IReadOnlyList<T> source, ItemWriteInterfaceDelegate<T> lambda)
         {
@@ -562,9 +562,8 @@ namespace $rootnamespace$
             result ??= new List<T>((int)count);
 
             for(int i=0; i < (int)count; ++i)
-            {
-                T item = default;
-                source = lambda(source, ref item);
+            {                
+                source = lambda(source, out var item);
                 result.Add(item);
             }            
 
@@ -577,9 +576,8 @@ namespace $rootnamespace$
             if (count == 0) return source;            
 
             for(int i=0; i < (int)count; ++i)
-            {
-                T item = default;
-                source = lambda(source, ref item);
+            {                
+                source = lambda(source, out var item);
                 result.Add(item);
             }            
 
@@ -595,7 +593,8 @@ namespace $rootnamespace$
 
             for(int i=0; i < array.Length; ++i)
             {
-                source = lambda(source, ref array[i]);
+                source = lambda(source, out var item);
+                array[i] = item;
             }
 
             result = array;
@@ -630,10 +629,9 @@ namespace $rootnamespace$
             if (count == 0) return source;            
 
             for(int i=0; i < (int)count; ++i)
-            {
-                T item = default;
+            {                
                 source = source.ReadString(out var key);
-                source = lambda(source, ref item);
+                source = lambda(source, out var item);
                 result[key] = item;
             }            
 

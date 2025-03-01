@@ -185,8 +185,9 @@ namespace CodeSugar
                 return stream.WriteLeF32(v.X).WriteLeF32(v.Y).WriteLeF32(v.Z);
             }
 
-            private static System.IO.Stream ReadFromStream(System.IO.Stream stream, ref System.Numerics.Vector3 v)
+            private static System.IO.Stream ReadFromStream(System.IO.Stream stream, out System.Numerics.Vector3 v)
             {
+                v = default;
                 return stream.ReadLeF32(out v.X).ReadLeF32(out v.Y).ReadLeF32(out v.Z);
             }
 
@@ -195,8 +196,9 @@ namespace CodeSugar
                 return stream.WriteLeF32(v.X).WriteLeF32(v.Y).WriteLeF32(v.Z);
             }
 
-            private static ArraySegment<Byte> ReadFromStream(ArraySegment<Byte> stream, ref System.Numerics.Vector3 v)
+            private static ArraySegment<Byte> ReadFromStream(ArraySegment<Byte> stream, out System.Numerics.Vector3 v)
             {
+                v = default;
                 return stream.ReadLeF32(out v.X).ReadLeF32(out v.Y).ReadLeF32(out v.Z);
             }
 
