@@ -150,7 +150,7 @@ namespace $rootnamespace$
 
         #region nested types
 
-        [System.Diagnostics.DebuggerDisplay("{Entry.FullName} {Length}")]
+        [System.Diagnostics.DebuggerDisplay("{Key} {Length}")]
         private readonly struct _AnyArchiveFile : XFILE, IServiceProvider
         {
             #region lifecycle           
