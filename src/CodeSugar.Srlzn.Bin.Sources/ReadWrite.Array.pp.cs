@@ -29,9 +29,9 @@ namespace $rootnamespace$
             return target.WriteLeF32(value.X).WriteLeF32(value.Y);
         }
 
-        public static READABLEBLOCK ReadLeVector2(this READABLEBLOCK target, out System.Numerics.Vector2 value)
+        public static READABLEBLOCK ReadLeVector2(this READABLEBLOCK source, out System.Numerics.Vector2 value)
         {
-            return target.ReadLeF32(out value.X).ReadLeF32(out value.Y);
+            return source.ReadLeF32(out value.X).ReadLeF32(out value.Y);
         }
 
         public static WRITEABLEBLOCK WriteLeVector3(this WRITEABLEBLOCK target, System.Numerics.Vector3 value)
@@ -39,9 +39,9 @@ namespace $rootnamespace$
             return target.WriteLeF32(value.X).WriteLeF32(value.Y).WriteLeF32(value.Z);
         }
 
-        public static READABLEBLOCK ReadLeVector3(this READABLEBLOCK target, out System.Numerics.Vector3 value)
+        public static READABLEBLOCK ReadLeVector3(this READABLEBLOCK source, out System.Numerics.Vector3 value)
         {
-            return target.ReadLeF32(out value.X).ReadLeF32(out value.Y).ReadLeF32(out value.Z);
+            return source.ReadLeF32(out value.X).ReadLeF32(out value.Y).ReadLeF32(out value.Z);
         }
 
         public static WRITEABLEBLOCK WriteLeVector4(this WRITEABLEBLOCK target, System.Numerics.Vector4 value)
@@ -49,9 +49,9 @@ namespace $rootnamespace$
             return target.WriteLeF32(value.X).WriteLeF32(value.Y).WriteLeF32(value.Z).WriteLeF32(value.W);
         }
 
-        public static READABLEBLOCK ReadLeVector4(this READABLEBLOCK target, out System.Numerics.Vector4 value)
+        public static READABLEBLOCK ReadLeVector4(this READABLEBLOCK source, out System.Numerics.Vector4 value)
         {
-            return target.ReadLeF32(out value.X).ReadLeF32(out value.Y).ReadLeF32(out value.Z).ReadLeF32(out value.W);
+            return source.ReadLeF32(out value.X).ReadLeF32(out value.Y).ReadLeF32(out value.Z).ReadLeF32(out value.W);
         }
 
         public static WRITEABLEBLOCK WriteLeQuaternion(this WRITEABLEBLOCK target, System.Numerics.Quaternion value)
@@ -59,9 +59,9 @@ namespace $rootnamespace$
             return target.WriteLeF32(value.X).WriteLeF32(value.Y).WriteLeF32(value.Z).WriteLeF32(value.W);
         }
 
-        public static READABLEBLOCK ReadLeQuaternion(this READABLEBLOCK target, out System.Numerics.Quaternion value)
+        public static READABLEBLOCK ReadLeQuaternion(this READABLEBLOCK source, out System.Numerics.Quaternion value)
         {
-            return target.ReadLeF32(out value.X).ReadLeF32(out value.Y).ReadLeF32(out value.Z).ReadLeF32(out value.W);
+            return source.ReadLeF32(out value.X).ReadLeF32(out value.Y).ReadLeF32(out value.Z).ReadLeF32(out value.W);
         }        
 
         public static WRITEABLEBLOCK WriteLeMatrix3x2(this WRITEABLEBLOCK target, System.Numerics.Matrix3x2 value)
@@ -73,9 +73,9 @@ namespace $rootnamespace$
                 
         }
 
-        public static READABLEBLOCK ReadLeMatrix3x2(this READABLEBLOCK target, out System.Numerics.Matrix3x2 value)
+        public static READABLEBLOCK ReadLeMatrix3x2(this READABLEBLOCK source, out System.Numerics.Matrix3x2 value)
         {
-            return target
+            return source
                 .ReadLeF32(out value.M11).ReadLeF32(out value.M12)
                 .ReadLeF32(out value.M21).ReadLeF32(out value.M22)
                 .ReadLeF32(out value.M31).ReadLeF32(out value.M32);
@@ -91,9 +91,9 @@ namespace $rootnamespace$
                 
         }
 
-        public static READABLEBLOCK ReadLeMatrix4x4(this READABLEBLOCK target, out System.Numerics.Matrix4x4 value)
+        public static READABLEBLOCK ReadLeMatrix4x4(this READABLEBLOCK source, out System.Numerics.Matrix4x4 value)
         {
-            return target
+            return source
                 .ReadLeF32(out value.M11).ReadLeF32(out value.M12).ReadLeF32(out value.M13).ReadLeF32(out value.M14)
                 .ReadLeF32(out value.M21).ReadLeF32(out value.M22).ReadLeF32(out value.M23).ReadLeF32(out value.M24)
                 .ReadLeF32(out value.M31).ReadLeF32(out value.M32).ReadLeF32(out value.M33).ReadLeF32(out value.M34)
