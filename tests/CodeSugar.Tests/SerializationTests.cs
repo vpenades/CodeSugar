@@ -98,6 +98,21 @@ namespace CodeSugar
 
         class _SerializableObject
         {
+            #region data
+
+            public bool ValueB;
+            public sbyte ValueS8;
+            public byte ValueU8;
+            public Int16 ValueS16;
+            public UInt16 ValueU16;
+            public Int32 ValueS32;
+            public UInt32 ValueU32;
+            public Int64 ValueS64;
+            public UInt64 ValueU64;
+            public Half ValueF16;
+            public Single ValueF32;
+            public Double ValueF64;
+
             public long Value1;
             public long Value2;
             public long Value3;
@@ -116,13 +131,31 @@ namespace CodeSugar
             public DateOnly Value13;
             public DateTime Value14;
             public DateTimeOffset Value15;
+            public ulong Value16;
 
             public readonly List<System.Numerics.Vector3> Points1 = new List<System.Numerics.Vector3>();
 
             public readonly Dictionary<string, System.Numerics.Vector3> Points2 = new Dictionary<string, System.Numerics.Vector3>();
 
+            #endregion
+
+            #region API
+
             public IEnumerable<Object> Decompose()
             {
+                yield return ValueB;
+                yield return ValueS8;
+                yield return ValueU8;
+                yield return ValueS16;
+                yield return ValueU16;
+                yield return ValueS32;
+                yield return ValueU32;
+                yield return ValueS64;
+                yield return ValueU64;
+                yield return ValueF16;
+                yield return ValueF32;
+                yield return ValueF64;
+
                 yield return Value1;
                 yield return Value2;
                 yield return Value3;
@@ -138,8 +171,9 @@ namespace CodeSugar
                 yield return Value13;
                 yield return Value14;
                 yield return Value15;
+                yield return Value16;
 
-                foreach(var p in Points1) yield return p;
+                foreach (var p in Points1) yield return p;
 
                 foreach (var (pkey, pval) in Points2.OrderBy(item => item.Key))
                 {
@@ -150,6 +184,19 @@ namespace CodeSugar
 
             public void Init()
             {
+                ValueB = true;
+                ValueS8 = sbyte.MinValue;
+                ValueU8 = byte.MaxValue;
+                ValueS16 = short.MinValue;
+                ValueU16 = ushort.MaxValue;
+                ValueS32 = int.MinValue;
+                ValueU32 = uint.MaxValue;
+                ValueS64 = long.MinValue;
+                ValueU64 = ulong.MaxValue;                
+                ValueF16 = default;
+                ValueF32 = -1;
+                ValueF64 = -1;
+
                 Value1 = -385;
                 Value2 = long.MinValue;
                 Value3 = long.MaxValue;
@@ -218,6 +265,19 @@ namespace CodeSugar
             public System.IO.Stream WriteTo(System.IO.Stream stream)
             {
                 return stream
+                    .WriteBool(ValueB)
+                    .WriteS8(ValueS8)
+                    .WriteU8(ValueU8)
+                    .WriteLeS16(ValueS16)
+                    .WriteLeU16(ValueU16)
+                    .WriteLeS32(ValueS32)
+                    .WriteLeU32(ValueU32)
+                    .WriteLeS64(ValueS64)
+                    .WriteLeU64(ValueU64)
+                    .WriteLeF16(ValueF16)
+                    .WriteLeF32(ValueF32)
+                    .WriteLeF64(ValueF64)
+
                     .WritePackedS64(Value1)
                     .WritePackedS64(Value2)
                     .WritePackedS64(Value3)
@@ -233,6 +293,8 @@ namespace CodeSugar
                     .WriteEndian(Value13, false)
                     .WriteLeDateTime(Value14)
                     .WriteDateTimeOffset(Value15, false)
+                    .WriteLeConvertible(Value16)
+
                     .WriteList(Points1, WriteToStream)
                     .WriteDictionary(Points2, WriteToStream);
                     
@@ -241,6 +303,19 @@ namespace CodeSugar
             public System.IO.Stream ReadFrom(System.IO.Stream stream)
             {
                 return stream
+                    .ReadBool(out ValueB)
+                    .ReadS8(out ValueS8)
+                    .ReadU8(out ValueU8)
+                    .ReadLeS16(out ValueS16)
+                    .ReadLeU16(out ValueU16)
+                    .ReadLeS32(out ValueS32)
+                    .ReadLeU32(out ValueU32)
+                    .ReadLeS64(out ValueS64)
+                    .ReadLeU64(out ValueU64)
+                    .ReadLeF16(out ValueF16)
+                    .ReadLeF32(out ValueF32)
+                    .ReadLeF64(out ValueF64)
+
                     .ReadPackedS64(out Value1)
                     .ReadPackedS64(out Value2)
                     .ReadPackedS64(out Value3)
@@ -256,15 +331,29 @@ namespace CodeSugar
                     .ReadEndian(out Value13, false)
                     .ReadLeDateTime(out Value14)
                     .ReadDateTimeOffset(out Value15, false)
+                    .ReadLeConvertible(out Value16)
+
                     .ReadList(Points1, ReadFromStream)
                     .ReadDictionary(Points2, ReadFromStream);
-
-
             }
 
             public ArraySegment<Byte> WriteTo(ArraySegment<Byte> stream)
             {
-                return stream
+                stream = stream
+                    .WriteBool(ValueB)
+                    .WriteS8(ValueS8)
+                    .WriteU8(ValueU8)
+                    .WriteLeS16(ValueS16)
+                    .WriteLeU16(ValueU16)
+                    .WriteLeS32(ValueS32)
+                    .WriteLeU32(ValueU32)
+                    .WriteLeS64(ValueS64)
+                    .WriteLeU64(ValueU64)
+                    .WriteLeF16(ValueF16)
+                    .WriteLeF32(ValueF32)
+                    .WriteLeF64(ValueF64);
+
+                stream = stream
                     .WritePackedS64(Value1)
                     .WritePackedS64(Value2)
                     .WritePackedS64(Value3)
@@ -280,13 +369,33 @@ namespace CodeSugar
                     .WriteEndian(Value13, false)
                     .WriteLeDateTime(Value14)
                     .WriteDateTimeOffset(Value15, false)
+                    .WriteLeConvertible(Value16);
+
+
+                stream = stream
                     .WriteList(Points1, WriteToStream)
-                    .WriteDictionary(Points2, WriteToStream);
+                    .WriteDictionary(Points2, WriteToStream);                
+
+                return stream;
             }
 
             public ArraySegment<Byte> ReadFrom(ArraySegment<Byte> stream)
             {
-                return stream
+                stream = stream
+                    .ReadBool(out ValueB)
+                    .ReadS8(out ValueS8)
+                    .ReadU8(out ValueU8)
+                    .ReadLeS16(out ValueS16)
+                    .ReadLeU16(out ValueU16)
+                    .ReadLeS32(out ValueS32)
+                    .ReadLeU32(out ValueU32)
+                    .ReadLeS64(out ValueS64)
+                    .ReadLeU64(out ValueU64)
+                    .ReadLeF16(out ValueF16)
+                    .ReadLeF32(out ValueF32)
+                    .ReadLeF64(out ValueF64);
+
+                stream = stream
                     .ReadPackedS64(out Value1)
                     .ReadPackedS64(out Value2)
                     .ReadPackedS64(out Value3)
@@ -302,9 +411,16 @@ namespace CodeSugar
                     .ReadEndian(out Value13, false)
                     .ReadLeDateTime(out Value14)
                     .ReadDateTimeOffset(out Value15, false)
+                    .ReadLeConvertible(out Value16);
+
+                stream = stream
                     .ReadList(Points1, ReadFromStream)
                     .ReadDictionary(Points2, ReadFromStream);
+
+                return stream;
             }
+
+            #endregion
         }
     }
 }

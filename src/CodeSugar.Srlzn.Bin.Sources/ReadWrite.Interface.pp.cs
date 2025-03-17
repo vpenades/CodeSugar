@@ -114,6 +114,9 @@ namespace $rootnamespace$
 
         public static WRITEABLEBLOCK WriteU8(this WRITEABLEBLOCK source, Byte value) { return WritePlatform<Byte>(source, value); }
         public static READABLEBLOCK ReadU8(this READABLEBLOCK source, out Byte value) { return ReadPlatform<Byte>(source, out value); }
+
+        public static WRITEABLEBLOCK WriteS8(this WRITEABLEBLOCK source, SByte value) { return WritePlatform<Byte>(source, (Byte)value); }
+        public static READABLEBLOCK ReadS8(this READABLEBLOCK source, out SByte value) { source = ReadPlatform<Byte>(source, out var uvalue); value = (SByte)uvalue; return source; }
         
         /// <summary>Writes little endian value</summary>
         /// <returns>Next write context</returns>
@@ -185,70 +188,70 @@ namespace $rootnamespace$
 
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
-        public static READABLEBLOCK ReadLeS16(this READABLEBLOCK target, out Int16 value) => ReadEndian(target, out value, false);
+        public static READABLEBLOCK ReadLeS16(this READABLEBLOCK source, out Int16 value) => ReadEndian(source, out value, false);
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
-        public static READABLEBLOCK ReadLeU16(this READABLEBLOCK target, out UInt16 value) => ReadEndian(target, out value, false);
+        public static READABLEBLOCK ReadLeU16(this READABLEBLOCK source, out UInt16 value) => ReadEndian(source, out value, false);
 
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
-        public static READABLEBLOCK ReadLeS32(this READABLEBLOCK target, out Int32 value) => ReadEndian(target, out value, false);
+        public static READABLEBLOCK ReadLeS32(this READABLEBLOCK source, out Int32 value) => ReadEndian(source, out value, false);
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
-        public static READABLEBLOCK ReadLeU32(this READABLEBLOCK target, out UInt32 value) => ReadEndian(target, out value, false);
+        public static READABLEBLOCK ReadLeU32(this READABLEBLOCK source, out UInt32 value) => ReadEndian(source, out value, false);
 
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
-        public static READABLEBLOCK ReadLeS64(this READABLEBLOCK target, out Int64 value) => ReadEndian(target, out value, false);
+        public static READABLEBLOCK ReadLeS64(this READABLEBLOCK source, out Int64 value) => ReadEndian(source, out value, false);
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
-        public static READABLEBLOCK ReadLeU64(this READABLEBLOCK target, out UInt64 value) => ReadEndian(target, out value, false);
+        public static READABLEBLOCK ReadLeU64(this READABLEBLOCK source, out UInt64 value) => ReadEndian(source, out value, false);
 
         #if NET5_0_OR_GREATER
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
-        public static READABLEBLOCK ReadLeF16(this READABLEBLOCK target, out Half value) => ReadEndian(target, out value, false);
+        public static READABLEBLOCK ReadLeF16(this READABLEBLOCK source, out Half value) => ReadEndian(source, out value, false);
         #endif
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
-        public static READABLEBLOCK ReadLeF32(this READABLEBLOCK target, out Single value) => ReadEndian(target, out value, false);
+        public static READABLEBLOCK ReadLeF32(this READABLEBLOCK source, out Single value) => ReadEndian(source, out value, false);
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
-        public static READABLEBLOCK ReadLeF64(this READABLEBLOCK target, out Double value) => ReadEndian(target, out value, false);
+        public static READABLEBLOCK ReadLeF64(this READABLEBLOCK source, out Double value) => ReadEndian(source, out value, false);
 
 
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
-        public static READABLEBLOCK ReadBeS16(this READABLEBLOCK target, out Int16 value) => ReadEndian(target, out value, true);
+        public static READABLEBLOCK ReadBeS16(this READABLEBLOCK source, out Int16 value) => ReadEndian(source, out value, true);
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
-        public static READABLEBLOCK ReadBeU16(this READABLEBLOCK target, out UInt16 value) => ReadEndian(target, out value, true);
+        public static READABLEBLOCK ReadBeU16(this READABLEBLOCK source, out UInt16 value) => ReadEndian(source, out value, true);
 
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
-        public static READABLEBLOCK ReadBeS32(this READABLEBLOCK target, out Int32 value) => ReadEndian(target, out value, true);
+        public static READABLEBLOCK ReadBeS32(this READABLEBLOCK source, out Int32 value) => ReadEndian(source, out value, true);
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
-        public static READABLEBLOCK ReadBeU32(this READABLEBLOCK target, out UInt32 value) => ReadEndian(target, out value, true);
+        public static READABLEBLOCK ReadBeU32(this READABLEBLOCK source, out UInt32 value) => ReadEndian(source, out value, true);
 
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
-        public static READABLEBLOCK ReadBeS64(this READABLEBLOCK target, out Int64 value) => ReadEndian(target, out value, true);
+        public static READABLEBLOCK ReadBeS64(this READABLEBLOCK source, out Int64 value) => ReadEndian(source, out value, true);
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
-        public static READABLEBLOCK ReadBeU64(this READABLEBLOCK target, out UInt64 value) => ReadEndian(target, out value, true);
+        public static READABLEBLOCK ReadBeU64(this READABLEBLOCK source, out UInt64 value) => ReadEndian(source, out value, true);
 
         #if NET5_0_OR_GREATER
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
-        public static READABLEBLOCK ReadBeF16(this READABLEBLOCK target, out Half value) => ReadEndian(target, out value, true);
+        public static READABLEBLOCK ReadBeF16(this READABLEBLOCK source, out Half value) => ReadEndian(source, out value, true);
         #endif
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
-        public static READABLEBLOCK ReadBeF32(this READABLEBLOCK target, out Single value) => ReadEndian(target, out value, true);
+        public static READABLEBLOCK ReadBeF32(this READABLEBLOCK source, out Single value) => ReadEndian(source, out value, true);
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
-        public static READABLEBLOCK ReadBeF64(this READABLEBLOCK target, out Double value) => ReadEndian(target, out value, true);
+        public static READABLEBLOCK ReadBeF64(this READABLEBLOCK source, out Double value) => ReadEndian(source, out value, true);        
 
         #endregion
         
@@ -623,10 +626,12 @@ namespace $rootnamespace$
             return ReadDictionary(source, result, lambda);
         }
 
-        public static READABLEBLOCK ReadDictionary<T>(this READABLEBLOCK source, IDictionary<string, T> result, ItemReadInterfaceDelegate<T> lambda)
+        public static READABLEBLOCK ReadDictionary<T>(this READABLEBLOCK source, IDictionary<string, T> result, ItemReadInterfaceDelegate<T> lambda)        
         {
+            result.Clear();
+
             source = source.ReadPackedU64(out var count);
-            if (count == 0) return source;            
+            if (count == 0) return source;
 
             for(int i=0; i < (int)count; ++i)
             {                
@@ -637,6 +642,119 @@ namespace $rootnamespace$
 
             return source;
         }
+
+        public static WRITEABLEBLOCK WriteListLe<T>(this WRITEABLEBLOCK target, IReadOnlyList<T> items) where T: IConvertible
+        {
+            items ??= Array.Empty<T>();
+
+            target = target.WriteLeS32(items.Count);
+            
+            if (items.Count == 0) return target; // this is needed for ArraySegment<T> crashing on null arrays.
+
+            foreach (var item in items)
+            {
+                target = WriteLeConvertible(target, item);               
+            }
+
+            return target;
+        }
+
+        public static READABLEBLOCK ReadListLe<T>(this READABLEBLOCK source, List<T> list) where T : IConvertible
+        {
+            source = source.ReadLeS32(out var count);
+
+            list.Clear();
+
+            for (int i = 0; i < count; i++)
+            {
+                source = ReadLeConvertible<T>(source, out var convertible);
+                list.Add(convertible);
+            }
+
+            return source;
+        }
+
+        public static READABLEBLOCK ReadListLe<T>(this READABLEBLOCK source, ref ArraySegment<T> list) where T : IConvertible
+        {
+            source = source.ReadLeS32(out var count);
+
+            if (list.Array == null || list.Array.Length < count) list = new T[count];
+            else list = new ArraySegment<T>(list.Array, 0, count);
+
+            for (int i = 0; i < count; i++)
+            {
+                source = ReadLeConvertible<T>(source, out var convertible);
+                list[i] = convertible;
+            }
+
+            return source;
+        }
+
+        public static READABLEBLOCK ReadListLe<T>(this READABLEBLOCK source, ref T[] list) where T : IConvertible
+        {
+            source = source.ReadLeS32(out var count);
+
+            Array.Resize(ref list, count);           
+
+            for (int i = 0; i < count; i++)
+            {
+                source = ReadLeConvertible<T>(source, out var convertible);
+                list[i] = convertible;
+            }
+
+            return source;
+        }
+
+        #endregion
+
+        #region generic
+
+        public static READABLEBLOCK ReadLeConvertible<T>(this READABLEBLOCK source, out T convertible) where T : IConvertible
+        {
+            if (typeof(T) == typeof(Boolean)) { source = source.ReadBool(out var value); convertible = (T)(Object)value; return source; }
+            if (typeof(T) == typeof(String)) { source = source.ReadString(out var value); convertible = (T)(Object)value; return source; }
+
+            if (typeof(T) == typeof(Byte)) { source = source.ReadU8(out var value); convertible = (T)(Object)value; return source; }
+            if (typeof(T) == typeof(SByte)) { source = source.ReadS8(out var value); convertible = (T)(Object)value; return source; }
+            if (typeof(T) == typeof(Int16)) { source = source.ReadLeS16(out var value); convertible = (T)(Object)value; return source; }
+            if (typeof(T) == typeof(UInt16)) { source = source.ReadLeU16(out var value); convertible = (T)(Object)value; return source; }
+            if (typeof(T) == typeof(Int32)) { source = source.ReadLeS32(out var value); convertible = (T)(Object)value; return source; }
+            if (typeof(T) == typeof(UInt32)) { source = source.ReadLeU32(out var value); convertible = (T)(Object)value; return source; }
+            if (typeof(T) == typeof(Int64)) { source = source.ReadLeS64(out var value); convertible = (T)(Object)value; return source; }
+            if (typeof(T) == typeof(UInt64)) { source = source.ReadLeU64(out var value); convertible = (T)(Object)value; return source; }
+            
+            if (typeof(T) == typeof(Single)) { source = source.ReadLeF32(out var value); convertible = (T)(Object)value; return source; }
+            if (typeof(T) == typeof(Double)) { source = source.ReadLeF64(out var value); convertible = (T)(Object)value; return source; }
+
+            if (typeof(T) == typeof(DateTime)) { source = source.ReadLeDateTime(out var value); convertible = (T)(Object)value; return source; }
+
+            throw new NotSupportedException(typeof(T).Name);
+        }
+
+        public static WRITEABLEBLOCK WriteLeConvertible<T>(this WRITEABLEBLOCK target, T convertible) where T: IConvertible
+        {
+            switch (convertible)
+            {
+                case System.Boolean value: return target.WriteBool(value);
+                case System.String value: return target.WriteString(value);
+
+                case System.Byte value: return target.WriteU8(value);
+                case System.SByte value: return target.WriteS8(value);
+                case System.UInt16 value: return target.WriteLeU16(value);
+                case System.Int16 value: return target.WriteLeS16(value);
+                case System.UInt32 value: return target.WriteLeU32(value);
+                case System.Int32 value: return target.WriteLeS32(value);
+                case System.UInt64 value: return target.WriteLeU64(value);
+                case System.Int64 value: return target.WriteLeS64(value);
+                
+                case System.Single value: return target.WriteLeF32(value);
+                case System.Double value: return target.WriteLeF64(value);
+
+                case System.DateTime value: return target.WriteLeDateTime(value);
+
+                default: throw new NotSupportedException(typeof(T).Name);
+            }
+        }      
 
         #endregion
     
