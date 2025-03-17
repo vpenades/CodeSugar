@@ -312,7 +312,11 @@ namespace $rootnamespace$
 
             if (stream is MemoryStream memStream)
             {
-                return memStream.ToArray(); // ReadAllBytes always return a copy;
+                if (memStream.TryGetBuffer(out var buffer))
+                {
+                    buffer = buffer.Slice((int)memStream.Position);
+                    return new BYTESSEGMENT(buffer.ToArray()); // ReadAllBytes always return a copy;
+                }
             }
 
             // taken from Net6's ReadAllBytes

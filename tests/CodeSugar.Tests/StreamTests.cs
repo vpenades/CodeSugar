@@ -91,6 +91,25 @@ namespace CodeSugar
             Assert.That(m1.StreamEquals(m2, factory, buffLen), Is.Not.True);
             Assert.That(m1.Position, Is.Zero);
             Assert.That(m2.Position, Is.Zero);
-        }        
+        }
+
+        [Test]
+        public async Task MemoryStreamTests()
+        {
+            using (var m = new System.IO.MemoryStream())
+            {
+                m.WriteU8(1);
+                m.WriteU8(2);
+                m.WriteU8(3);
+
+                m.Position = 1;
+                var fromPosition1 = m.ReadAllBytes();
+                Assert.That(fromPosition1, Is.EqualTo(new Byte[] { 2, 3 }));
+
+                m.Position = 1;
+                fromPosition1 = await m.ReadAllBytesAsync(System.Threading.CancellationToken.None);
+                Assert.That(fromPosition1, Is.EqualTo(new Byte[] { 2, 3 }));
+            }
+        }
     }
 }
