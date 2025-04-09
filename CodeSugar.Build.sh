@@ -19,7 +19,7 @@ echo "package version: $PACKAGEVERSION";
 # build
 
 dotnet tool restore
-dornet restore
+dotnet restore
 
 dotnet test -c Release CodeSugar.sln
 dotnet PackAsSourcesNuget CodeSugar.sln -o . --package-version $PACKAGEVERSION
