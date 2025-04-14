@@ -1,12 +1,12 @@
 ﻿// Copyright (c) CodeSugar 2024 Vicente Penades
 
 using System;
+using System.Runtime.CompilerServices;
 
 #nullable disable
 
 using PATH = System.IO.Path;
 using CASING = System.IO.MatchCasing;
-using System.Runtime.CompilerServices;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar

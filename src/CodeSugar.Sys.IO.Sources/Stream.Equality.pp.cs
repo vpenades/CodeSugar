@@ -3,6 +3,7 @@
 using System;
 using System.Text;
 using System.IO;
+using System.Xml.Serialization;
 
 #nullable disable
 
@@ -10,7 +11,6 @@ using FINFO = System.IO.FileInfo;
 using STREAM = System.IO.Stream;
 using MEMSTREAM = System.IO.MemoryStream;
 using BYTESEGMENT = System.ArraySegment<byte>;
-using System.Xml.Serialization;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar

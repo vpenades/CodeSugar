@@ -3,13 +3,13 @@
 using System;
 using System.Text;
 using System.IO;
+using System.Diagnostics;
 
 #nullable disable
 
 using STREAM = System.IO.Stream;
 using MEMSTREAM = System.IO.MemoryStream;
 using LAZYHASHALGORYTHM = System.Lazy<System.Security.Cryptography.HashAlgorithm>;
-using System.Diagnostics;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
