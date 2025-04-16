@@ -27,36 +27,7 @@ namespace $rootnamespace$
         private static void _AssertFinite(in _VECTOR3 v)
         {
             System.Diagnostics.Debug.Assert(v.IsFinite(), "v is not finite");
-        }
-
-        [DebuggerStepThrough]
-        [MethodImpl(AGRESSIVE)]
-        public static int DominantAxis(this _VECTOR3 v)
-        {
-            _AssertFinite(v);
-
-            v = _VECTOR3.Abs(v);
-            return v.X >= v.Y ? v.X >= v.Z ? 0 : 2 : v.Y >= v.Z ? 1 : 2;
-        }
-
-        [DebuggerStepThrough]
-        [MethodImpl(AGRESSIVE)]
-        public static float ManhattanLength(this _VECTOR3 v)
-        {
-            _AssertFinite(v);
-
-            v = _VECTOR3.Abs(v);
-            return v.X + v.Y + v.Z;
-        }
-
-        [DebuggerStepThrough]
-        [MethodImpl(AGRESSIVE)]
-        public static _VECTOR3 WithLength(this _VECTOR3 v, float newLen)
-        {
-            _AssertFinite(v);
-
-            return (v == _VECTOR3.Zero ? _VECTOR3.UnitX : _VECTOR3.Normalize(v)) * newLen;
-        }
+        }        
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
@@ -132,7 +103,7 @@ namespace $rootnamespace$
         [DebuggerStepThrough]
         public static void InPlaceTransformBy(this Span<_VECTOR3> collection, _MATRIX4X4 matrix)
         {
-            if (collection == null) return;
+            if (collection == null) return;            
 
             for (int i = 0; i < collection.Length; i++)
             {

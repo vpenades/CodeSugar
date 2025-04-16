@@ -23,35 +23,6 @@ namespace $rootnamespace$
     {
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static int DominantAxis(this Vector2 v)
-        {
-            System.Diagnostics.Debug.Assert(v.IsFinite(), "v is not finite");
-
-            v = Vector2.Abs(v);
-            return v.X >= v.Y ? 0 : 1;
-        }
-
-        [DebuggerStepThrough]
-        [MethodImpl(AGRESSIVE)]
-        public static float ManhattanLength(this Vector2 v)
-        {
-            System.Diagnostics.Debug.Assert(v.IsFinite(), "v is not finite");
-
-            v = Vector2.Abs(v);
-            return v.X + v.Y;
-        }
-
-        [DebuggerStepThrough]
-        [MethodImpl(AGRESSIVE)]
-        public static Vector2 WithLength(this Vector2 v, float newLen)
-        {
-            System.Diagnostics.Debug.Assert(v.IsFinite(), "v is not finite");
-
-            return (v == Vector2.Zero ? Vector2.UnitX : Vector2.Normalize(v)) * newLen;
-        }
-
-        [DebuggerStepThrough]
-        [MethodImpl(AGRESSIVE)]
         public static float Angle(this in Vector2 v)
         {
             return MathF.Atan2(v.Y, v.X);
