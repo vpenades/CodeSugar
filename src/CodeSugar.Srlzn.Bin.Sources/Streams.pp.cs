@@ -26,6 +26,7 @@ namespace $rootnamespace$
     {
         #if !NET8_0_OR_GREATER
 
+        [DebuggerStepThrough]
         private static int ReadAtLeast(this _STREAM stream, Span<byte> buffer, int minimumBytes, bool throwOnEndOfStream = true)
         {
             ValidateReadAtLeastArguments(buffer.Length, minimumBytes);
@@ -58,6 +59,7 @@ namespace $rootnamespace$
             return totalRead;
         }
 
+        [DebuggerStepThrough]
         private static Task<int> ReadAtLeastAsync(this _STREAM stream, Memory<byte> buffer, int minimumBytes, bool throwOnEndOfStream = true, CancellationToken cancellationToken = default)
         {
             ValidateReadAtLeastArguments(buffer.Length, minimumBytes);
