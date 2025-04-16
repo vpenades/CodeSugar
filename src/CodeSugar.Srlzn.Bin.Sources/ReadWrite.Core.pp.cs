@@ -244,7 +244,7 @@ namespace $rootnamespace$
             Span<T> span = stackalloc T[1];
             var buff = System.Runtime.InteropServices.MemoryMarshal.AsBytes<T>(span);
 
-            if (!TryReadBytes(stream, buff)) throw new System.IO.EndOfStreamException();
+            stream.ReadAtLeast(buff, buff.Length);
 
             ReadEndian<T>(buff, out value, streamIsBigEndian);
 
@@ -286,7 +286,7 @@ namespace $rootnamespace$
             Span<T> span = stackalloc T[1];
             var buff = System.Runtime.InteropServices.MemoryMarshal.AsBytes<T>(span);
 
-            if (!TryReadBytes(stream, buff)) throw new System.IO.EndOfStreamException();
+            stream.ReadAtLeast(buff, buff.Length);
 
             value = span[0];
 
@@ -302,7 +302,7 @@ namespace $rootnamespace$
 
         public static _READABLEBLOCK_STREAM ReadBytes(this _READABLEBLOCK_STREAM stream, Span<Byte> array)
         {
-            if (!TryReadBytes(stream, array)) throw new System.IO.EndOfStreamException();            
+            stream.ReadAtLeast(array, array.Length);
 
             return stream;
         }
