@@ -17,7 +17,7 @@ namespace System.Numerics
 namespace $rootnamespace$
 #endif
 {
-    using VECTOR2ENUMERATION = System.Collections.Generic.IEnumerable<System.Numerics.Vector2>;
+    using _VECTOR2ENUMERATION = System.Collections.Generic.IEnumerable<System.Numerics.Vector2>;
 
     internal static partial class CodeSugarForNumerics    
     {
@@ -85,7 +85,7 @@ namespace $rootnamespace$
         }
 
         [DebuggerStepThrough]        
-        public static Vector2 Centroid(this VECTOR2ENUMERATION points)
+        public static Vector2 Centroid(this _VECTOR2ENUMERATION points)
         {
             if (points == null) return Vector2.Zero;
 
@@ -112,19 +112,19 @@ namespace $rootnamespace$
         }
 
         [DebuggerStepThrough]
-        public static Vector2 Min(this VECTOR2ENUMERATION points)
+        public static Vector2 Min(this _VECTOR2ENUMERATION points)
         {            
             return points.Aggregate(new Vector2(float.MaxValue), (seed, value) => Vector2.Min(seed, value));
         }
 
         [DebuggerStepThrough]
-        public static Vector2 Max(this VECTOR2ENUMERATION points)
+        public static Vector2 Max(this _VECTOR2ENUMERATION points)
         {
             return points.Aggregate(new Vector2(float.MinValue), (seed, value) => Vector2.Max(seed, value));
         }
 
         [DebuggerStepThrough]
-        public static (Vector2 Min, Vector2 Max) MinMax(this VECTOR2ENUMERATION points)
+        public static (Vector2 Min, Vector2 Max) MinMax(this _VECTOR2ENUMERATION points)
         {
             return points.Aggregate((new Vector2(float.MaxValue), new Vector2(float.MinValue)), (seed, value) => (Vector2.Min(seed.Item1,value), Vector2.Max(seed.Item2, value)) );
         }
