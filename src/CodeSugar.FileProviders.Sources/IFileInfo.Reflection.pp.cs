@@ -9,11 +9,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Collections;
 
-using XFILE = Microsoft.Extensions.FileProviders.IFileInfo;
-using XDIRECTORY = Microsoft.Extensions.FileProviders.IDirectoryContents;
-using XPROVIDER = Microsoft.Extensions.FileProviders.IFileProvider;
-
 #nullable disable
+
+using _XINFO = Microsoft.Extensions.FileProviders.IFileInfo;
+using _XDIRECTORY = Microsoft.Extensions.FileProviders.IDirectoryContents;
+using _XPROVIDER = Microsoft.Extensions.FileProviders.IFileProvider;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -26,7 +26,7 @@ namespace $rootnamespace$
     static partial class CodeSugarForFileProviders        
     {
         [return: NotNull]
-        public static XDIRECTORY GetDirectoryContents(this XFILE xfile)
+        public static _XDIRECTORY GetDirectoryContents(this _XINFO xfile)
         {
             return TryGetDirectoryContents(xfile, out var xdir)
                 ? xdir
@@ -39,7 +39,7 @@ namespace $rootnamespace$
         /// <param name="xfile">the input file</param>
         /// <param name="xdir">the output directory contents</param>
         /// <returns>true on success</returns>
-        public static bool TryGetDirectoryContents(this XFILE xfile, out XDIRECTORY xdir)
+        public static bool TryGetDirectoryContents(this _XINFO xfile, out _XDIRECTORY xdir)
         {
             // notice that we're not handling .Exist here, because if the file does not exist,
             // the returned IDirectoryInfo returned should also have the .Exist to false
@@ -50,18 +50,18 @@ namespace $rootnamespace$
             switch (xfile)
             {
                 // IFileInfo implements IDirectoryContents on Microsoft.Extensions.FileProviders.Physical.9.0.0 and up.
-                case XDIRECTORY asDC:
+                case _XDIRECTORY asDC:
                     xdir = asDC;
                     return true;
 
                 // it may be odd for a IFileInfo to also implement IFileProvider, but it may happen in the wild.
-                case XPROVIDER asFP:
+                case _XPROVIDER asFP:
                     xdir = asFP.GetDirectoryContents(string.Empty);
                     return true;
 
                 // easter egg: some implementations may choose to expose the IDirectoryContents as a service.
                 case System.IServiceProvider asSrv:
-                    xdir = asSrv.GetService(typeof(XDIRECTORY)) as XDIRECTORY;
+                    xdir = asSrv.GetService(typeof(_XDIRECTORY)) as _XDIRECTORY;
                     if (xdir != null) return true;
                     break;                
             }
@@ -72,13 +72,13 @@ namespace $rootnamespace$
             {
                 System.Diagnostics.Debug.Assert(xfile.IsDirectory);
                 var dinfo = new DirectoryInfo(xfile.PhysicalPath);
-                xdir = ToIFileInfo(dinfo) as XDIRECTORY;
+                xdir = ToIFileInfo(dinfo) as _XDIRECTORY;
             }
 
             return xdir != null;
         }
 
-        public static bool IsPhysical(this XFILE entry)
+        public static bool IsPhysical(this _XINFO entry)
         {            
             return !string.IsNullOrEmpty(entry?.PhysicalPath);
         }

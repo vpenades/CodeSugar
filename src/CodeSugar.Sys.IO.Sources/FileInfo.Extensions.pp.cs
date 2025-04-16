@@ -3,12 +3,12 @@
 using System;
 using System.Text;
 using System.IO;
+using System.Linq;
 
 #nullable disable
 
-using FILE = System.IO.FileInfo;
-using PATH = System.IO.Path;
-using System.Linq;
+using _FINFO = System.IO.FileInfo;
+using _IOPATH = System.IO.Path;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -20,12 +20,12 @@ namespace $rootnamespace$
 {
     static partial class CodeSugarForSystemIO
     {
-        public static bool HasAnyExtension(this FILE finfo, params string[] extensions)
+        public static bool HasAnyExtension(this _FINFO finfo, params string[] extensions)
         {
             return extensions.Any(ext => HasExtension(finfo, ext));
         }
 
-        public static bool HasExtension(this FILE finfo, string extension)
+        public static bool HasExtension(this _FINFO finfo, string extension)
         {
             if (string.IsNullOrEmpty(extension)) throw new ArgumentNullException(nameof(extension));
             if (!extension.StartsWith('.')) extension = '.' + extension;
@@ -33,13 +33,13 @@ namespace $rootnamespace$
             return finfo.Name.EndsWith(extension, StringComparison.OrdinalIgnoreCase); // even in case sensitive operating systems, a .jpg is a .jpg            
         }
 
-        public static FILE WithExtension(this FILE finfo, string extension)
+        public static _FINFO WithExtension(this _FINFO finfo, string extension)
         {
             if (finfo == null) return null;
 
-            var path = PATH.ChangeExtension(finfo.FullName, extension);
+            var path = _IOPATH.ChangeExtension(finfo.FullName, extension);
 
-            return new FILE(path);
+            return new _FINFO(path);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace $rootnamespace$
         /// <param name="dots">the number of dots used by the extension.</param>
         /// <param name="extension">the resulting extension.</param>
         /// <returns>true if an extension was found</returns>        
-        public static bool TryGetCompositedExtension(this FILE finfo, int dots, out string extension)
+        public static bool TryGetCompositedExtension(this _FINFO finfo, int dots, out string extension)
         {
             GuardNotNull(finfo);
             return TryGetCompositedExtension(finfo.FullName, dots, out extension);
@@ -62,7 +62,7 @@ namespace $rootnamespace$
             var l = fileName.Length - 1;
             var r = -1;
 
-            var invalidChars = PATH.GetInvalidFileNameChars();
+            var invalidChars = _IOPATH.GetInvalidFileNameChars();
 
             while (dots > 0 && l >= 0)
             {
@@ -100,7 +100,7 @@ namespace $rootnamespace$
         private static readonly string[] _WindowsShellExtensions = new[] { "cpl", "inf", "ins", "job", "msc", "pif", "shs" };
         private static readonly string[] _WindowsInstallerExtensions = new[] { "inx", "isu", "cab", "msi", "msp", "mst", "paf" };
 
-        public static bool HasExecutableOrScriptExtension(this FILE finfo)
+        public static bool HasExecutableOrScriptExtension(this _FINFO finfo)
         {
             if (finfo == null) return false;
             var ext = finfo.Extension.ToLowerInvariant().Trim('.');

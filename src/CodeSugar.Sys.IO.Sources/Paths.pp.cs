@@ -5,8 +5,8 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using PATH = System.IO.Path;
-using CASING = System.IO.MatchCasing;
+using _IOPATH = System.IO.Path;
+using _PATHCASING = System.IO.MatchCasing;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -45,31 +45,31 @@ namespace $rootnamespace$
 
         #endregion
 
-        public static StringComparer GetStringComparer(this CASING casing)
+        public static StringComparer GetStringComparer(this _PATHCASING casing)
         {
             switch (casing)
             {
-                case CASING.CaseInsensitive: return StringComparer.OrdinalIgnoreCase;
-                case CASING.CaseSensitive: return StringComparer.Ordinal;
-                case CASING.PlatformDefault: return FileSystemStringComparer;
+                case _PATHCASING.CaseInsensitive: return StringComparer.OrdinalIgnoreCase;
+                case _PATHCASING.CaseSensitive: return StringComparer.Ordinal;
+                case _PATHCASING.PlatformDefault: return FileSystemStringComparer;
                 default: throw new ArgumentOutOfRangeException(casing.ToString(), nameof(casing));
             }
         }
 
-        public static StringComparison GetStringComparison(this CASING casing)
+        public static StringComparison GetStringComparison(this _PATHCASING casing)
         {
             switch (casing)
             {
-                case CASING.CaseInsensitive: return StringComparison.OrdinalIgnoreCase;
-                case CASING.CaseSensitive: return StringComparison.Ordinal;
-                case CASING.PlatformDefault: return FileSystemStringComparison;
+                case _PATHCASING.CaseInsensitive: return StringComparison.OrdinalIgnoreCase;
+                case _PATHCASING.CaseSensitive: return StringComparison.Ordinal;
+                case _PATHCASING.PlatformDefault: return FileSystemStringComparison;
                 default: throw new ArgumentOutOfRangeException(casing.ToString(), nameof(casing));
             }
         }
 
         public static bool IsDirectorySeparatorChar(Char character)
         {
-            return character == PATH.DirectorySeparatorChar || character == PATH.AltDirectorySeparatorChar;        
+            return character == _IOPATH.DirectorySeparatorChar || character == _IOPATH.AltDirectorySeparatorChar;        
         }
 
         public static bool PathStartsWithNetworkDrivePrefix(string path)
@@ -92,9 +92,9 @@ namespace $rootnamespace$
         {
             path = GetNormalizedPath(path);
 
-            if (PATH.IsPathFullyQualified(path)) return path;
+            if (_IOPATH.IsPathFullyQualified(path)) return path;
 
-            path = PATH.GetFullPath(path);            
+            path = _IOPATH.GetFullPath(path);            
 
             /*
             path = PathStartsWithNetworkDrivePrefix(path)
@@ -117,8 +117,8 @@ namespace $rootnamespace$
             if (path.IndexOfAny(_InvalidPathChars) >= 0) throw new ArgumentException("invalid chars", nameof(path));
 
             return path
-                .Replace(PATH.AltDirectorySeparatorChar, PATH.DirectorySeparatorChar)
-                .TrimEnd(PATH.DirectorySeparatorChar);
+                .Replace(_IOPATH.AltDirectorySeparatorChar, _IOPATH.DirectorySeparatorChar)
+                .TrimEnd(_IOPATH.DirectorySeparatorChar);
         }
 
         public static string[] SplitPath(string path)
@@ -218,7 +218,7 @@ namespace $rootnamespace$
                     continue;
                 }
 
-                path = PATH.Combine(path, part);
+                path = _IOPATH.Combine(path, part);
             }
 
             return path;
@@ -227,7 +227,7 @@ namespace $rootnamespace$
         /// <summary>
         /// determines if two file system paths are equal.
         /// </summary>
-        public static bool ArePathsEqual(this CASING casing, string pathX, string pathY)
+        public static bool ArePathsEqual(this _PATHCASING casing, string pathX, string pathY)
         {
             if (pathX == pathY) return true;
             if (pathX == null) return false;
@@ -239,7 +239,7 @@ namespace $rootnamespace$
             return string.Equals(pathX, pathY, GetStringComparison(casing));
         }
 
-        public static bool PathStartsWith(this CASING casing, string path, string head)
+        public static bool PathStartsWith(this _PATHCASING casing, string path, string head)
         {
             if (path == null && head == null) return true;
             if (path == null) return false;
@@ -251,7 +251,7 @@ namespace $rootnamespace$
             return path.StartsWith(head, GetStringComparison(casing));
         }
 
-        public static bool PathEndsWith(this CASING casing, string path, string tail)
+        public static bool PathEndsWith(this _PATHCASING casing, string path, string tail)
         {
             if (path == null && tail == null) return true;
             if (path == null) return false;
@@ -264,7 +264,7 @@ namespace $rootnamespace$
 
         }
 
-        public static bool PathEndsWith(this CASING casing,  string path, string tail, bool tailHasWildcards)
+        public static bool PathEndsWith(this _PATHCASING casing,  string path, string tail, bool tailHasWildcards)
         {
             if (path == null && tail == null) return true;
             if (path == null) return false;
@@ -303,7 +303,7 @@ namespace $rootnamespace$
         /// <summary>
         /// calculates the hash code of a path, using the same rules used for path equality.
         /// </summary>
-        public static int GetPathHashCode(this CASING casing, string path)
+        public static int GetPathHashCode(this _PATHCASING casing, string path)
         {
             if (string.IsNullOrEmpty(path)) return 0;
             path = GetNormalizedFullyQualifiedPath(path);

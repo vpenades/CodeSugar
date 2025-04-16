@@ -9,11 +9,11 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using PATH = System.IO.Path;
-using FILE = System.IO.FileInfo;
-using DIRECTORY = System.IO.DirectoryInfo;
-using SYSTEMENTRY = System.IO.FileSystemInfo;
-using MATCHCASING = System.IO.MatchCasing;
+using _IOPATH = System.IO.Path;
+using _FINFO = System.IO.FileInfo;
+using _DINFO = System.IO.DirectoryInfo;
+using _SINFO = System.IO.FileSystemInfo;
+using _MATCHCASING = System.IO.MatchCasing;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -31,14 +31,14 @@ namespace $rootnamespace$
         /// <returns>
         /// a normalized path that is suited to be used for path string comparison.
         /// </returns>
-        public static string GetNormalizedFullName(this SYSTEMENTRY finfo)
+        public static string GetNormalizedFullName(this _SINFO finfo)
         {
             GuardNotNull(finfo);
 
             return finfo
                 .FullName
-                .Replace(PATH.AltDirectorySeparatorChar, PATH.DirectorySeparatorChar)
-                .TrimEnd(PATH.DirectorySeparatorChar);
+                .Replace(_IOPATH.AltDirectorySeparatorChar, _IOPATH.DirectorySeparatorChar)
+                .TrimEnd(_IOPATH.DirectorySeparatorChar);
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace $rootnamespace$
         /// <param name="baseDir"></param>
         /// <returns>A relative path.</returns>
         /// <exception cref="ArgumentException"></exception>
-        public static string GetPathRelativeTo(this FILE finfo, DIRECTORY baseDir)
+        public static string GetPathRelativeTo(this _FINFO finfo, _DINFO baseDir)
         {
             GuardNotNull(finfo);
             GuardNotNull(baseDir);
@@ -66,27 +66,27 @@ namespace $rootnamespace$
             throw new ArgumentException("invalid path", nameof(baseDir));
         }        
 
-        public static bool EndsWith(this FILE finfo, string tail)        
+        public static bool EndsWith(this _FINFO finfo, string tail)        
         {
             GuardNotNull(finfo);
 
-            return PathEndsWith(MATCHCASING.PlatformDefault, finfo.FullName, tail);
+            return PathEndsWith(_MATCHCASING.PlatformDefault, finfo.FullName, tail);
         }
 
         /// <summary>
         /// Checks whether <paramref name="xinfo"/> is contained within the children of <paramref name="baseDir"/>.
         /// </summary>
         /// <param name="baseDir">The base directory</param>
-        /// <param name="xinfo">A <see cref="FILE"/> or <see cref="DIRECTORY"/></param>
+        /// <param name="xinfo">A <see cref="_FINFO"/> or <see cref="_DINFO"/></param>
         /// <returns>true if <paramref name="xinfo"/> is a child.</returns>
-        public static bool IsParentOf(this DIRECTORY baseDir, SYSTEMENTRY xinfo) // TODO: maybe we could use System.IO.SearchOption to define first or all levels
+        public static bool IsParentOf(this _DINFO baseDir, _SINFO xinfo) // TODO: maybe we could use System.IO.SearchOption to define first or all levels
         {
             GuardNotNull(baseDir);
             GuardNotNull(xinfo);            
 
             var basePath = baseDir.FullName;
 
-            if (!IsDirectorySeparatorChar(basePath[basePath.Length-1])) basePath += PATH.DirectorySeparatorChar;
+            if (!IsDirectorySeparatorChar(basePath[basePath.Length-1])) basePath += _IOPATH.DirectorySeparatorChar;
 
             return xinfo.FullNameStartsWith(basePath);
         }
@@ -97,36 +97,36 @@ namespace $rootnamespace$
 		/// </summary>
 		/// <param name="x"></param>
 		/// <returns></returns>
-		public static int GetFullNameHashCode(this SYSTEMENTRY x)
+		public static int GetFullNameHashCode(this _SINFO x)
         {
-            return _FileSystemInfoComparer<SYSTEMENTRY>.Default.GetHashCode(x);
+            return _FileSystemInfoComparer<_SINFO>.Default.GetHashCode(x);
         }
 
         /// <summary>
-        /// Checks whether <paramref name="a"/> and <paramref name="b"/> have the same <see cref="SYSTEMENTRY.FullName"/>,
+        /// Checks whether <paramref name="a"/> and <paramref name="b"/> have the same <see cref="_SINFO.FullName"/>,
         /// using platform file system casing rules.
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
-        /// <returns>True if they have an equivalent <see cref="SYSTEMENTRY.FullName"/></returns>
-        public static bool FullNameEquals(this SYSTEMENTRY a, SYSTEMENTRY b)
+        /// <returns>True if they have an equivalent <see cref="_SINFO.FullName"/></returns>
+        public static bool FullNameEquals(this _SINFO a, _SINFO b)
         {
-            return _FileSystemInfoComparer<SYSTEMENTRY>.Default.Equals(a, b);
+            return _FileSystemInfoComparer<_SINFO>.Default.Equals(a, b);
         }		
 
         /// <summary>
-        /// Checks whether <paramref name="a"/> and <paramref name="path"/> have the same <see cref="SYSTEMENTRY.FullName"/>,
+        /// Checks whether <paramref name="a"/> and <paramref name="path"/> have the same <see cref="_SINFO.FullName"/>,
         /// using platform file system casing rules.
         /// </summary>
         /// <param name="a"></param>
         /// <param name="bPath"></param>
-        /// <returns>True if they have an equivalent <see cref="SYSTEMENTRY.FullName"/></returns>
-        public static bool FullNameEquals(this SYSTEMENTRY a, string bPath)
+        /// <returns>True if they have an equivalent <see cref="_SINFO.FullName"/></returns>
+        public static bool FullNameEquals(this _SINFO a, string bPath)
         {
             if (a == null && bPath == null) return true;
             if (a == null) return false;
 
-            return ArePathsEqual(MATCHCASING.PlatformDefault, a.FullName, bPath);
+            return ArePathsEqual(_MATCHCASING.PlatformDefault, a.FullName, bPath);
         }
 
         /// <summary>
@@ -136,9 +136,9 @@ namespace $rootnamespace$
         /// <param name="a"></param>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static bool FullNameStartsWith(this SYSTEMENTRY a, string path)
+        public static bool FullNameStartsWith(this _SINFO a, string path)
         {
-            return PathStartsWith(MATCHCASING.PlatformDefault, a?.FullName, path);
+            return PathStartsWith(_MATCHCASING.PlatformDefault, a?.FullName, path);
         }
 
         /// <summary>
@@ -148,15 +148,15 @@ namespace $rootnamespace$
         /// <param name="a"></param>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static bool FullNameEndsWith(this SYSTEMENTRY a, string path)
+        public static bool FullNameEndsWith(this _SINFO a, string path)
         {
-            return PathEndsWith(MATCHCASING.PlatformDefault, a?.FullName, path);
+            return PathEndsWith(_MATCHCASING.PlatformDefault, a?.FullName, path);
         }
 
         #region Linq
 
         public static IEnumerable<T> FileSystemDistinct<T>(this IEnumerable<T> files)
-            where T : SYSTEMENTRY
+            where T : _SINFO
         {
             return files.Distinct(MatchCasing.PlatformDefault.GetFullNameComparer<T>());
         }
@@ -164,24 +164,24 @@ namespace $rootnamespace$
 
 
         public static Dictionary<TKey,TValue> FileSystemToDictionary<TSource,TKey,TValue>(this IEnumerable<TSource> collection, Func<TSource, TKey> keySelector, Func<TSource,TValue> valSelector)
-            where TKey: SYSTEMENTRY
+            where TKey: _SINFO
         {
             return collection.ToDictionary(keySelector, valSelector, MatchCasing.PlatformDefault.GetFullNameComparer<TKey>());
         }
 
         [Obsolete("Use MatchCasing.PlatformDefault.GetFullNameComparer<T>()", true)]
 		public static IEqualityComparer<T> GetFullNameComparer<T>()
-            where T:SYSTEMENTRY
+            where T:_SINFO
         {
             return _FileSystemInfoComparer<T>.GetInstance(FileSystemStringComparison);
         }
         
 
 		/// <summary>
-		/// Gets a <see cref="IEqualityComparer{T}"/> specialises in comparing <see cref="SYSTEMENTRY.FullName"/>
+		/// Gets a <see cref="IEqualityComparer{T}"/> specialises in comparing <see cref="_SINFO.FullName"/>
 		/// </summary>		
 		public static IEqualityComparer<T> GetFullNameComparer<T>(this MatchCasing casing)
-            where T:SYSTEMENTRY
+            where T:_SINFO
         {
             return _FileSystemInfoComparer<T>.GetInstance(casing);
         }
@@ -191,17 +191,17 @@ namespace $rootnamespace$
         #region nested types
 
         private sealed class _FileSystemInfoComparer<T> : IEqualityComparer<T>
-        where T : SYSTEMENTRY
+        where T : _SINFO
         {
             private static IEqualityComparer<T>[] _Comparers;
 
-            public static IEqualityComparer<T> GetInstance(MATCHCASING casing)
+            public static IEqualityComparer<T> GetInstance(_MATCHCASING casing)
             {
                 switch(casing)
                 {
-                    case MATCHCASING.CaseInsensitive: return GetInstance(StringComparison.OrdinalIgnoreCase);
-                    case MATCHCASING.CaseSensitive: return GetInstance(StringComparison.Ordinal);
-                    case MATCHCASING.PlatformDefault: return GetInstance(FileSystemStringComparison);
+                    case _MATCHCASING.CaseInsensitive: return GetInstance(StringComparison.OrdinalIgnoreCase);
+                    case _MATCHCASING.CaseSensitive: return GetInstance(StringComparison.Ordinal);
+                    case _MATCHCASING.PlatformDefault: return GetInstance(FileSystemStringComparison);
                     default: throw new ArgumentOutOfRangeException(casing.ToString(), nameof(casing));
                 }
             }

@@ -7,9 +7,9 @@ using System.Diagnostics;
 
 #nullable disable
 
-using STREAM = System.IO.Stream;
-using MEMSTREAM = System.IO.MemoryStream;
-using LAZYHASHALGORYTHM = System.Lazy<System.Security.Cryptography.HashAlgorithm>;
+using _STREAM = System.IO.Stream;
+using _MEMSTREAM = System.IO.MemoryStream;
+using _LAZYHASHALGORYTHM = System.Lazy<System.Security.Cryptography.HashAlgorithm>;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -21,10 +21,10 @@ namespace $rootnamespace$
 {
     partial class CodeSugarForSystemIO
     {
-        private static LAZYHASHALGORYTHM _Sha512Engine = new LAZYHASHALGORYTHM(System.Security.Cryptography.SHA512.Create);
-        private static LAZYHASHALGORYTHM _Sha384Engine = new LAZYHASHALGORYTHM(System.Security.Cryptography.SHA384.Create);
-        private static LAZYHASHALGORYTHM _Sha256Engine = new LAZYHASHALGORYTHM(System.Security.Cryptography.SHA256.Create);
-        private static LAZYHASHALGORYTHM _Md5Engine = new LAZYHASHALGORYTHM(System.Security.Cryptography.MD5.Create);
+        private static _LAZYHASHALGORYTHM _Sha512Engine = new _LAZYHASHALGORYTHM(System.Security.Cryptography.SHA512.Create);
+        private static _LAZYHASHALGORYTHM _Sha384Engine = new _LAZYHASHALGORYTHM(System.Security.Cryptography.SHA384.Create);
+        private static _LAZYHASHALGORYTHM _Sha256Engine = new _LAZYHASHALGORYTHM(System.Security.Cryptography.SHA256.Create);
+        private static _LAZYHASHALGORYTHM _Md5Engine = new _LAZYHASHALGORYTHM(System.Security.Cryptography.MD5.Create);
 
         private static System.Security.Cryptography.HashAlgorithm __GetHashAlgorythmBySize(int byteSize)
         {
@@ -44,7 +44,7 @@ namespace $rootnamespace$
         /// <remarks>
         /// The hashing algorythm is selected based in the length of the imput byte array.
         /// </remarks>
-        public static void ComputeHashes(this STREAM stream, params Byte[][] result)
+        public static void ComputeHashes(this _STREAM stream, params Byte[][] result)
         {
             GuardReadable(stream);
 
@@ -67,7 +67,7 @@ namespace $rootnamespace$
         /// <summary>
         /// Computes the <see cref="System.Security.Cryptography.SHA512"/> on the contents of the given stream.
         /// </summary>
-        public static Byte[] ComputeSha512(this STREAM stream)
+        public static Byte[] ComputeSha512(this _STREAM stream)
         {
             return _ComputeHash(stream, _Sha512Engine.Value);
         }
@@ -75,7 +75,7 @@ namespace $rootnamespace$
         /// <summary>
         /// Computes the <see cref="System.Security.Cryptography.SHA384"/> on the contents of the given stream.
         /// </summary>
-        public static Byte[] ComputeSha384(this STREAM stream)
+        public static Byte[] ComputeSha384(this _STREAM stream)
         {
             return _ComputeHash(stream, _Sha384Engine.Value);
         }
@@ -83,7 +83,7 @@ namespace $rootnamespace$
         /// <summary>
         /// Computes the <see cref="System.Security.Cryptography.SHA256"/> on the contents of the given stream.
         /// </summary>
-        public static Byte[] ComputeSha256(this STREAM stream)
+        public static Byte[] ComputeSha256(this _STREAM stream)
         {
             return _ComputeHash(stream, _Sha256Engine.Value);
         }
@@ -91,16 +91,16 @@ namespace $rootnamespace$
         /// <summary>
         /// Computes the <see cref="System.Security.Cryptography.MD5"/> on the contents of the given stream.
         /// </summary>
-        public static Byte[] ComputeMd5(this STREAM stream)
+        public static Byte[] ComputeMd5(this _STREAM stream)
         {
             return _ComputeHash(stream, _Md5Engine.Value);
         }        
 
-        private static Byte[] _ComputeHash(STREAM stream, System.Security.Cryptography.HashAlgorithm engine)
+        private static Byte[] _ComputeHash(_STREAM stream, System.Security.Cryptography.HashAlgorithm engine)
         {
             GuardReadable(stream);
 
-            if (stream is MEMSTREAM memStream)
+            if (stream is _MEMSTREAM memStream)
             {
                 if (memStream.TryGetBuffer(out var buff))
                 {

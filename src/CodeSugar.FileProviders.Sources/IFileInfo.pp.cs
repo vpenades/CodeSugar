@@ -9,8 +9,8 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using XFILE = Microsoft.Extensions.FileProviders.IFileInfo;
-using XPROVIDER = Microsoft.Extensions.FileProviders.IFileProvider;
+using _XINFO = Microsoft.Extensions.FileProviders.IFileInfo;
+using _XPROVIDER = Microsoft.Extensions.FileProviders.IFileProvider;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -24,13 +24,13 @@ namespace $rootnamespace$
     {
         #region constants
 
-        private static readonly XFILE __NULLFILE = new Microsoft.Extensions.FileProviders.NotFoundFileInfo("NULL");
+        private static readonly _XINFO __NULLFILE = new Microsoft.Extensions.FileProviders.NotFoundFileInfo("NULL");
 
-        private static readonly XPROVIDER __NULLPROVIDER = new Microsoft.Extensions.FileProviders.NullFileProvider();
+        private static readonly _XPROVIDER __NULLPROVIDER = new Microsoft.Extensions.FileProviders.NullFileProvider();
 
         #endregion
 
-        public static Func<System.IO.Stream> GetReadStreamFunction(this XFILE xinfo)
+        public static Func<System.IO.Stream> GetReadStreamFunction(this _XINFO xinfo)
         {
             GuardNotNull(xinfo);
             if (xinfo.IsDirectory) throw new ArgumentException("directories don't have a stream", nameof(xinfo));
@@ -38,7 +38,7 @@ namespace $rootnamespace$
             return xinfo.CreateReadStream;
         }
 
-        public static Func<System.IO.Stream> GetWriteStreamFunction(this XFILE xinfo)
+        public static Func<System.IO.Stream> GetWriteStreamFunction(this _XINFO xinfo)
         {
             GuardNotNull(xinfo);
             if (xinfo.IsDirectory) throw new ArgumentException("directories don't have a stream", nameof(xinfo));

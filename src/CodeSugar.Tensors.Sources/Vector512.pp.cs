@@ -12,9 +12,9 @@ using System.Runtime.Intrinsics;
 
 #nullable disable
 
-using MMARSHALL = System.Runtime.InteropServices.MemoryMarshal;
-using UNSAFE = System.Runtime.CompilerServices.Unsafe;
-using TENSORPRIMS = System.Numerics.Tensors.TensorPrimitives;
+using _MMARSHALL = System.Runtime.InteropServices.MemoryMarshal;
+using _UNSAFE = System.Runtime.CompilerServices.Unsafe;
+using _TENSORPRIMS = System.Numerics.Tensors.TensorPrimitives;
 
 
 #if CODESUGAR_USECODESUGARNAMESPACE

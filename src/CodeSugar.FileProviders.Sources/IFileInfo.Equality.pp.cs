@@ -9,9 +9,9 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using XFILE = Microsoft.Extensions.FileProviders.IFileInfo;
-using XDIRECTORY = Microsoft.Extensions.FileProviders.IDirectoryContents;
-using MATCHCASING = System.IO.MatchCasing;
+using _XINFO = Microsoft.Extensions.FileProviders.IFileInfo;
+using _XDIRECTORY = Microsoft.Extensions.FileProviders.IDirectoryContents;
+using _MATCHCASING = System.IO.MatchCasing;
 
 
 #if CODESUGAR_USECODESUGARNAMESPACE
@@ -27,24 +27,24 @@ namespace $rootnamespace$
         #region constants
 
         public static bool FileSystemIsCaseSensitive { get; } = _CheckFileSystemCaseSensitive();
-        public static MATCHCASING FileSystemPathCasing { get; } = FileSystemIsCaseSensitive ? MATCHCASING.CaseSensitive : MATCHCASING.CaseInsensitive;
+        public static _MATCHCASING FileSystemPathCasing { get; } = FileSystemIsCaseSensitive ? _MATCHCASING.CaseSensitive : _MATCHCASING.CaseInsensitive;
         public static StringComparison FileSystemPathComparison { get; } = FileSystemIsCaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;        
 
         #endregion
 
-        public static bool NameEquals(this XFILE xfile, string name)
+        public static bool NameEquals(this _XINFO xfile, string name)
         {
             if (!TryGetStringComparison(xfile, out var cmp)) throw new NotSupportedException();
             return string.Equals(xfile.Name, name, cmp);
         }
 
-        public static bool NameEquals(this XFILE xfile, string name, MATCHCASING casing)
+        public static bool NameEquals(this _XINFO xfile, string name, _MATCHCASING casing)
         {
             return string.Equals(xfile.Name, name, __ToStringComparison(casing));
         }
 
 
-        public static bool TryGetStringComparison(this XDIRECTORY xfile, out StringComparison cmp)
+        public static bool TryGetStringComparison(this _XDIRECTORY xfile, out StringComparison cmp)
         {
             if (!_TryGetMatchCasing(xfile, out var casing)) { cmp = default; return false; }
 
@@ -52,7 +52,7 @@ namespace $rootnamespace$
             return true;
         }
 
-        public static bool TryGetStringComparison(this XFILE xfile, out StringComparison cmp)
+        public static bool TryGetStringComparison(this _XINFO xfile, out StringComparison cmp)
         {
             if (!_TryGetMatchCasing(xfile, out var casing)) { cmp = default; return false; }
 
@@ -60,31 +60,31 @@ namespace $rootnamespace$
             return true;
         }
 
-        private static bool _TryGetMatchCasing<T>(this T casingSource, out MATCHCASING casing)
+        private static bool _TryGetMatchCasing<T>(this T casingSource, out _MATCHCASING casing)
         {
             if (casingSource == null) throw new ArgumentNullException(nameof(casingSource));
 
             if (casingSource is IServiceProvider srv)
             {
-                if (srv.GetService(typeof(MATCHCASING)) is MATCHCASING srvCasing)
+                if (srv.GetService(typeof(_MATCHCASING)) is _MATCHCASING srvCasing)
                 {
                     casing = srvCasing;
                     return true;
                 }
             }            
 
-            if (casingSource is XFILE xfile && IsPhysical(xfile))
+            if (casingSource is _XINFO xfile && IsPhysical(xfile))
             {
-                casing = MATCHCASING.PlatformDefault;
+                casing = _MATCHCASING.PlatformDefault;
                 return true;
             }
 
-            if (casingSource is XDIRECTORY xdir)
+            if (casingSource is _XDIRECTORY xdir)
             {
                 switch(xdir.GetType().FullName)
                 {
                     case "Microsoft.Extensions.FileProviders.Internal.PhysicalDirectoryContents":
-                        casing = MATCHCASING.PlatformDefault;
+                        casing = _MATCHCASING.PlatformDefault;
                         return true;
                 }                
             }
@@ -94,13 +94,13 @@ namespace $rootnamespace$
             return false;
         }
 
-        private static StringComparison __ToStringComparison(this MATCHCASING casing)
+        private static StringComparison __ToStringComparison(this _MATCHCASING casing)
         {
             switch (casing)
             {
-                case MATCHCASING.PlatformDefault: return FileSystemPathComparison;
-                case MATCHCASING.CaseSensitive: return StringComparison.Ordinal;
-                case MATCHCASING.CaseInsensitive: return StringComparison.OrdinalIgnoreCase;
+                case _MATCHCASING.PlatformDefault: return FileSystemPathComparison;
+                case _MATCHCASING.CaseSensitive: return StringComparison.Ordinal;
+                case _MATCHCASING.CaseInsensitive: return StringComparison.OrdinalIgnoreCase;
                 default: throw new NotImplementedException();
             }
         }

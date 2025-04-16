@@ -12,8 +12,8 @@ using System.Runtime.Intrinsics;
 
 #nullable disable
 
-using XYZ = System.Numerics.Vector3;
-using XYZW = System.Numerics.Vector4;
+using _XYZ = System.Numerics.Vector3;
+using _XYZW = System.Numerics.Vector4;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar

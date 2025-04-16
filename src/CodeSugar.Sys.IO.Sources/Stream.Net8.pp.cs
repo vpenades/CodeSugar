@@ -10,7 +10,7 @@ using System.Threading;
 
 #nullable disable
 
-using STREAM = System.IO.Stream;
+using _STREAM = System.IO.Stream;
 
 
 #if CODESUGAR_USECODESUGARNAMESPACE

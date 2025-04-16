@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using FILE = System.IO.FileInfo;
+using _FINFO = System.IO.FileInfo;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -30,7 +30,7 @@ namespace $rootnamespace$
         /// <remarks>
         /// The hash algorythm is selected based in the hash size.
         /// </remarks>
-        public static bool CheckHash(this FILE finfo, string hash)
+        public static bool CheckHash(this _FINFO finfo, string hash)
         {
             byte[] bytes = __DecodeBase64OrHex(hash);
             return CheckHash(finfo, bytes);
@@ -71,7 +71,7 @@ namespace $rootnamespace$
         /// <remarks>
         /// The hash algorythm is selected based in the hash size.
         /// </remarks>
-        public static bool CheckHash(this FILE finfo, byte[] hash)
+        public static bool CheckHash(this _FINFO finfo, byte[] hash)
         {
             if (hash == null || hash.Length == 0) throw new ArgumentNullException(nameof(hash));
 
@@ -95,7 +95,7 @@ namespace $rootnamespace$
         /// <remarks>
         /// The hashing algorythm is selected based in the length of the imput byte array.
         /// </remarks>
-        public static void ComputeHashes(this FILE finfo, params Byte[][] result)
+        public static void ComputeHashes(this _FINFO finfo, params Byte[][] result)
         {
             GuardExists(finfo);
 
@@ -108,7 +108,7 @@ namespace $rootnamespace$
         /// <summary>
         /// Computes the <see cref="System.Security.Cryptography.SHA512"/> on the contents of the given file.
         /// </summary>
-        public static Byte[] ComputeSha512(this FILE finfo)
+        public static Byte[] ComputeSha512(this _FINFO finfo)
         {
             GuardExists(finfo);
 
@@ -121,7 +121,7 @@ namespace $rootnamespace$
         /// <summary>
         /// Computes the <see cref="System.Security.Cryptography.SHA384"/> on the contents of the given file.
         /// </summary>
-        public static Byte[] ComputeSha384(this FILE finfo)
+        public static Byte[] ComputeSha384(this _FINFO finfo)
         {
             GuardExists(finfo);
 
@@ -134,7 +134,7 @@ namespace $rootnamespace$
         /// <summary>
         /// Computes the <see cref="System.Security.Cryptography.SHA256"/> on the contents of the given file.
         /// </summary>
-        public static Byte[] ComputeSha256(this FILE finfo)
+        public static Byte[] ComputeSha256(this _FINFO finfo)
         {
             GuardExists(finfo);
 
@@ -147,7 +147,7 @@ namespace $rootnamespace$
         /// <summary>
         /// Computes the <see cref="System.Security.Cryptography.MD5"/> on the contents of the given file.
         /// </summary>
-        public static Byte[] ComputeMd5(this FILE finfo)
+        public static Byte[] ComputeMd5(this _FINFO finfo)
         {
             GuardExists(finfo);
 

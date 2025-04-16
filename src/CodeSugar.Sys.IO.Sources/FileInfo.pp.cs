@@ -9,8 +9,8 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using FILE = System.IO.FileInfo;
-using BYTESSEGMENT = System.ArraySegment<byte>;
+using _FINFO = System.IO.FileInfo;
+using _BYTESSEGMENT = System.ArraySegment<byte>;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -22,7 +22,7 @@ namespace $rootnamespace$
 {
     partial class CodeSugarForSystemIO
     {
-        public static void ThrowNotFound(this FILE dinfo, Exception innerException = null)
+        public static void ThrowNotFound(this _FINFO dinfo, Exception innerException = null)
         {
             GuardNotNull(dinfo);
             if (innerException == null) throw new System.IO.FileNotFoundException(dinfo.FullName);

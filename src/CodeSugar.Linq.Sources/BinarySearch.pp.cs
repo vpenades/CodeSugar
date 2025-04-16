@@ -6,14 +6,13 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Collections.Generic;
 
+#nullable disable
 
 #if !NETSTANDARD
-using UNSAFE = System.Runtime.CompilerServices.Unsafe;
+using _UNSAFE = System.Runtime.CompilerServices.Unsafe;
 #endif
 
-using METHODOPTIONS = System.Runtime.CompilerServices.MethodImplOptions;
-
-#nullable disable
+using _METHODOPTIONS = System.Runtime.CompilerServices.MethodImplOptions;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar

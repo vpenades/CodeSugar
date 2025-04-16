@@ -10,10 +10,9 @@ using System.Threading.Tasks;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
-using METHODOPTIONS = System.Runtime.CompilerServices.MethodImplOptions;
-
-
 #nullable disable
+
+using _METHODOPTIONS = System.Runtime.CompilerServices.MethodImplOptions;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -29,9 +28,9 @@ namespace $rootnamespace$
     static partial class CodeSugarForSerialization
     {
         #if NETSTANDARD1_6_OR_GREATER
-        private const METHODOPTIONS AGRESSIVE = METHODOPTIONS.AggressiveInlining;
+        private const _METHODOPTIONS AGRESSIVE = _METHODOPTIONS.AggressiveInlining;
         #else
-        private const METHODOPTIONS AGRESSIVE = METHODOPTIONS.AggressiveInlining | METHODOPTIONS.AggressiveOptimization;
+        private const _METHODOPTIONS AGRESSIVE = _METHODOPTIONS.AggressiveInlining | _METHODOPTIONS.AggressiveOptimization;
         #endif
 
         #if NET6_0_OR_GREATER

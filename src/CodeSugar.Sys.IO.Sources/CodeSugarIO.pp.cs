@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-using RTINTEROPSVCS = System.Runtime.InteropServices;
-
 #nullable disable
+
+using _RTINTEROPSVCS = System.Runtime.InteropServices;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -110,12 +110,12 @@ namespace $rootnamespace$
         {
             // credits: https://stackoverflow.com/a/56773947
 
-            if (RTINTEROPSVCS.RuntimeInformation.IsOSPlatform(RTINTEROPSVCS.OSPlatform.Windows) ||
-                RTINTEROPSVCS.RuntimeInformation.IsOSPlatform(RTINTEROPSVCS.OSPlatform.OSX))  // HFS+ (the Mac file-system) is usually configured to be case insensitive.
+            if (_RTINTEROPSVCS.RuntimeInformation.IsOSPlatform(_RTINTEROPSVCS.OSPlatform.Windows) ||
+                _RTINTEROPSVCS.RuntimeInformation.IsOSPlatform(_RTINTEROPSVCS.OSPlatform.OSX))  // HFS+ (the Mac file-system) is usually configured to be case insensitive.
             {
                 return false;
             }
-            else if (RTINTEROPSVCS.RuntimeInformation.IsOSPlatform(RTINTEROPSVCS.OSPlatform.Linux))
+            else if (_RTINTEROPSVCS.RuntimeInformation.IsOSPlatform(_RTINTEROPSVCS.OSPlatform.Linux))
             {
                 return true;
             }

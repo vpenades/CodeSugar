@@ -10,9 +10,6 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 
-using READABLEBLOCK = System.ArraySegment<byte>;
-using WRITEABLEBLOCK = System.ArraySegment<byte>;
-
 <#
 
 string CONTEXTNAME = "Array";
@@ -22,6 +19,9 @@ string BYTEWRITER = "target = WriteBytes(target, span);";
 #>
 
 #nullable disable
+
+using _READABLEBLOCK = System.ArraySegment<byte>;
+using _WRITEABLEBLOCK = System.ArraySegment<byte>;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar

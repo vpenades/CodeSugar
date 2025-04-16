@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using STREAM = System.IO.Stream;
+using _STREAM = System.IO.Stream;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar

@@ -11,8 +11,8 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using STREAM = System.IO.Stream;
-using BYTESSEGMENT = System.ArraySegment<byte>;
+using _STREAM = System.IO.Stream;
+using _BYTESSEGMENT = System.ArraySegment<byte>;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -28,19 +28,19 @@ namespace $rootnamespace$
 
         #if !NET
 
-        public static void GuardReadable(this STREAM stream)
+        public static void GuardReadable(this _STREAM stream)
         {
             if (stream == null) throw new ArgumentNullException(nameof(stream));
             if (!stream.CanRead) throw new ArgumentException("Can't read from strean", nameof(stream));
         }
 
-        public static void GuardWriteable(this STREAM stream)
+        public static void GuardWriteable(this _STREAM stream)
         {
             if (stream == null) throw new ArgumentNullException(nameof(stream));
             if (!stream.CanWrite) throw new ArgumentException("Can't read from strean", nameof(stream));
         }
 
-        public static void GuardSeekable(this STREAM stream)
+        public static void GuardSeekable(this _STREAM stream)
         {
             if (stream == null) throw new ArgumentNullException(nameof(stream));
             if (!stream.CanSeek) throw new ArgumentException("Can't seek strean", nameof(stream));
@@ -48,31 +48,31 @@ namespace $rootnamespace$
 
         #else
 
-        public static void GuardReadable(this STREAM stream, [CallerArgumentExpression("stream")] string name = null)
+        public static void GuardReadable(this _STREAM stream, [CallerArgumentExpression("stream")] string name = null)
         {
             if (stream == null) throw new ArgumentNullException(name);
             if (!stream.CanRead) throw new ArgumentException("Can't read from strean", name);
         }
 
-        public static void GuardWriteable(this STREAM stream, [CallerArgumentExpression("stream")] string name = null)
+        public static void GuardWriteable(this _STREAM stream, [CallerArgumentExpression("stream")] string name = null)
         {
             if (stream == null) throw new ArgumentNullException(name);
             if (!stream.CanWrite) throw new ArgumentException("Can't read from strean", name);
         }
 
-        public static void GuardSeekable(this STREAM stream, [CallerArgumentExpression("stream")] string name = null)
+        public static void GuardSeekable(this _STREAM stream, [CallerArgumentExpression("stream")] string name = null)
         {
             if (stream == null) throw new ArgumentNullException(name);
             if (!stream.CanSeek) throw new ArgumentException("Can't seek strean", name);
         }
 
-#endif
+        #endif
 
         #endregion
 
         #region seeking
 
-        public static bool TrySetPosition(this STREAM stream, long position)
+        public static bool TrySetPosition(this _STREAM stream, long position)
         {
             if (stream == null) return false;
             if (!stream.CanSeek) return false;
@@ -106,7 +106,7 @@ namespace $rootnamespace$
             }
         }
 
-        public static IReadOnlyList<string> ReadAllLines(this STREAM stream, Encoding encoding = null)
+        public static IReadOnlyList<string> ReadAllLines(this _STREAM stream, Encoding encoding = null)
         {
             using(var sr = CreateTextReader(stream, true, encoding))
             {
@@ -122,12 +122,12 @@ namespace $rootnamespace$
             }
         }
 
-        public static void WriteAllLines(this STREAM stream, Encoding encoding, params string[] lines)
+        public static void WriteAllLines(this _STREAM stream, Encoding encoding, params string[] lines)
         {
             WriteAllLines(stream, lines.AsEnumerable(), encoding);
         }
 
-        public static void WriteAllLines(this STREAM stream, IEnumerable<string> lines, Encoding encoding = null)
+        public static void WriteAllLines(this _STREAM stream, IEnumerable<string> lines, Encoding encoding = null)
         {
             using(var sw = CreateTextWriter(stream, true, encoding))
             {
@@ -139,9 +139,9 @@ namespace $rootnamespace$
         }
 
         /// <summary>
-        /// Creates a <see cref="StreamWriter"/> from the given <see cref="STREAM"/>
+        /// Creates a <see cref="StreamWriter"/> from the given <see cref="_STREAM"/>
         /// </summary>
-        public static StreamWriter CreateTextWriter(this STREAM stream, bool leaveStreamOpen = true, Encoding encoding = null)
+        public static StreamWriter CreateTextWriter(this _STREAM stream, bool leaveStreamOpen = true, Encoding encoding = null)
         {
             GuardWriteable(stream);
 
@@ -154,9 +154,9 @@ namespace $rootnamespace$
         }
 
 		/// <summary>
-		/// Creates a <see cref="StreamReader"/> from the given <see cref="STREAM"/>
+		/// Creates a <see cref="StreamReader"/> from the given <see cref="_STREAM"/>
 		/// </summary>
-		public static StreamReader CreateTextReader(this STREAM stream, bool leaveStreamOpen = true, Encoding encoding = null)
+		public static StreamReader CreateTextReader(this _STREAM stream, bool leaveStreamOpen = true, Encoding encoding = null)
         {
             GuardReadable(stream);
 
@@ -172,7 +172,7 @@ namespace $rootnamespace$
 		/// writes all the text from the given stream.
 		/// Equivalent to <see cref="System.IO.File.WriteAllText(string, string?, Encoding)"/>
 		/// </summary>   
-		public static void WriteAllText(this STREAM stream, string contents, Encoding encoding = null)
+		public static void WriteAllText(this _STREAM stream, string contents, Encoding encoding = null)
         {
             GuardWriteable(stream);
 
@@ -196,7 +196,7 @@ namespace $rootnamespace$
         /// Reads all the text from the given stream.
         /// Equivalent to <see cref="System.IO.File.ReadAllText(string, Encoding)"/>
         /// </summary>   
-        public static string ReadAllText(this STREAM stream, Encoding encoding = null)
+        public static string ReadAllText(this _STREAM stream, Encoding encoding = null)
         {
             GuardReadable(stream);
 
@@ -211,9 +211,9 @@ namespace $rootnamespace$
 		#region binary extensions
 
 		/// <summary>
-		/// Creates a <see cref="BinaryWriter"/> from the given <see cref="STREAM"/>
+		/// Creates a <see cref="BinaryWriter"/> from the given <see cref="_STREAM"/>
 		/// </summary>
-		public static BinaryWriter CreateBinaryWriter(this STREAM stream, bool leaveStreamOpen = true, Encoding encoding = null)
+		public static BinaryWriter CreateBinaryWriter(this _STREAM stream, bool leaveStreamOpen = true, Encoding encoding = null)
         {
             GuardWriteable(stream);
 
@@ -223,9 +223,9 @@ namespace $rootnamespace$
         }
 
 		/// <summary>
-		/// Creates a <see cref="BinaryReader"/> from the given <see cref="STREAM"/>
+		/// Creates a <see cref="BinaryReader"/> from the given <see cref="_STREAM"/>
 		/// </summary>
-		public static BinaryReader CreateBinaryReader(this STREAM stream, bool leaveStreamOpen = true, Encoding encoding = null)
+		public static BinaryReader CreateBinaryReader(this _STREAM stream, bool leaveStreamOpen = true, Encoding encoding = null)
         {
             GuardReadable(stream);
 
@@ -238,7 +238,7 @@ namespace $rootnamespace$
 		/// Writes all the bytes to the given stream.
 		/// Equivalent to <see cref="System.IO.File.WriteAllBytes(string, byte[])"/>
 		/// </summary>   
-		public static void WriteAllBytes(this STREAM stream, IReadOnlyList<Byte> bytes)
+		public static void WriteAllBytes(this _STREAM stream, IReadOnlyList<Byte> bytes)
         {
             GuardWriteable(stream);
 
@@ -247,7 +247,7 @@ namespace $rootnamespace$
             switch(bytes)
             {
                 case Byte[] array: stream.Write(array, 0, array.Length); break;
-                case BYTESSEGMENT segment: stream.Write(segment.Array, segment.Offset, segment.Count); break;                    
+                case _BYTESSEGMENT segment: stream.Write(segment.Array, segment.Offset, segment.Count); break;                    
                 default:                    
                     var buf = new Byte[8192];
                     var pos = 0;
@@ -267,7 +267,7 @@ namespace $rootnamespace$
 		/// Writes all the bytes to the given stream.
 		/// Equivalent to <see cref="System.IO.File.WriteAllBytesAsync(string, byte[], CancellationToken)"/>
 		/// </summary>  
-		public static async Task WriteAllBytesAsync(this STREAM stream, IReadOnlyList<Byte> bytes, CancellationToken ctoken)
+		public static async Task WriteAllBytesAsync(this _STREAM stream, IReadOnlyList<Byte> bytes, CancellationToken ctoken)
         {
             GuardWriteable(stream);
 
@@ -276,7 +276,7 @@ namespace $rootnamespace$
             switch(bytes)
             {
                 case Byte[] array: await stream.WriteAsync(array, 0, array.Length, ctoken).ConfigureAwait(false); break;
-                case BYTESSEGMENT segment: await stream.WriteAsync(segment.Array, segment.Offset, segment.Count, ctoken).ConfigureAwait(false); break;
+                case _BYTESSEGMENT segment: await stream.WriteAsync(segment.Array, segment.Offset, segment.Count, ctoken).ConfigureAwait(false); break;
 
                 default:                    
                     var buf = new Byte[8192];
@@ -292,7 +292,7 @@ namespace $rootnamespace$
             }
         }
 
-        public static BYTESSEGMENT ReadAllBytes(this Func<STREAM> openStream)
+        public static _BYTESSEGMENT ReadAllBytes(this Func<_STREAM> openStream)
         {
             using (var s = openStream())
             {
@@ -304,7 +304,7 @@ namespace $rootnamespace$
 		/// Reads all the bytes from the given stream.
 		/// Equivalent to <see cref="System.IO.File.ReadAllBytes(string)"/>
 		/// </summary>
-		public static BYTESSEGMENT ReadAllBytes(this STREAM stream)
+		public static _BYTESSEGMENT ReadAllBytes(this _STREAM stream)
         {
             GuardReadable(stream);
 
@@ -315,7 +315,7 @@ namespace $rootnamespace$
                 if (memStream.TryGetBuffer(out var buffer))
                 {
                     buffer = buffer.Slice((int)memStream.Position);
-                    return new BYTESSEGMENT(buffer.ToArray()); // ReadAllBytes always return a copy;
+                    return new _BYTESSEGMENT(buffer.ToArray()); // ReadAllBytes always return a copy;
                 }
             }
 
@@ -339,7 +339,7 @@ namespace $rootnamespace$
                     stream.CopyTo(m);
                     return m.TryGetBuffer(out var buffer)
                         ? buffer
-                        : new BYTESSEGMENT(m.ToArray());
+                        : new _BYTESSEGMENT(m.ToArray());
                 }
             }
 
@@ -354,14 +354,14 @@ namespace $rootnamespace$
                 index += n;
                 count -= n;
             }
-            return new BYTESSEGMENT(bytes);
+            return new _BYTESSEGMENT(bytes);
         }
 
 		/// <summary>
 		/// Reads all the bytes from the given stream.
 		/// Equivalent to <see cref="System.IO.File.ReadAllBytesAsync(string, CancellationToken)"/>
 		/// </summary>
-		public static async Task<BYTESSEGMENT> ReadAllBytesAsync(this STREAM stream, CancellationToken ctoken)
+		public static async Task<_BYTESSEGMENT> ReadAllBytesAsync(this _STREAM stream, CancellationToken ctoken)
         {
             GuardReadable(stream);
 
@@ -372,7 +372,7 @@ namespace $rootnamespace$
                 if (memStream.TryGetBuffer(out var buffer))
                 {
                     buffer = buffer.Slice((int)memStream.Position);
-                    return new BYTESSEGMENT(buffer.ToArray()); // ReadAllBytesAsync always return a copy;
+                    return new _BYTESSEGMENT(buffer.ToArray()); // ReadAllBytesAsync always return a copy;
                 }
             }
 
@@ -413,7 +413,7 @@ namespace $rootnamespace$
                 index += n;
                 count -= n;
             }
-            return new BYTESSEGMENT(bytes);
+            return new _BYTESSEGMENT(bytes);
         }
 
         #endregion        
