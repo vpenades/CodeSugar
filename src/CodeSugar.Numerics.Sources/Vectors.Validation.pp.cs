@@ -18,6 +18,26 @@ namespace $rootnamespace$
 {    
     internal static partial class CodeSugarForNumerics
     {
+        [Conditional("DEBUG")]
+        private static void _AssertFinite(in Vector2 v)
+        {
+            System.Diagnostics.Debug.Assert(v.IsFinite(), "v is not finite");
+        }
+
+        [Conditional("DEBUG")]
+        private static void _AssertFinite(in Vector3 v)
+        {
+            System.Diagnostics.Debug.Assert(v.IsFinite(), "v is not finite");
+        }
+
+        [Conditional("DEBUG")]
+        private static void _AssertFinite(in Vector4 v)
+        {
+            System.Diagnostics.Debug.Assert(v.IsFinite(), "v is not finite");
+        }
+
+
+
         [System.Diagnostics.DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
         public static bool IsFinite(this float val)

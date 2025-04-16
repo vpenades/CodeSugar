@@ -23,12 +23,6 @@ namespace $rootnamespace$
 
     internal static partial class CodeSugarForNumerics
     {
-        [Conditional("DEBUG")]
-        private static void _AssertFinite(in _VECTOR3 v)
-        {
-            System.Diagnostics.Debug.Assert(v.IsFinite(), "v is not finite");
-        }        
-
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
         public static float Angle(this _VECTOR3 a, _VECTOR3 b) // AngleWith ?

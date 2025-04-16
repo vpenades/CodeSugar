@@ -32,8 +32,8 @@ namespace $rootnamespace$
         [MethodImpl(AGRESSIVE)]
         public static float Angle(this Vector2 a, Vector2 b)
         {
-            System.Diagnostics.Debug.Assert(a.IsFinite(), "a is not finite");
-            System.Diagnostics.Debug.Assert(b.IsFinite(), "b is not finite");
+            _AssertFinite(a);
+            _AssertFinite(b);
 
             if (a == Vector2.Zero || b == Vector2.Zero) return 0;
 
@@ -49,8 +49,8 @@ namespace $rootnamespace$
         [MethodImpl(AGRESSIVE)]
         public static float Cross(this Vector2 a, Vector2 b)
         {
-            System.Diagnostics.Debug.Assert(a.IsFinite(), "a is not finite");
-            System.Diagnostics.Debug.Assert(b.IsFinite(), "b is not finite");
+            _AssertFinite(a);
+            _AssertFinite(b);
 
             return a.X * b.Y - a.Y * b.X;
         }
