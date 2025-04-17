@@ -38,6 +38,11 @@ namespace $rootnamespace$
             }
         }
 
+        public static void ComputeHashes(this Func<_STREAM> streamFunc, params Byte[][] result)
+        {
+            using(var s = streamFunc()) { ComputeHashes(s, result); }
+        }
+
         /// <summary>
         /// Computes multiple hashes from the contents of the given stream.
         /// </summary>
@@ -64,12 +69,22 @@ namespace $rootnamespace$
             }
         }
 
+        public static Byte[] ComputeSha512(this Func<_STREAM> streamFunc)
+        {
+            using (var s = streamFunc()) { return ComputeSha512(s); }
+        }
+
         /// <summary>
         /// Computes the <see cref="System.Security.Cryptography.SHA512"/> on the contents of the given stream.
         /// </summary>
         public static Byte[] ComputeSha512(this _STREAM stream)
         {
             return _ComputeHash(stream, _Sha512Engine.Value);
+        }
+
+        public static Byte[] ComputeSha384(this Func<_STREAM> streamFunc)
+        {
+            using (var s = streamFunc()) { return ComputeSha384(s); }
         }
 
         /// <summary>
@@ -80,12 +95,22 @@ namespace $rootnamespace$
             return _ComputeHash(stream, _Sha384Engine.Value);
         }
 
+        public static Byte[] ComputeSha256(this Func<_STREAM> streamFunc)
+        {
+            using (var s = streamFunc()) { return ComputeSha256(s); }
+        }
+
         /// <summary>
         /// Computes the <see cref="System.Security.Cryptography.SHA256"/> on the contents of the given stream.
         /// </summary>
         public static Byte[] ComputeSha256(this _STREAM stream)
         {
             return _ComputeHash(stream, _Sha256Engine.Value);
+        }
+
+        public static Byte[] ComputeMd5(this Func<_STREAM> streamFunc)
+        {
+            using (var s = streamFunc()) { return ComputeMd5(s); }
         }
 
         /// <summary>
