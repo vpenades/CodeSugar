@@ -98,7 +98,31 @@ namespace $rootnamespace$
         private static readonly Encoding UTF8NoBOM = new UTF8Encoding(false);
         #endif
 
-        public static IReadOnlyList<string> ReadAllLines(this Func<Stream> openStream, Encoding encoding = null)
+        public static async Task<IReadOnlyList<string>> ReadAllLinesAsync(this Func<Task<STREAM>> openStream, CancellationToken ctoken, Encoding encoding = null)
+        {
+            using (var s = await openStream())
+            {
+                return await ReadAllLinesAsync(s, ctoken, encoding);
+            }
+        }
+
+        public static async Task<IReadOnlyList<string>> ReadAllLinesAsync(this STREAM stream, CancellationToken ctoken, Encoding encoding = null)
+        {
+            using (var sr = CreateTextReader(stream, true, encoding))
+            {
+                string line;
+                var lines = new List<string>();
+
+                while ((line = await sr.ReadLineAsync()) != null)
+                {
+                    lines.Add(line);
+                }
+
+                return lines;
+            }
+        }
+
+        public static IReadOnlyList<string> ReadAllLines(this Func<STREAM> openStream, Encoding encoding = null)
         {
             using (var s = openStream())
             {
@@ -184,6 +208,8 @@ namespace $rootnamespace$
             }
         }
 
+        
+
         public static string ReadAllText(this Func<Stream> openStream, Encoding encoding = null)
         {
             using (var s = openStream())
@@ -206,14 +232,32 @@ namespace $rootnamespace$
             }
         }
 
-		#endregion
+        public static async Task<string> ReadAllTextAsync(this Func<Task<STREAM>> openStream, CancellationToken ctoken, Encoding encoding = null)
+        {
+            using (var s = await openStream())
+            {
+                return await ReadAllTextAsync(s, ctoken, encoding);
+            }
+        }
 
-		#region binary extensions
+        public static async Task<string> ReadAllTextAsync(this STREAM stream, CancellationToken ctoken, Encoding encoding = null)
+        {
+            GuardReadable(stream);
 
-		/// <summary>
-		/// Creates a <see cref="BinaryWriter"/> from the given <see cref="STREAM"/>
-		/// </summary>
-		public static BinaryWriter CreateBinaryWriter(this STREAM stream, bool leaveStreamOpen = true, Encoding encoding = null)
+            using (var sr = CreateTextReader(stream, true, encoding))
+            {
+                return await sr.ReadToEndAsync();
+            }
+        }
+
+        #endregion
+
+        #region binary extensions
+
+        /// <summary>
+        /// Creates a <see cref="BinaryWriter"/> from the given <see cref="STREAM"/>
+        /// </summary>
+        public static BinaryWriter CreateBinaryWriter(this STREAM stream, bool leaveStreamOpen = true, Encoding encoding = null)
         {
             GuardWriteable(stream);
 
@@ -289,6 +333,14 @@ namespace $rootnamespace$
                         pos += buf.Length;
                     }
                     break;
+            }
+        }
+
+        public static async Task<BYTESSEGMENT> ReadAllBytesAsync(this Func<Task<STREAM>> openStream, CancellationToken ctoken)
+        {
+            using (var s = await openStream())
+            {
+                return await s.ReadAllBytesAsync(ctoken);
             }
         }
 
