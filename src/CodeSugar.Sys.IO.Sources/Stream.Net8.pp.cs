@@ -1,13 +1,12 @@
 ﻿// Copyright (c) CodeSugar 2024 Vicente Penades
 
 using System;
-using System.Collections.Generic;
 using System.Text;
 using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Runtime.CompilerServices;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using System.Threading;
 
 #nullable disable
 
@@ -17,17 +16,19 @@ using _STREAM = System.IO.Stream;
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
 #elif CODESUGAR_USESYSTEMNAMESPACE
-namespace System
+namespace System.IO
 #else
 namespace $rootnamespace$
 #endif
 {
-    static partial class CodeSugarForSerialization
+    partial class CodeSugarForSystemIO
     {
+        // these mathods have been backported from net8 so they can be called from netstandard/net6
+
         #if !NET8_0_OR_GREATER
 
         [DebuggerStepThrough]
-        private static int ReadAtLeast(this _STREAM stream, Span<byte> buffer, int minimumBytes, bool throwOnEndOfStream = true)
+        public static int ReadAtLeast(this System.IO.Stream stream, Span<byte> buffer, int minimumBytes, bool throwOnEndOfStream = true)
         {
             ValidateReadAtLeastArguments(buffer.Length, minimumBytes);
 
@@ -35,7 +36,7 @@ namespace $rootnamespace$
         }
 
         // No argument checking is done here. It is up to the caller.
-        private static int ReadAtLeastCore(_STREAM stream, Span<byte> buffer, int minimumBytes, bool throwOnEndOfStream)
+        private static int ReadAtLeastCore(System.IO.Stream stream, Span<byte> buffer, int minimumBytes, bool throwOnEndOfStream)
         {
             Debug.Assert(minimumBytes <= buffer.Length);
 
@@ -60,15 +61,15 @@ namespace $rootnamespace$
         }
 
         [DebuggerStepThrough]
-        private static Task<int> ReadAtLeastAsync(this _STREAM stream, Memory<byte> buffer, int minimumBytes, bool throwOnEndOfStream = true, CancellationToken cancellationToken = default)
+        public static Task<int> ReadAtLeastAsync(this System.IO.Stream stream, Memory<byte> buffer, int minimumBytes, bool throwOnEndOfStream = true, CancellationToken cancellationToken = default)
         {
             ValidateReadAtLeastArguments(buffer.Length, minimumBytes);
 
             return ReadAtLeastAsyncCore(stream, buffer, minimumBytes, throwOnEndOfStream, cancellationToken);
         }
 
-
-        private static async Task<int> ReadAtLeastAsyncCore(_STREAM stream, Memory<byte> buffer, int minimumBytes, bool throwOnEndOfStream, CancellationToken cancellationToken)
+        
+        private static async Task<int> ReadAtLeastAsyncCore(System.IO.Stream stream, Memory<byte> buffer, int minimumBytes, bool throwOnEndOfStream, CancellationToken cancellationToken)
         {
             Debug.Assert(minimumBytes <= buffer.Length);
 

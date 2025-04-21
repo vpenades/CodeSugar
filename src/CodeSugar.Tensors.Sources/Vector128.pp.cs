@@ -12,11 +12,11 @@ using System.Runtime.Intrinsics;
 
 #nullable disable
 
-using MMARSHALL = System.Runtime.InteropServices.MemoryMarshal;
-using UNSAFE = System.Runtime.CompilerServices.Unsafe;
-using TENSORPRIMS = System.Numerics.Tensors.TensorPrimitives;
-using XYZ = System.Numerics.Vector3;
-using XYZW = System.Numerics.Vector4;
+using _MMARSHALL = System.Runtime.InteropServices.MemoryMarshal;
+using _UNSAFE = System.Runtime.CompilerServices.Unsafe;
+using _TENSORPRIMS = System.Numerics.Tensors.TensorPrimitives;
+using _XYZ = System.Numerics.Vector3;
+using _XYZW = System.Numerics.Vector4;
 
 
 #if CODESUGAR_USECODESUGARNAMESPACE
@@ -36,7 +36,7 @@ namespace $rootnamespace$
 
             #if NET6_0_OR_GREATER
 
-            public static __Vector3x128 Repeat(XYZ v)
+            public static __Vector3x128 Repeat(_XYZ v)
             {
                 return new __Vector3x128
                 {
@@ -52,19 +52,19 @@ namespace $rootnamespace$
 
             #else
 
-            public static __Vector3x128 Repeat(XYZ v)
+            public static __Vector3x128 Repeat(_XYZ v)
             {
                 return new __Vector3x128
                 {
-                    X = new XYZW(v.X, v.Y, v.Z, v.X),
-                    Y = new XYZW(v.Y, v.Z, v.X, v.Y),
-                    Z = new XYZW(v.Z, v.X, v.Y, v.Z)
+                    X = new _XYZW(v.X, v.Y, v.Z, v.X),
+                    Y = new _XYZW(v.Y, v.Z, v.X, v.Y),
+                    Z = new _XYZW(v.Z, v.X, v.Y, v.Z)
                 };
             }      
 
-            public XYZW X;
-            public XYZW Y;
-            public XYZW Z;
+            public _XYZW X;
+            public _XYZW Y;
+            public _XYZW Z;
 
             #endif
         }
@@ -72,7 +72,7 @@ namespace $rootnamespace$
         #if NET6_0_OR_GREATER
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        public static Vector128<float> RepeatVector128(this XYZW v)
+        public static Vector128<float> RepeatVector128(this _XYZW v)
         {
             return Vector128.AsVector128(v);
         }
@@ -83,7 +83,7 @@ namespace $rootnamespace$
             #if NET8_0_OR_GREATER
             return Vector128.ConvertToSingle(value);
             #else
-            var span = MMARSHALL.Cast<Vector128<int>,int>(MMARSHALL.CreateSpan(ref value, 1));
+            var span = _MMARSHALL.Cast<Vector128<int>,int>(_MMARSHALL.CreateSpan(ref value, 1));
             return Vector128.Create((float)span[0], (float)span[1], (float)span[2], (float)span[3]);
             #endif
         }

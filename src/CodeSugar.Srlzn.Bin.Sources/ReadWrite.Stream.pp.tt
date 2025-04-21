@@ -10,9 +10,6 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 
-using READABLEBLOCK = System.IO.Stream;
-using WRITEABLEBLOCK = System.IO.Stream;
-
 <#
 
 string CONTEXTNAME = "Stream";
@@ -22,6 +19,9 @@ string BYTEWRITER = "target = WriteBytes(target, span);";
 #>
 
 #nullable disable
+
+using _READABLEBLOCK = System.IO.Stream;
+using _WRITEABLEBLOCK = System.IO.Stream;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar

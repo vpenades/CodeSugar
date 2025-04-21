@@ -12,9 +12,9 @@ using System.Runtime.Intrinsics;
 
 #nullable disable
 
-using MMARSHALL = System.Runtime.InteropServices.MemoryMarshal;
-using UNSAFE = System.Runtime.CompilerServices.Unsafe;
-using TENSORPRIMS = System.Numerics.Tensors.TensorPrimitives;
+using _MMARSHALL = System.Runtime.InteropServices.MemoryMarshal;
+using _UNSAFE = System.Runtime.CompilerServices.Unsafe;
+using _TENSORPRIMS = System.Numerics.Tensors.TensorPrimitives;
 
 
 #if CODESUGAR_USECODESUGARNAMESPACE
@@ -62,7 +62,7 @@ namespace $rootnamespace$
             #if NET8_0_OR_GREATER
             return Vector256.ConvertToSingle(value);
             #else
-            var span = MMARSHALL.Cast<Vector256<int>, int>(MMARSHALL.CreateSpan(ref value, 1));
+            var span = _MMARSHALL.Cast<Vector256<int>, int>(_MMARSHALL.CreateSpan(ref value, 1));
             return Vector256.Create((float)span[0], (float)span[1], (float)span[2], (float)span[3], (float)span[4], (float)span[5], (float)span[6], (float)span[7]);
             #endif
         }

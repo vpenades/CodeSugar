@@ -6,9 +6,9 @@ using System.Text;
 using System.IO;
 using System.Runtime.CompilerServices;
 
-using RTINTEROPSVCS = System.Runtime.InteropServices;
-
 #nullable disable
+
+using _RTINTEROPSVCS = System.Runtime.InteropServices;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar

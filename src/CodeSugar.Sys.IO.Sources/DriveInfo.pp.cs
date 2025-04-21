@@ -7,8 +7,8 @@ using System.IO;
 
 #nullable disable
 
-using DRIVE = System.IO.DriveInfo;
-using DIRECTORY = System.IO.DirectoryInfo;
+using _DRIVE = System.IO.DriveInfo;
+using _DINFO = System.IO.DirectoryInfo;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -31,7 +31,7 @@ namespace $rootnamespace$
         /// This only works on Windows.
         /// </para>
         /// </remarks>
-        public static bool TryGetDriveInfo(this DIRECTORY dinfo, out DRIVE drive)
+        public static bool TryGetDriveInfo(this _DINFO dinfo, out _DRIVE drive)
         {
             drive = null;
 
@@ -50,14 +50,14 @@ namespace $rootnamespace$
             var interned = _TryGetInternedDriveInfo(root);
             if (interned != null) { drive = interned; return true; }
 
-            drive = new DRIVE(root);                
+            drive = new _DRIVE(root);                
             return true;
         }
 
         /// <summary>
         /// Gets the drive or network name of the given object.
         /// </summary>
-        public static string GetDriveOrNetworkName(this DIRECTORY dinfo)
+        public static string GetDriveOrNetworkName(this _DINFO dinfo)
         {
             if (dinfo == null) return null;
             var root = dinfo.Root.GetNormalizedFullName();
@@ -69,13 +69,13 @@ namespace $rootnamespace$
         }
 
         // this is a helper method that allows reusing tha same System.IO.DriveInfo instanced mapped to System Drives.
-        private static DRIVE _TryGetInternedDriveInfo(string root)
+        private static _DRIVE _TryGetInternedDriveInfo(string root)
         {
             if (_InternedFixedDrives == null) // initialize
             {
-                _InternedFixedDrives = new Dictionary<string, DRIVE>(GetStringComparer(MatchCasing.PlatformDefault));
+                _InternedFixedDrives = new Dictionary<string, _DRIVE>(GetStringComparer(MatchCasing.PlatformDefault));
 
-                foreach(var d in DRIVE.GetDrives())
+                foreach(var d in _DRIVE.GetDrives())
                 {
                     if (!d.IsReady) continue;
 

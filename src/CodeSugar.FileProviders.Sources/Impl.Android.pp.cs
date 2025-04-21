@@ -12,12 +12,12 @@ using System.Linq;
 
 #if ANDROID
 
-using ANDROIDCONTEXT = Android.Content.ContextWrapper;
-using ANDROIDASSETS = Android.Content.Res.AssetManager;
+using _ANDROIDCONTEXT = Android.Content.ContextWrapper;
+using _ANDROIDASSETS = Android.Content.Res.AssetManager;
 
-using FROOT = Microsoft.Extensions.FileProviders.IFileProvider;
-using XFILE = Microsoft.Extensions.FileProviders.IFileInfo;
-using XDIRECTORY = Microsoft.Extensions.FileProviders.IDirectoryContents;
+using _XINFO = Microsoft.Extensions.FileProviders.IFileInfo;
+using _XPROVIDER = Microsoft.Extensions.FileProviders.IFileProvider;
+using _XDIRECTORY = Microsoft.Extensions.FileProviders.IDirectoryContents;
 
 #nullable disable
 
@@ -33,12 +33,12 @@ namespace $rootnamespace$
     {
         #region API
 
-        public static FROOT CreateAndroidAssetManagerFileProvider(this ANDROIDCONTEXT context)
+        public static _XPROVIDER CreateAndroidAssetManagerFileProvider(this _ANDROIDCONTEXT context)
         {
             return _AssetManagerFileProvider.Create(context);
         }
 
-        public static FROOT CreateAndroidAssetManagerFileProvider(this ANDROIDASSETS assets)
+        public static _XPROVIDER CreateAndroidAssetManagerFileProvider(this _ANDROIDASSETS assets)
         {
             return _AssetManagerFileProvider.Create(assets);
         }
@@ -48,59 +48,59 @@ namespace $rootnamespace$
         #region nested types
 
         /// <summary>
-        /// exposes the files contained in <see cref="ANDROIDASSETS"/> as a cross platform <see cref="FROOT"/> tree.
+        /// exposes the files contained in <see cref="_ANDROIDASSETS"/> as a cross platform <see cref="_XPROVIDER"/> tree.
         /// </summary>
-        sealed class _AssetManagerFileProvider : FROOT
+        sealed class _AssetManagerFileProvider : _XPROVIDER
         {
             #region lifecycle
 
-            public static _AssetManagerFileProvider Create(ANDROIDCONTEXT context)
+            public static _AssetManagerFileProvider Create(_ANDROIDCONTEXT context)
             {
                 return Create(context?.Assets);
             }
 
-            public static _AssetManagerFileProvider Create(ANDROIDASSETS assets)
+            public static _AssetManagerFileProvider Create(_ANDROIDASSETS assets)
             {                
                 if (assets == null) return null;
                 return new _AssetManagerFileProvider(assets);
             }
 
-            private _AssetManagerFileProvider(ANDROIDASSETS assets)
+            private _AssetManagerFileProvider(_ANDROIDASSETS assets)
             {
                 if (assets == null) throw new ArgumentNullException(nameof(assets));
 
                 _Assets = assets;
                 
-                _Root = _AndroidAsset.CreateFrom(assets, string.Empty) as XDIRECTORY;
+                _Root = _AndroidAsset.CreateFrom(assets, string.Empty) as _XDIRECTORY;
             }            
 
             #endregion
 
             #region data            
 
-            private readonly ANDROIDASSETS _Assets;
+            private readonly _ANDROIDASSETS _Assets;
 
-            private readonly XDIRECTORY _Root;            
+            private readonly _XDIRECTORY _Root;            
 
             #endregion
 
             #region API
 
-            public XDIRECTORY GetDirectoryContents(string subpath)
+            public _XDIRECTORY GetDirectoryContents(string subpath)
             {
                 if (string.IsNullOrWhiteSpace(subpath)) return _Root;
 
                 return GetFileInfo(subpath)
-                    as XDIRECTORY
+                    as _XDIRECTORY
                     ?? Microsoft.Extensions.FileProviders.NotFoundDirectoryContents.Singleton;
             }
 
-            public XFILE GetFileInfo(string subpath)
+            public _XINFO GetFileInfo(string subpath)
             {
                 subpath = subpath.Replace(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
                 subpath = subpath.Trim(System.IO.Path.AltDirectorySeparatorChar);
 
-                if (string.IsNullOrEmpty(subpath)) return _Root as XFILE;
+                if (string.IsNullOrEmpty(subpath)) return _Root as _XINFO;
 
                 var parts = subpath.Split('/');
 
@@ -121,7 +121,7 @@ namespace $rootnamespace$
         {
             #region lifecycle
 
-            public static _AndroidAsset CreateFrom(ANDROIDASSETS assets, string path)
+            public static _AndroidAsset CreateFrom(_ANDROIDASSETS assets, string path)
             {
                 var entries = assets.List(path) ?? Array.Empty<string>();
 
@@ -179,11 +179,11 @@ namespace $rootnamespace$
         }
 
         [System.Diagnostics.DebuggerDisplay("🗎 {Name}")]
-        sealed class _AndroidAssetFile : _AndroidAsset, XFILE
+        sealed class _AndroidAssetFile : _AndroidAsset, _XINFO
         {
             #region lifecycle
 
-            public static _AndroidAssetFile Create(ANDROIDASSETS assets, string path)
+            public static _AndroidAssetFile Create(_ANDROIDASSETS assets, string path)
             {
                 try
                 {
@@ -207,7 +207,7 @@ namespace $rootnamespace$
                 }
             }
 
-            private _AndroidAssetFile(ANDROIDASSETS assets, string path, long len) : base(path)
+            private _AndroidAssetFile(_ANDROIDASSETS assets, string path, long len) : base(path)
             {
                 this._Assets = assets;
                 this.Length = len;
@@ -217,7 +217,7 @@ namespace $rootnamespace$
 
             #region data
 
-            private readonly ANDROIDASSETS _Assets;
+            private readonly _ANDROIDASSETS _Assets;
 
             #endregion
 
@@ -238,7 +238,7 @@ namespace $rootnamespace$
         }
 
         [System.Diagnostics.DebuggerDisplay("📁 {Name}")]
-        sealed class _AndroidAssetDirectory : _AndroidAsset, XFILE, XDIRECTORY
+        sealed class _AndroidAssetDirectory : _AndroidAsset, _XINFO, _XDIRECTORY
         {
             #region lifecycle
 
@@ -267,7 +267,7 @@ namespace $rootnamespace$
 
             #region API
             public Stream CreateReadStream() { throw new NotSupportedException(); }
-            public IEnumerator<XFILE> GetEnumerator() => _Contents.Cast<XFILE>().GetEnumerator();
+            public IEnumerator<_XINFO> GetEnumerator() => _Contents.Cast<_XINFO>().GetEnumerator();
             IEnumerator IEnumerable.GetEnumerator() { return _Contents.GetEnumerator(); }
 
             #endregion

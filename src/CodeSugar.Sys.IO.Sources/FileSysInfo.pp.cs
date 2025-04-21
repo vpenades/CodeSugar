@@ -8,9 +8,9 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Diagnostics.CodeAnalysis;
 
-using FILE = System.IO.FileInfo;
-using DIRECTORY = System.IO.DirectoryInfo;
-using FILEORDIR = System.IO.FileSystemInfo;
+using _FINFO = System.IO.FileInfo;
+using _DINFO = System.IO.DirectoryInfo;
+using _SINFO = System.IO.FileSystemInfo;
 
 
 #nullable disable
@@ -26,45 +26,45 @@ namespace $rootnamespace$
 {
     static partial class CodeSugarForSystemIO
     {
-		#region diagnostics
+        #region diagnostics
 
-        #if !NET        
+        #if !NET
 
         /// <summary>
-		/// Checks whether a <see cref="FILEORDIR"/> is not null.
+		/// Checks whether a <see cref="_SINFO"/> is not null.
 		/// </summary>        
 		/// <exception cref="ArgumentNullException"></exception>
-        public static void GuardNotNull(this FILEORDIR info, string name = null)
+        public static void GuardNotNull(this _SINFO info, string name = null)
         {
             if (info == null) throw new ArgumentNullException(name ?? nameof(info));
         }        
 
         /// <summary>
-		/// Checks whether a <see cref="FILEORDIR"/> exists in the file system.
+		/// Checks whether a <see cref="_SINFO"/> exists in the file system.
 		/// </summary>        
 		/// <exception cref="ArgumentNullException"></exception>
-        public static void GuardExists(this FILEORDIR info, string name = null)
+        public static void GuardExists(this _SINFO info, string name = null)
         {
             if (info == null) throw new ArgumentNullException(name);
             if (!info.Exists()) throw new ArgumentException($"'{info.FullName}' does not exist.", name ?? nameof(info));
         }  
 
-        #else        
+        #else
 
-		/// <summary>
-		/// Checks whether a <see cref="FILEORDIR"/> is not null.
-		/// </summary>        
-		/// <exception cref="ArgumentNullException"></exception>
-		public static void GuardNotNull(this FILEORDIR info, [CallerArgumentExpression("info")] string name = null)
+        /// <summary>
+        /// Checks whether a <see cref="_SINFO"/> is not null.
+        /// </summary>        
+        /// <exception cref="ArgumentNullException"></exception>
+        public static void GuardNotNull(this _SINFO info, [CallerArgumentExpression("info")] string name = null)
         {
             if (info == null) throw new ArgumentNullException(name);            
         }
 
 		/// <summary>
-		/// Checks whether a <see cref="FILEORDIR"/> exists in the file system.
+		/// Checks whether a <see cref="_SINFO"/> exists in the file system.
 		/// </summary>        
 		/// <exception cref="ArgumentNullException"></exception>
-		public static void GuardExists(this FILEORDIR info, [CallerArgumentExpression("info")] string name = null)
+		public static void GuardExists(this _SINFO info, [CallerArgumentExpression("info")] string name = null)
         {
             if (info == null) throw new ArgumentNullException(name);
             if (!info.Exists()) throw new ArgumentException($"'{info.FullName}' does not exist.", name);
@@ -79,18 +79,18 @@ namespace $rootnamespace$
         /// <summary>
         /// Gets a value indicating whether <paramref name="info"/> exists in the file system.
         /// </summary>
-        /// <param name="info">A <see cref="FILE"/> or a <see cref="DIRECTORY"/> object.</param>
+        /// <param name="info">A <see cref="_FINFO"/> or a <see cref="_DINFO"/> object.</param>
         /// <returns>true if it exists in the file system</returns>
         /// <exception cref="ArgumentException"></exception>
-        public static bool Exists(this FILEORDIR info)
+        public static bool Exists(this _SINFO info)
         {
             if (info == null) return false;
             
             switch(info)
             {
                 case null: return false;
-                case FILE finfo: finfo.Refresh(); return finfo.Exists;
-                case DIRECTORY dinfo: dinfo.Refresh(); return dinfo.Exists;
+                case _FINFO finfo: finfo.Refresh(); return finfo.Exists;
+                case _DINFO dinfo: dinfo.Refresh(); return dinfo.Exists;
                 default: throw new ArgumentException("Unknown type", nameof(info));
             }
         }
@@ -103,7 +103,7 @@ namespace $rootnamespace$
         /// <remarks>
         /// this is supported only on physical NTFS drives.
         /// </remarks>
-        public static bool TryGetAlternateDataStream(this FILE baseFile, string adsName, out FILE adsFile)
+        public static bool TryGetAlternateDataStream(this _FINFO baseFile, string adsName, out _FINFO adsFile)
         {
             GuardNotNull(baseFile);
             GuardIsValidFileName(adsName, true);
@@ -116,7 +116,7 @@ namespace $rootnamespace$
             
             var path = baseFile.FullName + ":" + adsName;
             
-            adsFile = new FILE(path);
+            adsFile = new _FINFO(path);
             adsFile.Refresh();
             return true;
         }
@@ -125,7 +125,7 @@ namespace $rootnamespace$
         /// Gets the parent directory of the current instance.
         /// </summary>
         [return: NotNull]
-        public static DIRECTORY GetParent(this FILEORDIR fsinfo)
+        public static _DINFO GetParent(this _SINFO fsinfo)
         {
             return GetParentOrNull(fsinfo) ?? throw new System.IO.DirectoryNotFoundException();
         }        
@@ -133,21 +133,21 @@ namespace $rootnamespace$
         /// <summary>
         /// Gets the parent directory of the current instance, or null if it has no parent.
         /// </summary>
-        public static DIRECTORY GetParentOrNull(this FILEORDIR fsinfo)
+        public static _DINFO GetParentOrNull(this _SINFO fsinfo)
         {
-            if (fsinfo is FILE finfo) return finfo.Directory;
-            if (fsinfo is DIRECTORY dinfo) return dinfo.Parent;
+            if (fsinfo is _FINFO finfo) return finfo.Directory;
+            if (fsinfo is _DINFO dinfo) return dinfo.Parent;
             return null;
         }
 
         /// <summary>
-        /// Gets a <see cref="FILE"/> relative to the base directory.
+        /// Gets a <see cref="_FINFO"/> relative to the base directory.
         /// </summary>
         /// <param name="baseDir">the base directory</param>
         /// <param name="relativePath">the relative path parts</param>
-        /// <returns>a new <see cref="FILE"/> instance.</returns>
+        /// <returns>a new <see cref="_FINFO"/> instance.</returns>
         [return: NotNull]
-        public static FILE GetFile(this DIRECTORY baseDir, params string[] relativePath)
+        public static _FINFO GetFile(this _DINFO baseDir, params string[] relativePath)
         {
             var finfo = _CreateFileInfo(baseDir, false, relativePath);
             System.Diagnostics.Debug.Assert(finfo != null && finfo.Exists, $"File {relativePath.Last()} does not exist.");
@@ -155,7 +155,7 @@ namespace $rootnamespace$
         }
 
         /// <summary>
-        /// Gets a <see cref="FILE"/> relative to the base directory.
+        /// Gets a <see cref="_FINFO"/> relative to the base directory.
         /// </summary>
         /// <remarks>
         /// If the base directory does not exists, it is created.
@@ -163,27 +163,27 @@ namespace $rootnamespace$
         /// </remarks>
         /// <param name="baseDir">the base directory</param>
         /// <param name="relativePath">the relative path parts</param>
-        /// <returns>a new <see cref="FILE"/> instance.</returns>
+        /// <returns>a new <see cref="_FINFO"/> instance.</returns>
         [return: NotNull]
-        public static FILE UseFile(this DIRECTORY baseDir, params string[] relativePath)
+        public static _FINFO UseFile(this _DINFO baseDir, params string[] relativePath)
         {
             return _CreateFileInfo(baseDir, true, relativePath) ?? throw new System.IO.FileNotFoundException();
         }
 
         /// <summary>
-        /// Defines a <see cref="FILE"/> relative to the base directory.
+        /// Defines a <see cref="_FINFO"/> relative to the base directory.
         /// </summary>
         /// <param name="baseDir">the base directory</param>
         /// <param name="relativePath">the relative path parts</param>
-        /// <returns>a new <see cref="FILE"/> instance.</returns>
+        /// <returns>a new <see cref="_FINFO"/> instance.</returns>
         [return: NotNull]
-        public static FILE DefineFile(this DIRECTORY baseDir, params string[] relativePath)
+        public static _FINFO DefineFile(this _DINFO baseDir, params string[] relativePath)
         {
             return _CreateFileInfo(baseDir, false, relativePath);
         }
 
         [return: NotNull]
-        private static FILE _CreateFileInfo(this DIRECTORY baseDir, bool canCreate, params string[] relativePath)
+        private static _FINFO _CreateFileInfo(this _DINFO baseDir, bool canCreate, params string[] relativePath)
         {
             GuardNotNull(baseDir);           
             
@@ -196,7 +196,7 @@ namespace $rootnamespace$
 
             // concatenate
             var path = ConcatenatePaths(baseDir.FullName, relativePath);
-            var finfo = new FILE(path);
+            var finfo = new _FINFO(path);
 
             if (canCreate) _EnsureDirectoryExists(finfo.Directory);
 
@@ -206,52 +206,52 @@ namespace $rootnamespace$
 
 
         /// <summary>
-        /// Gets an existing <see cref="DIRECTORY"/> relative to the base directory.
+        /// Gets an existing <see cref="_DINFO"/> relative to the base directory.
         /// </summary>
         /// <param name="baseDir">the base directory</param>
         /// <param name="relativePath">the relative path parts</param>
-        /// <returns>a new <see cref="DIRECTORY"/> instance.</returns>
+        /// <returns>a new <see cref="_DINFO"/> instance.</returns>
         [return: NotNull]
-        public static DIRECTORY GetDirectory(this DIRECTORY baseDir, params string[] relativePath)
+        public static _DINFO GetDirectory(this _DINFO baseDir, params string[] relativePath)
         {
             return _CreateDirectoryInfo(baseDir, false, false, relativePath)
                 ?? throw new System.IO.DirectoryNotFoundException();
         }
 
         /// <summary>
-		/// Uses a <see cref="DIRECTORY"/> relative to the base directory.
+		/// Uses a <see cref="_DINFO"/> relative to the base directory.
 		/// </summary>
 		/// <param name="baseDir">the base directory</param>
 		/// <param name="relativePath">the relative path parts</param>
-		/// <returns>a new <see cref="DIRECTORY"/> instance.</returns>
+		/// <returns>a new <see cref="_DINFO"/> instance.</returns>
         [return: NotNull]
-        public static DIRECTORY UseDirectory(this DIRECTORY baseDir, params string[] relativePath)
+        public static _DINFO UseDirectory(this _DINFO baseDir, params string[] relativePath)
         {
             return _CreateDirectoryInfo(baseDir, false, true, relativePath)
                 ?? throw new System.IO.DirectoryNotFoundException();
         }
 
         /// <summary>
-		/// Defines a <see cref="DIRECTORY"/> relative to the base directory.
+		/// Defines a <see cref="_DINFO"/> relative to the base directory.
 		/// </summary>
 		/// <param name="baseDir">the base directory</param>
 		/// <param name="relativePath">the relative path parts</param>
-		/// <returns>a new <see cref="DIRECTORY"/> instance.</returns>
+		/// <returns>a new <see cref="_DINFO"/> instance.</returns>
         [return: NotNull]
-        public static DIRECTORY DefineDirectory(this DIRECTORY baseDir, params string[] relativePath)
+        public static _DINFO DefineDirectory(this _DINFO baseDir, params string[] relativePath)
         {
             return _CreateDirectoryInfo(baseDir, false, false, relativePath)
                 ?? throw new System.IO.DirectoryNotFoundException();
         }
 
         [return: NotNull]
-        private static DIRECTORY _CreateDirectoryInfo(this DIRECTORY baseDir, bool mustExist, bool canCreate, params string[] relativePath)
+        private static _DINFO _CreateDirectoryInfo(this _DINFO baseDir, bool mustExist, bool canCreate, params string[] relativePath)
         {
             GuardNotNull(baseDir);
 
             // concatenate
             var path = ConcatenatePaths(baseDir.FullName, relativePath);
-            baseDir = new DIRECTORY(path);            
+            baseDir = new _DINFO(path);            
 
             if (canCreate) _EnsureDirectoryExists(baseDir);
             else if (mustExist)
@@ -263,7 +263,7 @@ namespace $rootnamespace$
             return baseDir;
         }        
 
-        public static void CopyTo(this FILE src, DIRECTORY dst, bool overwrite = false)
+        public static void CopyTo(this _FINFO src, _DINFO dst, bool overwrite = false)
         {
             GuardExists(src);
             GuardNotNull(dst);
@@ -271,7 +271,7 @@ namespace $rootnamespace$
             src.CopyTo(dstf.FullName, overwrite);
         }
 
-        public static void CopyTo(this FILE src, FILE dst, bool overwrite = false)
+        public static void CopyTo(this _FINFO src, _FINFO dst, bool overwrite = false)
         {
             GuardExists(src);
             GuardNotNull(dst);
@@ -279,7 +279,7 @@ namespace $rootnamespace$
             dst.Refresh();
         }
 
-        public static void Rename(this FILE finfo, string newName, bool overwrite)
+        public static void Rename(this _FINFO finfo, string newName, bool overwrite)
         {
             GuardNotNull(finfo);
 
@@ -291,9 +291,9 @@ namespace $rootnamespace$
         }
 
         #if NETSTANDARD
-        public static void MoveTo(this FILE finfo, string newPath, bool overwrite)
+        public static void MoveTo(this _FINFO finfo, string newPath, bool overwrite)
         {
-            var dstInfo = new FILE(newPath);
+            var dstInfo = new _FINFO(newPath);
 
             if (overwrite && dstInfo.Exists)
             {

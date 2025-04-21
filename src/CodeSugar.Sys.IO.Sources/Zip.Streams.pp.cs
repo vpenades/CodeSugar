@@ -7,8 +7,8 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using ZIPENTRY = System.IO.Compression.ZipArchiveEntry;
-using BYTESSEGMENT = System.ArraySegment<byte>;
+using _ZIPENTRY = System.IO.Compression.ZipArchiveEntry;
+using _BYTESSEGMENT = System.ArraySegment<byte>;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -26,7 +26,7 @@ namespace $rootnamespace$
         /// <remarks>
         /// by default a zip entry returns a compressed stream that does not support Seek operations.
         /// </remarks>
-        public static System.IO.MemoryStream ToMemoryStream(this ZIPENTRY entry)
+        public static System.IO.MemoryStream ToMemoryStream(this _ZIPENTRY entry)
         {
             GuardReadable(entry);            
 
@@ -43,7 +43,7 @@ namespace $rootnamespace$
         }
 
 
-        public static void CopyToFile(this ZIPENTRY entry, System.IO.FileInfo dst)
+        public static void CopyToFile(this _ZIPENTRY entry, System.IO.FileInfo dst)
         {
             GuardReadable(entry);
             GuardNotNull(dst);
@@ -57,7 +57,7 @@ namespace $rootnamespace$
             }
         }
 
-        public static void CopyFromFile(this ZIPENTRY entry, System.IO.FileInfo src)
+        public static void CopyFromFile(this _ZIPENTRY entry, System.IO.FileInfo src)
         {            
             GuardWriteable(entry);
             GuardExists(src);
@@ -71,7 +71,7 @@ namespace $rootnamespace$
             }
         }
 
-        public static string ReadAllText(this ZIPENTRY entry)
+        public static string ReadAllText(this _ZIPENTRY entry)
         {
             GuardReadable(entry);
 
@@ -81,7 +81,7 @@ namespace $rootnamespace$
             }
         }
 
-        public static void WriteAllText(this ZIPENTRY entry, string text)
+        public static void WriteAllText(this _ZIPENTRY entry, string text)
         {
             GuardWriteable(entry);
 
@@ -91,7 +91,7 @@ namespace $rootnamespace$
             }
         }
 
-        public static BYTESSEGMENT ReadAllBytes(this ZIPENTRY entry)
+        public static _BYTESSEGMENT ReadAllBytes(this _ZIPENTRY entry)
         {
             GuardReadable(entry);
 
@@ -101,7 +101,7 @@ namespace $rootnamespace$
             }
         }        
 
-        public static void WriteAllBytes(this ZIPENTRY entry, IReadOnlyList<Byte> bytes)
+        public static void WriteAllBytes(this _ZIPENTRY entry, IReadOnlyList<Byte> bytes)
         {
             GuardWriteable(entry);
 
@@ -111,7 +111,7 @@ namespace $rootnamespace$
             }
         }
 
-        public static Byte[] ComputeSha512(this ZIPENTRY entry)
+        public static Byte[] ComputeSha512(this _ZIPENTRY entry)
         {
             GuardReadable(entry);
             using(var s = entry.Open())
@@ -120,7 +120,7 @@ namespace $rootnamespace$
             }
         }
 
-        public static Byte[] ComputeSha384(this ZIPENTRY entry)
+        public static Byte[] ComputeSha384(this _ZIPENTRY entry)
         {
             GuardReadable(entry);
             using(var s = entry.Open())
@@ -129,7 +129,7 @@ namespace $rootnamespace$
             }
         }
 
-        public static Byte[] ComputeSha256(this ZIPENTRY entry)
+        public static Byte[] ComputeSha256(this _ZIPENTRY entry)
         {
             GuardReadable(entry);
             using(var s = entry.Open())
@@ -138,7 +138,7 @@ namespace $rootnamespace$
             }
         }
 
-        public static Byte[] ComputeMd5(this ZIPENTRY entry)
+        public static Byte[] ComputeMd5(this _ZIPENTRY entry)
         {
             GuardReadable(entry);
             using(var s = entry.Open())

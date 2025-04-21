@@ -9,9 +9,9 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using FILE = System.IO.FileInfo;
-using DIRECTORY = System.IO.DirectoryInfo;
-using FILEORDIR = System.IO.FileSystemInfo;
+using _FINFO = System.IO.FileInfo;
+using _DINFO = System.IO.DirectoryInfo;
+using _SINFO = System.IO.FileSystemInfo;
 
 
 #if CODESUGAR_USECODESUGARNAMESPACE
@@ -24,7 +24,7 @@ namespace $rootnamespace$
 {
     partial class CodeSugarForSystemIO    
     {
-        public static void WriteShortcut(this FILE finfo, FILEORDIR target)
+        public static void WriteShortcut(this _FINFO finfo, _SINFO target)
         {
             GuardNotNull(finfo);
             GuardNotNull(target);
@@ -33,7 +33,7 @@ namespace $rootnamespace$
             WriteShortcut(finfo, uri);
         }
 
-        public static void WriteShortcut(this FILE finfo, Uri uri)
+        public static void WriteShortcut(this _FINFO finfo, Uri uri)
         {
             GuardNotNull(finfo);
 
@@ -66,11 +66,11 @@ namespace $rootnamespace$
         }
 
         
-        public static Uri ResolveShortcutUri(this FILE shortcutFile)
+        public static Uri ResolveShortcutUri(this _FINFO shortcutFile)
         {
             GuardExists(shortcutFile);            
 
-            HashSet<FILE> circularBarrier = null; 
+            HashSet<_FINFO> circularBarrier = null; 
 
             while(true)            
             {
@@ -83,19 +83,19 @@ namespace $rootnamespace$
                 
                 // keep digging:
 
-                circularBarrier ??= new HashSet<FILE>(MatchCasing.PlatformDefault.GetFullNameComparer<FILE>());
+                circularBarrier ??= new HashSet<_FINFO>(MatchCasing.PlatformDefault.GetFullNameComparer<_FINFO>());
                 circularBarrier.Add(shortcutFile);
 
-                shortcutFile = new FILE(uri.LocalPath);                
+                shortcutFile = new _FINFO(uri.LocalPath);                
             }
         }
 
-        public static FILE ResolveShortcutFile(this FILE file)
+        public static _FINFO ResolveShortcutFile(this _FINFO file)
         {
             return TryResolveShortcutFile(file, out var newFile) ? newFile : file;
         }
 
-        public static bool TryResolveShortcutFile(this FILE shortcutOrFile, out FILE actualFile)
+        public static bool TryResolveShortcutFile(this _FINFO shortcutOrFile, out _FINFO actualFile)
         {
             GuardNotNull(shortcutOrFile);
 
@@ -107,16 +107,16 @@ namespace $rootnamespace$
 
                 // try alternate shortcut name
                 var altFile = shortcutOrFile.FullName + ".url";
-                if (TryResolveShortcutFile(new FILE(altFile), out actualFile)) return true;
+                if (TryResolveShortcutFile(new _FINFO(altFile), out actualFile)) return true;
 
                 // try alternate shortcut name
                 altFile = System.IO.Path.ChangeExtension(shortcutOrFile.FullName , ".url");
-                if (TryResolveShortcutFile(new FILE(altFile), out actualFile)) return true;
+                if (TryResolveShortcutFile(new _FINFO(altFile), out actualFile)) return true;
 
                 return false;
             }            
 
-            HashSet<FILE> circularBarrier = null;
+            HashSet<_FINFO> circularBarrier = null;
 
             while(true)
             {
@@ -128,36 +128,36 @@ namespace $rootnamespace$
 
                 if (!uri.IsFile) return false; // not a file
 
-                var file = new FILE(uri.LocalPath);
+                var file = new _FINFO(uri.LocalPath);
 
                 if (!file.HasExtension(".url")) { actualFile = file; return true; }
                 
                 // keep digging:
 
-                circularBarrier ??= new HashSet<FILE>(MatchCasing.PlatformDefault.GetFullNameComparer<FILE>());
+                circularBarrier ??= new HashSet<_FINFO>(MatchCasing.PlatformDefault.GetFullNameComparer<_FINFO>());
                 circularBarrier.Add(shortcutOrFile);
 
                 shortcutOrFile = file;                
             }
         }
 
-        public static bool TryResolveShortcutDir(this FILEORDIR shortcutOrDir, out DIRECTORY actualDirectory)
+        public static bool TryResolveShortcutDir(this _SINFO shortcutOrDir, out _DINFO actualDirectory)
         {
             GuardNotNull(shortcutOrDir);
 
             actualDirectory = null;
 
-            HashSet<FILEORDIR> circularBarrier = null;            
+            HashSet<_SINFO> circularBarrier = null;            
 
             while(true)
             {
                 if (!shortcutOrDir.Exists()) return false;
 
-                if (shortcutOrDir is DIRECTORY dir) { actualDirectory = dir; return true; }
+                if (shortcutOrDir is _DINFO dir) { actualDirectory = dir; return true; }
 
                 if (circularBarrier?.Contains(shortcutOrDir) ?? false) throw new ArgumentException("circular shortcut detected.",nameof(shortcutOrDir));
 
-                if (!(shortcutOrDir is FILE file)) return false;
+                if (!(shortcutOrDir is _FINFO file)) return false;
 
                 var uri = ReadShortcutUri(file);
 
@@ -165,20 +165,20 @@ namespace $rootnamespace$
 
                 if (!uri.LocalPath.EndsWith(".url",StringComparison.OrdinalIgnoreCase))
                 {
-                    actualDirectory = new DIRECTORY(uri.LocalPath);
+                    actualDirectory = new _DINFO(uri.LocalPath);
                     return true;
                 }
                 
                 // keep digging:
 
-                circularBarrier ??= new HashSet<FILEORDIR>(MatchCasing.PlatformDefault.GetFullNameComparer<FILEORDIR>());
+                circularBarrier ??= new HashSet<_SINFO>(MatchCasing.PlatformDefault.GetFullNameComparer<_SINFO>());
                 circularBarrier.Add(shortcutOrDir);
 
-                shortcutOrDir = new FILE(uri.LocalPath);                
+                shortcutOrDir = new _FINFO(uri.LocalPath);                
             }
         }
 
-        public static bool TryReadShortcutFile(this FILE shortcutFile, out FILE targetFile)
+        public static bool TryReadShortcutFile(this _FINFO shortcutFile, out _FINFO targetFile)
         {
             var uri = ReadShortcutUri(shortcutFile);
 
@@ -186,11 +186,11 @@ namespace $rootnamespace$
             if (uri == null) return false;
             if (!uri.IsFile) return false;
 
-            targetFile = new FILE(uri.LocalPath);
+            targetFile = new _FINFO(uri.LocalPath);
             return targetFile.Exists;
         }
 
-        public static bool TryReadShortcutDir(this FILE shortcutFile, out DIRECTORY targetDirectory)
+        public static bool TryReadShortcutDir(this _FINFO shortcutFile, out _DINFO targetDirectory)
         {
             var uri = ReadShortcutUri(shortcutFile);
 
@@ -198,11 +198,11 @@ namespace $rootnamespace$
             if (uri == null) return false;
             if (!uri.IsFile) return false;
 
-            targetDirectory = new DIRECTORY(uri.LocalPath);
+            targetDirectory = new _DINFO(uri.LocalPath);
             return targetDirectory.Exists;
         }
 
-        public static Uri ReadShortcutUri(this FILE finfo)
+        public static Uri ReadShortcutUri(this _FINFO finfo)
         {
             GuardNotNull(finfo);
 
@@ -230,10 +230,10 @@ namespace $rootnamespace$
             return uri;
         }
 
-        private static void _CheckShortcutNotTemp(FILEORDIR target)
+        private static void _CheckShortcutNotTemp(_SINFO target)
         {
-            if (target is FILE file) target = file.Directory;
-            if (target is DIRECTORY dir && dir.IsTemp()) throw new System.Security.SecurityException("Shortcut resolution disallowed for Temp directory");
+            if (target is _FINFO file) target = file.Directory;
+            if (target is _DINFO dir && dir.IsTemp()) throw new System.Security.SecurityException("Shortcut resolution disallowed for Temp directory");
         }
     }
 }

@@ -17,39 +17,10 @@ namespace System.Numerics
 namespace $rootnamespace$
 #endif
 {
-    using VECTOR2ENUMERATION = System.Collections.Generic.IEnumerable<System.Numerics.Vector2>;
+    using _VECTOR2ENUMERATION = System.Collections.Generic.IEnumerable<System.Numerics.Vector2>;
 
     internal static partial class CodeSugarForNumerics    
     {
-        [DebuggerStepThrough]
-        [MethodImpl(AGRESSIVE)]
-        public static int DominantAxis(this Vector2 v)
-        {
-            System.Diagnostics.Debug.Assert(v.IsFinite(), "v is not finite");
-
-            v = Vector2.Abs(v);
-            return v.X >= v.Y ? 0 : 1;
-        }
-
-        [DebuggerStepThrough]
-        [MethodImpl(AGRESSIVE)]
-        public static float ManhattanLength(this Vector2 v)
-        {
-            System.Diagnostics.Debug.Assert(v.IsFinite(), "v is not finite");
-
-            v = Vector2.Abs(v);
-            return v.X + v.Y;
-        }
-
-        [DebuggerStepThrough]
-        [MethodImpl(AGRESSIVE)]
-        public static Vector2 WithLength(this Vector2 v, float newLen)
-        {
-            System.Diagnostics.Debug.Assert(v.IsFinite(), "v is not finite");
-
-            return (v == Vector2.Zero ? Vector2.UnitX : Vector2.Normalize(v)) * newLen;
-        }
-
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
         public static float Angle(this in Vector2 v)
@@ -61,8 +32,8 @@ namespace $rootnamespace$
         [MethodImpl(AGRESSIVE)]
         public static float Angle(this Vector2 a, Vector2 b)
         {
-            System.Diagnostics.Debug.Assert(a.IsFinite(), "a is not finite");
-            System.Diagnostics.Debug.Assert(b.IsFinite(), "b is not finite");
+            _AssertFinite(a);
+            _AssertFinite(b);
 
             if (a == Vector2.Zero || b == Vector2.Zero) return 0;
 
@@ -78,14 +49,14 @@ namespace $rootnamespace$
         [MethodImpl(AGRESSIVE)]
         public static float Cross(this Vector2 a, Vector2 b)
         {
-            System.Diagnostics.Debug.Assert(a.IsFinite(), "a is not finite");
-            System.Diagnostics.Debug.Assert(b.IsFinite(), "b is not finite");
+            _AssertFinite(a);
+            _AssertFinite(b);
 
             return a.X * b.Y - a.Y * b.X;
         }
 
         [DebuggerStepThrough]        
-        public static Vector2 Centroid(this VECTOR2ENUMERATION points)
+        public static Vector2 Centroid(this _VECTOR2ENUMERATION points)
         {
             if (points == null) return Vector2.Zero;
 
@@ -112,19 +83,19 @@ namespace $rootnamespace$
         }
 
         [DebuggerStepThrough]
-        public static Vector2 Min(this VECTOR2ENUMERATION points)
+        public static Vector2 Min(this _VECTOR2ENUMERATION points)
         {            
             return points.Aggregate(new Vector2(float.MaxValue), (seed, value) => Vector2.Min(seed, value));
         }
 
         [DebuggerStepThrough]
-        public static Vector2 Max(this VECTOR2ENUMERATION points)
+        public static Vector2 Max(this _VECTOR2ENUMERATION points)
         {
             return points.Aggregate(new Vector2(float.MinValue), (seed, value) => Vector2.Max(seed, value));
         }
 
         [DebuggerStepThrough]
-        public static (Vector2 Min, Vector2 Max) MinMax(this VECTOR2ENUMERATION points)
+        public static (Vector2 Min, Vector2 Max) MinMax(this _VECTOR2ENUMERATION points)
         {
             return points.Aggregate((new Vector2(float.MaxValue), new Vector2(float.MinValue)), (seed, value) => (Vector2.Min(seed.Item1,value), Vector2.Max(seed.Item2, value)) );
         }

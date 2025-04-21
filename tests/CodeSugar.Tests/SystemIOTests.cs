@@ -402,16 +402,6 @@ namespace CodeSugar
             var dirs = await rinfo.File.Directory.Parent.FindAllDirectoriesAsync(d => d.Name == "Resources", SearchOption.AllDirectories, System.Threading.CancellationToken.None, this);
             Assert.That(dirs, Is.Not.Null);
             Assert.That(dirs.Count, Is.AtLeast(1));
-        }
-
-
-        [Explicit]
-        [Test]
-        public void ShowOpenFileDialog()
-        {
-            var result = CodeSugar.Win32_OpenFileDialog.TryOpenFile(out var dstFile, "Open file", "text files|*.txt");
-        }
-
-        
+        }        
     }
 }

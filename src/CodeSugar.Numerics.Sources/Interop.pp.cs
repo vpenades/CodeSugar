@@ -7,12 +7,11 @@ using System.Numerics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-using VECTOR2 = System.Numerics.Vector2;
-using VECTOR3 = System.Numerics.Vector3;
-using VECTOR4 = System.Numerics.Vector4;
-
-
 #nullable disable
+
+using _VECTOR2 = System.Numerics.Vector2;
+using _VECTOR3 = System.Numerics.Vector3;
+using _VECTOR4 = System.Numerics.Vector4;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -35,11 +34,11 @@ namespace $rootnamespace$
             #if NET6_0_OR_GREATER
             [DynamicallyAccessedMembers(VECTORMEMBERTYPES)]
             #endif
-        T>(this VECTOR2 src) where T:unmanaged { return __Vector2Converter<T>.Convert(src); }
+        T>(this _VECTOR2 src) where T:unmanaged { return __Vector2Converter<T>.Convert(src); }
 
         [System.Diagnostics.DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static VECTOR2 ConvertToVector2
+        public static _VECTOR2 ConvertToVector2
         <
             #if NET6_0_OR_GREATER
             [DynamicallyAccessedMembers(VECTORMEMBERTYPES)]
@@ -53,11 +52,11 @@ namespace $rootnamespace$
             #if NET6_0_OR_GREATER
             [DynamicallyAccessedMembers(VECTORMEMBERTYPES)]
             #endif
-        T>(this VECTOR3 src) where T : unmanaged { return __Vector3Converter<T>.Convert(src); }
+        T>(this _VECTOR3 src) where T : unmanaged { return __Vector3Converter<T>.Convert(src); }
 
         [System.Diagnostics.DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static VECTOR3 ConvertToVector3
+        public static _VECTOR3 ConvertToVector3
         <
             #if NET6_0_OR_GREATER
             [DynamicallyAccessedMembers(VECTORMEMBERTYPES)]
@@ -71,11 +70,11 @@ namespace $rootnamespace$
             #if NET6_0_OR_GREATER
             [DynamicallyAccessedMembers(VECTORMEMBERTYPES)]
             #endif
-        T>(this VECTOR4 src) where T : unmanaged { return __Vector4Converter<T>.Convert(src); }
+        T>(this _VECTOR4 src) where T : unmanaged { return __Vector4Converter<T>.Convert(src); }
 
         [System.Diagnostics.DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static VECTOR4 ConvertToVector4
+        public static _VECTOR4 ConvertToVector4
         <
             #if NET6_0_OR_GREATER
             [DynamicallyAccessedMembers(VECTORMEMBERTYPES)]
@@ -85,7 +84,7 @@ namespace $rootnamespace$
 
         [System.Diagnostics.DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static T UnsafeConvertToDouble<T>(this VECTOR2 src) where T : unmanaged
+        public static T UnsafeConvertToDouble<T>(this _VECTOR2 src) where T : unmanaged
         {
             var vv = new _Vector2Double(src);
             return _UnsafeAs<_Vector2Double, T>(ref vv);
@@ -97,7 +96,7 @@ namespace $rootnamespace$
         [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
         private readonly struct _Vector2Double
         {
-            public _Vector2Double(VECTOR2 v) { X=v.X; Y=v.Y; }
+            public _Vector2Double(_VECTOR2 v) { X=v.X; Y=v.Y; }
 
             public readonly Double X;
             public readonly Double Y;
@@ -125,15 +124,15 @@ namespace $rootnamespace$
             }
 
             [MethodImpl(AGRESSIVE)]
-            public static VECTOR2 Convert(T vector)
+            public static _VECTOR2 Convert(T vector)
             {
-                return _UnsafeAs<T, VECTOR2>(ref vector);
+                return _UnsafeAs<T, _VECTOR2>(ref vector);
             }
 
             [MethodImpl(AGRESSIVE)]
-            public static T Convert(VECTOR2 vector)
+            public static T Convert(_VECTOR2 vector)
             {
-                return _UnsafeAs<VECTOR2, T>(ref vector);
+                return _UnsafeAs<_VECTOR2, T>(ref vector);
             }
         }
 
@@ -154,15 +153,15 @@ namespace $rootnamespace$
             }
 
             [MethodImpl(AGRESSIVE)]
-            public static VECTOR3 Convert(T vector)
+            public static _VECTOR3 Convert(T vector)
             {
-                return _UnsafeAs<T, VECTOR3>(ref vector);
+                return _UnsafeAs<T, _VECTOR3>(ref vector);
             }
 
             [MethodImpl(AGRESSIVE)]
-            public static T Convert(VECTOR3 vector)
+            public static T Convert(_VECTOR3 vector)
             {
-                return _UnsafeAs<VECTOR3, T>(ref vector);
+                return _UnsafeAs<_VECTOR3, T>(ref vector);
             }
         }
 
@@ -183,15 +182,15 @@ namespace $rootnamespace$
             }
 
             [MethodImpl(AGRESSIVE)]
-            public static VECTOR4 Convert(T vector)
+            public static _VECTOR4 Convert(T vector)
             {
-                return _UnsafeAs<T, VECTOR4>(ref vector);
+                return _UnsafeAs<T, _VECTOR4>(ref vector);
             }
 
             [MethodImpl(AGRESSIVE)]
-            public static T Convert(VECTOR4 vector)
+            public static T Convert(_VECTOR4 vector)
             {
-                return _UnsafeAs<VECTOR4, T>(ref vector);
+                return _UnsafeAs<_VECTOR4, T>(ref vector);
             }
         }
 

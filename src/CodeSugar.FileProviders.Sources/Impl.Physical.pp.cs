@@ -11,13 +11,12 @@ using System.Diagnostics.CodeAnalysis;
 
 using Microsoft.Extensions.FileProviders;
 
-using FINFO = System.IO.FileInfo;
-using DINFO = System.IO.DirectoryInfo;
-using XFILE = Microsoft.Extensions.FileProviders.IFileInfo;
-using MATCHCASING = System.IO.MatchCasing;
-
-
 #nullable disable
+
+using _FINFO = System.IO.FileInfo;
+using _DINFO = System.IO.DirectoryInfo;
+using _XINFO = Microsoft.Extensions.FileProviders.IFileInfo;
+using _MATCHCASING = System.IO.MatchCasing;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -32,19 +31,19 @@ namespace $rootnamespace$
         #region API        
 
         [return: NotNull]
-        public static XFILE ToIFileInfo(this System.IO.FileSystemInfo xinfo)
+        public static _XINFO ToIFileInfo(this System.IO.FileSystemInfo xinfo)
         {
             switch (xinfo)
             {
                 case null: return __NULLFILE;
-                case DINFO d: return new _BasicPhysicalDirectory(d);
-                case FINFO f: return new _BasicPhysicalFile(f);                
+                case _DINFO d: return new _BasicPhysicalDirectory(d);
+                case _FINFO f: return new _BasicPhysicalFile(f);                
                 default: throw new NotImplementedException();
             }
         }
 
         [return: NotNull]
-        public static XFILE ToIFileInfo(this FINFO finfo)
+        public static _XINFO ToIFileInfo(this _FINFO finfo)
         {
             return finfo == null
                 ? __NULLFILE
@@ -52,14 +51,14 @@ namespace $rootnamespace$
         }
 
         [return: NotNull]
-        public static XFILE ToIFileInfo(this DINFO dinfo)
+        public static _XINFO ToIFileInfo(this _DINFO dinfo)
         {
             return dinfo == null
                 ? __NULLFILE
                 : new _BasicPhysicalDirectory(dinfo);
         }
 
-        public static bool TryGetFileInfo(this XFILE xinfo, out FINFO finfo)
+        public static bool TryGetFileInfo(this _XINFO xinfo, out _FINFO finfo)
         {
             finfo = null;
             if (xinfo == null) return false;
@@ -69,7 +68,7 @@ namespace $rootnamespace$
             {
                 case _BasicPhysicalFile f: finfo = f.Info; return true;
                 case IServiceProvider s:
-                    finfo = s.GetService(typeof(FINFO)) as FINFO;
+                    finfo = s.GetService(typeof(_FINFO)) as _FINFO;
                     if (finfo != null) return true;
                     else break;
             }
@@ -78,13 +77,13 @@ namespace $rootnamespace$
 
             try
             {
-                finfo = new FINFO(xinfo.PhysicalPath);
+                finfo = new _FINFO(xinfo.PhysicalPath);
                 return true;
             }
             catch { return false; }
         }
 
-        public static bool TryGetDirectoryInfo(this XFILE xinfo, out DINFO dinfo)
+        public static bool TryGetDirectoryInfo(this _XINFO xinfo, out _DINFO dinfo)
         {
             dinfo = null;
             if (xinfo == null) return false;
@@ -94,7 +93,7 @@ namespace $rootnamespace$
             {
                 case _BasicPhysicalDirectory d: dinfo = d.Info; return true;
                 case IServiceProvider s:
-                    dinfo = s.GetService(typeof(DINFO)) as DINFO;
+                    dinfo = s.GetService(typeof(_DINFO)) as _DINFO;
                     if (dinfo != null) return true;
                     else break;
             }
@@ -103,7 +102,7 @@ namespace $rootnamespace$
 
             try
             {
-                dinfo = new DINFO(xinfo.PhysicalPath);
+                dinfo = new _DINFO(xinfo.PhysicalPath);
                 return true;
             }
             catch { return false; }
@@ -114,16 +113,16 @@ namespace $rootnamespace$
         #region nested types
 
         [System.Diagnostics.DebuggerDisplay("{PhysicalPath}")]
-        private readonly struct _BasicPhysicalFile : XFILE , IServiceProvider
+        private readonly struct _BasicPhysicalFile : _XINFO , IServiceProvider
         {
             #region constructor
-            public _BasicPhysicalFile(FINFO finfo) { Info = finfo; }
+            public _BasicPhysicalFile(_FINFO finfo) { Info = finfo; }
 
             #endregion
 
             #region properties
 
-            public FINFO Info { get; }
+            public _FINFO Info { get; }
 
             public bool Exists => Info?.Exists ?? false;
 
@@ -145,8 +144,8 @@ namespace $rootnamespace$
 
             public object GetService(Type serviceType)
             {
-                if (serviceType == typeof(FINFO)) return Info;
-                if (serviceType == typeof(MATCHCASING)) return FileSystemPathCasing;
+                if (serviceType == typeof(_FINFO)) return Info;
+                if (serviceType == typeof(_MATCHCASING)) return FileSystemPathCasing;
                 if (serviceType == typeof(StringComparison)) return FileSystemPathComparison;                
                 if (serviceType == typeof(Action<ArraySegment<Byte>>)) return (Action<ArraySegment<Byte>>) _WriteBytes;
 
@@ -165,17 +164,17 @@ namespace $rootnamespace$
         }
 
         [System.Diagnostics.DebuggerDisplay("{PhysicalPath}")]
-        private readonly struct _BasicPhysicalDirectory : XFILE, IDirectoryContents , IServiceProvider
+        private readonly struct _BasicPhysicalDirectory : _XINFO, IDirectoryContents , IServiceProvider
         {
             #region constructor
 
-            public _BasicPhysicalDirectory(DINFO dinfo) { Info = dinfo; }
+            public _BasicPhysicalDirectory(_DINFO dinfo) { Info = dinfo; }
 
             #endregion
 
             #region properties
 
-            public DINFO Info { get; }
+            public _DINFO Info { get; }
 
             public bool Exists => Info?.Exists ?? false;
 
@@ -195,7 +194,7 @@ namespace $rootnamespace$
 
             public Stream CreateReadStream() { throw new NotSupportedException(); }
             IEnumerator IEnumerable.GetEnumerator() { return this.GetEnumerator(); }
-            public IEnumerator<XFILE> GetEnumerator()
+            public IEnumerator<_XINFO> GetEnumerator()
             {
                 return Info
                     .EnumerateFileSystemInfos()
@@ -206,7 +205,7 @@ namespace $rootnamespace$
             public object GetService(Type serviceType)
             {
                 if (serviceType == typeof(System.IO.MatchCasing)) return FileSystemPathComparison;
-                if (serviceType == typeof(DINFO)) return Info;
+                if (serviceType == typeof(_DINFO)) return Info;
 
                 return null;
             }
@@ -219,13 +218,13 @@ namespace $rootnamespace$
         {
             #region constructor
 
-            public _BasicPhysicalDirectoryContents(DINFO dinfo) { Info = dinfo; }
+            public _BasicPhysicalDirectoryContents(_DINFO dinfo) { Info = dinfo; }
 
             #endregion
 
             #region properties
 
-            public DINFO Info { get; }
+            public _DINFO Info { get; }
 
             public bool Exists => Info?.Exists ?? false;            
 
@@ -235,7 +234,7 @@ namespace $rootnamespace$
 
             public Stream CreateReadStream() { throw new NotSupportedException(); }
             IEnumerator IEnumerable.GetEnumerator() { return this.GetEnumerator(); }
-            public IEnumerator<XFILE> GetEnumerator()
+            public IEnumerator<_XINFO> GetEnumerator()
             {
                 return Info
                     .EnumerateFileSystemInfos()
@@ -245,9 +244,9 @@ namespace $rootnamespace$
 
             public object GetService(Type serviceType)
             {
-                if (serviceType == typeof(MATCHCASING)) return FileSystemPathCasing;
+                if (serviceType == typeof(_MATCHCASING)) return FileSystemPathCasing;
                 if (serviceType == typeof(StringComparison)) return FileSystemPathComparison;
-                if (serviceType == typeof(DINFO)) return Info;
+                if (serviceType == typeof(_DINFO)) return Info;
 
                 return null;
             }

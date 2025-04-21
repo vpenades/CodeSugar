@@ -7,11 +7,11 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 #nullable disable
 
-using STREAM = System.IO.Stream;
-using System.Runtime.InteropServices;
+using _STREAM = System.IO.Stream;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar

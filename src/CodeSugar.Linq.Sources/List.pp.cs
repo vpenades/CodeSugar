@@ -8,12 +8,11 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Reflection;
 
+#nullable disable
 
 #if !NETSTANDARD
-using UNSAFE = System.Runtime.CompilerServices.Unsafe;
+using _UNSAFE = System.Runtime.CompilerServices.Unsafe;
 #endif
-
-#nullable disable
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar

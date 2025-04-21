@@ -10,9 +10,6 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 
-using READABLEBLOCK = System.ReadOnlySpan<byte>;
-using WRITEABLEBLOCK = System.Span<byte>;
-
 <#
 
 string CONTEXTNAME = "Span";
@@ -22,6 +19,9 @@ string BYTEWRITER = "WriteBytes(target, span); target = target.Slice(span.Length
 #>
 
 #nullable disable
+
+using _READABLEBLOCK = System.ReadOnlySpan<byte>;
+using _WRITEABLEBLOCK = System.Span<byte>;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar

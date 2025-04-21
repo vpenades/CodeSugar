@@ -2,47 +2,47 @@
 
         #region specialised - Numerics
 
-        public static WRITEABLEBLOCK WriteLeVector2(this WRITEABLEBLOCK target, System.Numerics.Vector2 value)
+        public static _WRITEABLEBLOCK WriteLeVector2(this _WRITEABLEBLOCK target, System.Numerics.Vector2 value)
         {
             return target.WriteLeF32(value.X).WriteLeF32(value.Y);
         }
 
-        public static READABLEBLOCK ReadLeVector2(this READABLEBLOCK source, out System.Numerics.Vector2 value)
+        public static _READABLEBLOCK ReadLeVector2(this _READABLEBLOCK source, out System.Numerics.Vector2 value)
         {
             return source.ReadLeF32(out value.X).ReadLeF32(out value.Y);
         }
 
-        public static WRITEABLEBLOCK WriteLeVector3(this WRITEABLEBLOCK target, System.Numerics.Vector3 value)
+        public static _WRITEABLEBLOCK WriteLeVector3(this _WRITEABLEBLOCK target, System.Numerics.Vector3 value)
         {
             return target.WriteLeF32(value.X).WriteLeF32(value.Y).WriteLeF32(value.Z);
         }
 
-        public static READABLEBLOCK ReadLeVector3(this READABLEBLOCK source, out System.Numerics.Vector3 value)
+        public static _READABLEBLOCK ReadLeVector3(this _READABLEBLOCK source, out System.Numerics.Vector3 value)
         {
             return source.ReadLeF32(out value.X).ReadLeF32(out value.Y).ReadLeF32(out value.Z);
         }
 
-        public static WRITEABLEBLOCK WriteLeVector4(this WRITEABLEBLOCK target, System.Numerics.Vector4 value)
+        public static _WRITEABLEBLOCK WriteLeVector4(this _WRITEABLEBLOCK target, System.Numerics.Vector4 value)
         {
             return target.WriteLeF32(value.X).WriteLeF32(value.Y).WriteLeF32(value.Z).WriteLeF32(value.W);
         }
 
-        public static READABLEBLOCK ReadLeVector4(this READABLEBLOCK source, out System.Numerics.Vector4 value)
+        public static _READABLEBLOCK ReadLeVector4(this _READABLEBLOCK source, out System.Numerics.Vector4 value)
         {
             return source.ReadLeF32(out value.X).ReadLeF32(out value.Y).ReadLeF32(out value.Z).ReadLeF32(out value.W);
         }
 
-        public static WRITEABLEBLOCK WriteLeQuaternion(this WRITEABLEBLOCK target, System.Numerics.Quaternion value)
+        public static _WRITEABLEBLOCK WriteLeQuaternion(this _WRITEABLEBLOCK target, System.Numerics.Quaternion value)
         {
             return target.WriteLeF32(value.X).WriteLeF32(value.Y).WriteLeF32(value.Z).WriteLeF32(value.W);
         }
 
-        public static READABLEBLOCK ReadLeQuaternion(this READABLEBLOCK source, out System.Numerics.Quaternion value)
+        public static _READABLEBLOCK ReadLeQuaternion(this _READABLEBLOCK source, out System.Numerics.Quaternion value)
         {
             return source.ReadLeF32(out value.X).ReadLeF32(out value.Y).ReadLeF32(out value.Z).ReadLeF32(out value.W);
         }        
 
-        public static WRITEABLEBLOCK WriteLeMatrix3x2(this WRITEABLEBLOCK target, System.Numerics.Matrix3x2 value)
+        public static _WRITEABLEBLOCK WriteLeMatrix3x2(this _WRITEABLEBLOCK target, System.Numerics.Matrix3x2 value)
         {
             return target
                 .WriteLeF32(value.M11).WriteLeF32(value.M12)
@@ -51,7 +51,7 @@
                 
         }
 
-        public static READABLEBLOCK ReadLeMatrix3x2(this READABLEBLOCK source, out System.Numerics.Matrix3x2 value)
+        public static _READABLEBLOCK ReadLeMatrix3x2(this _READABLEBLOCK source, out System.Numerics.Matrix3x2 value)
         {
             return source
                 .ReadLeF32(out value.M11).ReadLeF32(out value.M12)
@@ -59,7 +59,7 @@
                 .ReadLeF32(out value.M31).ReadLeF32(out value.M32);
         }     
 
-        public static WRITEABLEBLOCK WriteLeMatrix4x4(this WRITEABLEBLOCK target, System.Numerics.Matrix4x4 value)
+        public static _WRITEABLEBLOCK WriteLeMatrix4x4(this _WRITEABLEBLOCK target, System.Numerics.Matrix4x4 value)
         {
             return target
                 .WriteLeF32(value.M11).WriteLeF32(value.M12).WriteLeF32(value.M13).WriteLeF32(value.M14)
@@ -69,7 +69,7 @@
                 
         }
 
-        public static READABLEBLOCK ReadLeMatrix4x4(this READABLEBLOCK source, out System.Numerics.Matrix4x4 value)
+        public static _READABLEBLOCK ReadLeMatrix4x4(this _READABLEBLOCK source, out System.Numerics.Matrix4x4 value)
         {
             return source
                 .ReadLeF32(out value.M11).ReadLeF32(out value.M12).ReadLeF32(out value.M13).ReadLeF32(out value.M14)

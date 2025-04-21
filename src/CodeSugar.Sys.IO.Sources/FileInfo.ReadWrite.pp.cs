@@ -9,8 +9,8 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using FILE = System.IO.FileInfo;
-using BYTESSEGMENT = System.ArraySegment<byte>;
+using _FINFO = System.IO.FileInfo;
+using _BYTESSEGMENT = System.ArraySegment<byte>;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -26,7 +26,7 @@ namespace $rootnamespace$
         /// Reads all the text lines from the given file.
         /// Equivalent to <see cref="System.IO.File.ReadAllLines(string, Encoding)"/>
         /// </summary>        
-        public static IReadOnlyList<string> ReadAllLines(this FILE finfo, Encoding encoding = null)
+        public static IReadOnlyList<string> ReadAllLines(this _FINFO finfo, Encoding encoding = null)
         {
 			GuardExists(finfo);
 
@@ -40,7 +40,7 @@ namespace $rootnamespace$
         /// Reads all the text from the given file.
         /// Equivalent to <see cref="System.IO.File.ReadAllText(string, Encoding)"/>
         /// </summary>        
-        public static string ReadAllText(this FILE finfo, Encoding encoding = null)
+        public static string ReadAllText(this _FINFO finfo, Encoding encoding = null)
         {
 			GuardExists(finfo);
 
@@ -54,7 +54,7 @@ namespace $rootnamespace$
 		/// Writes all the text lines to a given file.
 		/// Equivalent to <see cref="System.IO.File.WriteAllLines(string, IEnumerable{string})"/>
 		/// </summary>
-        public static void WriteAllLines(this FILE finfo, Encoding encoding, params string[] lines)
+        public static void WriteAllLines(this _FINFO finfo, Encoding encoding, params string[] lines)
         {
             WriteAllLines(finfo, lines.AsEnumerable(), encoding);
         }
@@ -63,7 +63,7 @@ namespace $rootnamespace$
 		/// Writes all the text lines to a given file.
 		/// Equivalent to <see cref="System.IO.File.WriteAllLines(string, IEnumerable{string})"/>
 		/// </summary>
-		public static void WriteAllLines(this FILE finfo, IEnumerable<string> lines, Encoding encoding = null)
+		public static void WriteAllLines(this _FINFO finfo, IEnumerable<string> lines, Encoding encoding = null)
         {
             GuardNotNull(finfo);
 
@@ -81,7 +81,7 @@ namespace $rootnamespace$
 		/// Writes all the text to a given file.
 		/// Equivalent to <see cref="System.IO.File.WriteAllText(string, string, Encoding)"/>
 		/// </summary>
-		public static void WriteAllText(this FILE finfo, string text, Encoding encoding = null)
+		public static void WriteAllText(this _FINFO finfo, string text, Encoding encoding = null)
         {
             GuardNotNull(finfo);
 
@@ -99,7 +99,7 @@ namespace $rootnamespace$
         /// Reads all the bytes from a given file.
         /// Equivalent to <see cref="System.IO.File.ReadAllBytes(string)"/>
         /// </summary>        
-        public static BYTESSEGMENT ReadAllBytes(this FILE finfo)
+        public static _BYTESSEGMENT ReadAllBytes(this _FINFO finfo)
         {
 			GuardExists(finfo);
 
@@ -113,7 +113,7 @@ namespace $rootnamespace$
         /// Writes all the bytes to a given file.
         /// Equivalent to <see cref="System.IO.File.WriteAllBytes(string, byte[])"/>
         /// </summary>        
-        public static void WriteAllBytes(this FILE finfo, IReadOnlyList<Byte> bytes)
+        public static void WriteAllBytes(this _FINFO finfo, IReadOnlyList<Byte> bytes)
         {
 			GuardNotNull(finfo);
 

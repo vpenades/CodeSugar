@@ -11,11 +11,11 @@ using System.Linq;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Primitives;
 
-using XFILE = Microsoft.Extensions.FileProviders.IFileInfo;
-using XPROVIDER = Microsoft.Extensions.FileProviders.IFileProvider;
-using MATCHCASING = System.IO.MatchCasing;
-
 #nullable disable
+
+using _XINFO = Microsoft.Extensions.FileProviders.IFileInfo;
+using _XPROVIDER = Microsoft.Extensions.FileProviders.IFileProvider;
+using _MATCHCASING = System.IO.MatchCasing;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -30,7 +30,7 @@ namespace $rootnamespace$
         #region API
 
         [return: NotNull]
-        public static XFILE ToIFileInfo(this System.IO.Compression.ZipArchiveEntry entry)
+        public static _XINFO ToIFileInfo(this System.IO.Compression.ZipArchiveEntry entry)
         {
             return entry == null
                 ? __NULLFILE
@@ -38,7 +38,7 @@ namespace $rootnamespace$
         }
 
         [return: NotNull]
-        public static XPROVIDER ToIFileProvider(this System.IO.Compression.ZipArchive zip)
+        public static _XPROVIDER ToIFileProvider(this System.IO.Compression.ZipArchive zip)
         {
             return zip == null
                 ? __NULLPROVIDER
@@ -50,7 +50,7 @@ namespace $rootnamespace$
         #region nested types
 
         [System.Diagnostics.DebuggerDisplay("{Entry.FullName} {Length}")]
-        private readonly struct _ZipArchiveFile : XFILE, IServiceProvider
+        private readonly struct _ZipArchiveFile : _XINFO, IServiceProvider
         {
             #region lifecycle
 
@@ -106,7 +106,7 @@ namespace $rootnamespace$
 
             public object GetService(Type serviceType)
             {
-                if (serviceType == typeof(MATCHCASING)) return MATCHCASING.CaseSensitive;
+                if (serviceType == typeof(_MATCHCASING)) return _MATCHCASING.CaseSensitive;
                 if (serviceType == typeof(StringComparison)) return StringComparison.Ordinal;
                 if (serviceType == typeof(System.IO.Compression.ZipArchiveEntry)) return Entry;
                 if (serviceType == typeof(System.IO.Compression.ZipArchive)) return Entry.Archive;
@@ -117,7 +117,7 @@ namespace $rootnamespace$
         }
 
         [System.Diagnostics.DebuggerDisplay("{_Path}")]
-        private readonly struct _ZipArchiveDirectory : XFILE, IDirectoryContents
+        private readonly struct _ZipArchiveDirectory : _XINFO, IDirectoryContents
         {
             #region lifecycle
             public _ZipArchiveDirectory(_ZipArchive zip, string path)
@@ -175,14 +175,14 @@ namespace $rootnamespace$
 
             IEnumerator IEnumerable.GetEnumerator() { return this.GetEnumerator(); }
 
-            public IEnumerator<XFILE> GetEnumerator()
+            public IEnumerator<_XINFO> GetEnumerator()
             {
                 var thisPath = _Path;
                 if (thisPath.Length > 0) thisPath += ZipDirectorySeparator;
                 return _EnumerateContents(_Zip, thisPath).GetEnumerator();
             }
 
-            private static IEnumerable<XFILE> _EnumerateContents(_ZipArchive zip, string dirPath)
+            private static IEnumerable<_XINFO> _EnumerateContents(_ZipArchive zip, string dirPath)
             {
                 System.Diagnostics.Debug.Assert(dirPath == string.Empty || !dirPath.StartsWith(ZipDirectorySeparator));
                 System.Diagnostics.Debug.Assert(dirPath == string.Empty || dirPath.EndsWith(ZipDirectorySeparator));
@@ -229,7 +229,7 @@ namespace $rootnamespace$
             #endregion
         }        
 
-        private readonly struct _ZipArchive : XPROVIDER
+        private readonly struct _ZipArchive : _XPROVIDER
         {
             #region lifecycle
             public _ZipArchive(System.IO.Compression.ZipArchive archive)
@@ -257,7 +257,7 @@ namespace $rootnamespace$
                     ?? NotFoundDirectoryContents.Singleton;
             }
 
-            public XFILE GetFileInfo(string subpath)
+            public _XINFO GetFileInfo(string subpath)
             {
                 subpath ??= string.Empty;
 
@@ -271,7 +271,7 @@ namespace $rootnamespace$
 
                 return dir.Any()
                     ? dir
-                    : (XFILE)new NotFoundFileInfo(subpath);
+                    : (_XINFO)new NotFoundFileInfo(subpath);
             }
 
             public IChangeToken Watch(string filter)

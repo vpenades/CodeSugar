@@ -12,24 +12,24 @@ using System.Runtime.Intrinsics;
 
 #nullable disable
 
-using MMARSHALL = System.Runtime.InteropServices.MemoryMarshal;
-using UNSAFE = System.Runtime.CompilerServices.Unsafe;
-using TENSORPRIMS = System.Numerics.Tensors.TensorPrimitives;
+using _MMARSHALL = System.Runtime.InteropServices.MemoryMarshal;
+using _UNSAFE = System.Runtime.CompilerServices.Unsafe;
+using _TENSORPRIMS = System.Numerics.Tensors.TensorPrimitives;
 
-using SRCBYTES = System.ReadOnlySpan<byte>;
-using DSTBYTES = System.Span<byte>;
+using _SRCBYTES = System.ReadOnlySpan<byte>;
+using _DSTBYTES = System.Span<byte>;
 
-using SRCX = System.ReadOnlySpan<float>;
-using DSTX = System.Span<float>;
+using _SRCX = System.ReadOnlySpan<float>;
+using _DSTX = System.Span<float>;
 
-using SRCXYZ = System.ReadOnlySpan<System.Numerics.Vector3>;
-using DSTXYZ = System.Span<System.Numerics.Vector3>;
+using _SRCXYZ = System.ReadOnlySpan<System.Numerics.Vector3>;
+using _DSTXYZ = System.Span<System.Numerics.Vector3>;
 
-using SRCXYZW = System.ReadOnlySpan<System.Numerics.Vector4>;
-using DSTXYZW = System.Span<System.Numerics.Vector4>;
+using _SRCXYZW = System.ReadOnlySpan<System.Numerics.Vector4>;
+using _DSTXYZW = System.Span<System.Numerics.Vector4>;
 
-using XYZ = System.Numerics.Vector3;
-using XYZW = System.Numerics.Vector4;
+using _XYZ = System.Numerics.Vector3;
+using _XYZW = System.Numerics.Vector4;
 
 
 #if CODESUGAR_USECODESUGARNAMESPACE
@@ -42,30 +42,30 @@ namespace $rootnamespace$
 {
     static partial class CodeSugarForTensors
     {
-        public static void InPlaceAdd(this DSTX span, float addend)
+        public static void InPlaceAdd(this _DSTX span, float addend)
         {
-            TENSORPRIMS.Add(span, addend, span);
+            _TENSORPRIMS.Add(span, addend, span);
         }
-        public static void InPlaceMultiply(this DSTX span, float scalar)
+        public static void InPlaceMultiply(this _DSTX span, float scalar)
         {
-            TENSORPRIMS.Multiply(span, scalar, span);
+            _TENSORPRIMS.Multiply(span, scalar, span);
         }
-        public static void InPlaceMultiplyAdd(this DSTX span, float mul, float add)
+        public static void InPlaceMultiplyAdd(this _DSTX span, float mul, float add)
         {            
-            TENSORPRIMS.Multiply(span, mul, span);
-            TENSORPRIMS.Add(span, add, span);
+            _TENSORPRIMS.Multiply(span, mul, span);
+            _TENSORPRIMS.Add(span, add, span);
         }
-        public static void InPlaceMultiplyAdd(this DSTXYZ src, XYZ mul, XYZ add)
+        public static void InPlaceMultiplyAdd(this _DSTXYZ src, _XYZ mul, _XYZ add)
         {
             MultiplyAddTo(src, mul, add, src);
         }
-        public static void InPlaceMultiplyAdd(this DSTXYZW src, XYZW mul, XYZW add)
+        public static void InPlaceMultiplyAdd(this _DSTXYZW src, _XYZW mul, _XYZW add)
         {
             MultiplyAddTo(src, mul, add, src);
         }        
         
 
-        public static void ScaledCastTo(this SRCBYTES src, DSTX dst)
+        public static void ScaledCastTo(this _SRCBYTES src, _DSTX dst)
         {
             ScaledMultiplyTo(src, 1, dst);
 
@@ -73,14 +73,14 @@ namespace $rootnamespace$
             // TruncatedCastTo(src, dst);
             // InPlaceMultiply(dst, 1f / 255f);
         }
-        public static void ScaledCastTo(this SRCX src, DSTBYTES dst)
+        public static void ScaledCastTo(this _SRCX src, _DSTBYTES dst)
         {
             for (int i = 0; i < dst.Length; i++)
             {
                 dst[i] = (byte)Math.Clamp(src[i] * 255f, 0f, 255f);
             }            
         }
-        public static void TruncatedCastTo(this SRCBYTES src, DSTX dst)
+        public static void TruncatedCastTo(this _SRCBYTES src, _DSTX dst)
         {
             #if NET8_0_OR_GREATER
             for (int i = 0; i < dst.Length; ++i) { dst[i] = Byte.CreateTruncating(src[i]); }            
@@ -88,7 +88,7 @@ namespace $rootnamespace$
             for (int i = 0; i < dst.Length; ++i) { dst[i] = (byte)src[i]; }
             #endif
         }        
-        public static void SaturatedCastTo(this SRCX src, DSTBYTES dst)
+        public static void SaturatedCastTo(this _SRCX src, _DSTBYTES dst)
         {
             #if NET8_0_OR_GREATER
             for (int i = 0; i < dst.Length; ++i) { dst[i] = Byte.CreateSaturating(src[i]); }            
@@ -98,11 +98,11 @@ namespace $rootnamespace$
         }
 
 
-        public static void MultiplyTo(this SRCX src, float mul, DSTX dst)
+        public static void MultiplyTo(this _SRCX src, float mul, _DSTX dst)
         {
-            TENSORPRIMS.Multiply(src, mul, dst);
+            _TENSORPRIMS.Multiply(src, mul, dst);
         }
-        public static void MultiplyAddTo(this SRCX src, float mul, float add, DSTX dst)
+        public static void MultiplyAddTo(this _SRCX src, float mul, float add, _DSTX dst)
         {
             // https://github.com/dotnet/runtime/issues/103756#issuecomment-2180747248            
 
@@ -110,7 +110,7 @@ namespace $rootnamespace$
 
             if (add == 0)
             {
-                TENSORPRIMS.Multiply(src, mul, dst);
+                _TENSORPRIMS.Multiply(src, mul, dst);
                 return;
             }
 
@@ -118,20 +118,20 @@ namespace $rootnamespace$
 
             if (Vector512.IsHardwareAccelerated && Vector512<float>.IsSupported)
             {
-                var srcXXXX = MMARSHALL.Cast<float, Vector512<float>>(src);
-                var dstXXXX = MMARSHALL.Cast<float, Vector512<float>>(dst);
+                var srcXXXX = _MMARSHALL.Cast<float, Vector512<float>>(src);
+                var dstXXXX = _MMARSHALL.Cast<float, Vector512<float>>(dst);
                 var mulXXXX = Vector512.Create(mul);
                 var addXXXX = Vector512.Create(add);
 
-                ref var srcPtr = ref MMARSHALL.GetReference(srcXXXX);
-                ref var dstPtr = ref MMARSHALL.GetReference(dstXXXX);
+                ref var srcPtr = ref _MMARSHALL.GetReference(srcXXXX);
+                ref var dstPtr = ref _MMARSHALL.GetReference(dstXXXX);
 
                 for (int i = 0; i < dstXXXX.Length; ++i)
                 {
                     dstPtr = srcPtr * mulXXXX + addXXXX;
 
-                    srcPtr = ref UNSAFE.Add(ref srcPtr, 1);
-                    dstPtr = ref UNSAFE.Add(ref dstPtr, 1);
+                    srcPtr = ref _UNSAFE.Add(ref srcPtr, 1);
+                    dstPtr = ref _UNSAFE.Add(ref dstPtr, 1);
                 }
 
                 src = src.Slice(srcXXXX.Length * 16);
@@ -142,20 +142,20 @@ namespace $rootnamespace$
 
             if (Vector256.IsHardwareAccelerated && Vector256<float>.IsSupported)
             {
-                var srcXXXX = MMARSHALL.Cast<float, Vector256<float>>(src);
-                var dstXXXX = MMARSHALL.Cast<float, Vector256<float>>(dst);
+                var srcXXXX = _MMARSHALL.Cast<float, Vector256<float>>(src);
+                var dstXXXX = _MMARSHALL.Cast<float, Vector256<float>>(dst);
                 var mulXXXX = Vector256.Create(mul);
                 var addXXXX = Vector256.Create(add);
 
-                ref var srcPtr = ref MMARSHALL.GetReference(srcXXXX);
-                ref var dstPtr = ref MMARSHALL.GetReference(dstXXXX);
+                ref var srcPtr = ref _MMARSHALL.GetReference(srcXXXX);
+                ref var dstPtr = ref _MMARSHALL.GetReference(dstXXXX);
 
                 for (int i = 0; i < dstXXXX.Length; ++i)
                 {
                     dstPtr = srcPtr * mulXXXX + addXXXX;
 
-                    srcPtr = ref UNSAFE.Add(ref srcPtr, 1);
-                    dstPtr = ref UNSAFE.Add(ref dstPtr, 1);
+                    srcPtr = ref _UNSAFE.Add(ref srcPtr, 1);
+                    dstPtr = ref _UNSAFE.Add(ref dstPtr, 1);
                 }
 
                 src = src.Slice(srcXXXX.Length * 8);
@@ -166,20 +166,20 @@ namespace $rootnamespace$
 
             if (Vector128.IsHardwareAccelerated && Vector128<float>.IsSupported)
             {
-                var srcXXXX = MMARSHALL.Cast<float, Vector128<float>>(src);
-                var dstXXXX = MMARSHALL.Cast<float, Vector128<float>>(dst);
+                var srcXXXX = _MMARSHALL.Cast<float, Vector128<float>>(src);
+                var dstXXXX = _MMARSHALL.Cast<float, Vector128<float>>(dst);
                 var mulXXXX = Vector128.Create(mul);
                 var addXXXX = Vector128.Create(add);
 
-                ref var srcPtr = ref MMARSHALL.GetReference(srcXXXX);
-                ref var dstPtr = ref MMARSHALL.GetReference(dstXXXX);
+                ref var srcPtr = ref _MMARSHALL.GetReference(srcXXXX);
+                ref var dstPtr = ref _MMARSHALL.GetReference(dstXXXX);
 
                 for (int i = 0; i < dstXXXX.Length; ++i)
                 {
                     dstPtr = srcPtr * mulXXXX + addXXXX;
 
-                    srcPtr = ref UNSAFE.Add(ref srcPtr, 1);
-                    dstPtr = ref UNSAFE.Add(ref dstPtr, 1);
+                    srcPtr = ref _UNSAFE.Add(ref srcPtr, 1);
+                    dstPtr = ref _UNSAFE.Add(ref dstPtr, 1);
                 }
 
                 src = src.Slice(srcXXXX.Length * 4);
@@ -195,7 +195,7 @@ namespace $rootnamespace$
                 dst[i] = src[i] * mul + add;
             }
         }
-        public static void MultiplyAddTo(this SRCXYZ src, XYZ mul, XYZ add, DSTXYZ dst)
+        public static void MultiplyAddTo(this _SRCXYZ src, _XYZ mul, _XYZ add, _DSTXYZ dst)
         {
             // https://github.com/dotnet/runtime/issues/103756#issuecomment-2180747248
 
@@ -203,8 +203,8 @@ namespace $rootnamespace$
 
             if (mul.X == mul.Y && mul.X == mul.Z && add.X == add.Y && add.X == add.Z)
             {
-                var src1 = MMARSHALL.Cast<XYZ, float>(src);
-                var dst1 = MMARSHALL.Cast<XYZ, float>(dst);
+                var src1 = _MMARSHALL.Cast<_XYZ, float>(src);
+                var dst1 = _MMARSHALL.Cast<_XYZ, float>(dst);
                 MultiplyAddTo(src1, mul.X, add.X, dst1);
                 return;
             }            
@@ -213,13 +213,13 @@ namespace $rootnamespace$
 
             if (Vector256.IsHardwareAccelerated && Vector256<float>.IsSupported)
             {
-                var srcXXXX = MMARSHALL.Cast<XYZ, __Vector3x256>(src);
-                var dstXXXX = MMARSHALL.Cast<XYZ, __Vector3x256>(dst);
+                var srcXXXX = _MMARSHALL.Cast<_XYZ, __Vector3x256>(src);
+                var dstXXXX = _MMARSHALL.Cast<_XYZ, __Vector3x256>(dst);
                 var mulXXXX = __Vector3x256.Repeat(mul);
                 var addXXXX = __Vector3x256.Repeat(add);
 
-                ref var srcPtr = ref MMARSHALL.GetReference(srcXXXX);
-                ref var dstPtr = ref MMARSHALL.GetReference(dstXXXX);                
+                ref var srcPtr = ref _MMARSHALL.GetReference(srcXXXX);
+                ref var dstPtr = ref _MMARSHALL.GetReference(dstXXXX);                
 
                 for (int i = 0; i < dstXXXX.Length; ++i)
                 {                    
@@ -227,8 +227,8 @@ namespace $rootnamespace$
                     dstPtr.Y = srcPtr.Y * mulXXXX.Y + addXXXX.Y;                    
                     dstPtr.Z = srcPtr.Z * mulXXXX.Z + addXXXX.Z;
 
-                    srcPtr = ref UNSAFE.Add(ref srcPtr, 1);                    
-                    dstPtr = ref UNSAFE.Add(ref dstPtr, 1);
+                    srcPtr = ref _UNSAFE.Add(ref srcPtr, 1);                    
+                    dstPtr = ref _UNSAFE.Add(ref dstPtr, 1);
                 }
 
                 src = src.Slice(srcXXXX.Length * 8);
@@ -238,13 +238,13 @@ namespace $rootnamespace$
 
             if (Vector128.IsHardwareAccelerated && Vector128<float>.IsSupported)
             {
-                var srcXXXX = MMARSHALL.Cast<XYZ, __Vector3x128>(src);
-                var dstXXXX = MMARSHALL.Cast<XYZ, __Vector3x128>(dst);
+                var srcXXXX = _MMARSHALL.Cast<_XYZ, __Vector3x128>(src);
+                var dstXXXX = _MMARSHALL.Cast<_XYZ, __Vector3x128>(dst);
                 var mulXXXX = __Vector3x128.Repeat(mul);
                 var addXXXX = __Vector3x128.Repeat(add);
 
-                ref var srcPtr = ref MMARSHALL.GetReference(srcXXXX);
-                ref var dstPtr = ref MMARSHALL.GetReference(dstXXXX);
+                ref var srcPtr = ref _MMARSHALL.GetReference(srcXXXX);
+                ref var dstPtr = ref _MMARSHALL.GetReference(dstXXXX);
 
                 for (int i = 0; i < dstXXXX.Length; ++i)
                 {
@@ -252,8 +252,8 @@ namespace $rootnamespace$
                     dstPtr.Y = srcPtr.Y * mulXXXX.Y + addXXXX.Y;
                     dstPtr.Z = srcPtr.Z * mulXXXX.Z + addXXXX.Z;                    
 
-                    srcPtr = ref UNSAFE.Add(ref srcPtr, 1);
-                    dstPtr = ref UNSAFE.Add(ref dstPtr, 1);
+                    srcPtr = ref _UNSAFE.Add(ref srcPtr, 1);
+                    dstPtr = ref _UNSAFE.Add(ref dstPtr, 1);
                 }
 
                 src = src.Slice(srcXXXX.Length * 4);
@@ -269,7 +269,7 @@ namespace $rootnamespace$
                 dst[i] = src[i] * mul + add;
             }
         }
-        public static void MultiplyAddTo(this SRCXYZW src, XYZW mul, XYZW add, DSTXYZW dst)
+        public static void MultiplyAddTo(this _SRCXYZW src, _XYZW mul, _XYZW add, _DSTXYZW dst)
         {
             if (src.Length != dst.Length) throw new ArgumentException("length mismatch", nameof(dst));
 
@@ -277,8 +277,8 @@ namespace $rootnamespace$
 
             if (Vector512.IsHardwareAccelerated && Vector512<float>.IsSupported)
             {
-                var src512 = MMARSHALL.Cast<XYZW, Vector512<float>>(src);
-                var dst512 = MMARSHALL.Cast<XYZW, Vector512<float>>(dst);
+                var src512 = _MMARSHALL.Cast<_XYZW, Vector512<float>>(src);
+                var dst512 = _MMARSHALL.Cast<_XYZW, Vector512<float>>(dst);
 
                 var mul128 = Vector128.AsVector128(mul);
                 var mul256 = Vector256.Create(mul128, mul128);
@@ -301,8 +301,8 @@ namespace $rootnamespace$
 
             if (Vector256.IsHardwareAccelerated && Vector256<float>.IsSupported)
             {
-                var src256 = MMARSHALL.Cast<XYZW, Vector256<float>>(src);
-                var dst256 = MMARSHALL.Cast<XYZW, Vector256<float>>(dst);
+                var src256 = _MMARSHALL.Cast<_XYZW, Vector256<float>>(src);
+                var dst256 = _MMARSHALL.Cast<_XYZW, Vector256<float>>(dst);
 
                 var mul128 = Vector128.AsVector128(mul);
                 var mul256 = Vector256.Create(mul128, mul128);
@@ -323,8 +323,8 @@ namespace $rootnamespace$
 
             if (Vector128.IsHardwareAccelerated && Vector128<float>.IsSupported)
             {
-                var src128 = MMARSHALL.Cast<XYZW, Vector128<float>>(src);
-                var dst128 = MMARSHALL.Cast<XYZW, Vector128<float>>(dst);
+                var src128 = _MMARSHALL.Cast<_XYZW, Vector128<float>>(src);
+                var dst128 = _MMARSHALL.Cast<_XYZW, Vector128<float>>(dst);
 
                 var mul128 = Vector128.AsVector128(mul);
                 var add128 = Vector128.AsVector128(add);
@@ -351,7 +351,7 @@ namespace $rootnamespace$
         }
 
 
-        public static void ScaledMultiplyTo(this SRCBYTES src, float mul, DSTX dst)
+        public static void ScaledMultiplyTo(this _SRCBYTES src, float mul, _DSTX dst)
         {
             // https://github.com/dotnet/runtime/issues/103756#issuecomment-2180747248
 
@@ -363,20 +363,20 @@ namespace $rootnamespace$
 
             if (Vector512.IsHardwareAccelerated && Vector512<float>.IsSupported)
             {
-                var srcXXXX = MMARSHALL.Cast<byte, __PackedBytes16>(src);
-                var dstXXXX = MMARSHALL.Cast<float, Vector512<float>>(dst);
+                var srcXXXX = _MMARSHALL.Cast<byte, __PackedBytes16>(src);
+                var dstXXXX = _MMARSHALL.Cast<float, Vector512<float>>(dst);
                 var mulXXXX = Vector512.Create(mul);
 
-                ref var srcPtr = ref MMARSHALL.GetReference(srcXXXX);
-                ref var dstPtr = ref MMARSHALL.GetReference(dstXXXX);
+                ref var srcPtr = ref _MMARSHALL.GetReference(srcXXXX);
+                ref var dstPtr = ref _MMARSHALL.GetReference(dstXXXX);
 
                 for (int i = 0; i < dstXXXX.Length; ++i)
                 {
                     var uuuu = Vector512.Create(srcPtr.A, srcPtr.B, srcPtr.C, srcPtr.D, srcPtr.E, srcPtr.F, srcPtr.G, srcPtr.H, srcPtr.I, srcPtr.J, srcPtr.K, srcPtr.L, srcPtr.M, srcPtr.N, srcPtr.O, srcPtr.P);
                     dstPtr = Vector512.ConvertToSingle(uuuu) * mulXXXX;
 
-                    srcPtr = ref UNSAFE.Add(ref srcPtr, 1);
-                    dstPtr = ref UNSAFE.Add(ref dstPtr, 1);
+                    srcPtr = ref _UNSAFE.Add(ref srcPtr, 1);
+                    dstPtr = ref _UNSAFE.Add(ref dstPtr, 1);
                 }
 
                 src = src.Slice(srcXXXX.Length * 16);
@@ -387,12 +387,12 @@ namespace $rootnamespace$
 
             if (Vector256.IsHardwareAccelerated && Vector256<float>.IsSupported)
             {
-                var srcXXXX = MMARSHALL.Cast<byte, __PackedBytes8>(src);
-                var dstXXXX = MMARSHALL.Cast<float, Vector256<float>>(dst);
+                var srcXXXX = _MMARSHALL.Cast<byte, __PackedBytes8>(src);
+                var dstXXXX = _MMARSHALL.Cast<float, Vector256<float>>(dst);
                 var mulXXXX = Vector256.Create(mul);
 
-                ref var srcPtr = ref MMARSHALL.GetReference(srcXXXX);
-                ref var dstPtr = ref MMARSHALL.GetReference(dstXXXX);
+                ref var srcPtr = ref _MMARSHALL.GetReference(srcXXXX);
+                ref var dstPtr = ref _MMARSHALL.GetReference(dstXXXX);
 
                 Vector256<int> uuuu = default;
 
@@ -401,8 +401,8 @@ namespace $rootnamespace$
                     uuuu = Vector256.Create(srcPtr.A, srcPtr.B, srcPtr.C, srcPtr.D, srcPtr.E, srcPtr.F, srcPtr.G, srcPtr.H);
                     dstPtr = Vector256.ConvertToSingle(uuuu) * mulXXXX;
 
-                    srcPtr = ref UNSAFE.Add(ref srcPtr, 1);
-                    dstPtr = ref UNSAFE.Add(ref dstPtr, 1);
+                    srcPtr = ref _UNSAFE.Add(ref srcPtr, 1);
+                    dstPtr = ref _UNSAFE.Add(ref dstPtr, 1);
                 }
 
                 src = src.Slice(srcXXXX.Length * 8);
@@ -413,12 +413,12 @@ namespace $rootnamespace$
 
             if (Vector128.IsHardwareAccelerated && Vector128<float>.IsSupported)
             {
-                var srcXXXX = MMARSHALL.Cast<byte, __PackedBytes4>(src);
-                var dstXXXX = MMARSHALL.Cast<float, Vector128<float>>(dst);
+                var srcXXXX = _MMARSHALL.Cast<byte, __PackedBytes4>(src);
+                var dstXXXX = _MMARSHALL.Cast<float, Vector128<float>>(dst);
                 var mulXXXX = Vector128.Create(mul);
 
-                ref var srcPtr = ref MMARSHALL.GetReference(srcXXXX);
-                ref var dstPtr = ref MMARSHALL.GetReference(dstXXXX);
+                ref var srcPtr = ref _MMARSHALL.GetReference(srcXXXX);
+                ref var dstPtr = ref _MMARSHALL.GetReference(dstXXXX);
 
                 Vector128<int> uuuu = default;
 
@@ -427,8 +427,8 @@ namespace $rootnamespace$
                     uuuu = Vector128.Create(srcPtr.A, srcPtr.B, srcPtr.C, srcPtr.D);
                     dstPtr = Vector128.ConvertToSingle(uuuu) * mulXXXX;
 
-                    srcPtr = ref UNSAFE.Add(ref srcPtr, 1);
-                    dstPtr = ref UNSAFE.Add(ref dstPtr, 1);
+                    srcPtr = ref _UNSAFE.Add(ref srcPtr, 1);
+                    dstPtr = ref _UNSAFE.Add(ref dstPtr, 1);
                 }
 
                 src = src.Slice(srcXXXX.Length * 4);
@@ -444,7 +444,7 @@ namespace $rootnamespace$
                 dst[i] = src[i] * mul;
             }
         }
-        public static void ScaledMultiplyAddTo(this SRCBYTES src, float mul, float add, DSTX dst)
+        public static void ScaledMultiplyAddTo(this _SRCBYTES src, float mul, float add, _DSTX dst)
         {
             // https://github.com/dotnet/runtime/issues/103756#issuecomment-2180747248            
 
@@ -462,15 +462,15 @@ namespace $rootnamespace$
 
             if (Vector512.IsHardwareAccelerated && Vector512<float>.IsSupported)
             {
-                var srcXXXX = MMARSHALL.Cast<byte, __PackedBytes16>(src);
-                var dstXXXX = MMARSHALL.Cast<float, Vector512<float>>(dst);
+                var srcXXXX = _MMARSHALL.Cast<byte, __PackedBytes16>(src);
+                var dstXXXX = _MMARSHALL.Cast<float, Vector512<float>>(dst);
                 var mulXXXX = Vector512.Create(mul);
                 var addXXXX = Vector512.Create(add);
 
                 for (int i = 0; i < dstXXXX.Length; ++i)
                 {
-                    ref var srcPtr = ref MMARSHALL.GetReference(srcXXXX.Slice(i));
-                    ref var dstPtr = ref MMARSHALL.GetReference(dstXXXX.Slice(i));
+                    ref var srcPtr = ref _MMARSHALL.GetReference(srcXXXX.Slice(i));
+                    ref var dstPtr = ref _MMARSHALL.GetReference(dstXXXX.Slice(i));
 
                     var uuuu = Vector512.Create(srcPtr.A, srcPtr.B, srcPtr.C, srcPtr.D, srcPtr.E, srcPtr.F, srcPtr.G, srcPtr.H, srcPtr.I, srcPtr.J, srcPtr.K, srcPtr.L, srcPtr.M, srcPtr.N, srcPtr.O, srcPtr.P);
                     dstPtr = Vector512.ConvertToSingle(uuuu) * mulXXXX + addXXXX;
@@ -484,13 +484,13 @@ namespace $rootnamespace$
 
             if (Vector256.IsHardwareAccelerated && Vector256<float>.IsSupported)
             {
-                var srcXXXX = MMARSHALL.Cast<byte, __PackedBytes8>(src);
-                var dstXXXX = MMARSHALL.Cast<float, Vector256<float>>(dst);
+                var srcXXXX = _MMARSHALL.Cast<byte, __PackedBytes8>(src);
+                var dstXXXX = _MMARSHALL.Cast<float, Vector256<float>>(dst);
                 var mulXXXX = Vector256.Create(mul);
                 var addXXXX = Vector256.Create(add);
 
-                ref var srcPtr = ref MMARSHALL.GetReference(srcXXXX);
-                ref var dstPtr = ref MMARSHALL.GetReference(dstXXXX);
+                ref var srcPtr = ref _MMARSHALL.GetReference(srcXXXX);
+                ref var dstPtr = ref _MMARSHALL.GetReference(dstXXXX);
 
                 Vector256<int> uuuu = default;
 
@@ -499,8 +499,8 @@ namespace $rootnamespace$
                     uuuu = Vector256.Create(srcPtr.A, srcPtr.B, srcPtr.C, srcPtr.D, srcPtr.E, srcPtr.F, srcPtr.G, srcPtr.H);
                     dstPtr = Vector256.ConvertToSingle(uuuu) * mulXXXX + addXXXX;
 
-                    srcPtr = ref UNSAFE.Add(ref srcPtr, 1);
-                    dstPtr = ref UNSAFE.Add(ref dstPtr, 1);
+                    srcPtr = ref _UNSAFE.Add(ref srcPtr, 1);
+                    dstPtr = ref _UNSAFE.Add(ref dstPtr, 1);
                 }
 
                 src = src.Slice(srcXXXX.Length * 8);
@@ -511,13 +511,13 @@ namespace $rootnamespace$
 
             if (Vector128.IsHardwareAccelerated && Vector128<float>.IsSupported)
             {
-                var srcXXXX = MMARSHALL.Cast<byte, __PackedBytes4>(src);
-                var dstXXXX = MMARSHALL.Cast<float, Vector128<float>>(dst);
+                var srcXXXX = _MMARSHALL.Cast<byte, __PackedBytes4>(src);
+                var dstXXXX = _MMARSHALL.Cast<float, Vector128<float>>(dst);
                 var mulXXXX = Vector128.Create(mul);
                 var addXXXX = Vector128.Create(add);
 
-                ref var srcPtr = ref MMARSHALL.GetReference(srcXXXX);
-                ref var dstPtr = ref MMARSHALL.GetReference(dstXXXX);
+                ref var srcPtr = ref _MMARSHALL.GetReference(srcXXXX);
+                ref var dstPtr = ref _MMARSHALL.GetReference(dstXXXX);
 
                 Vector128<int> uuuu = default;
 
@@ -526,8 +526,8 @@ namespace $rootnamespace$
                     uuuu = Vector128.Create(srcPtr.A, srcPtr.B, srcPtr.C, srcPtr.D);
                     dstPtr = Vector128.ConvertToSingle(uuuu) * mulXXXX + addXXXX;
 
-                    srcPtr = ref UNSAFE.Add(ref srcPtr, 1);
-                    dstPtr = ref UNSAFE.Add(ref dstPtr, 1);
+                    srcPtr = ref _UNSAFE.Add(ref srcPtr, 1);
+                    dstPtr = ref _UNSAFE.Add(ref dstPtr, 1);
                 }
 
                 src = src.Slice(srcXXXX.Length * 4);
@@ -543,7 +543,7 @@ namespace $rootnamespace$
                 dst[i] = src[i] * mul + add;
             }
         }
-        public static void ScaledMultiplyAddTo(this SRCBYTES src, XYZ mul, XYZ add, DSTXYZ dst)
+        public static void ScaledMultiplyAddTo(this _SRCBYTES src, _XYZ mul, _XYZ add, _DSTXYZ dst)
         {
             // https://github.com/dotnet/runtime/issues/103756#issuecomment-2180747248
 
@@ -551,7 +551,7 @@ namespace $rootnamespace$
 
             if (mul.X == mul.Y && mul.X == mul.Z && add.X == add.Y && add.X == add.Z)
             {
-                ScaledMultiplyAddTo(src, mul.X, add.X, MMARSHALL.Cast<XYZ, float>(dst));
+                ScaledMultiplyAddTo(src, mul.X, add.X, _MMARSHALL.Cast<_XYZ, float>(dst));
                 return;
             }
 
@@ -561,13 +561,13 @@ namespace $rootnamespace$
 
             if (Vector256.IsHardwareAccelerated && Vector256<float>.IsSupported)
             {
-                var srcXXXX = MMARSHALL.Cast<byte, __PackedBytes8>(src);
-                var dstXXXX = MMARSHALL.Cast<XYZ, __Vector3x256>(dst);
+                var srcXXXX = _MMARSHALL.Cast<byte, __PackedBytes8>(src);
+                var dstXXXX = _MMARSHALL.Cast<_XYZ, __Vector3x256>(dst);
                 var mulXXXX = __Vector3x256.Repeat(mul);
                 var addXXXX = __Vector3x256.Repeat(add);
 
-                ref var srcPtr = ref MMARSHALL.GetReference(srcXXXX);
-                ref var dstPtr = ref MMARSHALL.GetReference(dstXXXX);
+                ref var srcPtr = ref _MMARSHALL.GetReference(srcXXXX);
+                ref var dstPtr = ref _MMARSHALL.GetReference(dstXXXX);
 
                 Vector256<int> uuuu = default;
 
@@ -575,17 +575,17 @@ namespace $rootnamespace$
                 {
                     uuuu = Vector256.Create(srcPtr.A, srcPtr.B, srcPtr.C, srcPtr.D, srcPtr.E, srcPtr.F, srcPtr.G, srcPtr.H);
                     dstPtr.X = Vector256.ConvertToSingle(uuuu) * mulXXXX.X + addXXXX.X;
-                    srcPtr = ref UNSAFE.Add(ref srcPtr, 1);
+                    srcPtr = ref _UNSAFE.Add(ref srcPtr, 1);
 
                     uuuu = Vector256.Create(srcPtr.A, srcPtr.B, srcPtr.C, srcPtr.D, srcPtr.E, srcPtr.F, srcPtr.G, srcPtr.H);
                     dstPtr.Y = Vector256.ConvertToSingle(uuuu) * mulXXXX.Y + addXXXX.Y;
-                    srcPtr = ref UNSAFE.Add(ref srcPtr, 1);
+                    srcPtr = ref _UNSAFE.Add(ref srcPtr, 1);
 
                     uuuu = Vector256.Create(srcPtr.A, srcPtr.B, srcPtr.C, srcPtr.D, srcPtr.E, srcPtr.F, srcPtr.G, srcPtr.H);
                     dstPtr.Z = Vector256.ConvertToSingle(uuuu) * mulXXXX.Z + addXXXX.Z;
-                    srcPtr = ref UNSAFE.Add(ref srcPtr, 1);
+                    srcPtr = ref _UNSAFE.Add(ref srcPtr, 1);
 
-                    dstPtr = ref UNSAFE.Add(ref dstPtr, 1);
+                    dstPtr = ref _UNSAFE.Add(ref dstPtr, 1);
                 }
 
                 src = src.Slice(dstXXXX.Length * 8 * 3);
@@ -596,13 +596,13 @@ namespace $rootnamespace$
             
             if (Vector128.IsHardwareAccelerated && Vector128<float>.IsSupported)
             {
-                var srcXXXX = MMARSHALL.Cast<byte, __PackedBytes4>(src);
-                var dstXXXX = MMARSHALL.Cast<XYZ, __Vector3x128>(dst);
+                var srcXXXX = _MMARSHALL.Cast<byte, __PackedBytes4>(src);
+                var dstXXXX = _MMARSHALL.Cast<_XYZ, __Vector3x128>(dst);
                 var mulXXXX = __Vector3x128.Repeat(mul);
                 var addXXXX = __Vector3x128.Repeat(add);
 
-                ref var srcPtr = ref MMARSHALL.GetReference(srcXXXX);
-                ref var dstPtr = ref MMARSHALL.GetReference(dstXXXX);
+                ref var srcPtr = ref _MMARSHALL.GetReference(srcXXXX);
+                ref var dstPtr = ref _MMARSHALL.GetReference(dstXXXX);
 
                 Vector128<int> uuuu = default;
 
@@ -610,17 +610,17 @@ namespace $rootnamespace$
                 {
                     uuuu = Vector128.Create(srcPtr.A, srcPtr.B, srcPtr.C, srcPtr.D);
                     dstPtr.X = Vector128.ConvertToSingle(uuuu) * mulXXXX.X + addXXXX.X;
-                    srcPtr = ref UNSAFE.Add(ref srcPtr, 1);
+                    srcPtr = ref _UNSAFE.Add(ref srcPtr, 1);
 
                     uuuu = Vector128.Create(srcPtr.A, srcPtr.B, srcPtr.C, srcPtr.D);
                     dstPtr.Y = Vector128.ConvertToSingle(uuuu) * mulXXXX.Y + addXXXX.Y;
-                    srcPtr = ref UNSAFE.Add(ref srcPtr, 1);
+                    srcPtr = ref _UNSAFE.Add(ref srcPtr, 1);
 
                     uuuu = Vector128.Create(srcPtr.A, srcPtr.B, srcPtr.C, srcPtr.D);
                     dstPtr.Z = Vector128.ConvertToSingle(uuuu) * mulXXXX.Z + addXXXX.Z;
-                    srcPtr = ref UNSAFE.Add(ref srcPtr, 1);
+                    srcPtr = ref _UNSAFE.Add(ref srcPtr, 1);
 
-                    dstPtr = ref UNSAFE.Add(ref dstPtr, 1);
+                    dstPtr = ref _UNSAFE.Add(ref dstPtr, 1);
                 }
 
                 src = src.Slice(dstXXXX.Length * 4 * 3);
@@ -633,10 +633,10 @@ namespace $rootnamespace$
 
             for(int i=0; i < dst.Length; ++i)
             {
-                dst[i] = new XYZ(src[i * 3 + 0], src[i * 3 + 1], src[i * 3 + 2]) * mul + add;
+                dst[i] = new _XYZ(src[i * 3 + 0], src[i * 3 + 1], src[i * 3 + 2]) * mul + add;
             }            
         }
-        public static void ScaledMultiplyAddTo(this SRCBYTES src, XYZW mul, XYZW add, DSTXYZW dst)
+        public static void ScaledMultiplyAddTo(this _SRCBYTES src, _XYZW mul, _XYZW add, _DSTXYZW dst)
         {
             // https://github.com/dotnet/runtime/issues/103756#issuecomment-2180747248
 
@@ -644,7 +644,7 @@ namespace $rootnamespace$
 
             if (mul.X == mul.Y && mul.X == mul.Z && mul.X == mul.W && add.X == add.Y && add.X == add.Z && add.X == add.W)
             {
-                ScaledMultiplyAddTo(src, mul.X, add.X, MMARSHALL.Cast<XYZW, float>(dst));
+                ScaledMultiplyAddTo(src, mul.X, add.X, _MMARSHALL.Cast<_XYZW, float>(dst));
                 return;
             }
 
@@ -654,13 +654,13 @@ namespace $rootnamespace$
 
             if (Vector256.IsHardwareAccelerated && Vector256<float>.IsSupported)
             {
-                var srcXXXX = MMARSHALL.Cast<byte, __PackedBytes8>(src);
-                var dstXXXX = MMARSHALL.Cast<XYZW, Vector256<float>>(dst);
+                var srcXXXX = _MMARSHALL.Cast<byte, __PackedBytes8>(src);
+                var dstXXXX = _MMARSHALL.Cast<_XYZW, Vector256<float>>(dst);
                 var mulXXXX = Vector256.Create(Vector128.AsVector128(mul), Vector128.AsVector128(mul));
                 var addXXXX = Vector256.Create(Vector128.AsVector128(add), Vector128.AsVector128(add));
 
-                ref var srcPtr = ref MMARSHALL.GetReference(srcXXXX);
-                ref var dstPtr = ref MMARSHALL.GetReference(dstXXXX);
+                ref var srcPtr = ref _MMARSHALL.GetReference(srcXXXX);
+                ref var dstPtr = ref _MMARSHALL.GetReference(dstXXXX);
 
                 Vector256<int> uuuu = default;
 
@@ -669,8 +669,8 @@ namespace $rootnamespace$
                     uuuu = Vector256.Create(srcPtr.A, srcPtr.B, srcPtr.C, srcPtr.D, srcPtr.E, srcPtr.F, srcPtr.G, srcPtr.H);
                     dstPtr = Vector256.ConvertToSingle(uuuu) * mulXXXX + addXXXX;
 
-                    srcPtr = ref UNSAFE.Add(ref srcPtr, 1);
-                    dstPtr = ref UNSAFE.Add(ref dstPtr, 1);
+                    srcPtr = ref _UNSAFE.Add(ref srcPtr, 1);
+                    dstPtr = ref _UNSAFE.Add(ref dstPtr, 1);
                 }
 
                 src = src.Slice(srcXXXX.Length * 8);
@@ -681,13 +681,13 @@ namespace $rootnamespace$
 
             if (Vector128.IsHardwareAccelerated && Vector128<float>.IsSupported)
             {
-                var srcXXXX = MMARSHALL.Cast<byte, __PackedBytes4>(src);
-                var dstXXXX = MMARSHALL.Cast<XYZW, Vector128<float>>(dst);
+                var srcXXXX = _MMARSHALL.Cast<byte, __PackedBytes4>(src);
+                var dstXXXX = _MMARSHALL.Cast<_XYZW, Vector128<float>>(dst);
                 var mulXXXX = Vector128.AsVector128(mul);
                 var addXXXX = Vector128.AsVector128(add);
 
-                ref var srcPtr = ref MMARSHALL.GetReference(srcXXXX);
-                ref var dstPtr = ref MMARSHALL.GetReference(dstXXXX);
+                ref var srcPtr = ref _MMARSHALL.GetReference(srcXXXX);
+                ref var dstPtr = ref _MMARSHALL.GetReference(dstXXXX);
 
                 Vector128<int> uuuu = default;
 
@@ -696,8 +696,8 @@ namespace $rootnamespace$
                     uuuu = Vector128.Create(srcPtr.A, srcPtr.B, srcPtr.C, srcPtr.D);
                     dstPtr = Vector128.ConvertToSingle(uuuu) * mulXXXX + addXXXX;
 
-                    srcPtr = ref UNSAFE.Add(ref srcPtr, 1);
-                    dstPtr = ref UNSAFE.Add(ref dstPtr, 1);
+                    srcPtr = ref _UNSAFE.Add(ref srcPtr, 1);
+                    dstPtr = ref _UNSAFE.Add(ref dstPtr, 1);
                 }
 
                 src = src.Slice(srcXXXX.Length * 4);
@@ -710,7 +710,7 @@ namespace $rootnamespace$
 
             for (int i = 0; i < dst.Length; ++i)
             {
-                dst[i] = new XYZW(src[i * 4 + 0], src[i * 4 + 1], src[i * 4 + 2], src[i * 4 + 3]) * mul + add;
+                dst[i] = new _XYZW(src[i * 4 + 0], src[i * 4 + 1], src[i * 4 + 2], src[i * 4 + 3]) * mul + add;
             }
         }        
         
