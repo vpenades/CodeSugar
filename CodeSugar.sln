@@ -51,6 +51,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeSugar.Linq.Sources", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeSugar.Tensors.Sources", "src\CodeSugar.Tensors.Sources\CodeSugar.Tensors.Sources.csproj", "{9B618023-A985-4CD9-8DB6-6EA2BEB8C758}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeSugar.Progress.Log", "src\CodeSugar.Progress.Log\CodeSugar.Progress.Log.csproj", "{9BAA33A3-AA68-4189-8BB9-53DC0224E1D7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,10 @@ Global
 		{9B618023-A985-4CD9-8DB6-6EA2BEB8C758}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B618023-A985-4CD9-8DB6-6EA2BEB8C758}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B618023-A985-4CD9-8DB6-6EA2BEB8C758}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BAA33A3-AA68-4189-8BB9-53DC0224E1D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BAA33A3-AA68-4189-8BB9-53DC0224E1D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BAA33A3-AA68-4189-8BB9-53DC0224E1D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BAA33A3-AA68-4189-8BB9-53DC0224E1D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -122,6 +128,7 @@ Global
 		{8030BE50-4FA3-4DD8-BA20-5C0001CBC2FC} = {36A264B8-92D1-48DD-8054-115FF0856E50}
 		{ECBB5551-D387-4A29-A739-FDE4B6DE902D} = {36A264B8-92D1-48DD-8054-115FF0856E50}
 		{9B618023-A985-4CD9-8DB6-6EA2BEB8C758} = {36A264B8-92D1-48DD-8054-115FF0856E50}
+		{9BAA33A3-AA68-4189-8BB9-53DC0224E1D7} = {36A264B8-92D1-48DD-8054-115FF0856E50}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {12BE1319-4F6D-4472-82CA-678A7F50C6B4}
