@@ -25,6 +25,20 @@ namespace $rootnamespace$
 {
     internal static partial class CodeSugarForNumerics
     {
+        private static float _GetLerpAmount(float distance, float deadZone, float smoothDistance)
+        {
+            System.Diagnostics.Debug.Assert(distance >= 0, "distance must not be negative");
+            System.Diagnostics.Debug.Assert(deadZone >= 0, "deadZone must not be negative");
+            System.Diagnostics.Debug.Assert(smoothDistance > deadZone, "smoothDistance must larger than deadZone");
+
+            distance = Math.Max(0, distance - deadZone);
+
+            smoothDistance -= deadZone;
+            distance = Math.Min(smoothDistance, distance) / smoothDistance;
+            return distance;
+        }
+
+
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
         public static _SCALAR Lerp(this (_SCALAR A, _SCALAR B) pair, float bamount)
@@ -39,14 +53,10 @@ namespace $rootnamespace$
         [MethodImpl(AGRESSIVE)]
         public static _SCALAR Lerp(this (_SCALAR? A, _SCALAR B) pair, float deadZone, float smoothDistance)
         {
-            if (!pair.A.HasValue || smoothDistance <= 0) return pair.B;
+            if (!pair.A.HasValue || smoothDistance <= deadZone) return pair.B;
 
-            float distance = Math.Abs(pair.A.Value - pair.B);
-
-            distance = Math.Max(0, distance - deadZone);
-            distance = Math.Min(smoothDistance, distance) / smoothDistance;
-
-            return Lerp(pair, distance);
+            var amount = _GetLerpAmount(Math.Abs(pair.A.Value - pair.B), deadZone, smoothDistance);
+            return Lerp(pair, amount);
         }
 
         [DebuggerStepThrough]
@@ -65,14 +75,10 @@ namespace $rootnamespace$
         [MethodImpl(AGRESSIVE)]
         public static _VECTOR2 Lerp(this (_VECTOR2? A, _VECTOR2 B) pair, float deadZone, float smoothDistance)
         {
-            if (!pair.A.HasValue || smoothDistance <= 0) return pair.B;
+            if (!pair.A.HasValue || smoothDistance <= deadZone) return pair.B;
 
-            float distance = _VECTOR2.Distance(pair.A.Value , pair.B);
-
-            distance = Math.Max(0, distance - deadZone);
-            distance = Math.Min(smoothDistance, distance) / smoothDistance;
-
-            return Lerp(pair, distance);
+            var amount = _GetLerpAmount(_VECTOR2.Distance(pair.A.Value, pair.B), deadZone, smoothDistance);
+            return Lerp(pair, amount);
         }
 
         [DebuggerStepThrough]
@@ -88,14 +94,10 @@ namespace $rootnamespace$
         [MethodImpl(AGRESSIVE)]
         public static _VECTOR3 Lerp(this (_VECTOR3? A, _VECTOR3 B) pair, float deadZone, float smoothDistance)
         {
-            if (!pair.A.HasValue || smoothDistance <= 0) return pair.B;
+            if (!pair.A.HasValue || smoothDistance <= deadZone) return pair.B;
 
-            float distance = _VECTOR3.Distance(pair.A.Value, pair.B);
-
-            distance = Math.Max(0, distance - deadZone);
-            distance = Math.Min(smoothDistance, distance) / smoothDistance;
-
-            return Lerp(pair, distance);
+            var amount = _GetLerpAmount(_VECTOR3.Distance(pair.A.Value, pair.B), deadZone, smoothDistance);
+            return Lerp(pair, amount);
         }
 
         [DebuggerStepThrough]
@@ -111,15 +113,11 @@ namespace $rootnamespace$
         [MethodImpl(AGRESSIVE)]
         public static _VECTOR4 Lerp(this (_VECTOR4? A, _VECTOR4 B) pair, float deadZone, float smoothDistance)
         {
-            if (!pair.A.HasValue || smoothDistance <= 0) return pair.B;
-
-            float distance = _VECTOR4.Distance(pair.A.Value, pair.B);
-
-            distance = Math.Max(0, distance - deadZone);
-            distance = Math.Min(smoothDistance, distance) / smoothDistance;
-
-            return Lerp(pair, distance);
-        }
+            if (!pair.A.HasValue || smoothDistance <= deadZone) return pair.B;
+            
+            var amount = _GetLerpAmount(_VECTOR4.Distance(pair.A.Value, pair.B), deadZone, smoothDistance);
+            return Lerp(pair, amount);
+        }        
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
