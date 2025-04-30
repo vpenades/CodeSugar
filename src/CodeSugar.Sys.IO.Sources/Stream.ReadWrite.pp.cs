@@ -100,9 +100,9 @@ namespace $rootnamespace$
 
         public static async Task<IReadOnlyList<string>> ReadAllLinesAsync(this Func<Task<_STREAM>> openStream, CancellationToken ctoken, Encoding encoding = null)
         {
-            using (var s = await openStream())
+            using (var s = await openStream().ConfigureAwait(true))
             {
-                return await ReadAllLinesAsync(s, ctoken, encoding);
+                return await ReadAllLinesAsync(s, ctoken, encoding).ConfigureAwait(true);
             }
         }
 
@@ -113,7 +113,7 @@ namespace $rootnamespace$
                 string line;
                 var lines = new List<string>();
 
-                while ((line = await sr.ReadLineAsync()) != null)
+                while ((line = await sr.ReadLineAsync().ConfigureAwait(true)) != null)
                 {
                     lines.Add(line);
                 }
@@ -234,9 +234,9 @@ namespace $rootnamespace$
 
         public static async Task<string> ReadAllTextAsync(this Func<Task<_STREAM>> openStream, CancellationToken ctoken, Encoding encoding = null)
         {
-            using (var s = await openStream())
+            using (var s = await openStream().ConfigureAwait(true))
             {
-                return await ReadAllTextAsync(s, ctoken, encoding);
+                return await ReadAllTextAsync(s, ctoken, encoding).ConfigureAwait(true);
             }
         }
 
@@ -246,7 +246,7 @@ namespace $rootnamespace$
 
             using (var sr = CreateTextReader(stream, true, encoding))
             {
-                return await sr.ReadToEndAsync();
+                return await sr.ReadToEndAsync().ConfigureAwait(true);
             }
         }
 
@@ -319,8 +319,8 @@ namespace $rootnamespace$
 
             switch(bytes)
             {
-                case Byte[] array: await stream.WriteAsync(array, 0, array.Length, ctoken).ConfigureAwait(false); break;
-                case _BYTESSEGMENT segment: await stream.WriteAsync(segment.Array, segment.Offset, segment.Count, ctoken).ConfigureAwait(false); break;
+                case Byte[] array: await stream.WriteAsync(array, 0, array.Length, ctoken).ConfigureAwait(true); break;
+                case _BYTESSEGMENT segment: await stream.WriteAsync(segment.Array, segment.Offset, segment.Count, ctoken).ConfigureAwait(true); break;
 
                 default:                    
                     var buf = new Byte[8192];
@@ -329,7 +329,7 @@ namespace $rootnamespace$
                     {
                         var len = Math.Min(buf.Length, bytes.Count - pos);
                         for (int i = 0; i < len; ++i) buf[i] = bytes[pos + i];
-                        await stream.WriteAsync(buf, 0, len, ctoken).ConfigureAwait(false);
+                        await stream.WriteAsync(buf, 0, len, ctoken).ConfigureAwait(true);
                         pos += buf.Length;
                     }
                     break;
@@ -338,9 +338,9 @@ namespace $rootnamespace$
 
         public static async Task<_BYTESSEGMENT> ReadAllBytesAsync(this Func<Task<_STREAM>> openStream, CancellationToken ctoken)
         {
-            using (var s = await openStream())
+            using (var s = await openStream().ConfigureAwait(true))
             {
-                return await s.ReadAllBytesAsync(ctoken);
+                return await s.ReadAllBytesAsync(ctoken).ConfigureAwait(true);
             }
         }
 
@@ -445,7 +445,7 @@ namespace $rootnamespace$
 
                 using (var m = new System.IO.MemoryStream())
                 {
-                    await stream.CopyToAsync(m, ctoken).ConfigureAwait(false);
+                    await stream.CopyToAsync(m, ctoken).ConfigureAwait(true);
                     return m.TryGetBuffer(out var buffer)
                         ? buffer
                         : m.ToArray();
@@ -459,7 +459,7 @@ namespace $rootnamespace$
             {
                 var memory = new Memory<Byte>(bytes, index, count);
 
-                int n = await stream.ReadAsync(memory, ctoken).ConfigureAwait(false);
+                int n = await stream.ReadAsync(memory, ctoken).ConfigureAwait(true);
                 if (n == 0) throw new System.IO.EndOfStreamException();
 
                 index += n;

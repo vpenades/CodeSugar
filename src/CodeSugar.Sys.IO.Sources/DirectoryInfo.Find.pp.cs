@@ -37,7 +37,7 @@ namespace $rootnamespace$
 
         public static async Task<IReadOnlyList<_DINFO>> FindAllDirectoriesAsync(this _DINFO directoryInfo, _DIRECTORYFILTER resultFilter, _SEARCHOPTION option, _CTOKEN ctoken, _PPROGRESS percentProgress = null)
         {
-            return await FindAllDirectoriesAsync(directoryInfo, resultFilter, d=> option == _SEARCHOPTION.AllDirectories, ctoken, percentProgress).ConfigureAwait(false);
+            return await FindAllDirectoriesAsync(directoryInfo, resultFilter, d=> option == _SEARCHOPTION.AllDirectories, ctoken, percentProgress).ConfigureAwait(true);
         }
         public static async Task<IReadOnlyList<_DINFO>> FindAllDirectoriesAsync(this _DINFO directoryInfo, _DIRECTORYFILTER resultFilter, _DIRECTORYFILTER subdirFilter, _CTOKEN ctoken, _PPROGRESS percentProgress = null)
         {
@@ -49,7 +49,7 @@ namespace $rootnamespace$
 
             var context = new __DirectoryScanStateSlice(100, percentProgress, ctoken);
 
-            await _findAsync(directoryInfo, context).ConfigureAwait(false);
+            await _findAsync(directoryInfo, context).ConfigureAwait(true);
 
             context.ReportCompleted();
 
@@ -59,7 +59,7 @@ namespace $rootnamespace$
             {
                 if (dinfo == null || !dinfo.Exists) return;                
 
-                await slice.UpdateAsync(dinfo).ConfigureAwait(false);
+                await slice.UpdateAsync(dinfo).ConfigureAwait(true);
 
                 List<_DINFO> subdirs = null;
 
@@ -78,7 +78,7 @@ namespace $rootnamespace$
 
                 for (int i = 0; i < subdirs.Count; ++i)
                 {
-                    await _findAsync(subdirs[i], slice.Next(i,subdirs.Count)).ConfigureAwait(false);
+                    await _findAsync(subdirs[i], slice.Next(i,subdirs.Count)).ConfigureAwait(true);
                 }
             }            
         }
@@ -86,7 +86,7 @@ namespace $rootnamespace$
 
         public static async Task<_DINFO> FindFirstDirectoryAsync(this _DINFO directoryInfo, _DIRECTORYFILTER resultFilter, _SEARCHOPTION option, _CTOKEN ctoken, _PPROGRESS percentProgress = null)
         {
-            return await FindFirstDirectoryAsync(directoryInfo, resultFilter, d => option == _SEARCHOPTION.AllDirectories, ctoken, percentProgress).ConfigureAwait(false);
+            return await FindFirstDirectoryAsync(directoryInfo, resultFilter, d => option == _SEARCHOPTION.AllDirectories, ctoken, percentProgress).ConfigureAwait(true);
         }
         public static async Task<_DINFO> FindFirstDirectoryAsync(this _DINFO directoryInfo, _DIRECTORYFILTER resultFilter, _DIRECTORYFILTER subdirFilter, _CTOKEN ctoken, _PPROGRESS percentProgress = null)
         {
@@ -96,7 +96,7 @@ namespace $rootnamespace$
 
             var context = new __DirectoryScanStateSlice(100, percentProgress, ctoken);
 
-            var result = await _findAsync(directoryInfo, context).ConfigureAwait(false);
+            var result = await _findAsync(directoryInfo, context).ConfigureAwait(true);
 
             context.ReportCompleted();
 
@@ -106,7 +106,7 @@ namespace $rootnamespace$
             {
                 if (dinfo == null || !dinfo.Exists) return null;                
 
-                await slice.UpdateAsync(dinfo).ConfigureAwait(false);
+                await slice.UpdateAsync(dinfo).ConfigureAwait(true);
 
                 List<_DINFO> subdirs = null;
 
@@ -125,7 +125,7 @@ namespace $rootnamespace$
 
                 for (int i = 0; i < subdirs.Count; ++i)
                 {
-                    var rr = await _findAsync(subdirs[i], slice.Next(i,subdirs.Count)).ConfigureAwait(false);
+                    var rr = await _findAsync(subdirs[i], slice.Next(i,subdirs.Count)).ConfigureAwait(true);
                     if (rr != null) return rr;
                 }
 
@@ -136,7 +136,7 @@ namespace $rootnamespace$
 
         public static async Task<IReadOnlyList<_FINFO>> FindAllFilesAsync(this _DINFO directoryInfo, _FILEFILTER resultFilter, _SEARCHOPTION option, _CTOKEN ctoken, _PPROGRESS percentProgress = null)
         {
-            return await FindAllFilesAsync(directoryInfo, resultFilter, d => option == _SEARCHOPTION.AllDirectories, ctoken, percentProgress).ConfigureAwait(false);
+            return await FindAllFilesAsync(directoryInfo, resultFilter, d => option == _SEARCHOPTION.AllDirectories, ctoken, percentProgress).ConfigureAwait(true);
         }
         public static async Task<IReadOnlyList<_FINFO>> FindAllFilesAsync(this _DINFO directoryInfo, _FILEFILTER resultFilter, _DIRECTORYFILTER subdirFilter, _CTOKEN ctoken, _PPROGRESS percentProgress = null)
         {
@@ -148,7 +148,7 @@ namespace $rootnamespace$
 
             var context = new __DirectoryScanStateSlice(100, percentProgress, ctoken);
 
-            await _findAsync(directoryInfo, context).ConfigureAwait(false);
+            await _findAsync(directoryInfo, context).ConfigureAwait(true);
 
             context.ReportCompleted();
 
@@ -158,7 +158,7 @@ namespace $rootnamespace$
             {
                 if (dinfo == null || !dinfo.Exists) return;                
 
-                await slice.UpdateAsync(dinfo).ConfigureAwait(false);
+                await slice.UpdateAsync(dinfo).ConfigureAwait(true);
 
                 List<_DINFO> subdirs = null;
 
@@ -177,7 +177,7 @@ namespace $rootnamespace$
 
                 for (int i = 0; i < subdirs.Count; ++i)
                 {
-                    await _findAsync(subdirs[i], slice.Next(i,subdirs.Count)).ConfigureAwait(false);
+                    await _findAsync(subdirs[i], slice.Next(i,subdirs.Count)).ConfigureAwait(true);
                 }
             }            
         }
@@ -185,7 +185,7 @@ namespace $rootnamespace$
 
         public static async Task<_FINFO> FindFirstFileAsync(this _DINFO directoryInfo, _FILEFILTER resultFilter, _SEARCHOPTION option, _CTOKEN ctoken, _PPROGRESS percentProgress = null)
         {
-            return await FindFirstFileAsync(directoryInfo, resultFilter, d => option == _SEARCHOPTION.AllDirectories, ctoken, percentProgress).ConfigureAwait(false);
+            return await FindFirstFileAsync(directoryInfo, resultFilter, d => option == _SEARCHOPTION.AllDirectories, ctoken, percentProgress).ConfigureAwait(true);
         }
         public static async Task<_FINFO> FindFirstFileAsync(this _DINFO directoryInfo, _FILEFILTER resultFilter, _DIRECTORYFILTER subdirFilter, _CTOKEN ctoken, _PPROGRESS percentProgress = null)
         {
@@ -195,7 +195,7 @@ namespace $rootnamespace$
 
             var context = new __DirectoryScanStateSlice(100, percentProgress, ctoken);
 
-            var result = await _findAsync(directoryInfo, context).ConfigureAwait(false);
+            var result = await _findAsync(directoryInfo, context).ConfigureAwait(true);
 
             context.ReportCompleted();
 
@@ -205,7 +205,7 @@ namespace $rootnamespace$
             {
                 if (dinfo == null || !dinfo.Exists) return null;                
 
-                await slice.UpdateAsync(dinfo).ConfigureAwait(false);
+                await slice.UpdateAsync(dinfo).ConfigureAwait(true);
 
                 List<_DINFO> subdirs = null;
 
@@ -224,7 +224,7 @@ namespace $rootnamespace$
 
                 for (int i = 0; i < subdirs.Count; ++i)
                 {
-                    var rr = await _findAsync(subdirs[i], slice.Next(i,subdirs.Count)).ConfigureAwait(false);
+                    var rr = await _findAsync(subdirs[i], slice.Next(i,subdirs.Count)).ConfigureAwait(true);
                     if (rr != null) return rr;
                 }
 

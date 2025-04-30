@@ -76,7 +76,7 @@ namespace $rootnamespace$
             int totalRead = 0;
             while (totalRead < minimumBytes)
             {
-                int read = await stream.ReadAsync(buffer.Slice(totalRead), cancellationToken).ConfigureAwait(false);
+                int read = await stream.ReadAsync(buffer.Slice(totalRead), cancellationToken).ConfigureAwait(true);
                 if (read == 0)
                 {
                     if (throwOnEndOfStream)
