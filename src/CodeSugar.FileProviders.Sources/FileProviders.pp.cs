@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Diagnostics.CodeAnalysis;
 
 #nullable disable
 
@@ -15,9 +16,13 @@ namespace System.IO
 #else
 namespace $rootnamespace$
 #endif
-{    
-    internal static partial class CodeSugarForFileProviders    
+{
+    internal static partial class CodeSugarForFileProviders
     {
-        
+        [return: NotNull]
+        private static System.IO.MemoryStream _ToMemoryStream(ArraySegment<byte> segment)
+        {
+            return new MemoryStream(segment.Array ?? Array.Empty<byte>(), segment.Offset, segment.Count, false);
+        }
     }
 }

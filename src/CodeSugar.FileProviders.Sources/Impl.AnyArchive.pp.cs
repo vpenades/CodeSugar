@@ -35,6 +35,7 @@ namespace $rootnamespace$
         /// </summary>
         /// <param name="zipFactory">A lambda that will open a <see cref="ZipArchive"/> only when needed</param>
         /// <returns>A <see cref="_XPROVIDER"/>.</returns>
+        [return: NotNull]
         public static _XPROVIDER ToIfileProvider(this Func<ZipArchive> zipFactory)
         {
             if (zipFactory == null) return __NULLPROVIDER;
