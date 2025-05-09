@@ -136,7 +136,7 @@ namespace CodeSugar
 
             /*
             someDir // create a FileInfo with an ADS which also contains a ":" in the path.
-                .GetFile("readme.txt")
+                .GetFileInfo("readme.txt")
                 .TryGetAlternateDataStream("data.bin", out var someFile);
             */            
 
@@ -189,7 +189,7 @@ namespace CodeSugar
             var text = readme_txt.ReadAllText();
             Assert.That(text, Is.EqualTo("hello world"));
 
-            var file2 = readme_txt.Directory.GetFile("readme.txt");
+            var file2 = readme_txt.Directory.GetFileInfo("readme.txt");
 
             Assert.That(file2.Exists);
             // Assert.That(readme_txt.FullNameEquals(file2)); // must fix equality handling
@@ -215,24 +215,24 @@ namespace CodeSugar
             var dcomparer = MatchCasing.PlatformDefault.GetFullNameComparer<DirectoryInfo>();
 
             var tmp0 = new System.IO.DirectoryInfo("temp\\");
-            var tmp1 = tmp0.DefineDirectory("a", "..", ".", "b", "..");
+            var tmp1 = tmp0.DefineDirectoryInfo("a", "..", ".", "b", "..");
             Assert.That(dcomparer.Equals(tmp0, tmp1));
 
-            Assert.That(() => readme_txt.Directory.DefineFile(" abc"), Throws.Exception);
-            Assert.That(() => readme_txt.Directory.DefineFile("abc "), Throws.Exception);
-            Assert.That(() => readme_txt.Directory.DefineFile("abc ", "readme.txt"), Throws.Exception);
+            Assert.That(() => readme_txt.Directory.DefineFileInfo(" abc"), Throws.Exception);
+            Assert.That(() => readme_txt.Directory.DefineFileInfo("abc "), Throws.Exception);
+            Assert.That(() => readme_txt.Directory.DefineFileInfo("abc ", "readme.txt"), Throws.Exception);
 
-            Assert.That(() => readme_txt.Directory.DefineFile(".."), Throws.Exception);
-            Assert.That(() => readme_txt.Directory.DefineFile("."), Throws.Exception);            
-            Assert.That(() => readme_txt.Directory.DefineFile("/"), Throws.Exception);
+            Assert.That(() => readme_txt.Directory.DefineFileInfo(".."), Throws.Exception);
+            Assert.That(() => readme_txt.Directory.DefineFileInfo("."), Throws.Exception);            
+            Assert.That(() => readme_txt.Directory.DefineFileInfo("/"), Throws.Exception);
             
 
             if (IsWindowsPlatform)
             {
-                Assert.That(() => readme_txt.Directory.DefineFile(":"), Throws.Exception);
-                Assert.That(() => readme_txt.Directory.DefineFile("*"), Throws.Exception);
-                Assert.That(() => readme_txt.Directory.DefineFile("?"), Throws.Exception);
-                Assert.That(() => readme_txt.Directory.DefineFile("\\"), Throws.Exception);
+                Assert.That(() => readme_txt.Directory.DefineFileInfo(":"), Throws.Exception);
+                Assert.That(() => readme_txt.Directory.DefineFileInfo("*"), Throws.Exception);
+                Assert.That(() => readme_txt.Directory.DefineFileInfo("?"), Throws.Exception);
+                Assert.That(() => readme_txt.Directory.DefineFileInfo("\\"), Throws.Exception);
             }            
         }
 
@@ -278,8 +278,8 @@ namespace CodeSugar
 
             var testDir = new System.IO.DirectoryInfo(TestContext.CurrentContext.WorkDirectory);
 
-            var readme_txt_0 = testDir.UseFile("readme.txt");
-            var readme_txt_1 = testDir.UseFile("README.txt");
+            var readme_txt_0 = testDir.UseFileInfo("readme.txt");
+            var readme_txt_1 = testDir.UseFileInfo("README.txt");
 
             readme_txt_0.WriteAllText("lowercase");
             readme_txt_1.WriteAllText("uppercase");
@@ -361,7 +361,7 @@ namespace CodeSugar
         {
             using (var context = new AttachmentDirectory("tests"))
             {
-                var zpath = context.Directory.UseFile("test.zip");
+                var zpath = context.Directory.UseFileInfo("test.zip");
 
                 zpath.Delete();
 

@@ -35,11 +35,11 @@ namespace CodeSugar
 
         private static System.IO.DirectoryInfo _CreateMockup1()
         {
-            var baseDir = new System.IO.DirectoryInfo(TestContext.CurrentContext.WorkDirectory).UseDirectory("FileProviders");
+            var baseDir = new System.IO.DirectoryInfo(TestContext.CurrentContext.WorkDirectory).UseDirectoryInfo("FileProviders");
 
-            baseDir.DefineFile("file1.txt").WriteAllText("hello");
-            baseDir.DefineFile("file2.txt").WriteAllText("hello");
-            baseDir.UseDirectory("subdir1").DefineFile("file3.txt").WriteAllText("hello");
+            baseDir.DefineFileInfo("file1.txt").WriteAllText("hello");
+            baseDir.DefineFileInfo("file2.txt").WriteAllText("hello");
+            baseDir.UseDirectoryInfo("subdir1").DefineFileInfo("file3.txt").WriteAllText("hello");
 
             return baseDir;
         }
