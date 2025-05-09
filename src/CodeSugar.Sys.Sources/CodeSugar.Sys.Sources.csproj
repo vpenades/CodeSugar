@@ -41,11 +41,11 @@
   
 
   <ItemGroup Condition=" '$(TargetFramework)' != 'netstandard2.0' ">
-    <Compile Remove="Net20*.cs" />
+    <Compile Remove="**\Net20*.cs" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-    <None Include="Net20*.cs" />
+    <None Include="**\Net20*.cs" />
   </ItemGroup>
 
 </Project>
