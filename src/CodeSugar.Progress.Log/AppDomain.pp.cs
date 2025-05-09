@@ -35,7 +35,20 @@ namespace $rootnamespace$
             Console.SetOut(writer);
 
             return writer;
-        }        
+        }
+
+        public static IDisposable RedirectConsoleErrorToFile(this AppDomain appDomain, string filePath)
+        {
+            filePath = _GetAbolutePath(filePath, ".log");
+
+            // Create a StreamWriter to write to the file
+            var writer = new StreamWriter(filePath, true, Encoding.UTF8);
+
+            // Set the StreamWriter as the Console output
+            Console.SetError(writer);
+
+            return writer;
+        }
 
         public static void RedirectCrashLoggingToConsole(this AppDomain appDomain)
         {
@@ -86,7 +99,7 @@ namespace $rootnamespace$
         private static void _WriteCrashDump(string fileName, string report)
         {
             try { System.IO.File.AppendAllText(fileName, report); }
-            catch (Exception ex) { }
+            catch { }
         }
 
         private static string _GetAbolutePath(string filePath, string extension)
@@ -136,7 +149,7 @@ namespace $rootnamespace$
             {
                 return false;
             }
-            catch (Exception ex)
+            catch
             {                
                 return false;
             }
