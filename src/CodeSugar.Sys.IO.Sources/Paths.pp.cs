@@ -52,7 +52,7 @@ namespace $rootnamespace$
                 case _PATHCASING.CaseInsensitive: return StringComparer.OrdinalIgnoreCase;
                 case _PATHCASING.CaseSensitive: return StringComparer.Ordinal;
                 case _PATHCASING.PlatformDefault: return FileSystemStringComparer;
-                default: throw new ArgumentOutOfRangeException(casing.ToString(), nameof(casing));
+                default: throw new ArgumentOutOfRangeException(nameof(casing), casing.ToString());
             }
         }
 
@@ -63,7 +63,7 @@ namespace $rootnamespace$
                 case _PATHCASING.CaseInsensitive: return StringComparison.OrdinalIgnoreCase;
                 case _PATHCASING.CaseSensitive: return StringComparison.Ordinal;
                 case _PATHCASING.PlatformDefault: return FileSystemStringComparison;
-                default: throw new ArgumentOutOfRangeException(casing.ToString(), nameof(casing));
+                default: throw new ArgumentOutOfRangeException(nameof(casing), casing.ToString());
             }
         }
 

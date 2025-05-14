@@ -202,7 +202,7 @@ namespace $rootnamespace$
                     case _MATCHCASING.CaseInsensitive: return GetInstance(StringComparison.OrdinalIgnoreCase);
                     case _MATCHCASING.CaseSensitive: return GetInstance(StringComparison.Ordinal);
                     case _MATCHCASING.PlatformDefault: return GetInstance(FileSystemStringComparison);
-                    default: throw new ArgumentOutOfRangeException(casing.ToString(), nameof(casing));
+                    default: throw new ArgumentOutOfRangeException(nameof(casing), casing.ToString());
                 }
             }
 
