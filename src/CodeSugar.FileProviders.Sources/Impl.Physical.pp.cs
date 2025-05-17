@@ -154,7 +154,7 @@ namespace $rootnamespace$
 
             private void _WriteBytes(ArraySegment<Byte> bytes)
             {
-                using(var s = Info.OpenWrite())
+                using(var s = Info.Create())
                 {
                     if (bytes.Count > 0) s.Write(bytes.Array,bytes.Offset,bytes.Count);
                 }
