@@ -6,14 +6,11 @@ using NUnit.Framework;
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Diagnostics;
 
 using CODESUGARIO = CodeSugar.CodeSugarForSystemIO;
 
 namespace CodeSugar
 {
-    
-
     public class SystemIOTests : IProgress<int>
     {
         public void Report(int value)
@@ -402,6 +399,24 @@ namespace CodeSugar
             var dirs = await rinfo.File.Directory.Parent.FindAllDirectoriesAsync(d => d.Name == "Resources", SearchOption.AllDirectories, System.Threading.CancellationToken.None, this);
             Assert.That(dirs, Is.Not.Null);
             Assert.That(dirs.Count, Is.AtLeast(1));
-        }        
+        }
+
+        [Test]
+        public async Task TestNet8StreamFunctions()
+        {
+            var data = Enumerable.Range(0, 256).Select(item => (byte)item).ToArray();
+
+            using var m = new System.IO.MemoryStream();            
+
+            m.WriteAllBytes(data);
+            m.Position = 0;
+
+            var dst = new byte[128];
+            m.ReadExactly(dst);
+            Assert.That(dst.AsSpan().SequenceEqual(data.AsSpan().Slice(0, 128)));
+
+            await m.ReadExactlyAsync(dst);
+            Assert.That(dst.AsSpan().SequenceEqual(data.AsSpan().Slice(128, 128)));
+        }
     }
 }
