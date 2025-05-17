@@ -78,6 +78,10 @@ Which can exceed the maximum number of characters supported by a file path, whic
 
 [NuGet and long file name support](https://github.com/NuGet/Home/issues/3324)
 
+4. if two projects that depend one upon the other, and also define `InternalsVisibleTo` , then only the parent
+project must reference a given CodeSugar package, because since CodeSugar extensions are stored in internal
+classes, they're made visible to other projects.
+
 
 ### External references
 

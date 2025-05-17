@@ -132,3 +132,7 @@ public static ProgressLoggingManager
 
 ```
 
+### To Do:
+
+Console has .Error as long as .Out , console sink may be able to map to which console output we should
+redirect the errors.
