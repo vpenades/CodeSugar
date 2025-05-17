@@ -27,9 +27,13 @@ namespace $rootnamespace$
 
         #if !NET8_0_OR_GREATER
 
-        public static void ReadExactly(this _STREAM stream, Span<byte> buffer) =>
+        [DebuggerStepThrough]
+        public static void ReadExactly(this _STREAM stream, Span<byte> buffer)
+        {
             _ = ReadAtLeastCore(stream, buffer, buffer.Length, throwOnEndOfStream: true);
+        }
 
+        [DebuggerStepThrough]
         public static Task ReadExactlyAsync(this _STREAM stream, Memory<byte> buffer, CancellationToken cancellationToken = default)
         {
             return ReadAtLeastAsyncCore(stream, buffer, buffer.Length, throwOnEndOfStream: true, cancellationToken);
@@ -41,7 +45,16 @@ namespace $rootnamespace$
             ValidateReadAtLeastArguments(buffer.Length, minimumBytes);
 
             return ReadAtLeastCore(stream, buffer, minimumBytes, throwOnEndOfStream);
+        }        
+
+        [DebuggerStepThrough]
+        public static Task<int> ReadAtLeastAsync(this _STREAM stream, Memory<byte> buffer, int minimumBytes, bool throwOnEndOfStream = true, CancellationToken cancellationToken = default)
+        {
+            ValidateReadAtLeastArguments(buffer.Length, minimumBytes);
+
+            return ReadAtLeastAsyncCore(stream, buffer, minimumBytes, throwOnEndOfStream, cancellationToken);
         }
+
 
         // No argument checking is done here. It is up to the caller.
         private static int ReadAtLeastCore(_STREAM stream, Span<byte> buffer, int minimumBytes, bool throwOnEndOfStream)
@@ -68,15 +81,6 @@ namespace $rootnamespace$
             return totalRead;
         }
 
-        [DebuggerStepThrough]
-        public static Task<int> ReadAtLeastAsync(this _STREAM stream, Memory<byte> buffer, int minimumBytes, bool throwOnEndOfStream = true, CancellationToken cancellationToken = default)
-        {
-            ValidateReadAtLeastArguments(buffer.Length, minimumBytes);
-
-            return ReadAtLeastAsyncCore(stream, buffer, minimumBytes, throwOnEndOfStream, cancellationToken);
-        }
-
-        
         private static async Task<int> ReadAtLeastAsyncCore(_STREAM stream, Memory<byte> buffer, int minimumBytes, bool throwOnEndOfStream, CancellationToken cancellationToken)
         {
             Debug.Assert(minimumBytes <= buffer.Length);
