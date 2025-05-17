@@ -140,6 +140,12 @@ namespace $rootnamespace$
             return null;
         }
 
+        [Obsolete("Use GetFileInfo")]
+        public static _FINFO GetFile(this _DINFO baseDir, params string[] relativePath)
+        {
+            return GetFileInfo(baseDir, relativePath);
+        }
+
         /// <summary>
         /// Gets a <see cref="_FINFO"/> relative to the base directory.
         /// </summary>
@@ -147,11 +153,17 @@ namespace $rootnamespace$
         /// <param name="relativePath">the relative path parts</param>
         /// <returns>a new <see cref="_FINFO"/> instance.</returns>
         [return: NotNull]
-        public static _FINFO GetFile(this _DINFO baseDir, params string[] relativePath)
+        public static _FINFO GetFileInfo(this _DINFO baseDir, params string[] relativePath)
         {
             var finfo = _CreateFileInfo(baseDir, false, relativePath);
             System.Diagnostics.Debug.Assert(finfo != null && finfo.Exists, $"File {relativePath.Last()} does not exist.");
             return finfo ?? throw new System.IO.FileNotFoundException();
+        }
+
+        [Obsolete("UseFileInfo")]
+        public static _FINFO UseFile(this _DINFO baseDir, params string[] relativePath)
+        {
+            return UseFileInfo(baseDir, relativePath);
         }
 
         /// <summary>
@@ -165,9 +177,15 @@ namespace $rootnamespace$
         /// <param name="relativePath">the relative path parts</param>
         /// <returns>a new <see cref="_FINFO"/> instance.</returns>
         [return: NotNull]
-        public static _FINFO UseFile(this _DINFO baseDir, params string[] relativePath)
+        public static _FINFO UseFileInfo(this _DINFO baseDir, params string[] relativePath)
         {
             return _CreateFileInfo(baseDir, true, relativePath) ?? throw new System.IO.FileNotFoundException();
+        }
+
+        [Obsolete("Use DefineFileInfo")]
+        public static _FINFO DefineFile(this _DINFO baseDir, params string[] relativePath)
+        {
+            return DefineFileInfo(baseDir, relativePath);
         }
 
         /// <summary>
@@ -177,7 +195,7 @@ namespace $rootnamespace$
         /// <param name="relativePath">the relative path parts</param>
         /// <returns>a new <see cref="_FINFO"/> instance.</returns>
         [return: NotNull]
-        public static _FINFO DefineFile(this _DINFO baseDir, params string[] relativePath)
+        public static _FINFO DefineFileInfo(this _DINFO baseDir, params string[] relativePath)
         {
             return _CreateFileInfo(baseDir, false, relativePath);
         }
@@ -203,6 +221,12 @@ namespace $rootnamespace$
             return finfo;
         }
 
+        [Obsolete("Use GetDirectoryInfo")]
+        [return: NotNull]
+        public static _DINFO GetDirectory(this _DINFO baseDir, params string[] relativePath)
+        {
+            return GetDirectoryInfo(baseDir, relativePath);
+        }
 
 
         /// <summary>
@@ -212,10 +236,17 @@ namespace $rootnamespace$
         /// <param name="relativePath">the relative path parts</param>
         /// <returns>a new <see cref="_DINFO"/> instance.</returns>
         [return: NotNull]
-        public static _DINFO GetDirectory(this _DINFO baseDir, params string[] relativePath)
+        public static _DINFO GetDirectoryInfo(this _DINFO baseDir, params string[] relativePath)
         {
             return _CreateDirectoryInfo(baseDir, false, false, relativePath)
                 ?? throw new System.IO.DirectoryNotFoundException();
+        }
+
+        [Obsolete("Use UseDirectoryInfo")]
+        [return: NotNull]
+        public static _DINFO UseDirectory(this _DINFO baseDir, params string[] relativePath)
+        {
+            return UseDirectoryInfo(baseDir, relativePath);
         }
 
         /// <summary>
@@ -225,10 +256,17 @@ namespace $rootnamespace$
 		/// <param name="relativePath">the relative path parts</param>
 		/// <returns>a new <see cref="_DINFO"/> instance.</returns>
         [return: NotNull]
-        public static _DINFO UseDirectory(this _DINFO baseDir, params string[] relativePath)
+        public static _DINFO UseDirectoryInfo(this _DINFO baseDir, params string[] relativePath)
         {
             return _CreateDirectoryInfo(baseDir, false, true, relativePath)
                 ?? throw new System.IO.DirectoryNotFoundException();
+        }
+
+        [Obsolete("Use DefineDirectoryInfo")]
+        [return: NotNull]
+        public static _DINFO DefineDirectory(this _DINFO baseDir, params string[] relativePath)
+        {
+            return DefineDirectoryInfo(baseDir, relativePath);
         }
 
         /// <summary>
@@ -238,7 +276,7 @@ namespace $rootnamespace$
 		/// <param name="relativePath">the relative path parts</param>
 		/// <returns>a new <see cref="_DINFO"/> instance.</returns>
         [return: NotNull]
-        public static _DINFO DefineDirectory(this _DINFO baseDir, params string[] relativePath)
+        public static _DINFO DefineDirectoryInfo(this _DINFO baseDir, params string[] relativePath)
         {
             return _CreateDirectoryInfo(baseDir, false, false, relativePath)
                 ?? throw new System.IO.DirectoryNotFoundException();
@@ -267,7 +305,7 @@ namespace $rootnamespace$
         {
             GuardExists(src);
             GuardNotNull(dst);
-            var dstf = dst.GetFile(src.Name);
+            var dstf = dst.DefineFileInfo(src.Name);
             src.CopyTo(dstf.FullName, overwrite);
         }
 

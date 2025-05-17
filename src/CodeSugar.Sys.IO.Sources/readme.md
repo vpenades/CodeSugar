@@ -19,10 +19,10 @@ The injected files are added by default to the namespace defined by the `<RootNa
   - And more...
 
 - DirectoryInfo
-  - `FileInfo GetFile(params string[] name);`
-  - `FileInfo UseFile(params string[] name);`
-  - `DirectoryInfo GetDirectory(params string[] name);`	
-  - `DirectoryInfo UseDirectory(params string[] name);`	
+  - `FileInfo GetFileInfo(params string[] name);`
+  - `FileInfo UseFileInfo(params string[] name);`
+  - `DirectoryInfo GetDirectoryInfo(params string[] name);`	
+  - `DirectoryInfo UseDirectoryInfo(params string[] name);`	
   - And more...
 	
 

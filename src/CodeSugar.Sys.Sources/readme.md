@@ -19,18 +19,6 @@ This behaviour can be changed by declaring this in your project:
 
 which will set the namespace to `CodeSugar.IO`
 
-## extension methods available
 
-- Stream
-  - `string ReadAllText();`
-  - `void WriteAllText(string text);`
-  - `ArraySegment<Byte> ReadAllBytes();`
-  - `void WriteAllBytes(IReadOnlyList<Byte> bytes);`
-  - And more...
 
-- DirectoryInfo
-  - `FileInfo GetFile(params string[] name);`
-  - `DirectoryInfo GetDirectory(params string[] name);`	
-  - And more...
-	
 

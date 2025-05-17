@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 #nullable disable
 
 using _LOGLEVEL = System.Diagnostics.TraceEventType;
+using System.Reflection.Emit;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -28,40 +29,31 @@ namespace $rootnamespace$
 
         public static string FormatMessage(this (_LOGLEVEL level, string msg) log)
         {
-            if (log.msg == null) return log.level.ToString();
-            return $"{log.level} {log.msg}";
+            return _FormatMessage(log.level, log.msg);
         }
 
         public static string FormatMessage(this (_LOGLEVEL level, System.Exception ex, string msg) log)
         {
             var msg = _CombineLines(log.msg, _FormatMessage(log.ex));
-
-            if (log.msg == null) return log.level.ToString();
-            return $"{log.level} {msg}";
+            return _FormatMessage(log.level, msg);
         }
 
         public static string FormatMessage(this (_LOGLEVEL level, System.Exception ex, string msg, object[] args) log)
         {
             var msg = _FormatMessage(log.msg, log.args);
             msg = _CombineLines(msg, _FormatMessage(log.ex));
-
-            if (log.msg == null) return log.level.ToString();
-            return $"{log.level} {msg}";
+            return _FormatMessage(log.level, msg);
         }
 
         public static string FormatMessage(this (_LOGLEVEL level, string msg, object[] args) log)
         {
             var msg = _FormatMessage(log.msg, log.args);
-
-            if (log.msg == null) return log.level.ToString();
-            return $"{log.level} {msg}";
+            return _FormatMessage(log.level, msg);
         }
 
         public static string FormatMessage(this (System.Exception ex, string msg, object[] args) log)
         {
-            var msg = log.msg == null
-                ? null
-                : _FormatMessage(log.msg, log.args);
+            var msg = _FormatMessage(log.msg, log.args);
 
             return _CombineLines(msg, _FormatMessage(log.ex));
         }
@@ -71,10 +63,16 @@ namespace $rootnamespace$
             return _CombineLines(log.msg, _FormatMessage(log.ex));
         }
 
+        private static string _FormatMessage(_LOGLEVEL level, string msg)
+        {
+            if (string.IsNullOrWhiteSpace(msg)) return level.ToString();
+            return $"{level} {msg}";
+        }
+
         private static string _FormatMessage(string msg, object[] args)
         {
+            if (string.IsNullOrWhiteSpace(msg)) return null;
             if (args == null || args.Length == 0) return msg;
-
             return string.Format(msg, args);
         }        
 
