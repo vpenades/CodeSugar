@@ -34,8 +34,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Numerics.Tensors" Version="8.0.0" />
-  </ItemGroup>
+    <PackageReference Include="System.Numerics.Tensors" Version="9.0.6" />
+  </ItemGroup>  
 
   <ItemGroup>
     <Compile Update="ColorTypes.pp.cs">
