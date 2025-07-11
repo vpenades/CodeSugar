@@ -313,7 +313,7 @@ namespace $rootnamespace$
             #if !NET8_0_OR_GREATER
             ReadExactly(stream, array);
             #else
-            stream.ReadExactly(buff);
+            stream.ReadExactly(array);
             #endif
 
             return stream;
