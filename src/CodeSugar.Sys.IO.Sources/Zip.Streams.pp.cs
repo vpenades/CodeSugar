@@ -55,6 +55,8 @@ namespace $rootnamespace$
                     srcS.CopyTo(dstS);
                 }
             }
+
+            System.Diagnostics.Debug.Assert(dst.CachedExists());
         }
 
         public static void CopyFromFile(this _ZIPENTRY entry, System.IO.FileInfo src)

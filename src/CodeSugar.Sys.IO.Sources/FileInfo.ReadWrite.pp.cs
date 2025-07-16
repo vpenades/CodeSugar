@@ -74,7 +74,7 @@ namespace $rootnamespace$
                 s.WriteAllLines(lines, encoding);
             }
 
-            finfo.Refresh();
+            System.Diagnostics.Debug.Assert(finfo.CachedExists());
         }
 
 		/// <summary>
@@ -92,7 +92,7 @@ namespace $rootnamespace$
                 s.WriteAllText(text, encoding);
             }
 
-            finfo.Refresh();
+            System.Diagnostics.Debug.Assert(finfo.CachedExists());
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace $rootnamespace$
                 s.WriteAllBytes(bytes);
             }
 
-            finfo.Refresh();
+            System.Diagnostics.Debug.Assert(finfo.CachedExists());
         }        
     }
 }

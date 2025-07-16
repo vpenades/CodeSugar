@@ -41,7 +41,7 @@ namespace $rootnamespace$
         }
         public static async Task<IReadOnlyList<_DINFO>> FindAllDirectoriesAsync(this _DINFO directoryInfo, _DIRECTORYFILTER resultFilter, _DIRECTORYFILTER subdirFilter, _CTOKEN ctoken, _PPROGRESS percentProgress = null)
         {
-            if (directoryInfo == null || !directoryInfo.Exists) return Array.Empty<_DINFO>();
+            if (directoryInfo == null || !directoryInfo.RefreshedExists()) return Array.Empty<_DINFO>();
             if (resultFilter == null) throw new ArgumentNullException(nameof(resultFilter));
             if (subdirFilter == null) throw new ArgumentNullException(nameof(subdirFilter));
 
@@ -57,7 +57,7 @@ namespace $rootnamespace$
 
             async Task _findAsync(_DINFO dinfo, __DirectoryScanStateSlice slice)
             {
-                if (dinfo == null || !dinfo.Exists) return;                
+                if (dinfo == null || !dinfo.RefreshedExists()) return;                
 
                 await slice.UpdateAsync(dinfo).ConfigureAwait(true);
 
@@ -90,7 +90,7 @@ namespace $rootnamespace$
         }
         public static async Task<_DINFO> FindFirstDirectoryAsync(this _DINFO directoryInfo, _DIRECTORYFILTER resultFilter, _DIRECTORYFILTER subdirFilter, _CTOKEN ctoken, _PPROGRESS percentProgress = null)
         {
-            if (directoryInfo == null || !directoryInfo.Exists) return null;
+            if (directoryInfo == null || !directoryInfo.RefreshedExists()) return null;
             if (resultFilter == null) throw new ArgumentNullException(nameof(resultFilter));
             if (subdirFilter == null) throw new ArgumentNullException(nameof(subdirFilter));
 
@@ -104,7 +104,7 @@ namespace $rootnamespace$
 
             async Task<_DINFO> _findAsync(_DINFO dinfo, __DirectoryScanStateSlice slice)
             {
-                if (dinfo == null || !dinfo.Exists) return null;                
+                if (dinfo == null || !dinfo.RefreshedExists()) return null;                
 
                 await slice.UpdateAsync(dinfo).ConfigureAwait(true);
 
@@ -140,7 +140,7 @@ namespace $rootnamespace$
         }
         public static async Task<IReadOnlyList<_FINFO>> FindAllFilesAsync(this _DINFO directoryInfo, _FILEFILTER resultFilter, _DIRECTORYFILTER subdirFilter, _CTOKEN ctoken, _PPROGRESS percentProgress = null)
         {
-            if (directoryInfo == null || !directoryInfo.Exists) return Array.Empty<_FINFO>();
+            if (directoryInfo == null || !directoryInfo.RefreshedExists()) return Array.Empty<_FINFO>();
             if (resultFilter == null) throw new ArgumentNullException(nameof(resultFilter));
             if (subdirFilter == null) throw new ArgumentNullException(nameof(subdirFilter));            
 
@@ -156,7 +156,7 @@ namespace $rootnamespace$
 
             async Task _findAsync(_DINFO dinfo, __DirectoryScanStateSlice slice)
             {
-                if (dinfo == null || !dinfo.Exists) return;                
+                if (dinfo == null || !dinfo.RefreshedExists()) return;                
 
                 await slice.UpdateAsync(dinfo).ConfigureAwait(true);
 
@@ -189,7 +189,7 @@ namespace $rootnamespace$
         }
         public static async Task<_FINFO> FindFirstFileAsync(this _DINFO directoryInfo, _FILEFILTER resultFilter, _DIRECTORYFILTER subdirFilter, _CTOKEN ctoken, _PPROGRESS percentProgress = null)
         {
-            if (directoryInfo == null || !directoryInfo.Exists) return null;
+            if (directoryInfo == null || !directoryInfo.RefreshedExists()) return null;
             if (resultFilter == null) throw new ArgumentNullException(nameof(resultFilter));
             if (subdirFilter == null) throw new ArgumentNullException(nameof(subdirFilter));
 
@@ -203,7 +203,7 @@ namespace $rootnamespace$
 
             async Task<_FINFO> _findAsync(_DINFO dinfo, __DirectoryScanStateSlice slice)
             {
-                if (dinfo == null || !dinfo.Exists) return null;                
+                if (dinfo == null || !dinfo.RefreshedExists()) return null;                
 
                 await slice.UpdateAsync(dinfo).ConfigureAwait(true);
 

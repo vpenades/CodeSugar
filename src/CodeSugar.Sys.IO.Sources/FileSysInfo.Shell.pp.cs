@@ -59,7 +59,7 @@ namespace $rootnamespace$
 
             if (finfo == null) return false;
 
-            if (!finfo.Exists)
+            if (!finfo.RefreshedExists())
             {
                 return ShellShowInExplorer(finfo.Directory);
             }
@@ -81,7 +81,7 @@ namespace $rootnamespace$
             if (System.Environment.OSVersion.Platform != System.PlatformID.Win32NT) return false;
 
             if (dirInfo == null) return false;
-            if (!dirInfo.Exists) return false;
+            if (!dirInfo.RefreshedExists()) return false;
 
             var psi = __GetProcessStartInfo(dirInfo);
             if (psi != null) System.Diagnostics.Process.Start(psi)?.Dispose();
@@ -109,7 +109,7 @@ namespace $rootnamespace$
         /// <returns>A <see cref="System.Diagnostics.ProcessStartInfo"/> object, or null if the file does not exist or it's a script/executable</returns>
         private static System.Diagnostics.ProcessStartInfo __GetProcessStartMedia(this _FINFO finfo)
         {
-            if (finfo == null || !finfo.Exists) return null;
+            if (finfo == null || !finfo.RefreshedExists()) return null;
 
             if (HasAnyExtension(finfo, ".lnk", ".url")) { System.Diagnostics.Debug.Fail("Resolve shortcut before calling"); return null; }
 
@@ -126,7 +126,7 @@ namespace $rootnamespace$
 
         private static System.Diagnostics.ProcessStartInfo __GetProcessStartInfo(this _DINFO dirInfo)
         {
-            if (dirInfo == null || !dirInfo.Exists) return null;
+            if (dirInfo == null || !dirInfo.RefreshedExists()) return null;
 
             return new System.Diagnostics.ProcessStartInfo()
             {

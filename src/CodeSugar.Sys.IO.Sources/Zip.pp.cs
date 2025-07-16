@@ -55,7 +55,7 @@ namespace $rootnamespace$
         public static _ZIPARCHIVE CreateZipArchive(this System.IO.FileInfo finfo, System.Text.Encoding entryNameEncoding = null)
         {
             GuardNotNull(finfo);
-            if (finfo.Exists) finfo.Delete(); // zip create fails if it already exists
+            if (finfo.RefreshedExists()) finfo.Delete(); // zip create fails if it already exists
             return System.IO.Compression.ZipFile.Open(finfo.FullName, System.IO.Compression.ZipArchiveMode.Create, entryNameEncoding);
         }
 

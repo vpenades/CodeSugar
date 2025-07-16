@@ -157,7 +157,7 @@ namespace $rootnamespace$
                 using(var s = Info.Create())
                 {
                     if (bytes.Count > 0) s.Write(bytes.Array,bytes.Offset,bytes.Count);
-                }
+                }                
             }
 
             #endregion
@@ -204,7 +204,7 @@ namespace $rootnamespace$
 
             public object GetService(Type serviceType)
             {
-                if (serviceType == typeof(System.IO.MatchCasing)) return FileSystemPathComparison;
+                if (serviceType == typeof(_MATCHCASING)) return FileSystemPathComparison;
                 if (serviceType == typeof(_DINFO)) return Info;
 
                 return null;

@@ -103,7 +103,7 @@ namespace $rootnamespace$
 
             if (!shortcutOrFile.HasExtension(".url")) // it's not a shortcut, or the shortcut has a close enough name
             {
-                if (shortcutOrFile.Exists) { actualFile = shortcutOrFile; return true; } // no shortcut at all.
+                if (shortcutOrFile.RefreshedExists()) { actualFile = shortcutOrFile; return true; } // no shortcut at all.
 
                 // try alternate shortcut name
                 var altFile = shortcutOrFile.FullName + ".url";
@@ -120,7 +120,7 @@ namespace $rootnamespace$
 
             while(true)
             {
-                if (!shortcutOrFile.Exists) return false;
+                if (!shortcutOrFile.RefreshedExists()) return false;
 
                 if (circularBarrier?.Contains(shortcutOrFile) ?? false) throw new ArgumentException("circular shortcut detected.",nameof(shortcutOrFile));                
 
@@ -151,7 +151,7 @@ namespace $rootnamespace$
 
             while(true)
             {
-                if (!shortcutOrDir.Exists()) return false;
+                if (!shortcutOrDir.RefreshedExists()) return false;
 
                 if (shortcutOrDir is _DINFO dir) { actualDirectory = dir; return true; }
 
@@ -187,7 +187,7 @@ namespace $rootnamespace$
             if (!uri.IsFile) return false;
 
             targetFile = new _FINFO(uri.LocalPath);
-            return targetFile.Exists;
+            return targetFile.CachedExists();
         }
 
         public static bool TryReadShortcutDir(this _FINFO shortcutFile, out _DINFO targetDirectory)
@@ -199,7 +199,7 @@ namespace $rootnamespace$
             if (!uri.IsFile) return false;
 
             targetDirectory = new _DINFO(uri.LocalPath);
-            return targetDirectory.Exists;
+            return targetDirectory.CachedExists();
         }
 
         public static Uri ReadShortcutUri(this _FINFO finfo)

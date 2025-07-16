@@ -46,7 +46,7 @@ namespace $rootnamespace$
         public static void GuardExists(this _SINFO info, string name = null)
         {
             if (info == null) throw new ArgumentNullException(name);
-            if (!info.Exists()) throw new ArgumentException($"'{info.FullName}' does not exist.", name ?? nameof(info));
+            if (!info.RefreshedExists()) throw new ArgumentException($"'{info.FullName}' does not exist.", name ?? nameof(info));
         }  
 
         #else
@@ -67,7 +67,7 @@ namespace $rootnamespace$
 		public static void GuardExists(this _SINFO info, [CallerArgumentExpression("info")] string name = null)
         {
             if (info == null) throw new ArgumentNullException(name);
-            if (!info.Exists()) throw new ArgumentException($"'{info.FullName}' does not exist.", name);
+            if (!info.RefreshedExists()) throw new ArgumentException($"'{info.FullName}' does not exist.", name);
         }
 
         #endif
@@ -82,20 +82,33 @@ namespace $rootnamespace$
         /// <param name="info">A <see cref="_FINFO"/> or a <see cref="_DINFO"/> object.</param>
         /// <returns>true if it exists in the file system</returns>
         /// <exception cref="ArgumentException"></exception>
-        public static bool Exists(this _SINFO info)
+        public static bool RefreshedExists(this _SINFO info)
         {
             if (info == null) return false;
             
             switch(info)
             {
                 case null: return false;
-                case _FINFO finfo: finfo.Refresh(); return finfo.Exists;
-                case _DINFO dinfo: dinfo.Refresh(); return dinfo.Exists;
+                case _FINFO finfo: return finfo.RefreshedExists();
+                case _DINFO dinfo: return dinfo.RefreshedExists();
                 default: throw new ArgumentException("Unknown type", nameof(info));
             }
         }
 
-        
+        public static bool PhysicallyExists(this _SINFO info)
+        {
+            if (info == null) return false;
+
+            switch (info)
+            {
+                case null: return false;
+                case _FINFO finfo: return finfo.PhysicallyExists();
+                case _DINFO dinfo: return dinfo.PhysicallyExists();
+                default: throw new ArgumentException("Unknown type", nameof(info));
+            }
+        }
+
+
 
         /// <summary>
         /// Tries to get the Alternate Data Stream (ADS) from an existing file.
@@ -117,7 +130,6 @@ namespace $rootnamespace$
             var path = baseFile.FullName + ":" + adsName;
             
             adsFile = new _FINFO(path);
-            adsFile.Refresh();
             return true;
         }
 
@@ -156,7 +168,7 @@ namespace $rootnamespace$
         public static _FINFO GetFileInfo(this _DINFO baseDir, params string[] relativePath)
         {
             var finfo = _CreateFileInfo(baseDir, false, relativePath);
-            System.Diagnostics.Debug.Assert(finfo != null && finfo.Exists, $"File {relativePath.Last()} does not exist.");
+            System.Diagnostics.Debug.Assert(finfo != null && finfo.PhysicallyExists(), $"File {relativePath.Last()} does not exist.");
             return finfo ?? throw new System.IO.FileNotFoundException();
         }
 
@@ -295,7 +307,7 @@ namespace $rootnamespace$
             else if (mustExist)
             {
                 // In release mode, let's be a bit forgiving:                
-                System.Diagnostics.Debug.Assert(baseDir.Exists,$"{baseDir.FullName} does not exist. Use 'UseDirectory()' instead.");
+                System.Diagnostics.Debug.Assert(baseDir.PhysicallyExists(),$"{baseDir.FullName} does not exist. Use 'UseDirectory()' instead.");
             }
 
             return baseDir;
@@ -324,8 +336,7 @@ namespace $rootnamespace$
             var newPath = System.IO.Path.Combine(finfo.Directory.FullName, newName);
 
             finfo.MoveTo(newPath, overwrite);
-
-            finfo.Refresh();
+            System.Diagnostics.Debug.Assert(finfo.CachedExists() == System.IO.File.Exists(newPath));
         }
 
         #if NETSTANDARD
@@ -333,12 +344,14 @@ namespace $rootnamespace$
         {
             var dstInfo = new _FINFO(newPath);
 
-            if (overwrite && dstInfo.Exists)
+            if (overwrite && dstInfo.RefreshedExists())
             {
                 dstInfo.Delete();
+                System.Diagnostics.Debug.Assert(dstInfo.Exists == false);
             }
 
             finfo.MoveTo(dstInfo.FullName);
+            System.Diagnostics.Debug.Assert(finfo.CachedExists() == System.IO.File.Exists(dstInfo.FullName));
         }
         #endif
 

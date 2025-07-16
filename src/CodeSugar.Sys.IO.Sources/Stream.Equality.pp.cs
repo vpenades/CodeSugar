@@ -29,7 +29,7 @@ namespace $rootnamespace$
             GuardExists(a);
             GuardExists(b);
 
-            if (a.Length != b.Length) return false;
+            if (a.RefreshedLength() != b.RefreshedLength()) return false;
 
             if (Object.ReferenceEquals(a, b)) return true; // both files are the same
 

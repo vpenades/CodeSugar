@@ -71,6 +71,50 @@ namespace $rootnamespace$
         }
 
         /// <summary>
+        /// Checks if the directory exists, refreshing the state beforehand
+        /// </summary>
+        /// <param name="directory">the directory to check</param>
+        /// <returns>true if it exists</returns>
+        public static bool RefreshedExists(this _DINFO directory)
+        {
+            // https://github.com/dotnet/corefx/pull/40677
+            // https://github.com/dotnet/runtime/issues/31425
+            // https://github.com/dotnet/runtime/issues/117709
+
+            if (directory == null) return false;            
+            directory.Refresh();
+            return CachedExists(directory);            
+        }
+
+        /// <summary>
+        /// Checks if the directory exists, using the internal cache
+        /// </summary>
+        /// <param name="directory">the directory to check</param>
+        /// <returns>true if it exists</returns>
+        public static bool CachedExists(this _DINFO directory)
+        {
+            // https://github.com/dotnet/corefx/pull/40677
+            // https://github.com/dotnet/runtime/issues/31425
+            // https://github.com/dotnet/runtime/issues/117709
+
+            if (directory == null) return false;
+            #pragma warning disable            
+            return directory.Exists;
+            #pragma warning restore
+        }        
+
+        /// <summary>
+        /// Checks if the directory exists, bypassing internal cache
+        /// </summary>
+        /// <param name="directory">the directory to check</param>
+        /// <returns>true if it exists</returns>
+        public static bool PhysicallyExists(this _DINFO directory)
+        {
+            if (directory == null) return false;
+            return System.IO.Directory.Exists(directory.FullName);
+        }
+
+        /// <summary>
         /// Ensures that <paramref name="directory"/> exists in the file system.
         /// </summary>
         /// <returns>true if it needd to create the directory</returns>
@@ -86,13 +130,16 @@ namespace $rootnamespace$
         {
             GuardNotNull(directory);
 
-            if (directory.Exists) return false;
+            if (directory.RefreshedExists()) return false;
 
             // prevent creation of directories with leading/trailing whitespaces
-            // (which can actually exist, but mess up windows explorer navigation)
+            // (which can actually exist, but mess up windows explorer navigation because explorer removes the whitespaces)
             GuardIsValidFileName(directory.Name, false, nameof(directory));
 
             directory.Create();
+
+            System.Diagnostics.Debug.Assert(directory.CachedExists());
+
             return true;
         }
 
