@@ -30,7 +30,7 @@ namespace CodeSugar
 
                 foreach (var entry in zip.Entries)
                 {
-                    TestContext.WriteLine($"{entry.FullName} => {entry.Name}");
+                    TestContext.Out.WriteLine($"{entry.FullName} => {entry.Name}");
                 }
 
                 _TestZipContents(zip.ToIFileProvider());                

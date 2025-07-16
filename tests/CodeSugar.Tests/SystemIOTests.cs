@@ -45,29 +45,29 @@ namespace CodeSugar
             //      Separators \ /
             //      invalid name chars: " < > |                             : * ? \ /
 
-            TestContext.WriteLine($"{Environment.OSVersion.Platform}");
-            TestContext.WriteLine($" comparison: {CODESUGARIO.FileSystemStringComparison}");
+            TestContext.Out.WriteLine($"{Environment.OSVersion.Platform}");
+            TestContext.Out.WriteLine($" comparison: {CODESUGARIO.FileSystemStringComparison}");
 
-            TestContext.WriteLine($"Separators {System.IO.Path.DirectorySeparatorChar} {System.IO.Path.AltDirectorySeparatorChar}");
-            TestContext.WriteLine($"invalid name chars: " + string.Join(" ",System.IO.Path.GetInvalidFileNameChars()));
-            TestContext.WriteLine($"invalid path chars: " + string.Join(" ", System.IO.Path.GetInvalidPathChars()));
+            TestContext.Out.WriteLine($"Separators {System.IO.Path.DirectorySeparatorChar} {System.IO.Path.AltDirectorySeparatorChar}");
+            TestContext.Out.WriteLine($"invalid name chars: " + string.Join(" ",System.IO.Path.GetInvalidFileNameChars()));
+            TestContext.Out.WriteLine($"invalid path chars: " + string.Join(" ", System.IO.Path.GetInvalidPathChars()));
 
             var finfo = AttachmentInfo.From("test.txt").WriteAllText("hello");
 
             if (finfo.Directory.TryGetDriveInfo(out var drive))
             {
-                TestContext.WriteLine($"{drive.Name} {drive.DriveFormat} {drive.DriveType}");
+                TestContext.Out.WriteLine($"{drive.Name} {drive.DriveFormat} {drive.DriveType}");
             }
             else
             {
-                TestContext.WriteLine("drive can't be retrieved.");
+                TestContext.Out.WriteLine("drive can't be retrieved.");
             }
 
-            TestContext.WriteLine("fixed drives:");
+            TestContext.Out.WriteLine("fixed drives:");
             foreach (var drive2 in DriveInfo.GetDrives())
             {
                 if (!drive2.IsReady) continue;
-                TestContext.WriteLine($"{drive2.DriveFormat} {drive2.DriveType}  Name:\"{drive2.Name}\"");
+                TestContext.Out.WriteLine($"{drive2.DriveFormat} {drive2.DriveType}  Name:\"{drive2.Name}\"");
             }
         }
 
@@ -145,7 +145,7 @@ namespace CodeSugar
             var driveOrNetwork = someDir.GetDriveOrNetworkName();
             if (driveOrNetwork == null)
             {
-                TestContext.WriteLine($"Skipping: {path}");
+                TestContext.Out.WriteLine($"Skipping: {path}");
                 return;
             }
 
@@ -165,7 +165,7 @@ namespace CodeSugar
                 Assert.That(driveName, Is.EqualTo("-"));
             }
 
-            TestContext.WriteLine($"{root} {driveOrNetwork} {driveName}");
+            TestContext.Out.WriteLine($"{root} {driveOrNetwork} {driveName}");
 
             // Assert.That(string.Equals(driveOrNetwork,expected, CodeSugarIO.FileSystemStringComparison));            
         }
@@ -180,7 +180,7 @@ namespace CodeSugar
 
             var readme_txt = AttachmentInfo.From("readme.txt").WriteAllText("hello world");
 
-            TestContext.WriteLine(readme_txt.FullName);
+            TestContext.Out.WriteLine(readme_txt.FullName);
 
 
             var text = readme_txt.ReadAllText();
@@ -283,12 +283,12 @@ namespace CodeSugar
 
             foreach(var readme_txt in testDir.GetFiles("*.txt"))
             {
-                TestContext.WriteLine(readme_txt.FullName);
+                TestContext.Out.WriteLine(readme_txt.FullName);
             }
 
             bool isCaseSensitiveOS = readme_txt_0.ReadAllText() == "lowercase";
 
-            TestContext.WriteLine($"OS file system is case sensitive: {isCaseSensitiveOS}");
+            TestContext.Out.WriteLine($"OS file system is case sensitive: {isCaseSensitiveOS}");
 
             var fcomparer = MatchCasing.PlatformDefault.GetFullNameComparer<FileInfo>();
             var dcomparer = MatchCasing.PlatformDefault.GetFullNameComparer<DirectoryInfo>();

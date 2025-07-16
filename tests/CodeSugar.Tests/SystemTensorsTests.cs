@@ -19,9 +19,9 @@ namespace CodeSugar
         public void Initialize()
         {
             #if NET8_0_OR_GREATER
-            TestContext.WriteLine($"Vector512 HwdSupport:{Vector512.IsHardwareAccelerated}");
-            TestContext.WriteLine($"Vector256 HwdSupport:{Vector256.IsHardwareAccelerated}");
-            TestContext.WriteLine($"Vector128 HwdSupport:{Vector128.IsHardwareAccelerated}");
+            TestContext.Out.WriteLine($"Vector512 HwdSupport:{Vector512.IsHardwareAccelerated}");
+            TestContext.Out.WriteLine($"Vector256 HwdSupport:{Vector256.IsHardwareAccelerated}");
+            TestContext.Out.WriteLine($"Vector128 HwdSupport:{Vector128.IsHardwareAccelerated}");
             #endif
         }
             
@@ -293,7 +293,7 @@ namespace CodeSugar
                     bytes.AsReadOnlySpan().ScaledCastTo(floats);
                 }
 
-                TestContext.WriteLine($"Run {r}: {sw.Elapsed}  {sw.ElapsedMilliseconds}ms");
+                TestContext.Out.WriteLine($"Run {r}: {sw.Elapsed}  {sw.ElapsedMilliseconds}ms");
             }
         }
 
@@ -316,7 +316,7 @@ namespace CodeSugar
                     bytes.AsReadOnlySpan().ConvertRGBtoRGB(vects, XYZ.One * 3, XYZ.One * 0.5f);
                 }                
 
-                TestContext.WriteLine($"Run {r}: {sw.Elapsed}  {sw.ElapsedMilliseconds}ms");
+                TestContext.Out.WriteLine($"Run {r}: {sw.Elapsed}  {sw.ElapsedMilliseconds}ms");
             }
         }
 
@@ -338,7 +338,7 @@ namespace CodeSugar
                     bytes.AsReadOnlySpan().ScaledMultiplyAddTo(new XYZ(1,2,3), new XYZ(4,5,6), xyzs);
                 }
 
-                TestContext.WriteLine($"Run {r}: {sw.Elapsed}  {sw.ElapsedMilliseconds}ms");
+                TestContext.Out.WriteLine($"Run {r}: {sw.Elapsed}  {sw.ElapsedMilliseconds}ms");
             }
         }
     }
