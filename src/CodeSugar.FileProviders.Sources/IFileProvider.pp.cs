@@ -6,17 +6,16 @@ using System.Text;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Diagnostics.CodeAnalysis;
 
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Primitives;
 
 #nullable disable
 
 using _XINFO = Microsoft.Extensions.FileProviders.IFileInfo;
 using _XDIRECTORY = Microsoft.Extensions.FileProviders.IDirectoryContents;
 using _XPROVIDER = Microsoft.Extensions.FileProviders.IFileProvider;
-using Microsoft.Extensions.Primitives;
-using System.Diagnostics.CodeAnalysis;
-
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -66,7 +65,7 @@ namespace $rootnamespace$
 
         private static readonly NullFileProvider _NullFileProvider = new NullFileProvider();
 
-        private sealed class _FileProviderOverDirectoryContents : IFileProvider
+        private sealed class _FileProviderOverDirectoryContents : _XPROVIDER
         {
             private readonly _XDIRECTORY _Dir;
 

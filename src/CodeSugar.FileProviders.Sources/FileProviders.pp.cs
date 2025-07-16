@@ -19,10 +19,6 @@ namespace $rootnamespace$
 {
     internal static partial class CodeSugarForFileProviders
     {
-        [return: NotNull]
-        private static System.IO.MemoryStream _ToMemoryStream(ArraySegment<byte> segment)
-        {
-            return new MemoryStream(segment.Array ?? Array.Empty<byte>(), segment.Offset, segment.Count, false);
-        }
+        
     }
 }

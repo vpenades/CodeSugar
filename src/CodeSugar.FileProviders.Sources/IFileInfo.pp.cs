@@ -1,11 +1,9 @@
 ﻿// Copyright (c) CodeSugar 2024 Vicente Penades
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
 using Microsoft.Extensions.FileProviders;
@@ -15,7 +13,7 @@ using Microsoft.Extensions.FileProviders;
 using _XINFO = Microsoft.Extensions.FileProviders.IFileInfo;
 using _XPROVIDER = Microsoft.Extensions.FileProviders.IFileProvider;
 using _XDIRECTORY = Microsoft.Extensions.FileProviders.IDirectoryContents;
-using System.Collections;
+
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -35,6 +33,8 @@ namespace $rootnamespace$
 
         #endregion
 
+        #region wrappers
+
         [return: NotNull]
         public static _XINFO ToIFileInfo(this _XDIRECTORY dir, string name)
         {
@@ -51,45 +51,49 @@ namespace $rootnamespace$
         }
 
         [return: NotNull]
-        public static _XINFO ToIFileInfo(this Func<System.IO.Stream> reader, string name, long len, DateTimeOffset lastWrite)
+        public static _XINFO ToIFileInfo([NotNull] this Func<System.IO.Stream> reader, [NotNull] string name, long len, DateTimeOffset lastWrite)
         {
             return new _GenericFileInfo(name, len, lastWrite, reader);
         }
 
         [return: NotNull]
-        public static _XINFO ToIFileInfo(this Func<string, System.IO.Stream> reader, string name, long len, DateTimeOffset lastWrite)
+        public static _XINFO ToIFileInfo([NotNull] this Func<string, System.IO.Stream> reader, [NotNull] string name, long len, DateTimeOffset lastWrite)
         {
             if (reader == null) throw new ArgumentNullException(nameof(reader));
             return new _GenericFileInfo(name, len, lastWrite, ()=> reader.Invoke(name));
         }        
 
         [return: NotNull]
-        public static _XINFO ToIFileInfo(this Func<System.IO.Stream> reader, string name, long len)
+        public static _XINFO ToIFileInfo([NotNull] this Func<System.IO.Stream> reader, [NotNull] string name, long len)
         {
             return new _GenericFileInfo(name, len, DateTime.Today, reader);
         }
 
         [return: NotNull]
-        public static _XINFO ToIFileInfo(this Func<string, System.IO.Stream> reader, string name, long len)
+        public static _XINFO ToIFileInfo([NotNull] this Func<string, System.IO.Stream> reader, [NotNull] string name, long len)
         {
             if (reader == null) throw new ArgumentNullException(nameof(reader));
             return new _GenericFileInfo(name, len, DateTime.Today, () => reader.Invoke(name));
         }
 
         [return: NotNull]
-        public static _XINFO ToIFileInfo(this ArraySegment<byte> data, string name, DateTimeOffset lastWrite)
+        public static _XINFO ToIFileInfo(this ArraySegment<byte> data, [NotNull] string name, DateTimeOffset lastWrite)
         {
             return new _GenericFileInfo(name, data.Count, lastWrite, () => _ToMemoryStream(data));
         }
 
         [return: NotNull]
-        public static _XINFO ToIFileInfo(this ArraySegment<byte> data, string name)
+        public static _XINFO ToIFileInfo(this ArraySegment<byte> data, [NotNull] string name)
         {
             return new _GenericFileInfo(name, data.Count, DateTime.Today, () => _ToMemoryStream(data));
         }
 
+        #endregion
+
+        #region stream functions
+
         [return: NotNull]
-        public static Func<System.IO.Stream> GetReadStreamFunction(this _XINFO xinfo)
+        public static Func<System.IO.Stream> GetReadStreamFunction([NotNull] this _XINFO xinfo)
         {
             GuardNotNull(xinfo);
             if (xinfo.IsDirectory) throw new ArgumentException("directories don't have a stream", nameof(xinfo));
@@ -98,7 +102,7 @@ namespace $rootnamespace$
         }
 
         [return: NotNull]
-        public static Func<System.IO.Stream> GetWriteStreamFunction(this _XINFO xinfo)
+        public static Func<System.IO.Stream> GetWriteStreamFunction([NotNull] this _XINFO xinfo)
         {
             GuardNotNull(xinfo);
             if (xinfo.IsDirectory) throw new ArgumentException("directories don't have a stream", nameof(xinfo));
@@ -110,19 +114,29 @@ namespace $rootnamespace$
 
             if (xinfo is IServiceProvider srv) // lambdas
             {
+                // this one has the advantage of updating the internal FileInfo's state. (.Exists and .Length)
+                if (srv.GetService(typeof(Func<System.IO.FileInfo>)) is System.IO.FileInfo finfo)
+                {
+                    return finfo.Create;
+                }
+
+                // file system writer
                 if (srv.GetService(typeof(Func<FileMode, System.IO.Stream>)) is Func<FileMode, System.IO.Stream> lambda0)
                 {
                     return () => lambda0.Invoke(FileMode.Create);
-                }
+                }                
 
-                if (srv.GetService(typeof(Func<string, FileMode, System.IO.Stream>)) is Func<string, FileMode, System.IO.Stream> lambda1)
+                // poor man's writer
+                if (srv.GetService(typeof(Action<ArraySegment<Byte>>)) is Action<ArraySegment<Byte>> lambda1)
                 {
-                    return ()=> lambda1.Invoke(xinfo.Name, FileMode.Create);
-                }
+                    return ()=> new _ObservableMemoryStream(lambda1);
+                }                
             }
 
             return ()=> null;
         }
+
+        #endregion
 
         #region nested types
 
