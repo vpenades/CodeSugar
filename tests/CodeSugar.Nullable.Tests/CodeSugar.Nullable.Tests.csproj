@@ -31,15 +31,15 @@
   
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\CodeSugar.FileProviders.Sources\CodeSugar.FileProviders.Sources.csproj" />
-    <ProjectReference Include="..\..\src\CodeSugar.Linq.Sources\CodeSugar.Linq.Sources.csproj" />
-    <ProjectReference Include="..\..\src\CodeSugar.Numerics.Sources\CodeSugar.Numerics.Sources.csproj" />
+    <ProjectReference Include="..\..\src\CodeSugar.FileProviders.Sources\CodeSugar.FileProviders.csproj" />
+    <ProjectReference Include="..\..\src\CodeSugar.Linq.Sources\CodeSugar.Linq.csproj" />
+    <ProjectReference Include="..\..\src\CodeSugar.Numerics.Sources\CodeSugar.Numerics.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Progress.Log\CodeSugar.Progress.Log.csproj" />
-    <ProjectReference Include="..\..\src\CodeSugar.Srlzn.Bin.Sources\CodeSugar.Srlzn.Bin.Sources.csproj" />
-    <ProjectReference Include="..\..\src\CodeSugar.Sys.IO.Sources\CodeSugar.Sys.IO.Sources.csproj" />
-    <ProjectReference Include="..\..\src\CodeSugar.Sys.Sources\CodeSugar.Sys.Sources.csproj" />
-    <ProjectReference Include="..\..\src\CodeSugar.Sys.Text.Sources\CodeSugar.Sys.Text.Sources.csproj" />
-    <ProjectReference Include="..\..\src\CodeSugar.Tensors.Sources\CodeSugar.Tensors.Sources.csproj" />
+    <ProjectReference Include="..\..\src\CodeSugar.Srlzn.Bin.Sources\CodeSugar.Srlzn.Bin.csproj" />
+    <ProjectReference Include="..\..\src\CodeSugar.Sys.IO.Sources\CodeSugar.Sys.IO.csproj" />
+    <ProjectReference Include="..\..\src\CodeSugar.Sys.Sources\CodeSugar.Sys.csproj" />
+    <ProjectReference Include="..\..\src\CodeSugar.Sys.Text.Sources\CodeSugar.Sys.Text.csproj" />
+    <ProjectReference Include="..\..\src\CodeSugar.Tensors.Sources\CodeSugar.Tensors.csproj" />
   </ItemGroup>
 
 </Project>

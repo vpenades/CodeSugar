@@ -22,4 +22,4 @@ dotnet tool restore
 dotnet restore
 
 dotnet test -c Release CodeSugar.sln
-dotnet PackAsSourcesNuget CodeSugar.sln -o . --package-version $PACKAGEVERSION
+dotnet PackAsSourcesNuget CodeSugar.sln -o . --package-version $PACKAGEVERSION --append-sources-suffix
