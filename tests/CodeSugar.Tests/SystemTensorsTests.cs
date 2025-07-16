@@ -29,12 +29,12 @@ namespace CodeSugar
         [Test]
         public void TestVector4MultiplyAdd()
         {
-            var src = new System.Numerics.Vector4[5];
-            src.AsSpan().Fill(System.Numerics.Vector4.One);
+            var src = new XYZW[5];
+            src.AsSpan().Fill(XYZW.One);
 
-            src.AsSpan().InPlaceMultiplyAdd(new System.Numerics.Vector4(2), new System.Numerics.Vector4(3));
+            src.AsSpan().InPlaceMultiplyAdd(new XYZW(2), new XYZW(3));
 
-            Assert.That(src.All(item => item == new System.Numerics.Vector4(5)));
+            Assert.That(src.All(item => item == new XYZW(5)));
         }
 
         [Test]
