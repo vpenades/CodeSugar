@@ -12,6 +12,8 @@ using System.Runtime.CompilerServices;
 
 using _STREAM = System.IO.Stream;
 
+using System.Diagnostics.CodeAnalysis;
+
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
 #elif CODESUGAR_USESYSTEMNAMESPACE
@@ -22,7 +24,8 @@ namespace $rootnamespace$
 {
     static partial class CodeSugarForSerialization
     {
-        public static IProgress<Byte> AsStatefulProgressWriter<TList>(this TList list, int position = 0)
+        [return: NotNull]
+        public static IProgress<Byte> AsStatefulProgressWriter<TList>([NotNull] this TList list, int position = 0)
             where TList : IList<byte>
         {
             if (list == null) throw new ArgumentNullException(nameof(list));

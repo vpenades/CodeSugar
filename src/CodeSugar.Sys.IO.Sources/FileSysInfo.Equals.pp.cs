@@ -210,7 +210,12 @@ namespace $rootnamespace$
             {
                 if (_Comparers == null)
                 {
+                    #if NET6_0_OR_GREATER
+                    var values = Enum.GetValues<StringComparison>();
+                    #else
                     var values = (StringComparison[])Enum.GetValues(typeof(StringComparison));
+                    #endif
+
                     var len = values.Max() + 1;
 
 				    _Comparers = new IEqualityComparer<T>[(int)len];
@@ -251,6 +256,6 @@ namespace $rootnamespace$
             }
         }
 
-        #endregion
+#endregion
     }
 }

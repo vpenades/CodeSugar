@@ -4,6 +4,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 
 #nullable disable
@@ -24,47 +25,56 @@ namespace $rootnamespace$
 
         #region specialised - Numerics
 
-        public static _WRITEABLEBLOCK WriteLeVector2(this _WRITEABLEBLOCK target, System.Numerics.Vector2 value)
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeVector2([NotNull] this _WRITEABLEBLOCK target, System.Numerics.Vector2 value)
         {
             return target.WriteLeF32(value.X).WriteLeF32(value.Y);
         }
 
-        public static _READABLEBLOCK ReadLeVector2(this _READABLEBLOCK source, out System.Numerics.Vector2 value)
+        [return: NotNull]
+        public static _READABLEBLOCK ReadLeVector2([NotNull] this _READABLEBLOCK source, out System.Numerics.Vector2 value)
         {
             return source.ReadLeF32(out value.X).ReadLeF32(out value.Y);
         }
 
-        public static _WRITEABLEBLOCK WriteLeVector3(this _WRITEABLEBLOCK target, System.Numerics.Vector3 value)
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeVector3([NotNull] this _WRITEABLEBLOCK target, System.Numerics.Vector3 value)
         {
             return target.WriteLeF32(value.X).WriteLeF32(value.Y).WriteLeF32(value.Z);
         }
 
-        public static _READABLEBLOCK ReadLeVector3(this _READABLEBLOCK source, out System.Numerics.Vector3 value)
+        [return: NotNull]
+        public static _READABLEBLOCK ReadLeVector3([NotNull] this _READABLEBLOCK source, out System.Numerics.Vector3 value)
         {
             return source.ReadLeF32(out value.X).ReadLeF32(out value.Y).ReadLeF32(out value.Z);
         }
 
-        public static _WRITEABLEBLOCK WriteLeVector4(this _WRITEABLEBLOCK target, System.Numerics.Vector4 value)
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeVector4([NotNull] this _WRITEABLEBLOCK target, System.Numerics.Vector4 value)
         {
             return target.WriteLeF32(value.X).WriteLeF32(value.Y).WriteLeF32(value.Z).WriteLeF32(value.W);
         }
 
-        public static _READABLEBLOCK ReadLeVector4(this _READABLEBLOCK source, out System.Numerics.Vector4 value)
+        [return: NotNull]
+        public static _READABLEBLOCK ReadLeVector4([NotNull] this _READABLEBLOCK source, out System.Numerics.Vector4 value)
         {
             return source.ReadLeF32(out value.X).ReadLeF32(out value.Y).ReadLeF32(out value.Z).ReadLeF32(out value.W);
         }
 
-        public static _WRITEABLEBLOCK WriteLeQuaternion(this _WRITEABLEBLOCK target, System.Numerics.Quaternion value)
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeQuaternion([NotNull] this _WRITEABLEBLOCK target, System.Numerics.Quaternion value)
         {
             return target.WriteLeF32(value.X).WriteLeF32(value.Y).WriteLeF32(value.Z).WriteLeF32(value.W);
         }
 
-        public static _READABLEBLOCK ReadLeQuaternion(this _READABLEBLOCK source, out System.Numerics.Quaternion value)
+        [return: NotNull]
+        public static _READABLEBLOCK ReadLeQuaternion([NotNull] this _READABLEBLOCK source, out System.Numerics.Quaternion value)
         {
             return source.ReadLeF32(out value.X).ReadLeF32(out value.Y).ReadLeF32(out value.Z).ReadLeF32(out value.W);
         }        
 
-        public static _WRITEABLEBLOCK WriteLeMatrix3x2(this _WRITEABLEBLOCK target, System.Numerics.Matrix3x2 value)
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeMatrix3x2([NotNull] this _WRITEABLEBLOCK target, System.Numerics.Matrix3x2 value)
         {
             return target
                 .WriteLeF32(value.M11).WriteLeF32(value.M12)
@@ -73,15 +83,17 @@ namespace $rootnamespace$
                 
         }
 
-        public static _READABLEBLOCK ReadLeMatrix3x2(this _READABLEBLOCK source, out System.Numerics.Matrix3x2 value)
+        [return: NotNull]
+        public static _READABLEBLOCK ReadLeMatrix3x2([NotNull] this _READABLEBLOCK source, out System.Numerics.Matrix3x2 value)
         {
             return source
                 .ReadLeF32(out value.M11).ReadLeF32(out value.M12)
                 .ReadLeF32(out value.M21).ReadLeF32(out value.M22)
                 .ReadLeF32(out value.M31).ReadLeF32(out value.M32);
-        }     
+        }
 
-        public static _WRITEABLEBLOCK WriteLeMatrix4x4(this _WRITEABLEBLOCK target, System.Numerics.Matrix4x4 value)
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeMatrix4x4([NotNull] this _WRITEABLEBLOCK target, System.Numerics.Matrix4x4 value)
         {
             return target
                 .WriteLeF32(value.M11).WriteLeF32(value.M12).WriteLeF32(value.M13).WriteLeF32(value.M14)
@@ -91,7 +103,8 @@ namespace $rootnamespace$
                 
         }
 
-        public static _READABLEBLOCK ReadLeMatrix4x4(this _READABLEBLOCK source, out System.Numerics.Matrix4x4 value)
+        [return: NotNull]
+        public static _READABLEBLOCK ReadLeMatrix4x4([NotNull] this _READABLEBLOCK source, out System.Numerics.Matrix4x4 value)
         {
             return source
                 .ReadLeF32(out value.M11).ReadLeF32(out value.M12).ReadLeF32(out value.M13).ReadLeF32(out value.M14)
@@ -104,153 +117,218 @@ namespace $rootnamespace$
         
         #region primitives
 
-        public static _WRITEABLEBLOCK WriteBool(this _WRITEABLEBLOCK source, bool value) { return WriteU8(source, value ? (Byte)255 : (Byte)0); }
-        public static _READABLEBLOCK ReadBool(this _READABLEBLOCK source, out bool value)
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteBool([NotNull] this _WRITEABLEBLOCK source, bool value) { return WriteU8(source, value ? (Byte)255 : (Byte)0); }
+
+        [return: NotNull]
+        public static _READABLEBLOCK ReadBool([NotNull] this _READABLEBLOCK source, out bool value)
         {
             source = ReadU8(source, out var bval);
             value = bval != 0;
             return source;
         }
 
-        public static _WRITEABLEBLOCK WriteU8(this _WRITEABLEBLOCK source, Byte value) { return WritePlatform<Byte>(source, value); }
-        public static _READABLEBLOCK ReadU8(this _READABLEBLOCK source, out Byte value) { return ReadPlatform<Byte>(source, out value); }
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteU8([NotNull] this _WRITEABLEBLOCK source, Byte value) { return WritePlatform<Byte>(source, value); }
 
-        public static _WRITEABLEBLOCK WriteS8(this _WRITEABLEBLOCK source, SByte value) { return WritePlatform<Byte>(source, (Byte)value); }
-        public static _READABLEBLOCK ReadS8(this _READABLEBLOCK source, out SByte value) { source = ReadPlatform<Byte>(source, out var uvalue); value = (SByte)uvalue; return source; }
+        [return: NotNull]
+        public static _READABLEBLOCK ReadU8([NotNull] this _READABLEBLOCK source, out Byte value) { return ReadPlatform<Byte>(source, out value); }
+
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteS8([NotNull] this _WRITEABLEBLOCK source, SByte value) { return WritePlatform<Byte>(source, (Byte)value); }
+
+        [return: NotNull]
+        public static _READABLEBLOCK ReadS8([NotNull] this _READABLEBLOCK source, out SByte value) { source = ReadPlatform<Byte>(source, out var uvalue); value = (SByte)uvalue; return source; }
         
         /// <summary>Writes little endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteLeS16(this _WRITEABLEBLOCK target, Int16 value) => WriteEndian(target, value, false);
-        /// <summary>Writes little endian value</summary>
-        /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteLeU16(this _WRITEABLEBLOCK target, UInt16 value) => WriteEndian(target, value, false);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeS16([NotNull] this _WRITEABLEBLOCK target, Int16 value) => WriteEndian(target, value, false);
 
         /// <summary>Writes little endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteLeS32(this _WRITEABLEBLOCK target, Int32 value) => WriteEndian(target, value, false);
-        /// <summary>Writes little endian value</summary>
-        /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteLeU32(this _WRITEABLEBLOCK target, UInt32 value) => WriteEndian(target, value, false);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeU16([NotNull] this _WRITEABLEBLOCK target, UInt16 value) => WriteEndian(target, value, false);
 
         /// <summary>Writes little endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteLeS64(this _WRITEABLEBLOCK target, Int64 value) => WriteEndian(target, value, false);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeS32([NotNull] this _WRITEABLEBLOCK target, Int32 value) => WriteEndian(target, value, false);
+
         /// <summary>Writes little endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteLeU64(this _WRITEABLEBLOCK target, UInt64 value) => WriteEndian(target, value, false);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeU32([NotNull] this _WRITEABLEBLOCK target, UInt32 value) => WriteEndian(target, value, false);
+
+        /// <summary>Writes little endian value</summary>
+        /// <returns>Next write context</returns>
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeS64([NotNull] this _WRITEABLEBLOCK target, Int64 value) => WriteEndian(target, value, false);
+
+        /// <summary>Writes little endian value</summary>
+        /// <returns>Next write context</returns>
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeU64([NotNull] this _WRITEABLEBLOCK target, UInt64 value) => WriteEndian(target, value, false);
 
         #if NET5_0_OR_GREATER
         /// <summary>Writes little endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteLeF16(this _WRITEABLEBLOCK target, Half value) => WriteEndian(target, value, false);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeF16([NotNull] this _WRITEABLEBLOCK target, Half value) => WriteEndian(target, value, false);
         #endif
+
         /// <summary>Writes little endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteLeF32(this _WRITEABLEBLOCK target, Single value) => WriteEndian(target, value, false);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeF32([NotNull] this _WRITEABLEBLOCK target, Single value) => WriteEndian(target, value, false);
+
         /// <summary>Writes little endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteLeF64(this _WRITEABLEBLOCK target, Double value) => WriteEndian(target, value, false);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeF64([NotNull] this _WRITEABLEBLOCK target, Double value) => WriteEndian(target, value, false);
 
 
         /// <summary>Writes BIG endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteBeS16(this _WRITEABLEBLOCK target, Int16 value) => WriteEndian(target, value, true);
-        /// <summary>Writes BIG endian value</summary>
-        /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteBeU16(this _WRITEABLEBLOCK target, UInt16 value) => WriteEndian(target, value, true);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteBeS16([NotNull] this _WRITEABLEBLOCK target, Int16 value) => WriteEndian(target, value, true);
 
         /// <summary>Writes BIG endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteBeS32(this _WRITEABLEBLOCK target, Int32 value) => WriteEndian(target, value, true);
-        /// <summary>Writes BIG endian value</summary>
-        /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteBeU32(this _WRITEABLEBLOCK target, UInt32 value) => WriteEndian(target, value, true);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteBeU16([NotNull] this _WRITEABLEBLOCK target, UInt16 value) => WriteEndian(target, value, true);
 
         /// <summary>Writes BIG endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteBeS64(this _WRITEABLEBLOCK target, Int64 value) => WriteEndian(target, value, true);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteBeS32([NotNull] this _WRITEABLEBLOCK target, Int32 value) => WriteEndian(target, value, true);
+
         /// <summary>Writes BIG endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteBeU64(this _WRITEABLEBLOCK target, UInt64 value) => WriteEndian(target, value, true);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteBeU32([NotNull] this _WRITEABLEBLOCK target, UInt32 value) => WriteEndian(target, value, true);
+
+        /// <summary>Writes BIG endian value</summary>
+        /// <returns>Next write context</returns>
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteBeS64([NotNull] this _WRITEABLEBLOCK target, Int64 value) => WriteEndian(target, value, true);
+
+        /// <summary>Writes BIG endian value</summary>
+        /// <returns>Next write context</returns>
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteBeU64([NotNull] this _WRITEABLEBLOCK target, UInt64 value) => WriteEndian(target, value, true);
 
         #if NET5_0_OR_GREATER
         /// <summary>Writes BIG endian value</summary>
         /// <returns>Next write context</returns>
+        [return: NotNull]
         public static _WRITEABLEBLOCK WriteBeF16(this _WRITEABLEBLOCK target, Half value) => WriteEndian(target, value, true);
         #endif
+
         /// <summary>Writes BIG endian value</summary>
         /// <returns>Next write context</returns>
+        [return: NotNull]
         public static _WRITEABLEBLOCK WriteBeF32(this _WRITEABLEBLOCK target, Single value) => WriteEndian(target, value, true);
+
         /// <summary>Writes BIG endian value</summary>
         /// <returns>Next write context</returns>
+        [return: NotNull]
         public static _WRITEABLEBLOCK WriteBeF64(this _WRITEABLEBLOCK target, Double value) => WriteEndian(target, value, true);
 
 
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadLeS16(this _READABLEBLOCK source, out Int16 value) => ReadEndian(source, out value, false);
+
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadLeU16(this _READABLEBLOCK source, out UInt16 value) => ReadEndian(source, out value, false);
 
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadLeS32(this _READABLEBLOCK source, out Int32 value) => ReadEndian(source, out value, false);
+
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadLeU32(this _READABLEBLOCK source, out UInt32 value) => ReadEndian(source, out value, false);
 
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadLeS64(this _READABLEBLOCK source, out Int64 value) => ReadEndian(source, out value, false);
+
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadLeU64(this _READABLEBLOCK source, out UInt64 value) => ReadEndian(source, out value, false);
 
         #if NET5_0_OR_GREATER
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadLeF16(this _READABLEBLOCK source, out Half value) => ReadEndian(source, out value, false);
         #endif
+
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadLeF32(this _READABLEBLOCK source, out Single value) => ReadEndian(source, out value, false);
+
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadLeF64(this _READABLEBLOCK source, out Double value) => ReadEndian(source, out value, false);
 
 
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadBeS16(this _READABLEBLOCK source, out Int16 value) => ReadEndian(source, out value, true);
+
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadBeU16(this _READABLEBLOCK source, out UInt16 value) => ReadEndian(source, out value, true);
 
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadBeS32(this _READABLEBLOCK source, out Int32 value) => ReadEndian(source, out value, true);
+
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadBeU32(this _READABLEBLOCK source, out UInt32 value) => ReadEndian(source, out value, true);
 
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadBeS64(this _READABLEBLOCK source, out Int64 value) => ReadEndian(source, out value, true);
+
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadBeU64(this _READABLEBLOCK source, out UInt64 value) => ReadEndian(source, out value, true);
 
         #if NET5_0_OR_GREATER
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadBeF16(this _READABLEBLOCK source, out Half value) => ReadEndian(source, out value, true);
         #endif
+
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadBeF32(this _READABLEBLOCK source, out Single value) => ReadEndian(source, out value, true);
+
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadBeF64(this _READABLEBLOCK source, out Double value) => ReadEndian(source, out value, true);        
 
         #endregion
@@ -266,7 +344,8 @@ namespace $rootnamespace$
         /// <remarks>
         /// Stores the sign in the lowest bit to allow the same encoding strength on positive and negative values.
         /// </remarks>
-        public static _WRITEABLEBLOCK WritePackedS64(this _WRITEABLEBLOCK target, long value)
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WritePackedS64([NotNull] this _WRITEABLEBLOCK target, long value)
         {
             var uval = (ulong)value;
 
@@ -292,7 +371,8 @@ namespace $rootnamespace$
         /// <remarks>
         /// This is equivalent to <see cref="BinaryWriter.Write7BitEncodedInt64(long)"/>
         /// </remarks>
-        public static _WRITEABLEBLOCK WritePackedU64(this _WRITEABLEBLOCK target, ulong uValue)
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WritePackedU64([NotNull] this _WRITEABLEBLOCK target, ulong uValue)
         {
             // if (target.Length < 10) throw new ArgumentException(nameof(target), "too short");
 
@@ -321,8 +401,9 @@ namespace $rootnamespace$
         /// <returns>The target memory with pointer moved forward.</returns>
         /// <remarks>
         /// Stores the sign in the lowest bit to allow the same encoding strength on positive and negative values.
-        /// </remarks>        
-        public static _READABLEBLOCK ReadPackedS64(this _READABLEBLOCK source, out long result)
+        /// </remarks>
+        [return: NotNull]
+        public static _READABLEBLOCK ReadPackedS64([NotNull] this _READABLEBLOCK source, out long result)
         {
             source = ReadPackedU64(source, out var uval);
             var neg = (uval & 1) != 0;
@@ -340,8 +421,9 @@ namespace $rootnamespace$
         /// <returns>The source memory with pointer moved forward.</returns>
         /// <remarks>
         /// This is equivalent to <see cref="BinaryReader.Read7BitEncodedInt64"/>
-        /// </remarks>        
-        public static _READABLEBLOCK ReadPackedU64(this _READABLEBLOCK source, out ulong result)
+        /// </remarks>
+        [return: NotNull]
+        public static _READABLEBLOCK ReadPackedU64([NotNull] this _READABLEBLOCK source, out ulong result)
         {
             result = 0;
             byte readValue;            
@@ -387,14 +469,17 @@ namespace $rootnamespace$
 
         /// <summary>Writes little endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteLeTimeSpan(this _WRITEABLEBLOCK target, TimeSpan value) => WriteEndian<long>(target, value.Ticks, false);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeTimeSpan([NotNull] this _WRITEABLEBLOCK target, TimeSpan value) => WriteEndian<long>(target, value.Ticks, false);
         /// <summary>Writes BIG endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteBeTimeSpan(this _WRITEABLEBLOCK target, TimeSpan value) => WriteEndian<long>(target, value.Ticks, true);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteBeTimeSpan([NotNull] this _WRITEABLEBLOCK target, TimeSpan value) => WriteEndian<long>(target, value.Ticks, true);
 
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
-        public static _READABLEBLOCK ReadLeTimeSpan(this _READABLEBLOCK source, out TimeSpan value)
+        [return: NotNull]
+        public static _READABLEBLOCK ReadLeTimeSpan([NotNull] this _READABLEBLOCK source, out TimeSpan value)
         {
             source = ReadEndian<long>(source, out var val, false);
             value = new TimeSpan(val);
@@ -403,7 +488,8 @@ namespace $rootnamespace$
 
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
-        public static _READABLEBLOCK ReadBeTimeSpan(this _READABLEBLOCK source, out TimeSpan value)
+        [return: NotNull]
+        public static _READABLEBLOCK ReadBeTimeSpan([NotNull] this _READABLEBLOCK source, out TimeSpan value)
         {
             source = ReadEndian<long>(source, out var val, true);
             value = new TimeSpan(val);
@@ -412,14 +498,17 @@ namespace $rootnamespace$
 
         /// <summary>Writes little endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteLeDateTime(this _WRITEABLEBLOCK target, DateTime value) => WriteEndian<long>(target, value.ToBinary(), false);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeDateTime([NotNull] this _WRITEABLEBLOCK target, DateTime value) => WriteEndian<long>(target, value.ToBinary(), false);
         /// <summary>Writes BIG endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteBeDateTime(this _WRITEABLEBLOCK target, DateTime value) => WriteEndian<long>(target, value.ToBinary(), true);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteBeDateTime([NotNull] this _WRITEABLEBLOCK target, DateTime value) => WriteEndian<long>(target, value.ToBinary(), true);
 
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
-        public static _READABLEBLOCK ReadLeDateTime(this _READABLEBLOCK source, out DateTime value)
+        [return: NotNull]
+        public static _READABLEBLOCK ReadLeDateTime([NotNull] this _READABLEBLOCK source, out DateTime value)
         {
             source = ReadEndian<long>(source, out var val, false);
             value = DateTime.FromBinary(val);
@@ -428,21 +517,24 @@ namespace $rootnamespace$
 
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
-        public static _READABLEBLOCK ReadBeDateTime(this _READABLEBLOCK source, out DateTime value)
+        [return: NotNull]
+        public static _READABLEBLOCK ReadBeDateTime([NotNull] this _READABLEBLOCK source, out DateTime value)
         {
             source = ReadEndian<long>(source, out var val, true);
             value = DateTime.FromBinary(val);
             return source;
         }
 
-        public static _WRITEABLEBLOCK WriteDateTimeOffset(this _WRITEABLEBLOCK target, DateTimeOffset value, bool targetIsBigEndian = false)
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteDateTimeOffset([NotNull] this _WRITEABLEBLOCK target, DateTimeOffset value, bool targetIsBigEndian = false)
         {
             target = WriteEndian(target, value.DateTime.ToBinary(), targetIsBigEndian);
             target = WriteEndian(target, value.Offset.Ticks, targetIsBigEndian);
             return target;
         }
 
-        public static _READABLEBLOCK ReadDateTimeOffset(this _READABLEBLOCK source, out DateTimeOffset value, bool sourceIsBigEndian = false)
+        [return: NotNull]
+        public static _READABLEBLOCK ReadDateTimeOffset([NotNull] this _READABLEBLOCK source, out DateTimeOffset value, bool sourceIsBigEndian = false)
         {
             source = ReadEndian(source, out long t, sourceIsBigEndian);
             source = ReadEndian(source, out long o, sourceIsBigEndian);
@@ -463,7 +555,8 @@ namespace $rootnamespace$
         /// <remarks>
         /// This is equivalent to <see cref="BinaryWriter.Write(string)"/>
         /// </remarks>
-        public static _WRITEABLEBLOCK WriteString(this _WRITEABLEBLOCK target, string text, System.Text.Encoding encoding = null)
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteString([NotNull] this _WRITEABLEBLOCK target, string text, System.Text.Encoding encoding = null)
         {
             encoding ??= System.Text.Encoding.UTF8;
 
@@ -502,7 +595,8 @@ namespace $rootnamespace$
         /// <remarks>
         /// This is equivalent to <see cref="BinaryReader.ReadString"/>
         /// </remarks>
-        public static _READABLEBLOCK ReadString(this _READABLEBLOCK source, out string value, System.Text.Encoding encoding = null)
+        [return: NotNull]
+        public static _READABLEBLOCK ReadString([NotNull] this _READABLEBLOCK source, out string value, System.Text.Encoding encoding = null)
         {
             encoding ??= System.Text.Encoding.UTF8;
 
@@ -540,10 +634,11 @@ namespace $rootnamespace$
 
         #region collections
 
-        public delegate _WRITEABLEBLOCK ItemWriteInterfaceDelegate<T>(_WRITEABLEBLOCK source, T item);
-        public delegate _READABLEBLOCK ItemReadInterfaceDelegate<T>(_READABLEBLOCK source, out T item);
+        public delegate _WRITEABLEBLOCK ItemWriteInterfaceDelegate<T>([NotNull] _WRITEABLEBLOCK source, T item);
+        public delegate _READABLEBLOCK ItemReadInterfaceDelegate<T>([NotNull] _READABLEBLOCK source, out T item);
 
-        public static _WRITEABLEBLOCK WriteList<T>(this _WRITEABLEBLOCK target, IReadOnlyList<T> source, ItemWriteInterfaceDelegate<T> lambda)
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteList<T>([NotNull] this _WRITEABLEBLOCK target, IReadOnlyList<T> source, ItemWriteInterfaceDelegate<T> lambda)
         {
             if (source == null) return target.WritePackedU64(0);
 
@@ -557,7 +652,8 @@ namespace $rootnamespace$
             return target;
         }
 
-        public static _READABLEBLOCK ReadList<T>(this _READABLEBLOCK source, ref List<T> result, ItemReadInterfaceDelegate<T> lambda)
+        [return: NotNull]
+        public static _READABLEBLOCK ReadList<T>([NotNull] this _READABLEBLOCK source, ref List<T> result, ItemReadInterfaceDelegate<T> lambda)
         {
             source = source.ReadPackedU64(out var count);
             if (count == 0) return source;
@@ -573,7 +669,8 @@ namespace $rootnamespace$
             return source;
         }
 
-        public static _READABLEBLOCK ReadList<T>(this _READABLEBLOCK source, IList<T> result, ItemReadInterfaceDelegate<T> lambda)
+        [return: NotNull]
+        public static _READABLEBLOCK ReadList<T>([NotNull] this _READABLEBLOCK source, IList<T> result, ItemReadInterfaceDelegate<T> lambda)
         {
             source = source.ReadPackedU64(out var count);
             if (count == 0) return source;            
@@ -587,7 +684,8 @@ namespace $rootnamespace$
             return source;
         }
 
-        public static _READABLEBLOCK ReadList<T>(this _READABLEBLOCK source, out T[] result, ItemReadInterfaceDelegate<T> lambda)
+        [return: NotNull]
+        public static _READABLEBLOCK ReadList<T>([NotNull] this _READABLEBLOCK source, out T[] result, ItemReadInterfaceDelegate<T> lambda)
         {
             source = source.ReadPackedU64(out var count);
             if (count == 0) { result = null; return source; }
@@ -605,7 +703,8 @@ namespace $rootnamespace$
             return source;
         }
 
-        public static _WRITEABLEBLOCK WriteDictionary<T>(this _WRITEABLEBLOCK target, IReadOnlyDictionary<string, T> source, ItemWriteInterfaceDelegate<T> lambda)
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteDictionary<T>([NotNull] this _WRITEABLEBLOCK target, IReadOnlyDictionary<string, T> source, ItemWriteInterfaceDelegate<T> lambda)
         {
             if (source == null) return target.WritePackedU64(0);
 
@@ -620,13 +719,15 @@ namespace $rootnamespace$
             return target;
         }
 
-        public static _READABLEBLOCK ReadDictionary<T>(this _READABLEBLOCK source, ref Dictionary<string, T> result, ItemReadInterfaceDelegate<T> lambda)
+        [return: NotNull]
+        public static _READABLEBLOCK ReadDictionary<T>([NotNull] this _READABLEBLOCK source, ref Dictionary<string, T> result, ItemReadInterfaceDelegate<T> lambda)
         {
             result ??= new Dictionary<string,T>();
             return ReadDictionary(source, result, lambda);
         }
 
-        public static _READABLEBLOCK ReadDictionary<T>(this _READABLEBLOCK source, IDictionary<string, T> result, ItemReadInterfaceDelegate<T> lambda)        
+        [return: NotNull]
+        public static _READABLEBLOCK ReadDictionary<T>([NotNull] this _READABLEBLOCK source, IDictionary<string, T> result, ItemReadInterfaceDelegate<T> lambda)        
         {
             result.Clear();
 
@@ -643,7 +744,8 @@ namespace $rootnamespace$
             return source;
         }
 
-        public static _WRITEABLEBLOCK WriteListLe<T>(this _WRITEABLEBLOCK target, IReadOnlyList<T> items) where T: IConvertible
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteListLe<T>([NotNull] this _WRITEABLEBLOCK target, IReadOnlyList<T> items) where T: IConvertible
         {
             items ??= Array.Empty<T>();
 
@@ -659,7 +761,8 @@ namespace $rootnamespace$
             return target;
         }
 
-        public static _READABLEBLOCK ReadListLe<T>(this _READABLEBLOCK source, List<T> list) where T : IConvertible
+        [return: NotNull]
+        public static _READABLEBLOCK ReadListLe<T>([NotNull] this _READABLEBLOCK source, List<T> list) where T : IConvertible
         {
             source = source.ReadLeS32(out var count);
 
@@ -674,7 +777,8 @@ namespace $rootnamespace$
             return source;
         }
 
-        public static _READABLEBLOCK ReadListLe<T>(this _READABLEBLOCK source, ref ArraySegment<T> list) where T : IConvertible
+        [return: NotNull]
+        public static _READABLEBLOCK ReadListLe<T>([NotNull] this _READABLEBLOCK source, ref ArraySegment<T> list) where T : IConvertible
         {
             source = source.ReadLeS32(out var count);
 
@@ -690,7 +794,8 @@ namespace $rootnamespace$
             return source;
         }
 
-        public static _READABLEBLOCK ReadListLe<T>(this _READABLEBLOCK source, ref T[] list) where T : IConvertible
+        [return: NotNull]
+        public static _READABLEBLOCK ReadListLe<T>([NotNull] this _READABLEBLOCK source, ref T[] list) where T : IConvertible
         {
             source = source.ReadLeS32(out var count);
 
@@ -709,7 +814,8 @@ namespace $rootnamespace$
 
         #region generic
 
-        public static _READABLEBLOCK ReadLeConvertible<T>(this _READABLEBLOCK source, out T convertible) where T : IConvertible
+        [return: NotNull]
+        public static _READABLEBLOCK ReadLeConvertible<T>([NotNull] this _READABLEBLOCK source, out T convertible) where T : IConvertible
         {
             if (typeof(T) == typeof(Boolean)) { source = source.ReadBool(out var value); convertible = (T)(Object)value; return source; }
             if (typeof(T) == typeof(String)) { source = source.ReadString(out var value); convertible = (T)(Object)value; return source; }
@@ -731,7 +837,8 @@ namespace $rootnamespace$
             throw new NotSupportedException(typeof(T).Name);
         }
 
-        public static _WRITEABLEBLOCK WriteLeConvertible<T>(this _WRITEABLEBLOCK target, T convertible) where T: IConvertible
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeConvertible<T>([NotNull] this _WRITEABLEBLOCK target, T convertible) where T: IConvertible
         {
             switch (convertible)
             {

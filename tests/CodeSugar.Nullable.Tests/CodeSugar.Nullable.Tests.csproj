@@ -1,16 +1,34 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
+  <PropertyGroup>
 		<RootNamespace>CodeSugar</RootNamespace>
 		<TargetFrameworks>net6.0;net8.0</TargetFrameworks>
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
-		<Nullable>disable</Nullable>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);CODESUGAR_USECODESUGARNAMESPACE</DefineConstants>
-  </PropertyGroup>   
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\CodeSugar.Tests\FileProvidersTests.cs" Link="FileProvidersTests.cs" />
+    <Compile Include="..\CodeSugar.Tests\LinqTests.cs" Link="LinqTests.cs" />
+    <Compile Include="..\CodeSugar.Tests\LoggingTests.cs" Link="LoggingTests.cs" />
+    <Compile Include="..\CodeSugar.Tests\ProgressTests.cs" Link="ProgressTests.cs" />
+    <Compile Include="..\CodeSugar.Tests\RandomStream.cs" Link="RandomStream.cs" />
+    <Compile Include="..\CodeSugar.Tests\SerializationTests.cs" Link="SerializationTests.cs" />
+    <Compile Include="..\CodeSugar.Tests\StreamTests.cs" Link="StreamTests.cs" />
+    <Compile Include="..\CodeSugar.Tests\SystemIOTests.cs" Link="SystemIOTests.cs" />
+    <Compile Include="..\CodeSugar.Tests\SystemTensorsTests.cs" Link="SystemTensorsTests.cs" />
+    <Compile Include="..\CodeSugar.Tests\SystemVectorsTests.cs" Link="SystemVectorsTests.cs" />
+    <Compile Include="..\CodeSugar.Tests\TextTests.cs" Link="TextTests.cs" />
+    <Compile Include="..\CodeSugar.Tests\ZipFileProviderTests.cs" Link="ZipFileProviderTests.cs" />
+    <Compile Include="..\CodeSugar.Tests\_Extensions.cs" Link="_Extensions.cs" />
+  </ItemGroup> 
+
+  
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\CodeSugar.FileProviders.Sources\CodeSugar.FileProviders.Sources.csproj" />

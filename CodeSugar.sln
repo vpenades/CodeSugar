@@ -12,6 +12,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeSugar.Tests", "tests\CodeSugar.Tests\CodeSugar.Tests.csproj", "{62FC9075-CBE7-4FF1-BA34-93625D1CDE9A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{096F443D-3205-4914-8E40-3A2186B71134}"
+	ProjectSection(SolutionItems) = preProject
+		tests\Directory.Build.props = tests\Directory.Build.props
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{53540609-2D6C-4939-A145-7D2E6E162F04}"
 	ProjectSection(SolutionItems) = preProject
@@ -52,6 +55,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeSugar.Tensors.Sources", "src\CodeSugar.Tensors.Sources\CodeSugar.Tensors.Sources.csproj", "{9B618023-A985-4CD9-8DB6-6EA2BEB8C758}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeSugar.Progress.Log", "src\CodeSugar.Progress.Log\CodeSugar.Progress.Log.csproj", "{9BAA33A3-AA68-4189-8BB9-53DC0224E1D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeSugar.Nullable.Tests", "tests\CodeSugar.Nullable.Tests\CodeSugar.Nullable.Tests.csproj", "{0ED3659A-D6C4-6401-E7CE-63D46AA91417}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,6 +116,10 @@ Global
 		{9BAA33A3-AA68-4189-8BB9-53DC0224E1D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BAA33A3-AA68-4189-8BB9-53DC0224E1D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BAA33A3-AA68-4189-8BB9-53DC0224E1D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0ED3659A-D6C4-6401-E7CE-63D46AA91417}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ED3659A-D6C4-6401-E7CE-63D46AA91417}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0ED3659A-D6C4-6401-E7CE-63D46AA91417}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0ED3659A-D6C4-6401-E7CE-63D46AA91417}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -129,6 +138,7 @@ Global
 		{ECBB5551-D387-4A29-A739-FDE4B6DE902D} = {36A264B8-92D1-48DD-8054-115FF0856E50}
 		{9B618023-A985-4CD9-8DB6-6EA2BEB8C758} = {36A264B8-92D1-48DD-8054-115FF0856E50}
 		{9BAA33A3-AA68-4189-8BB9-53DC0224E1D7} = {36A264B8-92D1-48DD-8054-115FF0856E50}
+		{0ED3659A-D6C4-6401-E7CE-63D46AA91417} = {096F443D-3205-4914-8E40-3A2186B71134}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {12BE1319-4F6D-4472-82CA-678A7F50C6B4}

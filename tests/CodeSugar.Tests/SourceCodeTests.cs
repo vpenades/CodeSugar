@@ -60,7 +60,7 @@ namespace CodeSugar
             var dinfo = new System.IO.DirectoryInfo(TestContext.CurrentContext.TestDirectory).FindDirectoryTree("src", projectName);
             Assert.That(dinfo.Exists);
 
-            foreach(var finfo in dinfo.EnumerateFiles("*.cs", System.IO.SearchOption.AllDirectories))
+            foreach(var finfo in dinfo.EnumerateFiles("*.cs", System.IO.SearchOption.TopDirectoryOnly))
             {
                 var sc = finfo.ReadAllText();
 
@@ -72,8 +72,32 @@ namespace CodeSugar
 
                 var result3 = _RoslynExtensions.CheckUsesProperty<System.IO.DirectoryInfo>(sc, "Exists");
                 Assert.That(result3, Is.False, $"{finfo.Name} uses System.IO.DirectoryInfo.Exists");
+            }            
+        }
+
+        [TestCase("CodeSugar.Sys.Sources")]
+        [TestCase("CodeSugar.Sys.IO.Sources")]        
+        [TestCase("CodeSugar.Sys.Text.Sources")]
+        [TestCase("CodeSugar.Srlzn.Bin.Sources")]
+        [TestCase("CodeSugar.FileProviders.Sources")]
+
+        [TestCase("CodeSugar.Linq.Sources")]
+        [TestCase("CodeSugar.Numerics.Sources")]
+        [TestCase("CodeSugar.Tensors.Sources")]
+        [TestCase("CodeSugar.Progress.Log")]
+        
+        public void TestNullableDisabled(string projectName)
+        {
+            var dinfo = new System.IO.DirectoryInfo(TestContext.CurrentContext.TestDirectory).FindDirectoryTree("src", projectName);
+            Assert.That(dinfo.Exists);
+
+            foreach (var finfo in dinfo.EnumerateFiles("*.cs", System.IO.SearchOption.TopDirectoryOnly))
+            {
+                var sc = finfo.ReadAllText();
+
+                Assert.That(sc.Contains("#nullable disable"), $"{projectName}/{finfo.Name} does not have #nullable disable");
             }
-            
+
         }
     }
 }

@@ -159,7 +159,7 @@ namespace $rootnamespace$
 
             public string AssetFullPath { get; }
 
-            public string? PhysicalPath => null;
+            public string PhysicalPath => null;
 
             public string Name { get; }
 

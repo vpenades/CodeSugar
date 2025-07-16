@@ -38,6 +38,8 @@ namespace CodeSugar
         {
             var list = new List<byte>();
 
+            
+
             list.AsStatefulProgressWriter().WriteLeS32(100).WriteBeS32(100);
 
             Assert.That(list, Is.EqualTo(new byte[] { 100, 0, 0, 0, 0, 0, 0, 100 }));

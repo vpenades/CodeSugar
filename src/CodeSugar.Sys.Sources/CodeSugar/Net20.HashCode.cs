@@ -65,7 +65,7 @@ namespace System
         
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("HashCode is a mutable struct and should not be compared with other HashCodes.", true)]
-        public override bool Equals(object obj)
+        public readonly override bool Equals(object obj)
         {
             if (obj is HashCode other) return this._Hash == other._Hash;
             return false;
@@ -73,9 +73,9 @@ namespace System
         
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("HashCode is a mutable struct and should not be compared with other HashCodes. Use ToHashCode to retrieve the computed hash code.", true)]
-        public override int GetHashCode() { return _Hash; }
+        public readonly override int GetHashCode() { return _Hash; }
         
-        public int ToHashCode() { return _Hash; }
+        public readonly int ToHashCode() { return _Hash; }
 
         #endregion
     }

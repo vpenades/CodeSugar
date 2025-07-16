@@ -1,153 +1,218 @@
 ﻿        
         #region primitives
 
-        public static _WRITEABLEBLOCK WriteBool(this _WRITEABLEBLOCK source, bool value) { return WriteU8(source, value ? (Byte)255 : (Byte)0); }
-        public static _READABLEBLOCK ReadBool(this _READABLEBLOCK source, out bool value)
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteBool([NotNull] this _WRITEABLEBLOCK source, bool value) { return WriteU8(source, value ? (Byte)255 : (Byte)0); }
+
+        [return: NotNull]
+        public static _READABLEBLOCK ReadBool([NotNull] this _READABLEBLOCK source, out bool value)
         {
             source = ReadU8(source, out var bval);
             value = bval != 0;
             return source;
         }
 
-        public static _WRITEABLEBLOCK WriteU8(this _WRITEABLEBLOCK source, Byte value) { return WritePlatform<Byte>(source, value); }
-        public static _READABLEBLOCK ReadU8(this _READABLEBLOCK source, out Byte value) { return ReadPlatform<Byte>(source, out value); }
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteU8([NotNull] this _WRITEABLEBLOCK source, Byte value) { return WritePlatform<Byte>(source, value); }
 
-        public static _WRITEABLEBLOCK WriteS8(this _WRITEABLEBLOCK source, SByte value) { return WritePlatform<Byte>(source, (Byte)value); }
-        public static _READABLEBLOCK ReadS8(this _READABLEBLOCK source, out SByte value) { source = ReadPlatform<Byte>(source, out var uvalue); value = (SByte)uvalue; return source; }
+        [return: NotNull]
+        public static _READABLEBLOCK ReadU8([NotNull] this _READABLEBLOCK source, out Byte value) { return ReadPlatform<Byte>(source, out value); }
+
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteS8([NotNull] this _WRITEABLEBLOCK source, SByte value) { return WritePlatform<Byte>(source, (Byte)value); }
+
+        [return: NotNull]
+        public static _READABLEBLOCK ReadS8([NotNull] this _READABLEBLOCK source, out SByte value) { source = ReadPlatform<Byte>(source, out var uvalue); value = (SByte)uvalue; return source; }
         
         /// <summary>Writes little endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteLeS16(this _WRITEABLEBLOCK target, Int16 value) => WriteEndian(target, value, false);
-        /// <summary>Writes little endian value</summary>
-        /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteLeU16(this _WRITEABLEBLOCK target, UInt16 value) => WriteEndian(target, value, false);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeS16([NotNull] this _WRITEABLEBLOCK target, Int16 value) => WriteEndian(target, value, false);
 
         /// <summary>Writes little endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteLeS32(this _WRITEABLEBLOCK target, Int32 value) => WriteEndian(target, value, false);
-        /// <summary>Writes little endian value</summary>
-        /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteLeU32(this _WRITEABLEBLOCK target, UInt32 value) => WriteEndian(target, value, false);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeU16([NotNull] this _WRITEABLEBLOCK target, UInt16 value) => WriteEndian(target, value, false);
 
         /// <summary>Writes little endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteLeS64(this _WRITEABLEBLOCK target, Int64 value) => WriteEndian(target, value, false);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeS32([NotNull] this _WRITEABLEBLOCK target, Int32 value) => WriteEndian(target, value, false);
+
         /// <summary>Writes little endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteLeU64(this _WRITEABLEBLOCK target, UInt64 value) => WriteEndian(target, value, false);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeU32([NotNull] this _WRITEABLEBLOCK target, UInt32 value) => WriteEndian(target, value, false);
+
+        /// <summary>Writes little endian value</summary>
+        /// <returns>Next write context</returns>
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeS64([NotNull] this _WRITEABLEBLOCK target, Int64 value) => WriteEndian(target, value, false);
+
+        /// <summary>Writes little endian value</summary>
+        /// <returns>Next write context</returns>
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeU64([NotNull] this _WRITEABLEBLOCK target, UInt64 value) => WriteEndian(target, value, false);
 
         #if NET5_0_OR_GREATER
         /// <summary>Writes little endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteLeF16(this _WRITEABLEBLOCK target, Half value) => WriteEndian(target, value, false);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeF16([NotNull] this _WRITEABLEBLOCK target, Half value) => WriteEndian(target, value, false);
         #endif
+
         /// <summary>Writes little endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteLeF32(this _WRITEABLEBLOCK target, Single value) => WriteEndian(target, value, false);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeF32([NotNull] this _WRITEABLEBLOCK target, Single value) => WriteEndian(target, value, false);
+
         /// <summary>Writes little endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteLeF64(this _WRITEABLEBLOCK target, Double value) => WriteEndian(target, value, false);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteLeF64([NotNull] this _WRITEABLEBLOCK target, Double value) => WriteEndian(target, value, false);
 
 
         /// <summary>Writes BIG endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteBeS16(this _WRITEABLEBLOCK target, Int16 value) => WriteEndian(target, value, true);
-        /// <summary>Writes BIG endian value</summary>
-        /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteBeU16(this _WRITEABLEBLOCK target, UInt16 value) => WriteEndian(target, value, true);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteBeS16([NotNull] this _WRITEABLEBLOCK target, Int16 value) => WriteEndian(target, value, true);
 
         /// <summary>Writes BIG endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteBeS32(this _WRITEABLEBLOCK target, Int32 value) => WriteEndian(target, value, true);
-        /// <summary>Writes BIG endian value</summary>
-        /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteBeU32(this _WRITEABLEBLOCK target, UInt32 value) => WriteEndian(target, value, true);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteBeU16([NotNull] this _WRITEABLEBLOCK target, UInt16 value) => WriteEndian(target, value, true);
 
         /// <summary>Writes BIG endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteBeS64(this _WRITEABLEBLOCK target, Int64 value) => WriteEndian(target, value, true);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteBeS32([NotNull] this _WRITEABLEBLOCK target, Int32 value) => WriteEndian(target, value, true);
+
         /// <summary>Writes BIG endian value</summary>
         /// <returns>Next write context</returns>
-        public static _WRITEABLEBLOCK WriteBeU64(this _WRITEABLEBLOCK target, UInt64 value) => WriteEndian(target, value, true);
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteBeU32([NotNull] this _WRITEABLEBLOCK target, UInt32 value) => WriteEndian(target, value, true);
+
+        /// <summary>Writes BIG endian value</summary>
+        /// <returns>Next write context</returns>
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteBeS64([NotNull] this _WRITEABLEBLOCK target, Int64 value) => WriteEndian(target, value, true);
+
+        /// <summary>Writes BIG endian value</summary>
+        /// <returns>Next write context</returns>
+        [return: NotNull]
+        public static _WRITEABLEBLOCK WriteBeU64([NotNull] this _WRITEABLEBLOCK target, UInt64 value) => WriteEndian(target, value, true);
 
         #if NET5_0_OR_GREATER
         /// <summary>Writes BIG endian value</summary>
         /// <returns>Next write context</returns>
+        [return: NotNull]
         public static _WRITEABLEBLOCK WriteBeF16(this _WRITEABLEBLOCK target, Half value) => WriteEndian(target, value, true);
         #endif
+
         /// <summary>Writes BIG endian value</summary>
         /// <returns>Next write context</returns>
+        [return: NotNull]
         public static _WRITEABLEBLOCK WriteBeF32(this _WRITEABLEBLOCK target, Single value) => WriteEndian(target, value, true);
+
         /// <summary>Writes BIG endian value</summary>
         /// <returns>Next write context</returns>
+        [return: NotNull]
         public static _WRITEABLEBLOCK WriteBeF64(this _WRITEABLEBLOCK target, Double value) => WriteEndian(target, value, true);
 
 
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadLeS16(this _READABLEBLOCK source, out Int16 value) => ReadEndian(source, out value, false);
+
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadLeU16(this _READABLEBLOCK source, out UInt16 value) => ReadEndian(source, out value, false);
 
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadLeS32(this _READABLEBLOCK source, out Int32 value) => ReadEndian(source, out value, false);
+
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadLeU32(this _READABLEBLOCK source, out UInt32 value) => ReadEndian(source, out value, false);
 
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadLeS64(this _READABLEBLOCK source, out Int64 value) => ReadEndian(source, out value, false);
+
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadLeU64(this _READABLEBLOCK source, out UInt64 value) => ReadEndian(source, out value, false);
 
         #if NET5_0_OR_GREATER
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadLeF16(this _READABLEBLOCK source, out Half value) => ReadEndian(source, out value, false);
         #endif
+
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadLeF32(this _READABLEBLOCK source, out Single value) => ReadEndian(source, out value, false);
+
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadLeF64(this _READABLEBLOCK source, out Double value) => ReadEndian(source, out value, false);
 
 
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadBeS16(this _READABLEBLOCK source, out Int16 value) => ReadEndian(source, out value, true);
+
         /// <summary>Reads little endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadBeU16(this _READABLEBLOCK source, out UInt16 value) => ReadEndian(source, out value, true);
 
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadBeS32(this _READABLEBLOCK source, out Int32 value) => ReadEndian(source, out value, true);
+
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadBeU32(this _READABLEBLOCK source, out UInt32 value) => ReadEndian(source, out value, true);
 
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadBeS64(this _READABLEBLOCK source, out Int64 value) => ReadEndian(source, out value, true);
+
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadBeU64(this _READABLEBLOCK source, out UInt64 value) => ReadEndian(source, out value, true);
 
         #if NET5_0_OR_GREATER
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadBeF16(this _READABLEBLOCK source, out Half value) => ReadEndian(source, out value, true);
         #endif
+
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadBeF32(this _READABLEBLOCK source, out Single value) => ReadEndian(source, out value, true);
+
         /// <summary>Reads BIG endian value</summary>
         /// <returns>Next read context</returns>
+        [return: NotNull]
         public static _READABLEBLOCK ReadBeF64(this _READABLEBLOCK source, out Double value) => ReadEndian(source, out value, true);        
 
         #endregion
