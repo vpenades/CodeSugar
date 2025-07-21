@@ -347,11 +347,11 @@ namespace $rootnamespace$
             if (overwrite && dstInfo.RefreshedExists())
             {
                 dstInfo.Delete();
-                System.Diagnostics.Debug.Assert(dstInfo.Exists == false);
+                System.Diagnostics.Debug.Assert(dstInfo.CachedExists() == false);
             }
 
             finfo.MoveTo(dstInfo.FullName);
-            System.Diagnostics.Debug.Assert(finfo.CachedExists() == System.IO.File.Exists(dstInfo.FullName));
+            System.Diagnostics.Debug.Assert(finfo.CachedExists() == dstInfo.PhysicallyExists());
         }
         #endif
 
