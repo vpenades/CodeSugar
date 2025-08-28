@@ -3,7 +3,7 @@
   "isRoot": true,
   "tools": {
     "SourceNugetPackageBuilder.Tool": {
-      "version": "1.0.0-pre-20250109-155317",
+      "version": "1.0.0-pre-20250828-133511",
       "commands": [
         "PackAsSourcesNuget"
       ]

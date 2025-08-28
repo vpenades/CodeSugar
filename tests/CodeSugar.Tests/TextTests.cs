@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Microsoft.VisualStudio.TestPlatform.Utilities;
-
 using NUnit.Framework;
 
 namespace CodeSugar
@@ -69,8 +67,8 @@ namespace CodeSugar
         [TestCase("-a --b -c:hello -d:\"hello world\" -e")]
         [TestCase(" -d:\"hello\"xyz 123 \"\"  555  a\"\"b ")]
         public void TestTokenizeCommandLine(string textLine)
-        {            
-            var refSplit = System.CommandLine.Parsing.CommandLineStringSplitter.Instance.Split(textLine).ToArray();
+        {
+            var refSplit = System.CommandLine.Parsing.CommandLineParser.SplitCommandLine(textLine).ToArray();
 
             var impSplit = textLine.Tokenize(null, c=> c== '"' ? '"' : default).ToArray();
 

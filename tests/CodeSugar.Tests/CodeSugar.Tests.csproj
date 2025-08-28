@@ -13,6 +13,7 @@
   </PropertyGroup>   
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\CodeSugar.AI\CodeSugar.AI.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.FileProviders.Sources\CodeSugar.FileProviders.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Linq.Sources\CodeSugar.Linq.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Numerics.Sources\CodeSugar.Numerics.csproj" />
@@ -22,6 +23,15 @@
     <ProjectReference Include="..\..\src\CodeSugar.Sys.Sources\CodeSugar.Sys.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Sys.Text.Sources\CodeSugar.Sys.Text.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Tensors.Sources\CodeSugar.Tensors.csproj" />
+  </ItemGroup>   
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.Extensions.FileProviders.Physical" Version="9.0.8" />
+    <PackageReference Update="NUnit" Version="4.4.0" />
+    <PackageReference Update="NUnit.Analyzers" Version="4.10.0" />
+    <PackageReference Update="NUnit3TestAdapter" Version="5.1.0" />
+    <PackageReference Update="System.CommandLine" Version="2.0.0-beta7.25380.108" />
+    <PackageReference Update="TestAttachments.NUnit" Version="4.0.0-Preview-20241018-1255" />
   </ItemGroup>
 
 </Project>

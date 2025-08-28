@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <IsPackable>true</IsPackable>
+    <IsPackable>false</IsPackable>
     <IsPackableAsSources>true</IsPackableAsSources>
   </PropertyGroup>
 
@@ -21,44 +21,27 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="readme.md" Pack="true" PackagePath="\" />        
+    <None Include="readme.md" />
   </ItemGroup>
 
-  <PropertyGroup>    
+
+  <PropertyGroup>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
   </PropertyGroup>
 
   <PropertyGroup>
     <Description>
-      Quality of life internal extensions for System.Numerics.Tensors
+      Algorythms and utilities related to AI.
     </Description>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="System.Numerics.Tensors" Version="9.0.8" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="System.Numerics.Tensors" Version="9.0.8" />
+	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
 		<PackageReference Update="System.Numerics.Tensors" Version="8.0.0" />
 	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="ColorTypes.pp.cs">
-      <DependentUpon>ColorTypes.pp.tt</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>    
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="ColorTypes.pp.tt">
-      <LastGenOutput>ColorTypes.pp.cs</LastGenOutput>
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </None>   
-  </ItemGroup>
-
-  <ItemGroup>
-    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
 
 </Project>

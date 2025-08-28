@@ -25,5 +25,26 @@ namespace CodeSugar
 
             return null;
         }
+
+        public static string ToText<T>(this IEnumerable<T> collection)
+        {
+            return collection.Aggregate(string.Empty, (a, b) => a + b + ", ");
+        }
+
+        public static IEnumerable<T> Randomize<T>(this IReadOnlyList<T> collection)
+        {
+            var indices = Enumerable.Range(0, collection.Count).ToList();
+            var rnd = new Random();
+
+            while(indices.Count > 0)
+            {
+                var idx = rnd.Next(indices.Count);
+                yield return collection[indices[idx]];
+
+                indices[idx] = indices[indices.Count - 1];
+                indices.RemoveAt(indices.Count - 1);
+            }
+            
+        }
     }
 }
