@@ -24,30 +24,59 @@ namespace $rootnamespace$
 {
     partial class CodeSugarForLogging
     {
+        public static IDisposable RedirectConsoleToFile(this AppDomain appDomain, string filePath)
+        {
+            var writer = _AppendToLog(filePath);
+            if (writer == null) return null;
+
+            // Set the StreamWriter as the Console output and error
+            Console.SetOut(writer);
+            Console.SetError(writer);
+
+            return writer;
+        }
+
         public static IDisposable RedirectConsoleOutputToFile(this AppDomain appDomain, string filePath)
         {
-            filePath = _GetAbolutePath(filePath,".log");
-
-            // Create a StreamWriter to write to the file
-            var writer = new StreamWriter(filePath, true, Encoding.UTF8);
+            var writer = _AppendToLog(filePath);
+            if (writer == null) return null;
 
             // Set the StreamWriter as the Console output
             Console.SetOut(writer);
 
             return writer;
-        }
+        }        
 
         public static IDisposable RedirectConsoleErrorToFile(this AppDomain appDomain, string filePath)
         {
-            filePath = _GetAbolutePath(filePath, ".log");
-
-            // Create a StreamWriter to write to the file
-            var writer = new StreamWriter(filePath, true, Encoding.UTF8);
+            var writer = _AppendToLog(filePath);
+            if (writer == null) return null;
 
             // Set the StreamWriter as the Console output
             Console.SetError(writer);
 
             return writer;
+        }
+
+        private static StreamWriter _AppendToLog(string filePath)
+        {
+            // do multiple attempts in case the file is taken by another process.
+
+            for(int i=0; i < 10; ++i) 
+            {
+                try
+                {
+                    filePath = i == 0
+                        ? _GetAbolutePath(filePath, ".log")
+                        : _GetAbolutePath(filePath, $".{i}.log");
+
+                    // Create a StreamWriter to append log events.
+                    return new StreamWriter(filePath, true, Encoding.UTF8);
+                }
+                catch { }
+            }
+
+            return null;            
         }
 
         public static void RedirectCrashLoggingToConsole(this AppDomain appDomain)
