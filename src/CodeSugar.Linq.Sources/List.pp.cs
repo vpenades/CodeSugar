@@ -1,12 +1,13 @@
 ﻿// Copyright (c) CodeSugar 2024 Vicente Penades
 
 using System;
-using System.Numerics;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Numerics;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 #nullable disable
 
@@ -169,14 +170,43 @@ namespace $rootnamespace$
 
         #region transfer
 
-        public static void AddRange<T>(this IList<T> collection, IEnumerable<T> items)
+        public static void AddRange<TList, TValue>(this TList ilist, IEnumerable<TValue> items)
+            where TList: IList<TValue>
         {
-            foreach (var item in items) collection.Add(item);
+            if (items == null) return;
+
+            switch(ilist)
+            {
+                case null: throw new ArgumentNullException(nameof(ilist));
+                case List<TValue> list: list.AddRange(items); break;
+                case TValue[] array: throw new NotSupportedException("Arrays are read only");
+                default:
+                    if (ilist.IsReadOnly) throw new ArgumentException("Collection is read only", nameof(ilist));
+                    foreach (var item in items) ilist.Add(item);
+                    break;
+            }            
         }
 
-        public static void AddRange<T>(this IList<T> collection, ReadOnlySpan<T> items)
+        #if NET9_0_OR_GREATER
+        [System.Runtime.CompilerServices.OverloadResolutionPriority(1)]
+        #endif
+        public static void AddRange<TList, TValue>(this TList ilist, ReadOnlySpan<TValue> items)
+            where TList : IList<TValue>
         {
-            foreach (var item in items) collection.Add(item);
+            if (items.IsEmpty) return;
+
+            switch (ilist)
+            {
+                case null: throw new ArgumentNullException(nameof(ilist));
+                case TValue[] array: throw new NotSupportedException("Arrays are read only");
+                case List<TValue> list:
+                    foreach (var item in items) ilist.Add(item);
+                    break;
+                default:
+                    if (ilist.IsReadOnly) throw new ArgumentException("Collection is read only", nameof(ilist));
+                    foreach (var item in items) ilist.Add(item);
+                    break;
+            }            
         }
 
         public static void CopyTo<T>(this IReadOnlyList<T> src, Span<T> dst)
@@ -284,6 +314,39 @@ namespace $rootnamespace$
             if (collection == null) return Array.Empty<TResult>();
 
             return new _SelectCollection<TSource, TResult>(collection, selector);
+        }
+
+        #endregion
+
+        #region sorting
+
+        /// <summary>
+        /// Performs an in-place ascending sort of the items
+        /// </summary>
+        /// <typeparam name="TList"></typeparam>
+        /// <typeparam name="TValue"></typeparam>
+        /// <typeparam name="TProperty"></typeparam>
+        /// <param name="ilist"></param>
+        /// <param name="selector"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        public static void SortAscending<TList, TValue, TProperty>(this TList ilist, Func<TValue, TProperty> selector)
+            where TList:IList<TValue>
+            where TProperty:IComparable
+        {
+            var comparer = new _SortAscending<TValue, TProperty>(selector);
+
+            switch (ilist)
+            {
+                case TValue[] array: Array.Sort(array, comparer); return;
+                case List<TValue> list: list.Sort(comparer); return;
+                default:
+                    var tmp = new TValue[ilist.Count];
+                    ilist.CopyTo(tmp, 0);
+                    Array.Sort(tmp, comparer);
+                    ilist.Clear();
+                    ilist.AddRange(tmp);
+                    return;
+            }
         }
 
         #endregion
@@ -534,6 +597,25 @@ namespace $rootnamespace$
             }
 
             #endregion
+        }
+
+        private readonly struct _SortAscending<TItem,TProperty> : IComparer<TItem>
+            where TProperty: IComparable
+        {
+            public _SortAscending(Func<TItem, TProperty> selector)
+            {
+                _Selector = selector;
+            }
+
+            private readonly Func<TItem, TProperty> _Selector;            
+
+            public int Compare(TItem x, TItem y)
+            {
+                var xx = _Selector(x);
+                var yy = _Selector(y);
+
+                return xx.CompareTo(yy);
+            }
         }
 
         #endregion
