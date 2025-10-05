@@ -152,7 +152,8 @@ namespace $rootnamespace$
             return null;
         }
 
-        [Obsolete("Use GetFileInfo")]
+        [Obsolete("Use GetFileInfo", true)]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static _FINFO GetFile(this _DINFO baseDir, params string[] relativePath)
         {
             return GetFileInfo(baseDir, relativePath);
@@ -172,7 +173,8 @@ namespace $rootnamespace$
             return finfo ?? throw new System.IO.FileNotFoundException();
         }
 
-        [Obsolete("UseFileInfo")]
+        [Obsolete("UseFileInfo", true)]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static _FINFO UseFile(this _DINFO baseDir, params string[] relativePath)
         {
             return UseFileInfo(baseDir, relativePath);
@@ -194,7 +196,8 @@ namespace $rootnamespace$
             return _CreateFileInfo(baseDir, true, relativePath) ?? throw new System.IO.FileNotFoundException();
         }
 
-        [Obsolete("Use DefineFileInfo")]
+        [Obsolete("Use DefineFileInfo", true)]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         public static _FINFO DefineFile(this _DINFO baseDir, params string[] relativePath)
         {
             return DefineFileInfo(baseDir, relativePath);
@@ -233,7 +236,8 @@ namespace $rootnamespace$
             return finfo;
         }
 
-        [Obsolete("Use GetDirectoryInfo")]
+        [Obsolete("Use GetDirectoryInfo", true)]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         [return: NotNull]
         public static _DINFO GetDirectory(this _DINFO baseDir, params string[] relativePath)
         {
@@ -254,7 +258,8 @@ namespace $rootnamespace$
                 ?? throw new System.IO.DirectoryNotFoundException();
         }
 
-        [Obsolete("Use UseDirectoryInfo")]
+        [Obsolete("Use UseDirectoryInfo", true)]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         [return: NotNull]
         public static _DINFO UseDirectory(this _DINFO baseDir, params string[] relativePath)
         {
@@ -274,7 +279,8 @@ namespace $rootnamespace$
                 ?? throw new System.IO.DirectoryNotFoundException();
         }
 
-        [Obsolete("Use DefineDirectoryInfo")]
+        [Obsolete("Use DefineDirectoryInfo", true)]
+        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         [return: NotNull]
         public static _DINFO DefineDirectory(this _DINFO baseDir, params string[] relativePath)
         {
