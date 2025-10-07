@@ -43,7 +43,25 @@ namespace $rootnamespace$
 
             // under these circumstances, these types would be wrongly serialized because the element order would also be reversed.
 
-            if (Type.GetTypeCode(typeof(T)) == TypeCode.Empty) throw new NotImplementedException($"Composite values not supported on Big Endian");
-        }        
+            if (Type.GetTypeCode(typeof(T)) == TypeCode.Empty) throw new NotImplementedException($"Composite values not supported on Big Endian");            
+        }
+
+        #if NETSTANDARD
+
+        /// <summary>
+        /// NetStandard CUSTOM implementation for missing System.Runtime.CompilerServices.Unsafe
+        /// </summary>
+        internal static class Unsafe
+        {
+            public static TTo As<TFrom, TTo>(ref TFrom source)
+            {
+                return (TTo)(Object)source;
+            }
+
+        }
+
+        #endif
     }
 }
+
+

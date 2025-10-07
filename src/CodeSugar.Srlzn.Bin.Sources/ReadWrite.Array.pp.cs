@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 
 
 #nullable disable
@@ -817,22 +818,22 @@ namespace $rootnamespace$
         [return: NotNull]
         public static _READABLEBLOCK ReadLeConvertible<T>([NotNull] this _READABLEBLOCK source, out T convertible) where T : IConvertible
         {
-            if (typeof(T) == typeof(Boolean)) { source = source.ReadBool(out var value); convertible = (T)(Object)value; return source; }
-            if (typeof(T) == typeof(String)) { source = source.ReadString(out var value); convertible = (T)(Object)value; return source; }
+            if (typeof(T) == typeof(Boolean)) { source = source.ReadBool(out var value); convertible = Unsafe.As<Boolean,T>(ref value); return source; }
+            if (typeof(T) == typeof(String)) { source = source.ReadString(out var value); convertible = Unsafe.As<String,T>(ref value); return source; }
 
-            if (typeof(T) == typeof(Byte)) { source = source.ReadU8(out var value); convertible = (T)(Object)value; return source; }
-            if (typeof(T) == typeof(SByte)) { source = source.ReadS8(out var value); convertible = (T)(Object)value; return source; }
-            if (typeof(T) == typeof(Int16)) { source = source.ReadLeS16(out var value); convertible = (T)(Object)value; return source; }
-            if (typeof(T) == typeof(UInt16)) { source = source.ReadLeU16(out var value); convertible = (T)(Object)value; return source; }
-            if (typeof(T) == typeof(Int32)) { source = source.ReadLeS32(out var value); convertible = (T)(Object)value; return source; }
-            if (typeof(T) == typeof(UInt32)) { source = source.ReadLeU32(out var value); convertible = (T)(Object)value; return source; }
-            if (typeof(T) == typeof(Int64)) { source = source.ReadLeS64(out var value); convertible = (T)(Object)value; return source; }
-            if (typeof(T) == typeof(UInt64)) { source = source.ReadLeU64(out var value); convertible = (T)(Object)value; return source; }
+            if (typeof(T) == typeof(Byte)) { source = source.ReadU8(out var value); convertible = Unsafe.As<Byte,T>(ref value); return source; }
+            if (typeof(T) == typeof(SByte)) { source = source.ReadS8(out var value); convertible = Unsafe.As<SByte,T>(ref value); return source; }
+            if (typeof(T) == typeof(Int16)) { source = source.ReadLeS16(out var value); convertible = Unsafe.As<Int16,T>(ref value); return source; }
+            if (typeof(T) == typeof(UInt16)) { source = source.ReadLeU16(out var value); convertible = Unsafe.As<UInt16,T>(ref value); return source; }
+            if (typeof(T) == typeof(Int32)) { source = source.ReadLeS32(out var value); convertible = Unsafe.As<Int32,T>(ref value); return source; }
+            if (typeof(T) == typeof(UInt32)) { source = source.ReadLeU32(out var value); convertible = Unsafe.As<UInt32,T>(ref value); return source; }
+            if (typeof(T) == typeof(Int64)) { source = source.ReadLeS64(out var value); convertible = Unsafe.As<Int64,T>(ref value); return source; }
+            if (typeof(T) == typeof(UInt64)) { source = source.ReadLeU64(out var value); convertible = Unsafe.As<UInt64,T>(ref value); return source; }
             
-            if (typeof(T) == typeof(Single)) { source = source.ReadLeF32(out var value); convertible = (T)(Object)value; return source; }
-            if (typeof(T) == typeof(Double)) { source = source.ReadLeF64(out var value); convertible = (T)(Object)value; return source; }
+            if (typeof(T) == typeof(Single)) { source = source.ReadLeF32(out var value); convertible = Unsafe.As<Single,T>(ref value); return source; }
+            if (typeof(T) == typeof(Double)) { source = source.ReadLeF64(out var value); convertible = Unsafe.As<Double,T>(ref value); return source; }
 
-            if (typeof(T) == typeof(DateTime)) { source = source.ReadLeDateTime(out var value); convertible = (T)(Object)value; return source; }
+            if (typeof(T) == typeof(DateTime)) { source = source.ReadLeDateTime(out var value); convertible = Unsafe.As<DateTime,T>(ref value); return source; }
 
             throw new NotSupportedException(typeof(T).Name);
         }
