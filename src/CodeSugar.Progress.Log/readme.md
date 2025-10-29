@@ -136,3 +136,16 @@ public static ProgressLoggingManager
 
 Console has .Error as long as .Out , console sink may be able to map to which console output we should
 redirect the errors.
+
+Microsoft Logging supports string interpolation [with names](https://learn.microsoft.com/en-us/dotnet/core/extensions/logging?tabs=command-line#log-message-template), as in:
+
+```c#
+_logger.LogInformation("Getting item {Id} at {RunTime}", id, DateTime.Now);
+```
+
+classed involved seem to be:
+- [LogValuesFormatter.cs](https://github.com/dotnet/runtime/blob/main/src/libraries/Microsoft.Extensions.Logging.Abstractions/src/LogValuesFormatter.cs)
+- [FormattedLogValues.cs](https://github.com/dotnet/runtime/blob/main/src/libraries/Microsoft.Extensions.Logging.Abstractions/src/FormattedLogValues.cs)
+
+
+
