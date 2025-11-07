@@ -9,9 +9,9 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using _FINFO = System.IO.FileInfo;
-using _DINFO = System.IO.DirectoryInfo;
-using _SINFO = System.IO.FileSystemInfo;
+using __FINFO = System.IO.FileInfo;
+using __DINFO = System.IO.DirectoryInfo;
+using __SINFO = System.IO.FileSystemInfo;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar

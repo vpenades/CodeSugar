@@ -12,12 +12,12 @@ using System.Runtime.Intrinsics;
 
 #nullable disable
 
-using _MMARSHALL = System.Runtime.InteropServices.MemoryMarshal;
-using _UNSAFE = System.Runtime.CompilerServices.Unsafe;
-using _TENSORPRIMS = System.Numerics.Tensors.TensorPrimitives;
-using _XY = System.Numerics.Vector2;
-using _XYZ = System.Numerics.Vector3;
-using _XYZW = System.Numerics.Vector4;
+using __MMARSHALL = System.Runtime.InteropServices.MemoryMarshal;
+using __UNSAFE = System.Runtime.CompilerServices.Unsafe;
+using __TENSORPRIMS = System.Numerics.Tensors.TensorPrimitives;
+using __XY = System.Numerics.Vector2;
+using ___XYZ = System.Numerics.Vector3;
+using ____XYZW = System.Numerics.Vector4;
 
 
 #if CODESUGAR_USECODESUGARNAMESPACE
@@ -37,7 +37,7 @@ namespace $rootnamespace$
 
             #if NET6_0_OR_GREATER
 
-            public static __Vector3x64 Repeat(_XYZ v)
+            public static __Vector3x64 Repeat(___XYZ v)
             {
                 return new __Vector3x64
                 {
@@ -53,19 +53,19 @@ namespace $rootnamespace$
 
             #else
 
-            public static __Vector3x64 Repeat(_XYZ v)
+            public static __Vector3x64 Repeat(___XYZ v)
             {
                 return new __Vector3x64
                 {
-                    X = new _XY(v.X, v.Y),
-                    Y = new _XY(v.Z, v.X),
-                    Z = new _XY(v.Y, v.Z)
+                    X = new __XY(v.X, v.Y),
+                    Y = new __XY(v.Z, v.X),
+                    Z = new __XY(v.Y, v.Z)
                 };
             }      
 
-            public _XY X;
-            public _XY Y;
-            public _XY Z;
+            public __XY X;
+            public __XY Y;
+            public __XY Z;
 
             #endif
         }
@@ -73,7 +73,7 @@ namespace $rootnamespace$
         #if NET6_0_OR_GREATER
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        public static Vector64<float> RepeatVector64(this _XY v)
+        public static Vector64<float> RepeatVector64(this __XY v)
         {
             return Vector64.Create(v.X, v.Y);
         }
@@ -84,7 +84,7 @@ namespace $rootnamespace$
             #if NET8_0_OR_GREATER
             return Vector64.ConvertToSingle(value);
             #else
-            var span = _MMARSHALL.Cast<Vector64<int>,int>(_MMARSHALL.CreateSpan(ref value, 1));            
+            var span = __MMARSHALL.Cast<Vector64<int>,int>(__MMARSHALL.CreateSpan(ref value, 1));            
 
             return Vector64.Create((float)span[0], (float)span[1]);
             #endif

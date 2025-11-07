@@ -20,12 +20,12 @@ using System.Runtime.Intrinsics;
 #nullable disable
 
 #if NET6_0_OR_GREATER
-using _VECTOR2FACTORY = System.Runtime.Intrinsics.Vector64;
-using _VECTOR4FACTORY = System.Runtime.Intrinsics.Vector128;
+using __VECTOR2FACTORY = System.Runtime.Intrinsics.Vector64;
+using __VECTOR4FACTORY = System.Runtime.Intrinsics.Vector128;
 using _VECTOR8FACTORY = System.Runtime.Intrinsics.Vector256;
 
-using _VECTOR2 = System.Runtime.Intrinsics.Vector64<float>;
-using _VECTOR4 = System.Runtime.Intrinsics.Vector128<float>;
+using __VECTOR2 = System.Runtime.Intrinsics.Vector64<float>;
+using __VECTOR4 = System.Runtime.Intrinsics.Vector128<float>;
 using _VECTOR8 = System.Runtime.Intrinsics.Vector256<float>;
 
 #endif
@@ -36,9 +36,9 @@ using _VECTOR16FACTORY = System.Runtime.Intrinsics.Vector512;
 using _VECTOR16 = System.Runtime.Intrinsics.Vector512<float>;
 #endif
 
-using _MMARSHALL = System.Runtime.InteropServices.MemoryMarshal;
-using _XYZ = System.Numerics.Vector3;
-using _XYZW = System.Numerics.Vector4;
+using __MMARSHALL = System.Runtime.InteropServices.MemoryMarshal;
+using ___XYZ = System.Numerics.Vector3;
+using ____XYZW = System.Numerics.Vector4;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar

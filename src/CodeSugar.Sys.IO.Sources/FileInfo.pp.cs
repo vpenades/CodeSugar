@@ -9,8 +9,8 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using _FINFO = System.IO.FileInfo;
-using _BYTESSEGMENT = System.ArraySegment<byte>;
+using __FINFO = System.IO.FileInfo;
+using __BYTESSEGMENT = System.ArraySegment<byte>;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -22,7 +22,7 @@ namespace $rootnamespace$
 {
     partial class CodeSugarForSystemIO
     {
-        public static void ThrowNotFound(this _FINFO dinfo, Exception innerException = null)
+        public static void ThrowNotFound(this __FINFO dinfo, Exception innerException = null)
         {
             GuardNotNull(dinfo);
             if (innerException == null) throw new System.IO.FileNotFoundException(dinfo.FullName);
@@ -34,7 +34,7 @@ namespace $rootnamespace$
         /// </summary>
         /// <param name="file">the file to check</param>
         /// <returns>true if it exists</returns>
-        public static bool RefreshedExists(this _FINFO file)
+        public static bool RefreshedExists(this __FINFO file)
         {
             // https://github.com/dotnet/corefx/pull/40677
             // https://github.com/dotnet/runtime/issues/31425
@@ -50,7 +50,7 @@ namespace $rootnamespace$
         /// </summary>
         /// <param name="file">the file to check</param>
         /// <returns>true if it exists</returns>
-        public static bool CachedExists(this _FINFO file)
+        public static bool CachedExists(this __FINFO file)
         {
             // https://github.com/dotnet/corefx/pull/40677
             // https://github.com/dotnet/runtime/issues/31425
@@ -67,7 +67,7 @@ namespace $rootnamespace$
         /// </summary>
         /// <param name="file">the file to check</param>
         /// <returns>true if it exists</returns>
-        public static bool PhysicallyExists(this _FINFO file)
+        public static bool PhysicallyExists(this __FINFO file)
         {
             if (file == null) return false;
             return System.IO.File.Exists(file.FullName);
@@ -78,7 +78,7 @@ namespace $rootnamespace$
         /// </summary>
         /// <param name="file">the file to check</param>
         /// <returns>the length of the file</returns>
-        public static long RefreshedLength(this _FINFO file)
+        public static long RefreshedLength(this __FINFO file)
         {
             // https://github.com/dotnet/corefx/pull/40677
             // https://github.com/dotnet/runtime/issues/31425
@@ -94,7 +94,7 @@ namespace $rootnamespace$
         /// </summary>
         /// <param name="file">the file to check</param>
         /// <returns>the length of the file</returns>
-        public static long CachedLength(this _FINFO file)
+        public static long CachedLength(this __FINFO file)
         {
             // https://github.com/dotnet/corefx/pull/40677
             // https://github.com/dotnet/runtime/issues/31425

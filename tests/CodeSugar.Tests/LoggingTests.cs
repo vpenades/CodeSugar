@@ -11,6 +11,21 @@ namespace CodeSugar
     internal class LoggingTests
     {
         [Test]
+        public void TestSharedlogger()
+        {
+            Assert.That(typeof(LoggingTests).TryGetSharedLogger(out var logger), Is.False);
+
+            var sink = new Progress<string>(msg => { });
+
+            System.AppDomain.CurrentDomain.SetSharedLogger(sink);
+
+            Assert.That(typeof(LoggingTests).TryGetSharedLogger(out logger));
+
+            Assert.That(logger, Is.EqualTo(sink));
+        }
+
+
+        [Test]
         public void TestLogToFile()
         {
             var path = System.IO.Path.Combine(NUnit.Framework.TestContext.CurrentContext.WorkDirectory, "CrashLog1.txt");

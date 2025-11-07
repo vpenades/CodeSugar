@@ -9,9 +9,9 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using _FINFO = System.IO.FileInfo;
-using _DINFO = System.IO.DirectoryInfo;
-using _SINFO = System.IO.FileSystemInfo;
+using __FINFO = System.IO.FileInfo;
+using __DINFO = System.IO.DirectoryInfo;
+using __SINFO = System.IO.FileSystemInfo;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -24,12 +24,12 @@ namespace $rootnamespace$
     partial class CodeSugarForSystemIO
     {
         /// <summary>
-        /// Gets the <see cref="_SINFO.FullName"/> wrapped with quotes '"'.
+        /// Gets the <see cref="__SINFO.FullName"/> wrapped with quotes '"'.
         /// </summary>
         /// <param name="entry"></param>
         /// <param name="onlyIfRequired">if true, it will wrap with quotes only if the path contains namespaces</param>
         /// <returns>the path, with quotes</returns>
-        public static string FullNameWithQuotes(this _SINFO entry, bool onlyIfRequired = true)
+        public static string FullNameWithQuotes(this __SINFO entry, bool onlyIfRequired = true)
         {
             GuardNotNull(entry);
 
@@ -43,7 +43,7 @@ namespace $rootnamespace$
         /// Opens a file only if it's a media file, like an image, a video or a text document. Executables and scripts are explicitly omitted
         /// </summary>
         /// <param name="finfo">the file to open</param>
-        public static bool ShellOpenMedia(this _FINFO finfo)
+        public static bool ShellOpenMedia(this __FINFO finfo)
         {
             var psi = __GetProcessStartMedia(finfo);
             if (psi == null) return false;
@@ -53,7 +53,7 @@ namespace $rootnamespace$
             return true;
         }
 
-        public static bool ShellShowInExplorer(this _FINFO finfo)
+        public static bool ShellShowInExplorer(this __FINFO finfo)
         {
             if (System.Environment.OSVersion.Platform != System.PlatformID.Win32NT) return false;
 
@@ -76,7 +76,7 @@ namespace $rootnamespace$
             return true;
         }
 
-        public static bool ShellShowInExplorer(this _DINFO dirInfo)
+        public static bool ShellShowInExplorer(this __DINFO dirInfo)
         {
             if (System.Environment.OSVersion.Platform != System.PlatformID.Win32NT) return false;
 
@@ -107,7 +107,7 @@ namespace $rootnamespace$
         /// </summary>
         /// <param name="finfo">an existing file</param>
         /// <returns>A <see cref="System.Diagnostics.ProcessStartInfo"/> object, or null if the file does not exist or it's a script/executable</returns>
-        private static System.Diagnostics.ProcessStartInfo __GetProcessStartMedia(this _FINFO finfo)
+        private static System.Diagnostics.ProcessStartInfo __GetProcessStartMedia(this __FINFO finfo)
         {
             if (finfo == null || !finfo.RefreshedExists()) return null;
 
@@ -124,7 +124,7 @@ namespace $rootnamespace$
             };
         }
 
-        private static System.Diagnostics.ProcessStartInfo __GetProcessStartInfo(this _DINFO dirInfo)
+        private static System.Diagnostics.ProcessStartInfo __GetProcessStartInfo(this __DINFO dirInfo)
         {
             if (dirInfo == null || !dirInfo.RefreshedExists()) return null;
 

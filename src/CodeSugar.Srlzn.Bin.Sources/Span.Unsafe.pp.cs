@@ -11,7 +11,7 @@ using System.Runtime.InteropServices;
 
 #nullable disable
 
-using _STREAM = System.IO.Stream;
+using __STREAM = System.IO.Stream;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -25,7 +25,7 @@ namespace $rootnamespace$
     {
 
         #if !NETSTANDARD
-        static partial class _Unsafe
+        static partial class __UNSAFE
         {
             public static int GetByteOffset<T>(Span<T> span,Span<T> other)
             {

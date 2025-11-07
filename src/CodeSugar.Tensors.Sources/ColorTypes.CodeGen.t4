@@ -130,8 +130,8 @@ public class ColorConversionStructuresCodeGen
         var madParams = string.Empty;
         if (useMAD)
         {
-            if (repeat == 3) madParams = ", in _XYZ mul, in _XYZ add";
-            else madParams = ", in _XYZW mul, in _XYZW add";        
+            if (repeat == 3) madParams = ", in ___XYZ mul, in ___XYZ add";
+            else madParams = ", in ____XYZW mul, in ____XYZW add";        
         }
 
         var vectorTypeName = $"_VECTOR{currVectorSize}";
@@ -182,7 +182,7 @@ public class ColorConversionStructuresCodeGen
         WriteLine($"if (typeof({srcElementType}) == typeof(T))");
         WriteLine("{");
 
-        WriteLine($"var srcTyped = _MMARSHALL.Cast<{SrcColorTypeName}<T>,{SrcColorTypeName}<{srcElementType}>>(src);");        
+        WriteLine($"var srcTyped = __MMARSHALL.Cast<{SrcColorTypeName}<T>,{SrcColorTypeName}<{srcElementType}>>(src);");        
 
         WriteLine("for (int i = 0; i < srcTyped.Length; i++)");            
         WriteLine("{");
@@ -209,7 +209,7 @@ public class ColorConversionStructuresCodeGen
         WriteLine($"if (typeof({srcElementType}) == typeof(T))");
         WriteLine("{");
 
-        WriteLine($"var srcTyped = _MMARSHALL.Cast<{SrcColorTypeName}<T>,{SrcColorTypeName}<{srcElementType}>>(src);");                            
+        WriteLine($"var srcTyped = __MMARSHALL.Cast<{SrcColorTypeName}<T>,{SrcColorTypeName}<{srcElementType}>>(src);");                            
 
         WriteLine("for (int i = 0; i < srcTyped.Length; i++)");            
         WriteLine("{");
@@ -332,11 +332,11 @@ public class ColorConversionStaticFuncCodeGen
 		var madParams = string.Empty;
         if (useMAD)
         {
-            if (DstIs3Elements) madParams = ", in _XYZ mul, in _XYZ add";
-            else madParams = ", in _XYZW mul, in _XYZW add";        
+            if (DstIs3Elements) madParams = ", in ___XYZ mul, in ___XYZ add";
+            else madParams = ", in ____XYZW mul, in ____XYZW add";        
         }
 
-        var dstValueName = DstColorType.Length == 3 ? "_XYZ" : "_XYZW";
+        var dstValueName = DstColorType.Length == 3 ? "___XYZ" : "____XYZW";
 
         yield return "";
         yield return "/// <remarks>Copies <paramref name=\"src\"/> into <paramref name=\"dst\"/>, applying the appropiate color conversion.</remarks>";
@@ -380,15 +380,15 @@ public class ColorConversionStaticFuncCodeGen
 	{
         if (!_SimdVectorHelper.TryGetValue((SrcColorType,DstColorType, vecSize), out var structSize)) yield break;
 
-        var dstValueName = DstColorType.Length == 3 ? "_XYZ" : "_XYZW";        
+        var dstValueName = DstColorType.Length == 3 ? "___XYZ" : "____XYZW";        
 
 		yield return $"else if (Vector{32*vecSize}.IsHardwareAccelerated)";
         yield return "{";        
 
 		var currentType = $"__{SrcColorType}x{structSize}<{srcElementType}>";
 		
-        yield return $"var srcX = _MMARSHALL.Cast<{srcElementType},{currentType}>(src);";
-		yield return $"var dstX = _MMARSHALL.Cast<{dstValueName},_VECTOR{vecSize}>(dst);"; // ".Slice(srcX.Length*{SrcColorType.Length});";
+        yield return $"var srcX = __MMARSHALL.Cast<{srcElementType},{currentType}>(src);";
+		yield return $"var dstX = __MMARSHALL.Cast<{dstValueName},_VECTOR{vecSize}>(dst);"; // ".Slice(srcX.Length*{SrcColorType.Length});";
 
         if (useMAD) yield return $"{currentType}.CopyTo{DstColorType}(srcX, dstX, mul, add);";
         else yield return $"{currentType}.CopyTo{DstColorType}(srcX, dstX);";

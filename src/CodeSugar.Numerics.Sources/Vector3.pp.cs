@@ -17,33 +17,33 @@ namespace System.Numerics
 namespace $rootnamespace$
 #endif
 {
-    using _VECTOR3 = System.Numerics.Vector3;
-    using _MATRIX4X4 = System.Numerics.Matrix4x4;
-    using _VECTOR3ENUMERATION = System.Collections.Generic.IEnumerable<System.Numerics.Vector3>;
+    using __VECTOR3 = System.Numerics.Vector3;
+    using __MATRIX4X4 = System.Numerics.Matrix4x4;
+    using __VECTOR3ENUMERATION = System.Collections.Generic.IEnumerable<System.Numerics.Vector3>;
 
     internal static partial class CodeSugarForNumerics
     {
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static float Angle(this _VECTOR3 a, _VECTOR3 b) // AngleWith ?
+        public static float Angle(this __VECTOR3 a, __VECTOR3 b) // AngleWith ?
         {
             _AssertFinite(a);
             _AssertFinite(b);
 
-            if (a == _VECTOR3.Zero || b == _VECTOR3.Zero) return 0;
+            if (a == __VECTOR3.Zero || b == __VECTOR3.Zero) return 0;
 
-            a = _VECTOR3.Normalize(a);
-            b = _VECTOR3.Normalize(b);
+            a = __VECTOR3.Normalize(a);
+            b = __VECTOR3.Normalize(b);
 
-            float dot = _VECTOR3.Dot(a, b);
+            float dot = __VECTOR3.Dot(a, b);
             dot = Math.Clamp(dot,-1,1);
             return MathF.Acos(dot);
         }
 
         [DebuggerStepThrough]        
-        public static _VECTOR3 Centroid(this _VECTOR3ENUMERATION points)
+        public static __VECTOR3 Centroid(this __VECTOR3ENUMERATION points)
         {
-            if (points == null) return _VECTOR3.Zero;
+            if (points == null) return __VECTOR3.Zero;
 
             double c = 0;
             double x = 0;
@@ -61,82 +61,82 @@ namespace $rootnamespace$
                 c += 1;
             }
 
-            if (c == 0) return _VECTOR3.Zero;
+            if (c == 0) return __VECTOR3.Zero;
 
             x /= c;
             y /= c;
             z /= c;
 
-            return new _VECTOR3((float)x, (float)y, (float)z);
+            return new __VECTOR3((float)x, (float)y, (float)z);
         }
 
         [DebuggerStepThrough]
-        public static _VECTOR3 Min(this _VECTOR3ENUMERATION points)
+        public static __VECTOR3 Min(this __VECTOR3ENUMERATION points)
         {
-            return points.Aggregate(new _VECTOR3(float.MaxValue), (seed, value) => _VECTOR3.Min(seed, value));
+            return points.Aggregate(new __VECTOR3(float.MaxValue), (seed, value) => __VECTOR3.Min(seed, value));
         }
 
         [DebuggerStepThrough]
-        public static _VECTOR3 Max(this _VECTOR3ENUMERATION points)
+        public static __VECTOR3 Max(this __VECTOR3ENUMERATION points)
         {
-            return points.Aggregate(new _VECTOR3(float.MinValue), (seed, value) => _VECTOR3.Max(seed, value));
+            return points.Aggregate(new __VECTOR3(float.MinValue), (seed, value) => __VECTOR3.Max(seed, value));
         }
 
         [DebuggerStepThrough]
-        public static (_VECTOR3 Min, _VECTOR3 Max) MinMax(this _VECTOR3ENUMERATION points)
+        public static (__VECTOR3 Min, __VECTOR3 Max) MinMax(this __VECTOR3ENUMERATION points)
         {
-            return points.Aggregate((new _VECTOR3(float.MaxValue), new _VECTOR3(float.MinValue)), _MinMax);
+            return points.Aggregate((new __VECTOR3(float.MaxValue), new __VECTOR3(float.MinValue)), _MinMax);
         }
 
         [DebuggerStepThrough]
-        private static (_VECTOR3 Min, _VECTOR3 Max) _MinMax((_VECTOR3 Min, _VECTOR3 Max) seed, _VECTOR3 value)
+        private static (__VECTOR3 Min, __VECTOR3 Max) _MinMax((__VECTOR3 Min, __VECTOR3 Max) seed, __VECTOR3 value)
         {
-            return (_VECTOR3.Min(seed.Min, value), _VECTOR3.Max(seed.Max, value));
+            return (__VECTOR3.Min(seed.Min, value), __VECTOR3.Max(seed.Max, value));
         }
 
         [DebuggerStepThrough]
-        public static void InPlaceTransformBy(this Span<_VECTOR3> collection, _MATRIX4X4 matrix)
+        public static void InPlaceTransformBy(this Span<__VECTOR3> collection, __MATRIX4X4 matrix)
         {
             if (collection == null) return;            
 
             for (int i = 0; i < collection.Length; i++)
             {
-                collection[i] = _VECTOR3.Transform(collection[i], matrix);
+                collection[i] = __VECTOR3.Transform(collection[i], matrix);
             }
         }
 
         [DebuggerStepThrough]
-        public static void InPlaceTransformNormalBy(this Span<_VECTOR3> collection, _MATRIX4X4 matrix)
+        public static void InPlaceTransformNormalBy(this Span<__VECTOR3> collection, __MATRIX4X4 matrix)
         {
             if (collection == null) return;
 
             for (int i = 0; i < collection.Length; i++)
             {
-                collection[i] = _VECTOR3.TransformNormal(collection[i], matrix);
+                collection[i] = __VECTOR3.TransformNormal(collection[i], matrix);
             }
         }
 
         [DebuggerStepThrough]
-        public static void InPlaceTransformBy<TCollection>(this TCollection collection, _MATRIX4X4 matrix)
-            where TCollection : IList<_VECTOR3>
+        public static void InPlaceTransformBy<TCollection>(this TCollection collection, __MATRIX4X4 matrix)
+            where TCollection : IList<__VECTOR3>
         {
             if (collection == null) return;
 
             for (int i = 0; i < collection.Count; i++)
             {
-                collection[i] = _VECTOR3.Transform(collection[i], matrix);
+                collection[i] = __VECTOR3.Transform(collection[i], matrix);
             }
         }
 
         [DebuggerStepThrough]
-        public static void InPlaceTransformNormalBy<TCollection>(this TCollection collection, _MATRIX4X4 matrix)
-            where TCollection : IList<_VECTOR3>
+        public static void InPlaceTransformNormalBy<TCollection>(this TCollection collection, __MATRIX4X4 matrix)
+            where TCollection : IList<__VECTOR3>
         {
             if (collection == null) return;
 
             for (int i = 0; i < collection.Count; i++)
             {
-                collection[i] = _VECTOR3.TransformNormal(collection[i], matrix);
+                collection[i] = __VECTOR3.TransformNormal(collection[i], matrix);
             }
         }
     }

@@ -8,13 +8,13 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using _LOGLEVEL = System.Diagnostics.TraceEventType;
+using __LOGLEVEL = System.Diagnostics.TraceEventType;
 
-using _LOGPROGRESS4 = System.IProgress<(System.Diagnostics.TraceEventType level, System.Exception ex, string msg, object[] args)>;
-using _LOGPROGRESS3 = System.IProgress<(System.Diagnostics.TraceEventType level, System.Exception ex, string msg)>;
-using _LOGPROGRESS2 = System.IProgress<(System.Diagnostics.TraceEventType level, string msg)>;
-using _LOGPROGRESS1 = System.IProgress<string>;
-using _LOGPROGRESS0 = System.IProgress<int>;
+using __LOGPROGRESS4 = System.IProgress<(System.Diagnostics.TraceEventType level, System.Exception ex, string msg, object[] args)>;
+using __LOGPROGRESS3 = System.IProgress<(System.Diagnostics.TraceEventType level, System.Exception ex, string msg)>;
+using __LOGPROGRESS2 = System.IProgress<(System.Diagnostics.TraceEventType level, string msg)>;
+using __LOGPROGRESS1 = System.IProgress<string>;
+using __LOGPROGRESS0 = System.IProgress<int>;
 
 
 #if CODESUGAR_USECODESUGARNAMESPACE
@@ -27,73 +27,77 @@ namespace $rootnamespace$
 {    
     partial class CodeSugarForLogging
     {
-        public static void ReportLog(this _LOGPROGRESS0 dst, _LOGLEVEL level, string msg, params object[] args)
+        public static void ReportLog(this __LOGPROGRESS0 dst, __LOGLEVEL level, string msg, params object[] args)
         {
             ReportLog(dst, level, null, msg, args);
         }
 
-        public static void ReportLog(this _LOGPROGRESS1 dst, _LOGLEVEL level, string msg, params object[] args)
+        public static void ReportLog(this __LOGPROGRESS1 dst, __LOGLEVEL level, string msg, params object[] args)
         {
             ReportLog(dst, level, null, msg, args);
         }
 
-        public static void ReportLog(this _LOGPROGRESS2 dst, _LOGLEVEL level, string msg, params object[] args)
+        public static void ReportLog(this __LOGPROGRESS2 dst, __LOGLEVEL level, string msg, params object[] args)
         {
             ReportLog(dst, level, null, msg, args);
         }
 
-        public static void ReportLog(this _LOGPROGRESS3 dst, _LOGLEVEL level, string msg, params object[] args)
+        public static void ReportLog(this __LOGPROGRESS3 dst, __LOGLEVEL level, string msg, params object[] args)
         {
             ReportLog(dst, level, null, msg, args);
         }
 
-        public static void ReportLog(this _LOGPROGRESS4 dst, _LOGLEVEL level, string msg, params object[] args)
+        public static void ReportLog(this __LOGPROGRESS4 dst, __LOGLEVEL level, string msg, params object[] args)
         {
             dst.Report((level, null, msg, args));
         }        
 
-        public static void ReportLog(this _LOGPROGRESS0 dst, _LOGLEVEL level, System.Exception ex, string msg, params object[] args)
+        public static void ReportLog(this __LOGPROGRESS0 dst, __LOGLEVEL level, System.Exception ex, string msg, params object[] args)
         {
             switch (dst)
             {
-                case _LOGPROGRESS4 dst4: ReportLog(dst4, level, ex, msg, args); break;
-                case _LOGPROGRESS3 dst3: ReportLog(dst3, level, ex, msg, args); break;
-                case _LOGPROGRESS2 dst2: ReportLog(dst2, level, ex, msg, args); break;
-                case _LOGPROGRESS1 dst1: ReportLog(dst1, level, ex, msg, args); break;
+                case null: break;
+                case __LOGPROGRESS4 dst4: ReportLog(dst4, level, ex, msg, args); break;
+                case __LOGPROGRESS3 dst3: ReportLog(dst3, level, ex, msg, args); break;
+                case __LOGPROGRESS2 dst2: ReportLog(dst2, level, ex, msg, args); break;
+                case __LOGPROGRESS1 dst1: ReportLog(dst1, level, ex, msg, args); break;
             }
         }
 
-        public static void ReportLog(this _LOGPROGRESS1 dst, _LOGLEVEL level, System.Exception ex, string msg, params object[] args)
+        public static void ReportLog(this __LOGPROGRESS1 dst, __LOGLEVEL level, System.Exception ex, string msg, params object[] args)
         {
             switch (dst)
             {
-                case _LOGPROGRESS4 dst4: ReportLog(dst4, level, ex, msg, args); break;
-                case _LOGPROGRESS3 dst3: ReportLog(dst3, level, ex, msg, args); break;
-                case _LOGPROGRESS2 dst2: ReportLog(dst2, level, ex, msg, args); break;
+                case null: break;
+                case __LOGPROGRESS4 dst4: ReportLog(dst4, level, ex, msg, args); break;
+                case __LOGPROGRESS3 dst3: ReportLog(dst3, level, ex, msg, args); break;
+                case __LOGPROGRESS2 dst2: ReportLog(dst2, level, ex, msg, args); break;
                 default: dst.Report((level, ex, msg, args).FormatMessage()); break;
             }
         }
 
-        public static void ReportLog(this _LOGPROGRESS2 dst, _LOGLEVEL level, System.Exception ex, string msg, params object[] args)
+        public static void ReportLog(this __LOGPROGRESS2 dst, __LOGLEVEL level, System.Exception ex, string msg, params object[] args)
         {
             switch (dst)
             {
-                case _LOGPROGRESS4 dst4: ReportLog(dst4, level, ex, msg, args); break;
-                case _LOGPROGRESS3 dst3: ReportLog(dst3, level, ex, msg, args); break;
+                case null: break;
+                case __LOGPROGRESS4 dst4: ReportLog(dst4, level, ex, msg, args); break;
+                case __LOGPROGRESS3 dst3: ReportLog(dst3, level, ex, msg, args); break;
                 default: dst.Report((level, (ex, msg, args).FormatMessage())); break;
             }
         }
 
-        public static void ReportLog(this _LOGPROGRESS3 dst, _LOGLEVEL level, System.Exception ex, string msg, params object[] args)
+        public static void ReportLog(this __LOGPROGRESS3 dst, __LOGLEVEL level, System.Exception ex, string msg, params object[] args)
         {
             switch (dst)
             {
-                case _LOGPROGRESS4 dst4: ReportLog(dst4, level, ex, msg, args); break;
+                case null: break;
+                case __LOGPROGRESS4 dst4: ReportLog(dst4, level, ex, msg, args); break;
                 default: dst.Report((level, ex, _FormatMessage(msg, args))); break;
             }
         }
 
-        public static void ReportLog(this _LOGPROGRESS4 dst, _LOGLEVEL level, System.Exception ex, string msg, params object[] args)
+        public static void ReportLog(this __LOGPROGRESS4 dst, __LOGLEVEL level, System.Exception ex, string msg, params object[] args)
         {
             dst.Report((level, ex, msg, args));
         }

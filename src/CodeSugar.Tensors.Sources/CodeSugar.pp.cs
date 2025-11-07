@@ -8,10 +8,10 @@ using System.Runtime.CompilerServices;
 #nullable disable
 
 #if !NETSTANDARD
-using _UNSAFE = System.Runtime.CompilerServices.Unsafe;
+using __UNSAFE = System.Runtime.CompilerServices.Unsafe;
 #endif
 
-using _METHODOPTIONS = System.Runtime.CompilerServices.MethodImplOptions;
+using __METHODOPTIONS = System.Runtime.CompilerServices.MethodImplOptions;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -25,13 +25,13 @@ namespace $rootnamespace$
     internal static partial class CodeSugarForTensors
     {
         #if NETSTANDARD1_6_OR_GREATER
-        private const _METHODOPTIONS AGRESSIVE = _METHODOPTIONS.AggressiveInlining;
+        private const __METHODOPTIONS AGRESSIVE = __METHODOPTIONS.AggressiveInlining;
         #else
-        private const _METHODOPTIONS AGRESSIVE = _METHODOPTIONS.AggressiveInlining | _METHODOPTIONS.AggressiveOptimization;
+        private const __METHODOPTIONS AGRESSIVE = __METHODOPTIONS.AggressiveInlining | __METHODOPTIONS.AggressiveOptimization;
         #endif
 
         /// <summary>
-        /// NetStandard2 equivalent to <see cref="_UNSAFE.As{TFrom, TTo}(ref TFrom)"/>
+        /// NetStandard2 equivalent to <see cref="__UNSAFE.As{TFrom, TTo}(ref TFrom)"/>
         /// </summary>
         /// <typeparam name="TSrc"></typeparam>
         /// <typeparam name="TDst"></typeparam>
@@ -48,7 +48,7 @@ namespace $rootnamespace$
             // notice that we can still use UNSAFE in NetStandard2.1
             // by referencing System.Runtime.CompilerServices.Unsafe package 
             // but it is not guaranteed we have that dependency.
-            return _UNSAFE.As<TSrc, TDst>(ref valIn);
+            return __UNSAFE.As<TSrc, TDst>(ref valIn);
             #else
 
             // netstandard 2.1 fallback

@@ -7,10 +7,10 @@ using System.Xml.Serialization;
 
 #nullable disable
 
-using _FINFO = System.IO.FileInfo;
-using _STREAM = System.IO.Stream;
-using _MEMSTREAM = System.IO.MemoryStream;
-using _BYTESEGMENT = System.ArraySegment<byte>;
+using __FINFO = System.IO.FileInfo;
+using __STREAM = System.IO.Stream;
+using __MEMSTREAM = System.IO.MemoryStream;
+using __BYTESEGMENT = System.ArraySegment<byte>;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -24,7 +24,7 @@ namespace $rootnamespace$
     {
         private const int DEFAULTEQUALITYCOMPAREBUFFERLENGTH = 1024 * 1024 * 256; // 256 mb
 
-        public static bool StreamEquals(this _FINFO a, _FINFO b, Func<long, _MEMSTREAM> memStreamFactory = null, int bufferSize = DEFAULTEQUALITYCOMPAREBUFFERLENGTH)
+        public static bool StreamEquals(this __FINFO a, __FINFO b, Func<long, __MEMSTREAM> memStreamFactory = null, int bufferSize = DEFAULTEQUALITYCOMPAREBUFFERLENGTH)
         {
             GuardExists(a);
             GuardExists(b);
@@ -36,13 +36,13 @@ namespace $rootnamespace$
             return StreamEquals(a.OpenRead, b.OpenRead, memStreamFactory, bufferSize);
         }
 
-        public static bool StreamEquals(this _FINFO a, Func<_STREAM> b, Func<long, _MEMSTREAM> memStreamFactory = null, int bufferSize = DEFAULTEQUALITYCOMPAREBUFFERLENGTH)
+        public static bool StreamEquals(this __FINFO a, Func<__STREAM> b, Func<long, __MEMSTREAM> memStreamFactory = null, int bufferSize = DEFAULTEQUALITYCOMPAREBUFFERLENGTH)
         {
             GuardExists(a);
             return StreamEquals(a.OpenRead, b, memStreamFactory, bufferSize);
         }
 
-        public static bool StreamEquals(this Func<_STREAM> a, Func<_STREAM> b, Func<long, _MEMSTREAM> memStreamFactory = null, int bufferSize = DEFAULTEQUALITYCOMPAREBUFFERLENGTH)
+        public static bool StreamEquals(this Func<__STREAM> a, Func<__STREAM> b, Func<long, __MEMSTREAM> memStreamFactory = null, int bufferSize = DEFAULTEQUALITYCOMPAREBUFFERLENGTH)
         {
             if (a == null) throw new ArgumentNullException(nameof(a));
             if (b == null) throw new ArgumentNullException(nameof(b));            
@@ -56,12 +56,12 @@ namespace $rootnamespace$
             }
         }
 
-        public static bool StreamEquals(this _STREAM x, _STREAM y, Func<long, _MEMSTREAM> memStreamFactory = null, int bufferSize = DEFAULTEQUALITYCOMPAREBUFFERLENGTH)
+        public static bool StreamEquals(this __STREAM x, __STREAM y, Func<long, __MEMSTREAM> memStreamFactory = null, int bufferSize = DEFAULTEQUALITYCOMPAREBUFFERLENGTH)
         {
             return _StreamEqualsCore(x, y, true, memStreamFactory, bufferSize);
         }
 
-        private static bool _StreamEqualsCore(_STREAM x, _STREAM y, bool restorePositions, Func<long, _MEMSTREAM> memStreamFactory, int largeBufferSize)
+        private static bool _StreamEqualsCore(__STREAM x, __STREAM y, bool restorePositions, Func<long, __MEMSTREAM> memStreamFactory, int largeBufferSize)
         {
             if (largeBufferSize <= 0) throw new ArgumentOutOfRangeException(nameof(largeBufferSize));
             
@@ -76,17 +76,17 @@ namespace $rootnamespace$
 
             try
             {                
-                if (x is _MEMSTREAM || y is _MEMSTREAM) // if at least one stream is in memory, we can use a small buffer.
+                if (x is __MEMSTREAM || y is __MEMSTREAM) // if at least one stream is in memory, we can use a small buffer.
                 {
                     largeBufferSize = 65536;
                 }
                 else // Large buffers are only needed if both streams are read from a physical drive
                 {
-                    _MEMSTREAM defMemStreamFactory(long len)
+                    __MEMSTREAM defMemStreamFactory(long len)
                     {
                         if (len > largeBufferSize) return null;
                         if (len >= int.MaxValue) return null;
-                        return new _MEMSTREAM((int)len);
+                        return new __MEMSTREAM((int)len);
                     }
 
                     memStreamFactory ??= defMemStreamFactory;
@@ -96,8 +96,8 @@ namespace $rootnamespace$
                     if (_TryCheckEqualityUsingMemoryStream(y, x, memStreamFactory, out result)) return result;
                 }                
 
-                _BYTESEGMENT xbuff = new byte[largeBufferSize];
-                _BYTESEGMENT ybuff = new byte[largeBufferSize];
+                __BYTESEGMENT xbuff = new byte[largeBufferSize];
+                __BYTESEGMENT ybuff = new byte[largeBufferSize];
 
                 while (true)
                 {
@@ -125,7 +125,7 @@ namespace $rootnamespace$
             }            
         }
 
-        private static bool _TryCheckEqualityUsingMemoryStream(_STREAM x, _STREAM y, Func<long, _MEMSTREAM> memStreamFactory, out bool result)
+        private static bool _TryCheckEqualityUsingMemoryStream(__STREAM x, __STREAM y, Func<long, __MEMSTREAM> memStreamFactory, out bool result)
         {
             result = false;
 
@@ -160,7 +160,7 @@ namespace $rootnamespace$
         /// <param name="stream">The source stream.</param>
         /// <param name="bytes">The destination buffer.</param>
         /// <returns>the number of bytes read.</returns>
-        private static int _StreamEqualityReadBytes(_STREAM stream, _BYTESEGMENT bytes)
+        private static int _StreamEqualityReadBytes(__STREAM stream, __BYTESEGMENT bytes)
         {
             var bbb = bytes;
 

@@ -11,14 +11,14 @@ using System.Diagnostics.CodeAnalysis;
 
 #nullable disable
 
-using _READABLEBLOCK_SPAM = System.ReadOnlySpan<byte>;
-using _WRITEABLEBLOCK_SPAN = System.Span<byte>;
+using __READABLEBLOCK_SPAM = System.ReadOnlySpan<byte>;
+using __WRITEABLEBLOCK_SPAN = System.Span<byte>;
 
-using _READABLEBLOCK_ARRAY = System.ArraySegment<byte>;
-using _WRITEABLEBLOCK_ARRAY = System.ArraySegment<byte>;
+using __READABLEBLOCK_ARRAY = System.ArraySegment<byte>;
+using __WRITEABLEBLOCK_ARRAY = System.ArraySegment<byte>;
 
-using _READABLEBLOCK_STREAM = System.IO.Stream;
-using _WRITEABLEBLOCK_STREAM = System.IO.Stream;
+using __READABLEBLOCK__STREAM = System.IO.Stream;
+using __WRITEABLEBLOCK__STREAM = System.IO.Stream;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -40,7 +40,7 @@ namespace $rootnamespace$
         /// </summary>
         /// <returns>The pointer to the next position.</returns>
         [return: NotNull]
-        public static _WRITEABLEBLOCK_SPAN WriteEndian<T>([NotNull] this _WRITEABLEBLOCK_SPAN target, T value, bool targetIsBigEndian)
+        public static __WRITEABLEBLOCK_SPAN WriteEndian<T>([NotNull] this __WRITEABLEBLOCK_SPAN target, T value, bool targetIsBigEndian)
             where T : unmanaged
         {
             if (targetIsBigEndian != System.BitConverter.IsLittleEndian) return WritePlatform(target, value);
@@ -61,7 +61,7 @@ namespace $rootnamespace$
         /// </summary>
         /// <returns>The pointer to the next position.</returns>
         [return: NotNull]
-        public static _READABLEBLOCK_SPAM ReadEndian<T>([NotNull] this _READABLEBLOCK_SPAM source, out T value, bool sourceIsBigEndian)
+        public static __READABLEBLOCK_SPAM ReadEndian<T>([NotNull] this __READABLEBLOCK_SPAM source, out T value, bool sourceIsBigEndian)
             where T : unmanaged
         {
             if (sourceIsBigEndian != System.BitConverter.IsLittleEndian) return ReadPlatform(source, out value);
@@ -83,7 +83,7 @@ namespace $rootnamespace$
         /// </summary>
         /// <returns>The pointer to the next position.</returns>
         [return: NotNull]
-        public static _WRITEABLEBLOCK_SPAN WritePlatform<T>([NotNull] this _WRITEABLEBLOCK_SPAN target, T value)
+        public static __WRITEABLEBLOCK_SPAN WritePlatform<T>([NotNull] this __WRITEABLEBLOCK_SPAN target, T value)
             where T : unmanaged
         {
             var sequence = System.Runtime.InteropServices.MemoryMarshal.Cast<byte, T>(target);
@@ -97,7 +97,7 @@ namespace $rootnamespace$
         /// </summary>
         /// <returns>The pointer to the next position.</returns>
         [return: NotNull]
-        public static _READABLEBLOCK_SPAM ReadPlatform<T>([NotNull] this _READABLEBLOCK_SPAM source, out T value)
+        public static __READABLEBLOCK_SPAM ReadPlatform<T>([NotNull] this __READABLEBLOCK_SPAM source, out T value)
             where T : unmanaged
         {
             var sequence = System.Runtime.InteropServices.MemoryMarshal.Cast<byte, T>(source);
@@ -108,14 +108,14 @@ namespace $rootnamespace$
         }
 
         [return: NotNull]
-        public static _WRITEABLEBLOCK_SPAN WriteBytes([NotNull] this _WRITEABLEBLOCK_SPAN target, ReadOnlySpan<Byte> array)
+        public static __WRITEABLEBLOCK_SPAN WriteBytes([NotNull] this __WRITEABLEBLOCK_SPAN target, ReadOnlySpan<Byte> array)
         {
             array.CopyTo(target);
             return target.Slice(array.Length);
         }
 
         [return: NotNull]
-        public static _READABLEBLOCK_SPAM ReadBytes([NotNull] this _READABLEBLOCK_SPAM source, Span<Byte> array)
+        public static __READABLEBLOCK_SPAM ReadBytes([NotNull] this __READABLEBLOCK_SPAM source, Span<Byte> array)
         {
             source.Slice(0, array.Length).CopyTo(array);
             return source.Slice(array.Length);
@@ -133,7 +133,7 @@ namespace $rootnamespace$
         /// </summary>
         /// <returns>The pointer to the next position.</returns>
         [return: NotNull]
-        public static _WRITEABLEBLOCK_ARRAY WriteEndian<T>([NotNull] this _WRITEABLEBLOCK_ARRAY target, T value, bool targetIsBigEndian)
+        public static __WRITEABLEBLOCK_ARRAY WriteEndian<T>([NotNull] this __WRITEABLEBLOCK_ARRAY target, T value, bool targetIsBigEndian)
             where T : unmanaged
         {
             if (targetIsBigEndian != System.BitConverter.IsLittleEndian) return WritePlatform(target, value);
@@ -154,7 +154,7 @@ namespace $rootnamespace$
         /// </summary>
         /// <returns>The pointer to the next position.</returns>
         [return: NotNull]
-        public static _READABLEBLOCK_ARRAY ReadEndian<T>([NotNull] this _READABLEBLOCK_ARRAY source, out T value, bool sourceIsBigEndian)
+        public static __READABLEBLOCK_ARRAY ReadEndian<T>([NotNull] this __READABLEBLOCK_ARRAY source, out T value, bool sourceIsBigEndian)
             where T : unmanaged
         {
             if (sourceIsBigEndian != System.BitConverter.IsLittleEndian) return ReadPlatform(source, out value);
@@ -176,7 +176,7 @@ namespace $rootnamespace$
         /// </summary>
         /// <returns>The pointer to the next position.</returns>
         [return: NotNull]
-        public static _WRITEABLEBLOCK_ARRAY WritePlatform<T>([NotNull] this _WRITEABLEBLOCK_ARRAY target, T value)
+        public static __WRITEABLEBLOCK_ARRAY WritePlatform<T>([NotNull] this __WRITEABLEBLOCK_ARRAY target, T value)
             where T : unmanaged
         {
             var sequence = System.Runtime.InteropServices.MemoryMarshal.Cast<byte, T>(target);
@@ -190,7 +190,7 @@ namespace $rootnamespace$
         /// </summary>
         /// <returns>The pointer to the next position.</returns>
         [return: NotNull]
-        public static _READABLEBLOCK_ARRAY ReadPlatform<T>([NotNull] this _READABLEBLOCK_ARRAY source, out T value)
+        public static __READABLEBLOCK_ARRAY ReadPlatform<T>([NotNull] this __READABLEBLOCK_ARRAY source, out T value)
             where T : unmanaged
         {
             var sequence = System.Runtime.InteropServices.MemoryMarshal.Cast<byte, T>(source);
@@ -201,14 +201,14 @@ namespace $rootnamespace$
         }
 
         [return: NotNull]
-        public static _WRITEABLEBLOCK_ARRAY WriteBytes([NotNull] this _WRITEABLEBLOCK_ARRAY target, ReadOnlySpan<Byte> array)            
+        public static __WRITEABLEBLOCK_ARRAY WriteBytes([NotNull] this __WRITEABLEBLOCK_ARRAY target, ReadOnlySpan<Byte> array)            
         {
             array.CopyTo(target);
             return target.Slice(array.Length);
         }
 
         [return: NotNull]
-        public static _READABLEBLOCK_ARRAY ReadBytes([NotNull] this _READABLEBLOCK_ARRAY source, Span<Byte> array)
+        public static __READABLEBLOCK_ARRAY ReadBytes([NotNull] this __READABLEBLOCK_ARRAY source, Span<Byte> array)
         {
             source.Slice(0, array.Length).AsSpan().CopyTo(array);            
             return source.Slice(array.Length);
@@ -226,7 +226,7 @@ namespace $rootnamespace$
         /// <param name="value">The value to write.</param>
         /// <param name="streamIsBigEndian">Indicates whether the values stored in the stream are big endian.</param>
         [return: NotNull]
-        public static _WRITEABLEBLOCK_STREAM WriteEndian<T>([NotNull] this _WRITEABLEBLOCK_STREAM stream, T value, bool streamIsBigEndian)
+        public static __WRITEABLEBLOCK__STREAM WriteEndian<T>([NotNull] this __WRITEABLEBLOCK__STREAM stream, T value, bool streamIsBigEndian)
             where T : unmanaged
         {
             if (streamIsBigEndian != System.BitConverter.IsLittleEndian) return WritePlatform(stream, value);
@@ -250,7 +250,7 @@ namespace $rootnamespace$
         /// <returns>the read value.</returns>
         /// <exception cref="System.IO.EndOfStreamException"></exception>
         [return: NotNull]
-        public static _READABLEBLOCK_STREAM ReadEndian<T>([NotNull] this _READABLEBLOCK_STREAM stream, out T value, bool streamIsBigEndian)
+        public static __READABLEBLOCK__STREAM ReadEndian<T>([NotNull] this __READABLEBLOCK__STREAM stream, out T value, bool streamIsBigEndian)
             where T : unmanaged
         {
             if (streamIsBigEndian != System.BitConverter.IsLittleEndian) return ReadPlatform(stream, out value);
@@ -278,7 +278,7 @@ namespace $rootnamespace$
         /// <param name="value">The value to write.</param>
         /// <param name="streamIsBigEndian">Indicates whether the values stored in the stream are big endian.</param>
         [return: NotNull]
-        public static _WRITEABLEBLOCK_STREAM WritePlatform<T>([NotNull] this _WRITEABLEBLOCK_STREAM stream, T value)
+        public static __WRITEABLEBLOCK__STREAM WritePlatform<T>([NotNull] this __WRITEABLEBLOCK__STREAM stream, T value)
             where T : unmanaged
         {
             Span<T> span = stackalloc T[1];
@@ -300,7 +300,7 @@ namespace $rootnamespace$
         /// <returns>the read value.</returns>
         /// <exception cref="System.IO.EndOfStreamException"></exception>
         [return: NotNull]
-        public static _READABLEBLOCK_STREAM ReadPlatform<T>([NotNull] this _READABLEBLOCK_STREAM stream, out T value)
+        public static __READABLEBLOCK__STREAM ReadPlatform<T>([NotNull] this __READABLEBLOCK__STREAM stream, out T value)
             where T : unmanaged
         {
             Span<T> span = stackalloc T[1];
@@ -318,14 +318,14 @@ namespace $rootnamespace$
         }
 
         [return: NotNull]
-        public static _WRITEABLEBLOCK_STREAM WriteBytes([NotNull] this _WRITEABLEBLOCK_STREAM stream, ReadOnlySpan<Byte> array)
+        public static __WRITEABLEBLOCK__STREAM WriteBytes([NotNull] this __WRITEABLEBLOCK__STREAM stream, ReadOnlySpan<Byte> array)
         {
             stream.Write(array);
             return stream;
         }
 
         [return: NotNull]
-        public static _READABLEBLOCK_STREAM ReadBytes([NotNull] this _READABLEBLOCK_STREAM stream, Span<Byte> array)
+        public static __READABLEBLOCK__STREAM ReadBytes([NotNull] this __READABLEBLOCK__STREAM stream, Span<Byte> array)
         {
             #if !NET8_0_OR_GREATER
             ReadExactly(stream, array);

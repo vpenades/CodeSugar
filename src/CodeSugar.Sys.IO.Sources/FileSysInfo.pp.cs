@@ -8,9 +8,9 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Diagnostics.CodeAnalysis;
 
-using _FINFO = System.IO.FileInfo;
-using _DINFO = System.IO.DirectoryInfo;
-using _SINFO = System.IO.FileSystemInfo;
+using __FINFO = System.IO.FileInfo;
+using __DINFO = System.IO.DirectoryInfo;
+using __SINFO = System.IO.FileSystemInfo;
 
 
 #nullable disable
@@ -31,19 +31,19 @@ namespace $rootnamespace$
         #if !NET
 
         /// <summary>
-		/// Checks whether a <see cref="_SINFO"/> is not null.
+		/// Checks whether a <see cref="__SINFO"/> is not null.
 		/// </summary>        
 		/// <exception cref="ArgumentNullException"></exception>
-        public static void GuardNotNull(this _SINFO info, string name = null)
+        public static void GuardNotNull(this __SINFO info, string name = null)
         {
             if (info == null) throw new ArgumentNullException(name ?? nameof(info));
         }        
 
         /// <summary>
-		/// Checks whether a <see cref="_SINFO"/> exists in the file system.
+		/// Checks whether a <see cref="__SINFO"/> exists in the file system.
 		/// </summary>        
 		/// <exception cref="ArgumentNullException"></exception>
-        public static void GuardExists(this _SINFO info, string name = null)
+        public static void GuardExists(this __SINFO info, string name = null)
         {
             if (info == null) throw new ArgumentNullException(name);
             if (!info.RefreshedExists()) throw new ArgumentException($"'{info.FullName}' does not exist.", name ?? nameof(info));
@@ -52,19 +52,19 @@ namespace $rootnamespace$
         #else
 
         /// <summary>
-        /// Checks whether a <see cref="_SINFO"/> is not null.
+        /// Checks whether a <see cref="__SINFO"/> is not null.
         /// </summary>        
         /// <exception cref="ArgumentNullException"></exception>
-        public static void GuardNotNull(this _SINFO info, [CallerArgumentExpression("info")] string name = null)
+        public static void GuardNotNull(this __SINFO info, [CallerArgumentExpression("info")] string name = null)
         {
             if (info == null) throw new ArgumentNullException(name);            
         }
 
 		/// <summary>
-		/// Checks whether a <see cref="_SINFO"/> exists in the file system.
+		/// Checks whether a <see cref="__SINFO"/> exists in the file system.
 		/// </summary>        
 		/// <exception cref="ArgumentNullException"></exception>
-		public static void GuardExists(this _SINFO info, [CallerArgumentExpression("info")] string name = null)
+		public static void GuardExists(this __SINFO info, [CallerArgumentExpression("info")] string name = null)
         {
             if (info == null) throw new ArgumentNullException(name);
             if (!info.RefreshedExists()) throw new ArgumentException($"'{info.FullName}' does not exist.", name);
@@ -79,31 +79,31 @@ namespace $rootnamespace$
         /// <summary>
         /// Gets a value indicating whether <paramref name="info"/> exists in the file system.
         /// </summary>
-        /// <param name="info">A <see cref="_FINFO"/> or a <see cref="_DINFO"/> object.</param>
+        /// <param name="info">A <see cref="__FINFO"/> or a <see cref="__DINFO"/> object.</param>
         /// <returns>true if it exists in the file system</returns>
         /// <exception cref="ArgumentException"></exception>
-        public static bool RefreshedExists(this _SINFO info)
+        public static bool RefreshedExists(this __SINFO info)
         {
             if (info == null) return false;
             
             switch(info)
             {
                 case null: return false;
-                case _FINFO finfo: return finfo.RefreshedExists();
-                case _DINFO dinfo: return dinfo.RefreshedExists();
+                case __FINFO finfo: return finfo.RefreshedExists();
+                case __DINFO dinfo: return dinfo.RefreshedExists();
                 default: throw new ArgumentException("Unknown type", nameof(info));
             }
         }
 
-        public static bool PhysicallyExists(this _SINFO info)
+        public static bool PhysicallyExists(this __SINFO info)
         {
             if (info == null) return false;
 
             switch (info)
             {
                 case null: return false;
-                case _FINFO finfo: return finfo.PhysicallyExists();
-                case _DINFO dinfo: return dinfo.PhysicallyExists();
+                case __FINFO finfo: return finfo.PhysicallyExists();
+                case __DINFO dinfo: return dinfo.PhysicallyExists();
                 default: throw new ArgumentException("Unknown type", nameof(info));
             }
         }
@@ -116,7 +116,7 @@ namespace $rootnamespace$
         /// <remarks>
         /// this is supported only on physical NTFS drives.
         /// </remarks>
-        public static bool TryGetAlternateDataStream(this _FINFO baseFile, string adsName, out _FINFO adsFile)
+        public static bool TryGetAlternateDataStream(this __FINFO baseFile, string adsName, out __FINFO adsFile)
         {
             GuardNotNull(baseFile);
             GuardIsValidFileName(adsName, true);
@@ -129,7 +129,7 @@ namespace $rootnamespace$
             
             var path = baseFile.FullName + ":" + adsName;
             
-            adsFile = new _FINFO(path);
+            adsFile = new __FINFO(path);
             return true;
         }
 
@@ -137,7 +137,7 @@ namespace $rootnamespace$
         /// Gets the parent directory of the current instance.
         /// </summary>
         [return: NotNull]
-        public static _DINFO GetParent(this _SINFO fsinfo)
+        public static __DINFO GetParent(this __SINFO fsinfo)
         {
             return GetParentOrNull(fsinfo) ?? throw new System.IO.DirectoryNotFoundException();
         }        
@@ -145,28 +145,28 @@ namespace $rootnamespace$
         /// <summary>
         /// Gets the parent directory of the current instance, or null if it has no parent.
         /// </summary>
-        public static _DINFO GetParentOrNull(this _SINFO fsinfo)
+        public static __DINFO GetParentOrNull(this __SINFO fsinfo)
         {
-            if (fsinfo is _FINFO finfo) return finfo.Directory;
-            if (fsinfo is _DINFO dinfo) return dinfo.Parent;
+            if (fsinfo is __FINFO finfo) return finfo.Directory;
+            if (fsinfo is __DINFO dinfo) return dinfo.Parent;
             return null;
         }
 
         [Obsolete("Use GetFileInfo", true)]
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static _FINFO GetFile(this _DINFO baseDir, params string[] relativePath)
+        public static __FINFO GetFile(this __DINFO baseDir, params string[] relativePath)
         {
             return GetFileInfo(baseDir, relativePath);
         }
 
         /// <summary>
-        /// Gets a <see cref="_FINFO"/> relative to the base directory.
+        /// Gets a <see cref="__FINFO"/> relative to the base directory.
         /// </summary>
         /// <param name="baseDir">the base directory</param>
         /// <param name="relativePath">the relative path parts</param>
-        /// <returns>a new <see cref="_FINFO"/> instance.</returns>
+        /// <returns>a new <see cref="__FINFO"/> instance.</returns>
         [return: NotNull]
-        public static _FINFO GetFileInfo(this _DINFO baseDir, params string[] relativePath)
+        public static __FINFO GetFileInfo(this __DINFO baseDir, params string[] relativePath)
         {
             var finfo = _CreateFileInfo(baseDir, false, relativePath);
             System.Diagnostics.Debug.Assert(finfo != null && finfo.PhysicallyExists(), $"File {relativePath.Last()} does not exist.");
@@ -175,13 +175,13 @@ namespace $rootnamespace$
 
         [Obsolete("UseFileInfo", true)]
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static _FINFO UseFile(this _DINFO baseDir, params string[] relativePath)
+        public static __FINFO UseFile(this __DINFO baseDir, params string[] relativePath)
         {
             return UseFileInfo(baseDir, relativePath);
         }
 
         /// <summary>
-        /// Gets a <see cref="_FINFO"/> relative to the base directory.
+        /// Gets a <see cref="__FINFO"/> relative to the base directory.
         /// </summary>
         /// <remarks>
         /// If the base directory does not exists, it is created.
@@ -189,34 +189,34 @@ namespace $rootnamespace$
         /// </remarks>
         /// <param name="baseDir">the base directory</param>
         /// <param name="relativePath">the relative path parts</param>
-        /// <returns>a new <see cref="_FINFO"/> instance.</returns>
+        /// <returns>a new <see cref="__FINFO"/> instance.</returns>
         [return: NotNull]
-        public static _FINFO UseFileInfo(this _DINFO baseDir, params string[] relativePath)
+        public static __FINFO UseFileInfo(this __DINFO baseDir, params string[] relativePath)
         {
             return _CreateFileInfo(baseDir, true, relativePath) ?? throw new System.IO.FileNotFoundException();
         }
 
         [Obsolete("Use DefineFileInfo", true)]
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static _FINFO DefineFile(this _DINFO baseDir, params string[] relativePath)
+        public static __FINFO DefineFile(this __DINFO baseDir, params string[] relativePath)
         {
             return DefineFileInfo(baseDir, relativePath);
         }
 
         /// <summary>
-        /// Defines a <see cref="_FINFO"/> relative to the base directory.
+        /// Defines a <see cref="__FINFO"/> relative to the base directory.
         /// </summary>
         /// <param name="baseDir">the base directory</param>
         /// <param name="relativePath">the relative path parts</param>
-        /// <returns>a new <see cref="_FINFO"/> instance.</returns>
+        /// <returns>a new <see cref="__FINFO"/> instance.</returns>
         [return: NotNull]
-        public static _FINFO DefineFileInfo(this _DINFO baseDir, params string[] relativePath)
+        public static __FINFO DefineFileInfo(this __DINFO baseDir, params string[] relativePath)
         {
             return _CreateFileInfo(baseDir, false, relativePath);
         }
 
         [return: NotNull]
-        private static _FINFO _CreateFileInfo(this _DINFO baseDir, bool canCreate, params string[] relativePath)
+        private static __FINFO _CreateFileInfo(this __DINFO baseDir, bool canCreate, params string[] relativePath)
         {
             GuardNotNull(baseDir);           
             
@@ -229,7 +229,7 @@ namespace $rootnamespace$
 
             // concatenate
             var path = ConcatenatePaths(baseDir.FullName, relativePath);
-            var finfo = new _FINFO(path);
+            var finfo = new __FINFO(path);
 
             if (canCreate) _EnsureDirectoryExists(finfo.Directory);
 
@@ -239,20 +239,20 @@ namespace $rootnamespace$
         [Obsolete("Use GetDirectoryInfo", true)]
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         [return: NotNull]
-        public static _DINFO GetDirectory(this _DINFO baseDir, params string[] relativePath)
+        public static __DINFO GetDirectory(this __DINFO baseDir, params string[] relativePath)
         {
             return GetDirectoryInfo(baseDir, relativePath);
         }
 
 
         /// <summary>
-        /// Gets an existing <see cref="_DINFO"/> relative to the base directory.
+        /// Gets an existing <see cref="__DINFO"/> relative to the base directory.
         /// </summary>
         /// <param name="baseDir">the base directory</param>
         /// <param name="relativePath">the relative path parts</param>
-        /// <returns>a new <see cref="_DINFO"/> instance.</returns>
+        /// <returns>a new <see cref="__DINFO"/> instance.</returns>
         [return: NotNull]
-        public static _DINFO GetDirectoryInfo(this _DINFO baseDir, params string[] relativePath)
+        public static __DINFO GetDirectoryInfo(this __DINFO baseDir, params string[] relativePath)
         {
             return _CreateDirectoryInfo(baseDir, false, false, relativePath)
                 ?? throw new System.IO.DirectoryNotFoundException();
@@ -261,19 +261,19 @@ namespace $rootnamespace$
         [Obsolete("Use UseDirectoryInfo", true)]
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         [return: NotNull]
-        public static _DINFO UseDirectory(this _DINFO baseDir, params string[] relativePath)
+        public static __DINFO UseDirectory(this __DINFO baseDir, params string[] relativePath)
         {
             return UseDirectoryInfo(baseDir, relativePath);
         }
 
         /// <summary>
-		/// Uses a <see cref="_DINFO"/> relative to the base directory.
+		/// Uses a <see cref="__DINFO"/> relative to the base directory.
 		/// </summary>
 		/// <param name="baseDir">the base directory</param>
 		/// <param name="relativePath">the relative path parts</param>
-		/// <returns>a new <see cref="_DINFO"/> instance.</returns>
+		/// <returns>a new <see cref="__DINFO"/> instance.</returns>
         [return: NotNull]
-        public static _DINFO UseDirectoryInfo(this _DINFO baseDir, params string[] relativePath)
+        public static __DINFO UseDirectoryInfo(this __DINFO baseDir, params string[] relativePath)
         {
             return _CreateDirectoryInfo(baseDir, false, true, relativePath)
                 ?? throw new System.IO.DirectoryNotFoundException();
@@ -282,32 +282,32 @@ namespace $rootnamespace$
         [Obsolete("Use DefineDirectoryInfo", true)]
         [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
         [return: NotNull]
-        public static _DINFO DefineDirectory(this _DINFO baseDir, params string[] relativePath)
+        public static __DINFO DefineDirectory(this __DINFO baseDir, params string[] relativePath)
         {
             return DefineDirectoryInfo(baseDir, relativePath);
         }
 
         /// <summary>
-		/// Defines a <see cref="_DINFO"/> relative to the base directory.
+		/// Defines a <see cref="__DINFO"/> relative to the base directory.
 		/// </summary>
 		/// <param name="baseDir">the base directory</param>
 		/// <param name="relativePath">the relative path parts</param>
-		/// <returns>a new <see cref="_DINFO"/> instance.</returns>
+		/// <returns>a new <see cref="__DINFO"/> instance.</returns>
         [return: NotNull]
-        public static _DINFO DefineDirectoryInfo(this _DINFO baseDir, params string[] relativePath)
+        public static __DINFO DefineDirectoryInfo(this __DINFO baseDir, params string[] relativePath)
         {
             return _CreateDirectoryInfo(baseDir, false, false, relativePath)
                 ?? throw new System.IO.DirectoryNotFoundException();
         }
 
         [return: NotNull]
-        private static _DINFO _CreateDirectoryInfo(this _DINFO baseDir, bool mustExist, bool canCreate, params string[] relativePath)
+        private static __DINFO _CreateDirectoryInfo(this __DINFO baseDir, bool mustExist, bool canCreate, params string[] relativePath)
         {
             GuardNotNull(baseDir);
 
             // concatenate
             var path = ConcatenatePaths(baseDir.FullName, relativePath);
-            baseDir = new _DINFO(path);            
+            baseDir = new __DINFO(path);            
 
             if (canCreate) _EnsureDirectoryExists(baseDir);
             else if (mustExist)
@@ -319,7 +319,7 @@ namespace $rootnamespace$
             return baseDir;
         }        
 
-        public static void CopyTo(this _FINFO src, _DINFO dst, bool overwrite = false)
+        public static void CopyTo(this __FINFO src, __DINFO dst, bool overwrite = false)
         {
             GuardExists(src);
             GuardNotNull(dst);
@@ -327,7 +327,7 @@ namespace $rootnamespace$
             src.CopyTo(dstf.FullName, overwrite);
         }
 
-        public static void CopyTo(this _FINFO src, _FINFO dst, bool overwrite = false)
+        public static void CopyTo(this __FINFO src, __FINFO dst, bool overwrite = false)
         {
             GuardExists(src);
             GuardNotNull(dst);
@@ -335,7 +335,7 @@ namespace $rootnamespace$
             dst.Refresh();
         }
 
-        public static void Rename(this _FINFO finfo, string newName, bool overwrite)
+        public static void Rename(this __FINFO finfo, string newName, bool overwrite)
         {
             GuardNotNull(finfo);
 
@@ -346,9 +346,9 @@ namespace $rootnamespace$
         }
 
         #if NETSTANDARD
-        public static void MoveTo(this _FINFO finfo, string newPath, bool overwrite)
+        public static void MoveTo(this __FINFO finfo, string newPath, bool overwrite)
         {
-            var dstInfo = new _FINFO(newPath);
+            var dstInfo = new __FINFO(newPath);
 
             if (overwrite && dstInfo.RefreshedExists())
             {

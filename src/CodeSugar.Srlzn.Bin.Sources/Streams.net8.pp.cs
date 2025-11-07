@@ -10,7 +10,7 @@ using System.Diagnostics;
 
 #nullable disable
 
-using _STREAM = System.IO.Stream;
+using __STREAM = System.IO.Stream;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -27,19 +27,19 @@ namespace $rootnamespace$
         #if !NET8_0_OR_GREATER        
 
         [DebuggerStepThrough]
-        private static void ReadExactly(_STREAM stream, Span<byte> buffer)
+        private static void ReadExactly(__STREAM stream, Span<byte> buffer)
         {
             _ = _ReadAtLeastCore(stream, buffer, buffer.Length, throwOnEndOfStream: true);
         }
 
         [DebuggerStepThrough]
-        private static Task ReadExactlyAsync(_STREAM stream, Memory<byte> buffer, CancellationToken cancellationToken = default)
+        private static Task ReadExactlyAsync(__STREAM stream, Memory<byte> buffer, CancellationToken cancellationToken = default)
         {
             return _ReadAtLeastAsyncCore(stream, buffer, buffer.Length, throwOnEndOfStream: true, cancellationToken);
         }
 
         [DebuggerStepThrough]
-        private static int ReadAtLeast(_STREAM stream, Span<byte> buffer, int minimumBytes, bool throwOnEndOfStream = true)
+        private static int ReadAtLeast(__STREAM stream, Span<byte> buffer, int minimumBytes, bool throwOnEndOfStream = true)
         {
             _ValidateReadAtLeastArguments(buffer.Length, minimumBytes);
 
@@ -47,7 +47,7 @@ namespace $rootnamespace$
         }
         
         [DebuggerStepThrough]
-        private static Task<int> ReadAtLeastAsync(_STREAM stream, Memory<byte> buffer, int minimumBytes, bool throwOnEndOfStream = true, CancellationToken cancellationToken = default)
+        private static Task<int> ReadAtLeastAsync(__STREAM stream, Memory<byte> buffer, int minimumBytes, bool throwOnEndOfStream = true, CancellationToken cancellationToken = default)
         {
             _ValidateReadAtLeastArguments(buffer.Length, minimumBytes);
 
@@ -56,7 +56,7 @@ namespace $rootnamespace$
 
 
         // No argument checking is done here. It is up to the caller.
-        private static int _ReadAtLeastCore(_STREAM stream, Span<byte> buffer, int minimumBytes, bool throwOnEndOfStream)
+        private static int _ReadAtLeastCore(__STREAM stream, Span<byte> buffer, int minimumBytes, bool throwOnEndOfStream)
         {
             Debug.Assert(minimumBytes <= buffer.Length);
 
@@ -80,7 +80,7 @@ namespace $rootnamespace$
             return totalRead;
         }
 
-        private static async Task<int> _ReadAtLeastAsyncCore(_STREAM stream, Memory<byte> buffer, int minimumBytes, bool throwOnEndOfStream, CancellationToken cancellationToken)
+        private static async Task<int> _ReadAtLeastAsyncCore(__STREAM stream, Memory<byte> buffer, int minimumBytes, bool throwOnEndOfStream, CancellationToken cancellationToken)
         {
             Debug.Assert(minimumBytes <= buffer.Length);
 

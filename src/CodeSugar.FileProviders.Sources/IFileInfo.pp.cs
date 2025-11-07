@@ -10,9 +10,9 @@ using Microsoft.Extensions.FileProviders;
 
 #nullable disable
 
-using _XINFO = Microsoft.Extensions.FileProviders.IFileInfo;
-using _XPROVIDER = Microsoft.Extensions.FileProviders.IFileProvider;
-using _XDIRECTORY = Microsoft.Extensions.FileProviders.IDirectoryContents;
+using __XINFO = Microsoft.Extensions.FileProviders.IFileInfo;
+using __XPROVIDER = Microsoft.Extensions.FileProviders.IFileProvider;
+using __XDIRECTORY = Microsoft.Extensions.FileProviders.IDirectoryContents;
 
 
 #if CODESUGAR_USECODESUGARNAMESPACE
@@ -27,21 +27,21 @@ namespace $rootnamespace$
     {
         #region constants
 
-        private static readonly _XINFO __NULLFILE = new Microsoft.Extensions.FileProviders.NotFoundFileInfo("NULL");
+        private static readonly __XINFO __NULLFILE = new Microsoft.Extensions.FileProviders.NotFoundFileInfo("NULL");
 
-        private static readonly _XPROVIDER __NULLPROVIDER = new Microsoft.Extensions.FileProviders.NullFileProvider();
+        private static readonly __XPROVIDER __NULLPROVIDER = new Microsoft.Extensions.FileProviders.NullFileProvider();
 
         #endregion
 
         #region wrappers
 
         [return: NotNull]
-        public static _XINFO ToIFileInfo(this _XDIRECTORY dir, string name)
+        public static __XINFO ToIFileInfo(this __XDIRECTORY dir, string name)
         {
             switch (dir)
             {
                 case null: return new NotFoundFileInfo(name);
-                case _XINFO xinfo:
+                case __XINFO xinfo:
                     if (!string.IsNullOrWhiteSpace(name) && name != xinfo.Name) throw new ArgumentException($"Name mismatch. Expected {xinfo.Name} but was {name}");
                     return xinfo;
                 default:
@@ -51,39 +51,39 @@ namespace $rootnamespace$
         }
 
         [return: NotNull]
-        public static _XINFO ToIFileInfo([NotNull] this Func<System.IO.Stream> reader, [NotNull] string name, long len, DateTimeOffset lastWrite)
+        public static __XINFO ToIFileInfo([NotNull] this Func<System.IO.Stream> reader, [NotNull] string name, long len, DateTimeOffset lastWrite)
         {
             return new _GenericFileInfo(name, len, lastWrite, reader);
         }
 
         [return: NotNull]
-        public static _XINFO ToIFileInfo([NotNull] this Func<string, System.IO.Stream> reader, [NotNull] string name, long len, DateTimeOffset lastWrite)
+        public static __XINFO ToIFileInfo([NotNull] this Func<string, System.IO.Stream> reader, [NotNull] string name, long len, DateTimeOffset lastWrite)
         {
             if (reader == null) throw new ArgumentNullException(nameof(reader));
             return new _GenericFileInfo(name, len, lastWrite, ()=> reader.Invoke(name));
         }        
 
         [return: NotNull]
-        public static _XINFO ToIFileInfo([NotNull] this Func<System.IO.Stream> reader, [NotNull] string name, long len)
+        public static __XINFO ToIFileInfo([NotNull] this Func<System.IO.Stream> reader, [NotNull] string name, long len)
         {
             return new _GenericFileInfo(name, len, DateTime.Today, reader);
         }
 
         [return: NotNull]
-        public static _XINFO ToIFileInfo([NotNull] this Func<string, System.IO.Stream> reader, [NotNull] string name, long len)
+        public static __XINFO ToIFileInfo([NotNull] this Func<string, System.IO.Stream> reader, [NotNull] string name, long len)
         {
             if (reader == null) throw new ArgumentNullException(nameof(reader));
             return new _GenericFileInfo(name, len, DateTime.Today, () => reader.Invoke(name));
         }
 
         [return: NotNull]
-        public static _XINFO ToIFileInfo(this ArraySegment<byte> data, [NotNull] string name, DateTimeOffset lastWrite)
+        public static __XINFO ToIFileInfo(this ArraySegment<byte> data, [NotNull] string name, DateTimeOffset lastWrite)
         {
             return new _GenericFileInfo(name, data.Count, lastWrite, () => _ToMemoryStream(data));
         }
 
         [return: NotNull]
-        public static _XINFO ToIFileInfo(this ArraySegment<byte> data, [NotNull] string name)
+        public static __XINFO ToIFileInfo(this ArraySegment<byte> data, [NotNull] string name)
         {
             return new _GenericFileInfo(name, data.Count, DateTime.Today, () => _ToMemoryStream(data));
         }
@@ -93,7 +93,7 @@ namespace $rootnamespace$
         #region stream functions
 
         [return: NotNull]
-        public static Func<System.IO.Stream> GetReadStreamFunction([NotNull] this _XINFO xinfo)
+        public static Func<System.IO.Stream> GetReadStreamFunction([NotNull] this __XINFO xinfo)
         {
             GuardNotNull(xinfo);
             if (xinfo.IsDirectory) throw new ArgumentException("directories don't have a stream", nameof(xinfo));
@@ -102,7 +102,7 @@ namespace $rootnamespace$
         }
 
         [return: NotNull]
-        public static Func<System.IO.Stream> GetWriteStreamFunction([NotNull] this _XINFO xinfo)
+        public static Func<System.IO.Stream> GetWriteStreamFunction([NotNull] this __XINFO xinfo)
         {
             GuardNotNull(xinfo);
             if (xinfo.IsDirectory) throw new ArgumentException("directories don't have a stream", nameof(xinfo));
@@ -141,7 +141,7 @@ namespace $rootnamespace$
         #region nested types
 
         [System.Diagnostics.DebuggerDisplay("{Name} {Length}")]
-        class _GenericFileInfo : _XINFO
+        class _GenericFileInfo : __XINFO
         {
             public _GenericFileInfo(string name, long length, DateTimeOffset lastModified, Func<Stream> reader)
             {
@@ -175,10 +175,10 @@ namespace $rootnamespace$
             public bool IsDirectory => false;
         }
 
-        private sealed class _DirectoryFile : _XINFO, _XDIRECTORY
+        private sealed class _DirectoryFile : __XINFO, __XDIRECTORY
         {
             #region lifecycle
-            public _DirectoryFile(string name, _XDIRECTORY source)
+            public _DirectoryFile(string name, __XDIRECTORY source)
             {
                 _Source = source;
                 Name = name;
@@ -189,7 +189,7 @@ namespace $rootnamespace$
             #region data
 
             [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)]
-            private readonly _XDIRECTORY _Source;
+            private readonly __XDIRECTORY _Source;
 
             #endregion
 
@@ -211,7 +211,7 @@ namespace $rootnamespace$
 
             #region API
 
-            public IEnumerator<_XINFO> GetEnumerator()
+            public IEnumerator<__XINFO> GetEnumerator()
             {
                 return _Source.GetEnumerator();
             }

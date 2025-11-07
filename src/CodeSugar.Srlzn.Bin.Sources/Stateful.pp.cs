@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using _STREAM = System.IO.Stream;
+using __STREAM = System.IO.Stream;
 
 using System.Diagnostics.CodeAnalysis;
 

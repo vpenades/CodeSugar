@@ -7,8 +7,8 @@ using System.IO;
 
 #nullable disable
 
-using _DRIVE = System.IO.DriveInfo;
-using _DINFO = System.IO.DirectoryInfo;
+using __DRIVE = System.IO.DriveInfo;
+using __DINFO = System.IO.DirectoryInfo;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -31,7 +31,7 @@ namespace $rootnamespace$
         /// This only works on Windows.
         /// </para>
         /// </remarks>
-        public static bool TryGetDriveInfo(this _DINFO dinfo, out _DRIVE drive)
+        public static bool TryGetDriveInfo(this __DINFO dinfo, out __DRIVE drive)
         {
             drive = null;
 
@@ -50,14 +50,14 @@ namespace $rootnamespace$
             var interned = _TryGetInternedDriveInfo(root);
             if (interned != null) { drive = interned; return true; }
 
-            drive = new _DRIVE(root);                
+            drive = new __DRIVE(root);                
             return true;
         }
 
         /// <summary>
         /// Gets the drive or network name of the given object.
         /// </summary>
-        public static string GetDriveOrNetworkName(this _DINFO dinfo)
+        public static string GetDriveOrNetworkName(this __DINFO dinfo)
         {
             if (dinfo == null) return null;
             var root = dinfo.Root.GetNormalizedFullName();
@@ -69,13 +69,13 @@ namespace $rootnamespace$
         }
 
         // this is a helper method that allows reusing tha same System.IO.DriveInfo instanced mapped to System Drives.
-        private static _DRIVE _TryGetInternedDriveInfo(string root)
+        private static __DRIVE _TryGetInternedDriveInfo(string root)
         {
             if (_InternedFixedDrives == null) // initialize
             {
-                _InternedFixedDrives = new Dictionary<string, _DRIVE>(GetStringComparer(MatchCasing.PlatformDefault));
+                _InternedFixedDrives = new Dictionary<string, __DRIVE>(GetStringComparer(MatchCasing.PlatformDefault));
 
-                foreach(var d in _DRIVE.GetDrives())
+                foreach(var d in __DRIVE.GetDrives())
                 {
                     if (!d.IsReady) continue;
 

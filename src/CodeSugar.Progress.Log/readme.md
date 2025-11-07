@@ -140,7 +140,7 @@ redirect the errors.
 Microsoft Logging supports string interpolation [with names](https://learn.microsoft.com/en-us/dotnet/core/extensions/logging?tabs=command-line#log-message-template), as in:
 
 ```c#
-_logger.LogInformation("Getting item {Id} at {RunTime}", id, DateTime.Now);
+__LOGGER.LogInformation("Getting item {Id} at {RunTime}", id, DateTime.Now);
 ```
 
 classed involved seem to be:

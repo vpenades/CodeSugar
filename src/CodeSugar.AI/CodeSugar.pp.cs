@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using _RTINTEROPSVCS = System.Runtime.InteropServices;
+using __RTINTEROPSVCS = System.Runtime.InteropServices;
 
 
 #if CODESUGAR_USECODESUGARNAMESPACE

@@ -8,8 +8,8 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using _LOGLEVEL = System.Diagnostics.TraceEventType;
-using _LOGGER = System.IProgress<string>;
+using __LOGLEVEL = System.Diagnostics.TraceEventType;
+using __LOGGER = System.IProgress<string>;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -21,86 +21,86 @@ namespace $rootnamespace$
 {
     partial class CodeSugarForLogging
     {
-        public static IDisposable BeginScope(_LOGGER logger, string message, params object[] args)
+        public static IDisposable BeginScope(__LOGGER logger, string message, params object[] args)
         {
-            logger.ReportLog(_LOGLEVEL.Start, message, args);
+            logger.ReportLog(__LOGLEVEL.Start, message, args);
             return new _EndScore(logger);
         }
 
         private sealed class _EndScore : IDisposable
         {
-            public _EndScore(_LOGGER logger)
+            public _EndScore(__LOGGER logger)
             {
-                _Logger = logger;
+                __LOGGER = logger;
             }
 
-            private _LOGGER _Logger;            
+            private __LOGGER __LOGGER;            
 
             public void Dispose()
             {
-                var l = System.Threading.Interlocked.Exchange(ref _Logger, null);
-                l?.ReportLog(_LOGLEVEL.Stop, null);
+                var l = System.Threading.Interlocked.Exchange(ref __LOGGER, null);
+                l?.ReportLog(__LOGLEVEL.Stop, null);
             }
         }
 
-        public static void LogDebug(this _LOGGER logger, Exception exception, string message, params object[] args)
+        public static void LogDebug(this __LOGGER logger, Exception exception, string message, params object[] args)
         {
-            logger.ReportLog(_LOGLEVEL.Verbose, exception, message, args);
+            logger.ReportLog(__LOGLEVEL.Verbose, exception, message, args);
         }
         
-        public static void LogDebug(this _LOGGER logger, string message, params object[] args)
+        public static void LogDebug(this __LOGGER logger, string message, params object[] args)
         {
-            logger.ReportLog(_LOGLEVEL.Verbose, message, args);
+            logger.ReportLog(__LOGLEVEL.Verbose, message, args);
         }
         
-        public static void LogTrace(this _LOGGER logger, Exception exception, string message, params object[] args)
+        public static void LogTrace(this __LOGGER logger, Exception exception, string message, params object[] args)
         {
-            logger.ReportLog(_LOGLEVEL.Verbose, exception, message, args);
+            logger.ReportLog(__LOGLEVEL.Verbose, exception, message, args);
         }
         
-        public static void LogTrace(this _LOGGER logger, string message, params object[] args)
+        public static void LogTrace(this __LOGGER logger, string message, params object[] args)
         {
-            logger.ReportLog(_LOGLEVEL.Verbose, message, args);
+            logger.ReportLog(__LOGLEVEL.Verbose, message, args);
         }
         
-        public static void LogInformation(this _LOGGER logger, Exception exception, string message, params object[] args)
+        public static void LogInformation(this __LOGGER logger, Exception exception, string message, params object[] args)
         {
-            logger.ReportLog(_LOGLEVEL.Information, exception, message, args);
+            logger.ReportLog(__LOGLEVEL.Information, exception, message, args);
         }
         
-        public static void LogInformation(this _LOGGER logger, string message, params object[] args)
+        public static void LogInformation(this __LOGGER logger, string message, params object[] args)
         {
-            logger.ReportLog(_LOGLEVEL.Information, message, args);
+            logger.ReportLog(__LOGLEVEL.Information, message, args);
         }
         
-        public static void LogWarning(this _LOGGER logger, Exception exception, string message, params object[] args)
+        public static void LogWarning(this __LOGGER logger, Exception exception, string message, params object[] args)
         {
-            logger.ReportLog(_LOGLEVEL.Warning, exception, message, args);
+            logger.ReportLog(__LOGLEVEL.Warning, exception, message, args);
         }
         
-        public static void LogWarning(this _LOGGER logger, string message, params object[] args)
+        public static void LogWarning(this __LOGGER logger, string message, params object[] args)
         {
-            logger.ReportLog(_LOGLEVEL.Warning, message, args);
+            logger.ReportLog(__LOGLEVEL.Warning, message, args);
         }
         
-        public static void LogError(this _LOGGER logger, Exception exception, string message, params object[] args)
+        public static void LogError(this __LOGGER logger, Exception exception, string message, params object[] args)
         {
-            logger.ReportLog(_LOGLEVEL.Error, exception, message, args);
+            logger.ReportLog(__LOGLEVEL.Error, exception, message, args);
         }
         
-        public static void LogError(this _LOGGER logger, string message, params object[] args)
+        public static void LogError(this __LOGGER logger, string message, params object[] args)
         {
-            logger.ReportLog(_LOGLEVEL.Error, message, args);
+            logger.ReportLog(__LOGLEVEL.Error, message, args);
         }
         
-        public static void LogCritical(this _LOGGER logger, Exception exception, string message, params object[] args)
+        public static void LogCritical(this __LOGGER logger, Exception exception, string message, params object[] args)
         {
-            logger.ReportLog(_LOGLEVEL.Critical, exception, message, args);
+            logger.ReportLog(__LOGLEVEL.Critical, exception, message, args);
         }
         
-        public static void LogCritical(this _LOGGER logger, string message, params object[] args)
+        public static void LogCritical(this __LOGGER logger, string message, params object[] args)
         {
-            logger.ReportLog(_LOGLEVEL.Critical, message, args);
+            logger.ReportLog(__LOGLEVEL.Critical, message, args);
         }
     }
 }

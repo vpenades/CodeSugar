@@ -10,6 +10,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
+using NUnit.Framework;
+
 namespace CodeSugar
 {
     internal static class _RoslynExtensions
@@ -52,11 +54,25 @@ namespace CodeSugar
             return result;
         }
 
-        
+        public static IEnumerable<KeyValuePair<string,string>> EnumerateUsingAliasDirectives(string sourceCode)
+        {
+            var syntaxTree = CSharpSyntaxTree.ParseText(sourceCode);
+            var root = syntaxTree.GetRoot();
 
-        
+            var usingDirectives = root.DescendantNodes()
+                .OfType<UsingDirectiveSyntax>()
+                .Where(u => u.Alias != null);            
 
-        
+            foreach (var usingDirective in usingDirectives)
+            {
+                // Alias name
+                var alias = usingDirective.Alias.Name.Identifier.Text;
+                // The fully-qualified name/expression
+                var name = usingDirective.Name.ToString();
+
+                yield return new KeyValuePair<string, string>(alias, name);
+            }
+        }
     }
 
     internal class PragmaContext

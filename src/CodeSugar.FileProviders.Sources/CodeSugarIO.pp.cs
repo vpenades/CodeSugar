@@ -7,7 +7,7 @@ using System.IO;
 
 #nullable disable
 
-using _RTINTEROPSVCS = System.Runtime.InteropServices;
+using __RTINTEROPSVCS = System.Runtime.InteropServices;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -27,12 +27,12 @@ namespace $rootnamespace$
         {
             // credits: https://stackoverflow.com/a/56773947
 
-            if (_RTINTEROPSVCS.RuntimeInformation.IsOSPlatform(_RTINTEROPSVCS.OSPlatform.Windows) ||
-                _RTINTEROPSVCS.RuntimeInformation.IsOSPlatform(_RTINTEROPSVCS.OSPlatform.OSX))  // HFS+ (the Mac file-system) is usually configured to be case insensitive.
+            if (__RTINTEROPSVCS.RuntimeInformation.IsOSPlatform(__RTINTEROPSVCS.OSPlatform.Windows) ||
+                __RTINTEROPSVCS.RuntimeInformation.IsOSPlatform(__RTINTEROPSVCS.OSPlatform.OSX))  // HFS+ (the Mac file-system) is usually configured to be case insensitive.
             {
                 return false;
             }
-            else if (_RTINTEROPSVCS.RuntimeInformation.IsOSPlatform(_RTINTEROPSVCS.OSPlatform.Linux))
+            else if (__RTINTEROPSVCS.RuntimeInformation.IsOSPlatform(__RTINTEROPSVCS.OSPlatform.Linux))
             {
                 return true;
             }

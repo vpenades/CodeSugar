@@ -8,9 +8,9 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using _ZIPARCHIVE = System.IO.Compression.ZipArchive;
-using _ZIPENTRY = System.IO.Compression.ZipArchiveEntry;
-using _BYTESSEGMENT = System.ArraySegment<byte>;
+using __ZIPARCHIVE = System.IO.Compression.ZipArchive;
+using __ZIPENTRY = System.IO.Compression.ZipArchiveEntry;
+using __BYTESSEGMENT = System.ArraySegment<byte>;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -24,13 +24,13 @@ namespace $rootnamespace$
     {
         #if !NET
 
-        public static void GuardReadable(this _ZIPENTRY entry)
+        public static void GuardReadable(this __ZIPENTRY entry)
         {
             if (entry == null) throw new ArgumentNullException(nameof(entry));
             if (entry.Archive.Mode != System.IO.Compression.ZipArchiveMode.Read) throw new ArgumentException("Can't read from strean", nameof(entry));
         }
 
-        public static void GuardWriteable(this _ZIPENTRY entry)
+        public static void GuardWriteable(this __ZIPENTRY entry)
         {
             if (entry == null) throw new ArgumentNullException(nameof(entry));
             if (entry.Archive.Mode != System.IO.Compression.ZipArchiveMode.Create) throw new ArgumentException("Can't read from strean", nameof(entry));
@@ -38,13 +38,13 @@ namespace $rootnamespace$
 
         #else
 
-        public static void GuardReadable(this _ZIPENTRY entry, [CallerArgumentExpression("entry")] string name = null)
+        public static void GuardReadable(this __ZIPENTRY entry, [CallerArgumentExpression("entry")] string name = null)
         {
             if (entry == null) throw new ArgumentNullException(name);
             if (entry.Archive.Mode != System.IO.Compression.ZipArchiveMode.Read) throw new ArgumentException("Can't read from strean", name);
         }
 
-        public static void GuardWriteable(this _ZIPENTRY entry, [CallerArgumentExpression("entry")] string name = null)
+        public static void GuardWriteable(this __ZIPENTRY entry, [CallerArgumentExpression("entry")] string name = null)
         {
             if (entry == null) throw new ArgumentNullException(name);
             if (entry.Archive.Mode != System.IO.Compression.ZipArchiveMode.Create) throw new ArgumentException("Can't read from strean", name);
@@ -52,27 +52,27 @@ namespace $rootnamespace$
 
         #endif
 
-        public static _ZIPARCHIVE CreateZipArchive(this System.IO.FileInfo finfo, System.Text.Encoding entryNameEncoding = null)
+        public static __ZIPARCHIVE CreateZipArchive(this System.IO.FileInfo finfo, System.Text.Encoding entryNameEncoding = null)
         {
             GuardNotNull(finfo);
             if (finfo.RefreshedExists()) finfo.Delete(); // zip create fails if it already exists
             return System.IO.Compression.ZipFile.Open(finfo.FullName, System.IO.Compression.ZipArchiveMode.Create, entryNameEncoding);
         }
 
-        public static _ZIPARCHIVE OpenReadZipArchive(this System.IO.FileInfo finfo, System.Text.Encoding entryNameEncoding = null)
+        public static __ZIPARCHIVE OpenReadZipArchive(this System.IO.FileInfo finfo, System.Text.Encoding entryNameEncoding = null)
         {
             GuardExists(finfo);
             return System.IO.Compression.ZipFile.Open(finfo.FullName, System.IO.Compression.ZipArchiveMode.Read, entryNameEncoding);
         }
 
-        public static Dictionary<string,_BYTESSEGMENT> ToDictionary(this _ZIPARCHIVE archive)
+        public static Dictionary<string,__BYTESSEGMENT> ToDictionary(this __ZIPARCHIVE archive)
         {
             if (archive == null) throw new ArgumentNullException(nameof(archive));
 
             return archive.Entries.ToDictionary(entry => entry.FullName, entry => entry.ReadAllBytes());
         }
 
-        public static void AddEntries(this _ZIPARCHIVE archive, IReadOnlyDictionary<string,_BYTESSEGMENT> entries)
+        public static void AddEntries(this __ZIPARCHIVE archive, IReadOnlyDictionary<string,__BYTESSEGMENT> entries)
         {
             if (archive == null) throw new ArgumentNullException(nameof(archive));
             if (entries == null) throw new ArgumentNullException(nameof(entries));

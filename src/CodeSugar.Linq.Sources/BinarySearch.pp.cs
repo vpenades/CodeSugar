@@ -9,10 +9,10 @@ using System.Collections.Generic;
 #nullable disable
 
 #if !NETSTANDARD
-using _UNSAFE = System.Runtime.CompilerServices.Unsafe;
+using __UNSAFE = System.Runtime.CompilerServices.Unsafe;
 #endif
 
-using _METHODOPTIONS = System.Runtime.CompilerServices.MethodImplOptions;
+using __METHODOPTIONS = System.Runtime.CompilerServices.MethodImplOptions;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar

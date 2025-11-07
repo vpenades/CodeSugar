@@ -22,8 +22,8 @@ string BYTEWRITER = "WriteBytes(target, span); target = target.Slice(span.Length
 
 #nullable disable
 
-using _READABLEBLOCK = System.ReadOnlySpan<byte>;
-using _WRITEABLEBLOCK = System.Span<byte>;
+using __READABLEBLOCK = System.ReadOnlySpan<byte>;
+using __WRITEABLEBLOCK = System.Span<byte>;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar

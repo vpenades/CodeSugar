@@ -10,17 +10,17 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using _LOGLEVEL = System.Diagnostics.TraceEventType;
+using __LOGLEVEL = System.Diagnostics.TraceEventType;
 
-using _LOGPROGRESS4 = System.IProgress<(System.Type declaringType, System.Diagnostics.TraceEventType level, System.Object value, System.String callerName)>;
-using _LOGPROGRESS3 = System.IProgress<(System.Diagnostics.TraceEventType level, System.Object value, System.String callerName)>;
-using _LOGPROGRESS2 = System.IProgress<(System.Diagnostics.TraceEventType level, string msg)>;
-using _LOGPROGRESS1 = System.IProgress<string>;
-using _LOGPROGRESS0 = System.IProgress<int>;
+using __LOGPROGRESS4 = System.IProgress<(System.Type declaringType, System.Diagnostics.TraceEventType level, System.Object value, System.String callerName)>;
+using __LOGPROGRESS3 = System.IProgress<(System.Diagnostics.TraceEventType level, System.Object value, System.String callerName)>;
+using __LOGPROGRESS2 = System.IProgress<(System.Diagnostics.TraceEventType level, string msg)>;
+using __LOGPROGRESS1 = System.IProgress<string>;
+using __LOGPROGRESS0 = System.IProgress<int>;
 
-using _LOGPROGRESSEX = System.IProgress<System.Exception>;
+using __LOGPROGRESSEX = System.IProgress<System.Exception>;
 
-using _CALLERMEMBERNAME = System.Runtime.CompilerServices.CallerMemberNameAttribute;
+using __CALLERMEMBERNAME = System.Runtime.CompilerServices.CallerMemberNameAttribute;
 
 
 #if CODESUGAR_USECODESUGARNAMESPACE
@@ -59,60 +59,60 @@ namespace $rootnamespace$
             if (TryGetService<IProgress<T>>(srvProvider, out var prg)) return prg;
 
             // dig into default progress loggers
-            if (TryGetService<_LOGPROGRESS1>(srvProvider, out var msgPrg) && msgPrg is IServiceProvider srvProvider2) return GetProgressOrNull<T>(srvProvider2);
-            if (TryGetService<_LOGPROGRESS0>(srvProvider, out var intPrg) && intPrg is IServiceProvider srvProvider3) return GetProgressOrNull<T>(srvProvider3);
+            if (TryGetService<__LOGPROGRESS1>(srvProvider, out var msgPrg) && msgPrg is IServiceProvider srvProvider2) return GetProgressOrNull<T>(srvProvider2);
+            if (TryGetService<__LOGPROGRESS0>(srvProvider, out var intPrg) && intPrg is IServiceProvider srvProvider3) return GetProgressOrNull<T>(srvProvider3);
 
             // self fallback
             return srvProvider as IProgress<T>;
         }        
 
-        public static _LOGPROGRESS1 DefaultToConsole(this _LOGPROGRESS1 progress) { return progress ?? _ConsoleProgressSink.Instance; }
+        public static __LOGPROGRESS1 DefaultToConsole(this __LOGPROGRESS1 progress) { return progress ?? _ConsoleProgressSink.Instance; }
 
-        public static _LOGPROGRESS1 DefaultToTrace(this _LOGPROGRESS1 progress) { return progress ?? _TraceProgressSink.Instance; }
+        public static __LOGPROGRESS1 DefaultToTrace(this __LOGPROGRESS1 progress) { return progress ?? _TraceProgressSink.Instance; }
 
         #region IProgress<int>
 
         /// <summary>Tries to log a debug message as long as the self progress implement a compatible logging sink.</summary>
         [System.Diagnostics.Conditional("DEBUG")]
-        public static void LogDebug(this _LOGPROGRESS0 progress, string msg, [_CALLERMEMBERNAME] string callerName = null)
+        public static void LogDebug(this __LOGPROGRESS0 progress, string msg, [__CALLERMEMBERNAME] string callerName = null)
         {
-            LogVerbose(progress as _LOGPROGRESS1, msg, callerName);
+            LogVerbose(progress as __LOGPROGRESS1, msg, callerName);
         }
 
         /// <summary>Tries to log a verbose message as long as the self progress implement a compatible logging sink.</summary>
-        public static void LogVerbose(this _LOGPROGRESS0 progress, string msg, [_CALLERMEMBERNAME] string callerName = null)
+        public static void LogVerbose(this __LOGPROGRESS0 progress, string msg, [__CALLERMEMBERNAME] string callerName = null)
         {
-            LogVerbose(progress as _LOGPROGRESS1, msg, callerName);
+            LogVerbose(progress as __LOGPROGRESS1, msg, callerName);
         }
 
         /// <summary>Tries to log a message as long as the self progress implement a compatible logging sink.</summary>
-        public static void LogInfo(this _LOGPROGRESS0 progress, string msg, [_CALLERMEMBERNAME] string callerName = null)
+        public static void LogInfo(this __LOGPROGRESS0 progress, string msg, [__CALLERMEMBERNAME] string callerName = null)
         {
-            LogInfo(progress as _LOGPROGRESS1, msg, callerName);
+            LogInfo(progress as __LOGPROGRESS1, msg, callerName);
         }
 
         /// <summary>Tries to log a warning message as long as the self progress implement a compatible logging sink.</summary>
-        public static void LogWarn(this _LOGPROGRESS0 progress, string msg, [_CALLERMEMBERNAME] string callerName = null)
+        public static void LogWarn(this __LOGPROGRESS0 progress, string msg, [__CALLERMEMBERNAME] string callerName = null)
         {
-            LogWarn(progress as _LOGPROGRESS1, msg, callerName);
+            LogWarn(progress as __LOGPROGRESS1, msg, callerName);
         }
 
         /// <summary>Tries to log an error message as long as the self progress implement a compatible logging sink.</summary>
-        public static void LogError(this _LOGPROGRESS0 progress, string msg, [_CALLERMEMBERNAME] string callerName = null)
+        public static void LogError(this __LOGPROGRESS0 progress, string msg, [__CALLERMEMBERNAME] string callerName = null)
         {
-            LogError(progress as _LOGPROGRESS1, msg, callerName);
+            LogError(progress as __LOGPROGRESS1, msg, callerName);
         }
 
         /// <summary>Tries to log a critical message as long as the self progress implement a compatible logging sink.</summary>
-        public static void LogCritical(this _LOGPROGRESS0 progress, string msg, [_CALLERMEMBERNAME] string callerName = null)
+        public static void LogCritical(this __LOGPROGRESS0 progress, string msg, [__CALLERMEMBERNAME] string callerName = null)
         {
-            LogCritical(progress as _LOGPROGRESS1, msg, callerName);
+            LogCritical(progress as __LOGPROGRESS1, msg, callerName);
         }
 
         /// <summary>Tries to log an exception as long as the self progress implement a compatible logging sink.</summary>
-        public static void LogCritical(this _LOGPROGRESS0 progress, Exception ex, [_CALLERMEMBERNAME] string callerName = null)
+        public static void LogCritical(this __LOGPROGRESS0 progress, Exception ex, [__CALLERMEMBERNAME] string callerName = null)
         {
-            LogException(progress as _LOGPROGRESS1, ex, callerName);
+            LogException(progress as __LOGPROGRESS1, ex, callerName);
         }
 
         #endregion
@@ -121,56 +121,56 @@ namespace $rootnamespace$
 
         /// <summary>Tries to log a debug message as long as the self progress implement a compatible logging sink.</summary>
         [System.Diagnostics.Conditional("DEBUG")]
-        public static void LogDebug(this _LOGPROGRESS2 progress, string msg, [_CALLERMEMBERNAME] string callerName = null)
+        public static void LogDebug(this __LOGPROGRESS2 progress, string msg, [__CALLERMEMBERNAME] string callerName = null)
         {
             LogVerbose(progress, msg, callerName);
         }
 
         /// <summary>Tries to log a verbose message as long as the self progress implement a compatible logging sink.</summary>
-        public static void LogVerbose(this _LOGPROGRESS2 progress, string msg, [_CALLERMEMBERNAME] string callerName = null)
+        public static void LogVerbose(this __LOGPROGRESS2 progress, string msg, [__CALLERMEMBERNAME] string callerName = null)
         {
-            _Log(progress, _LOGLEVEL.Verbose, msg, callerName);
+            _Log(progress, __LOGLEVEL.Verbose, msg, callerName);
         }        
 
         /// <summary>Tries to log a message as long as the self progress implement a compatible logging sink.</summary>
-        public static void LogInfo(this _LOGPROGRESS2 progress, string msg, [_CALLERMEMBERNAME] string callerName = null)
+        public static void LogInfo(this __LOGPROGRESS2 progress, string msg, [__CALLERMEMBERNAME] string callerName = null)
         {
-            _Log(progress, _LOGLEVEL.Information, msg, callerName);
+            _Log(progress, __LOGLEVEL.Information, msg, callerName);
         }
 
         /// <summary>Tries to log a warning message as long as the self progress implement a compatible logging sink.</summary>
-        public static void LogWarn(this _LOGPROGRESS2 progress, string msg, [_CALLERMEMBERNAME] string callerName = null)
+        public static void LogWarn(this __LOGPROGRESS2 progress, string msg, [__CALLERMEMBERNAME] string callerName = null)
         {
-            _Log(progress, _LOGLEVEL.Warning, msg, callerName);
+            _Log(progress, __LOGLEVEL.Warning, msg, callerName);
         }
 
         /// <summary>Tries to log an error message as long as the self progress implement a compatible logging sink.</summary>
-        public static void LogError(this _LOGPROGRESS2 progress, string msg, [_CALLERMEMBERNAME] string callerName = null)
+        public static void LogError(this __LOGPROGRESS2 progress, string msg, [__CALLERMEMBERNAME] string callerName = null)
         {
-            _Log(progress, _LOGLEVEL.Error, msg, callerName);
+            _Log(progress, __LOGLEVEL.Error, msg, callerName);
         }
 
         /// <summary>Tries to log a critical message as long as the self progress implement a compatible logging sink.</summary>
-        public static void LogCritical(this _LOGPROGRESS2 progress, string msg, [_CALLERMEMBERNAME] string callerName = null)
+        public static void LogCritical(this __LOGPROGRESS2 progress, string msg, [__CALLERMEMBERNAME] string callerName = null)
         {
-            _Log(progress, _LOGLEVEL.Critical, msg, callerName);
+            _Log(progress, __LOGLEVEL.Critical, msg, callerName);
         }
 
         /// <summary>Tries to log an exception as long as the self progress implement a compatible logging sink.</summary>
-        public static void LogCritical(this _LOGPROGRESS2 progress, Exception ex, [_CALLERMEMBERNAME] string callerName = null)
+        public static void LogCritical(this __LOGPROGRESS2 progress, Exception ex, [__CALLERMEMBERNAME] string callerName = null)
         {
-            if (progress is _LOGPROGRESSEX pex) { pex.Report(ex); return; }
+            if (progress is __LOGPROGRESSEX pex) { pex.Report(ex); return; }
 
-            _Log(progress, _LOGLEVEL.Critical, ex.Message, callerName);
+            _Log(progress, __LOGLEVEL.Critical, ex.Message, callerName);
         }
 
-        private static void _Log(_LOGPROGRESS2 progress, _LOGLEVEL lvl, string msg, string callerName)
+        private static void _Log(__LOGPROGRESS2 progress, __LOGLEVEL lvl, string msg, string callerName)
         {
             switch (progress)
             {
                 case null: break;
-                case _LOGPROGRESS3 logger: logger.Report((lvl, msg, callerName)); break;
-                case _LOGPROGRESS2 logger: logger.Report((lvl, _CombineCallerAndMessage(callerName, msg))); break;
+                case __LOGPROGRESS3 logger: logger.Report((lvl, msg, callerName)); break;
+                case __LOGPROGRESS2 logger: logger.Report((lvl, _CombineCallerAndMessage(callerName, msg))); break;
             }
         }
 
@@ -180,85 +180,85 @@ namespace $rootnamespace$
 
         /// <summary>Tries to log a debug message as long as the self progress implement a compatible logging sink.</summary>
         [System.Diagnostics.Conditional("DEBUG")]
-        public static void LogDebug<T>(this T progress, string msg, [_CALLERMEMBERNAME] string callerName = null)
-            where T: _LOGPROGRESS1
+        public static void LogDebug<T>(this T progress, string msg, [__CALLERMEMBERNAME] string callerName = null)
+            where T: __LOGPROGRESS1
         {
             LogVerbose(progress, msg, callerName);
         }
 
         /// <summary>Tries to log a verbose message as long as the self progress implement a compatible logging sink.</summary>
-        public static void LogVerbose<T>(this T progress, string msg, [_CALLERMEMBERNAME] string callerName = null)
-            where T: _LOGPROGRESS1
+        public static void LogVerbose<T>(this T progress, string msg, [__CALLERMEMBERNAME] string callerName = null)
+            where T: __LOGPROGRESS1
         {
             switch(progress)
             {
                 case null: break;
-                case _LOGPROGRESS3 logger: logger.Report((_LOGLEVEL.Verbose, msg, callerName)); break;
-                case _LOGPROGRESS2 logger: logger.Report((_LOGLEVEL.Verbose, _CombineCallerAndMessage(callerName, msg))); break;
+                case __LOGPROGRESS3 logger: logger.Report((__LOGLEVEL.Verbose, msg, callerName)); break;
+                case __LOGPROGRESS2 logger: logger.Report((__LOGLEVEL.Verbose, _CombineCallerAndMessage(callerName, msg))); break;
                 default: progress.Report(_CombineCallerAndMessage(callerName, msg)); break;
             }
         }
 
         /// <summary>Tries to log a message as long as the self progress implement a compatible logging sink.</summary>
-        public static void LogInfo<T>(this T progress, string msg, [_CALLERMEMBERNAME] string callerName = null)
-            where T: _LOGPROGRESS1
+        public static void LogInfo<T>(this T progress, string msg, [__CALLERMEMBERNAME] string callerName = null)
+            where T: __LOGPROGRESS1
         {
             switch(progress)
             {
                 case null: break;
-                case _LOGPROGRESS3 logger: logger.Report((_LOGLEVEL.Information, msg, callerName)); break;
-                case _LOGPROGRESS2 logger: logger.Report((_LOGLEVEL.Information, _CombineCallerAndMessage(callerName, msg))); break;
+                case __LOGPROGRESS3 logger: logger.Report((__LOGLEVEL.Information, msg, callerName)); break;
+                case __LOGPROGRESS2 logger: logger.Report((__LOGLEVEL.Information, _CombineCallerAndMessage(callerName, msg))); break;
                 default: progress.Report(_CombineCallerAndMessage(callerName, msg)); break;
             }
         }
 
         /// <summary>Tries to log a warning message as long as the self progress implement a compatible logging sink.</summary>
-        public static void LogWarn<T>(this T progress, string msg, [_CALLERMEMBERNAME] string callerName = null)
-            where T: _LOGPROGRESS1
+        public static void LogWarn<T>(this T progress, string msg, [__CALLERMEMBERNAME] string callerName = null)
+            where T: __LOGPROGRESS1
         {
             switch(progress)
             {
                 case null: break;
-                case _LOGPROGRESS3 logger: logger.Report((_LOGLEVEL.Warning, msg, callerName)); break;
-                case _LOGPROGRESS2 logger: logger.Report((_LOGLEVEL.Warning, _CombineCallerAndMessage(callerName, msg))); break;
+                case __LOGPROGRESS3 logger: logger.Report((__LOGLEVEL.Warning, msg, callerName)); break;
+                case __LOGPROGRESS2 logger: logger.Report((__LOGLEVEL.Warning, _CombineCallerAndMessage(callerName, msg))); break;
                 default: progress.Report(LOGWARNPREFIX + " " + _CombineCallerAndMessage(callerName, msg)); break;
             }
         }
 
         /// <summary>Tries to log an error message as long as the self progress implement a compatible logging sink.</summary>
-        public static void LogError<T>(this T progress, string msg, [_CALLERMEMBERNAME] string callerName = null)
-            where T: _LOGPROGRESS1
+        public static void LogError<T>(this T progress, string msg, [__CALLERMEMBERNAME] string callerName = null)
+            where T: __LOGPROGRESS1
         {
             switch(progress)
             {
                 case null: break;
-                case _LOGPROGRESS3 logger: logger.Report((_LOGLEVEL.Error, msg, callerName)); break;
-                case _LOGPROGRESS2 logger: logger.Report((_LOGLEVEL.Error, _CombineCallerAndMessage(callerName, msg))); break;
+                case __LOGPROGRESS3 logger: logger.Report((__LOGLEVEL.Error, msg, callerName)); break;
+                case __LOGPROGRESS2 logger: logger.Report((__LOGLEVEL.Error, _CombineCallerAndMessage(callerName, msg))); break;
                 default: progress.Report(LOGERRORPREFIX + " " + _CombineCallerAndMessage(callerName, msg)); break;
             }
         }
 
         /// <summary>Tries to log a critical message as long as the self progress implement a compatible logging sink.</summary>
-        public static void LogCritical<T>(this T progress, string msg, [_CALLERMEMBERNAME] string callerName = null)
-            where T: _LOGPROGRESS1
+        public static void LogCritical<T>(this T progress, string msg, [__CALLERMEMBERNAME] string callerName = null)
+            where T: __LOGPROGRESS1
         {
             switch(progress)
             {
                 case null: break;
-                case _LOGPROGRESS3 logger: logger.Report((_LOGLEVEL.Critical, msg, callerName)); break;
-                case _LOGPROGRESS2 logger: logger.Report((_LOGLEVEL.Critical, _CombineCallerAndMessage(callerName, msg))); break;
+                case __LOGPROGRESS3 logger: logger.Report((__LOGLEVEL.Critical, msg, callerName)); break;
+                case __LOGPROGRESS2 logger: logger.Report((__LOGLEVEL.Critical, _CombineCallerAndMessage(callerName, msg))); break;
                 default: progress.Report(LOGCRITICALPREFIX + " " + _CombineCallerAndMessage(callerName, msg)); break;
             }
         }        
 
         /// <summary>Tries to log an exception as long as the self progress implement a compatible logging sink.</summary>
-        public static void LogException<T>(this T progress, Exception ex, [_CALLERMEMBERNAME] string callerName = null)
-            where T: _LOGPROGRESS1
+        public static void LogException<T>(this T progress, Exception ex, [__CALLERMEMBERNAME] string callerName = null)
+            where T: __LOGPROGRESS1
         {
             switch(progress)
             {
                 case null: break;
-                case _LOGPROGRESSEX logger: logger.Report(ex); break;
+                case __LOGPROGRESSEX logger: logger.Report(ex); break;
                 default: LogError<T>(progress, ex.Message, callerName); break;
             }
         }
@@ -267,13 +267,13 @@ namespace $rootnamespace$
 
         #region nested types
 
-        private readonly struct _ConsoleProgressSink : _LOGPROGRESS0, _LOGPROGRESS1, _LOGPROGRESS2, _LOGPROGRESS3, _LOGPROGRESSEX
+        private readonly struct _ConsoleProgressSink : __LOGPROGRESS0, __LOGPROGRESS1, __LOGPROGRESS2, __LOGPROGRESS3, __LOGPROGRESSEX
         {
             public static readonly _ConsoleProgressSink Instance = new _ConsoleProgressSink();
 
             public void Report(int value) { Console.WriteLine(value); }
             public void Report(string value) { if (value != null) Console.WriteLine(value); }
-            public void Report((_LOGLEVEL level, string msg) value)
+            public void Report((__LOGLEVEL level, string msg) value)
             {
                 var msg = _CombineLevelAndMessage(value.level, value.msg);
                 if (msg == null) return;
@@ -284,7 +284,7 @@ namespace $rootnamespace$
                 System.Console.ForegroundColor = cc;
             }
 
-            public void Report((_LOGLEVEL level, object value, string callerName) value)
+            public void Report((__LOGLEVEL level, object value, string callerName) value)
             {
                 if (value.value == null) return;
                 var msg = value.ToString();
@@ -310,38 +310,38 @@ namespace $rootnamespace$
                 System.Console.ForegroundColor = cc;
             }
 
-            private static ConsoleColor _FromLevel(_LOGLEVEL lvl)
+            private static ConsoleColor _FromLevel(__LOGLEVEL lvl)
             {
                 switch(lvl)
                 {
-                    case _LOGLEVEL.Verbose: return ConsoleColor.Gray;
-                    case _LOGLEVEL.Information: return ConsoleColor.White;
-                    case _LOGLEVEL.Warning: return ConsoleColor.Yellow;
-                    case _LOGLEVEL.Error: return ConsoleColor.Red;
-                    case _LOGLEVEL.Critical: return ConsoleColor.Magenta;
+                    case __LOGLEVEL.Verbose: return ConsoleColor.Gray;
+                    case __LOGLEVEL.Information: return ConsoleColor.White;
+                    case __LOGLEVEL.Warning: return ConsoleColor.Yellow;
+                    case __LOGLEVEL.Error: return ConsoleColor.Red;
+                    case __LOGLEVEL.Critical: return ConsoleColor.Magenta;
                     default: return ConsoleColor.White;
                 }
             }
         }
 
-        private readonly struct _TraceProgressSink : _LOGPROGRESS0, _LOGPROGRESS1, _LOGPROGRESS2, _LOGPROGRESS3, _LOGPROGRESSEX
+        private readonly struct _TraceProgressSink : __LOGPROGRESS0, __LOGPROGRESS1, __LOGPROGRESS2, __LOGPROGRESS3, __LOGPROGRESSEX
         {
             public static readonly _TraceProgressSink Instance = new _TraceProgressSink();
 
             public void Report(int value) { System.Diagnostics.Trace.WriteLine(value); }
             public void Report(string value) { if (value != null) System.Diagnostics.Trace.WriteLine(value); }            
-            public void Report((_LOGLEVEL level, string msg) value)
+            public void Report((__LOGLEVEL level, string msg) value)
             {
                 var msg = _CombineLevelAndMessage(value.level, value.msg);
                 if (msg == null) return;
 
                 switch (value.level)
                 {
-                    case _LOGLEVEL.Verbose: System.Diagnostics.Trace.WriteLine(msg); break;
+                    case __LOGLEVEL.Verbose: System.Diagnostics.Trace.WriteLine(msg); break;
                     default: System.Diagnostics.Debug.WriteLine(msg); break;
                 }
             }
-            public void Report((_LOGLEVEL level, object value, string callerName) value)
+            public void Report((__LOGLEVEL level, object value, string callerName) value)
             {
                 if (value.value == null) return;
                 var msg = value.ToString();
@@ -351,7 +351,7 @@ namespace $rootnamespace$
 
                 switch (value.level)
                 {
-                    case _LOGLEVEL.Verbose: System.Diagnostics.Trace.WriteLine(msg); break;
+                    case __LOGLEVEL.Verbose: System.Diagnostics.Trace.WriteLine(msg); break;
                     default: System.Diagnostics.Debug.WriteLine(msg); break;
                 }
             }
@@ -376,19 +376,19 @@ namespace $rootnamespace$
 
         #region helpers
 
-        private static string _CombineLevelAndMessage(_LOGLEVEL level, string msg)
+        private static string _CombineLevelAndMessage(__LOGLEVEL level, string msg)
         {            
             if (msg == null) return null;
 
             switch (level)
             {
-                case _LOGLEVEL.Verbose:
-                case _LOGLEVEL.Information:
+                case __LOGLEVEL.Verbose:
+                case __LOGLEVEL.Information:
                     return msg;
 
-                case _LOGLEVEL.Warning: return LOGWARNPREFIX + msg;
-                case _LOGLEVEL.Error: return LOGERRORPREFIX + msg;
-                case _LOGLEVEL.Critical: return LOGCRITICALPREFIX + msg;
+                case __LOGLEVEL.Warning: return LOGWARNPREFIX + msg;
+                case __LOGLEVEL.Error: return LOGERRORPREFIX + msg;
+                case __LOGLEVEL.Critical: return LOGCRITICALPREFIX + msg;
             }
 
             return msg;

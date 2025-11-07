@@ -12,7 +12,7 @@ using System.Runtime.CompilerServices;
 #nullable disable
 
 #if !NETSTANDARD
-using _UNSAFE = System.Runtime.CompilerServices.Unsafe;
+using ___UNSAFE = System.Runtime.CompilerServices.Unsafe;
 #endif
 
 #if CODESUGAR_USECODESUGARNAMESPACE

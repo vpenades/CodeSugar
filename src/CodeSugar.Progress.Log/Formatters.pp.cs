@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using _LOGLEVEL = System.Diagnostics.TraceEventType;
+using __LOGLEVEL = System.Diagnostics.TraceEventType;
 using System.Reflection.Emit;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
@@ -27,25 +27,25 @@ namespace $rootnamespace$
         public const string LOGERRORPREFIX = "ERROR:";
         public const string LOGCRITICALPREFIX = "CRITICAL:";
 
-        public static string FormatMessage(this (_LOGLEVEL level, string msg) log)
+        public static string FormatMessage(this (__LOGLEVEL level, string msg) log)
         {
             return _FormatMessage(log.level, log.msg);
         }
 
-        public static string FormatMessage(this (_LOGLEVEL level, System.Exception ex, string msg) log)
+        public static string FormatMessage(this (__LOGLEVEL level, System.Exception ex, string msg) log)
         {
             var msg = _CombineLines(log.msg, _FormatMessage(log.ex));
             return _FormatMessage(log.level, msg);
         }
 
-        public static string FormatMessage(this (_LOGLEVEL level, System.Exception ex, string msg, object[] args) log)
+        public static string FormatMessage(this (__LOGLEVEL level, System.Exception ex, string msg, object[] args) log)
         {
             var msg = _FormatMessage(log.msg, log.args);
             msg = _CombineLines(msg, _FormatMessage(log.ex));
             return _FormatMessage(log.level, msg);
         }
 
-        public static string FormatMessage(this (_LOGLEVEL level, string msg, object[] args) log)
+        public static string FormatMessage(this (__LOGLEVEL level, string msg, object[] args) log)
         {
             var msg = _FormatMessage(log.msg, log.args);
             return _FormatMessage(log.level, msg);
@@ -63,7 +63,7 @@ namespace $rootnamespace$
             return _CombineLines(log.msg, _FormatMessage(log.ex));
         }
 
-        private static string _FormatMessage(_LOGLEVEL level, string msg)
+        private static string _FormatMessage(__LOGLEVEL level, string msg)
         {
             if (string.IsNullOrWhiteSpace(msg)) return level.ToString();
             return $"{level} {msg}";
@@ -101,17 +101,17 @@ namespace $rootnamespace$
         /// <param name="category">usually the container's class type</param>
         /// <param name="msg">the final message, which is the output of Func&lt;string,Exception,String&gt; </param>
         /// <returns>the formatted message</returns>
-        private static string _FormatAsLog4net(_LOGLEVEL logLevel, string category, string msg)
+        private static string _FormatAsLog4net(__LOGLEVEL logLevel, string category, string msg)
         {
             string lvl;
 
             switch (logLevel)
             {                
-                case _LOGLEVEL.Verbose: lvl = "DEBUG"; break;                
-                case _LOGLEVEL.Warning: lvl = "WARN"; break;
-                case _LOGLEVEL.Error: lvl = "ERROR"; break;
-                case _LOGLEVEL.Critical: lvl = "FATAL"; break;
-                case _LOGLEVEL.Information: lvl = "INFO"; break;
+                case __LOGLEVEL.Verbose: lvl = "DEBUG"; break;                
+                case __LOGLEVEL.Warning: lvl = "WARN"; break;
+                case __LOGLEVEL.Error: lvl = "ERROR"; break;
+                case __LOGLEVEL.Critical: lvl = "FATAL"; break;
+                case __LOGLEVEL.Information: lvl = "INFO"; break;
                 default: return null;
             }
 

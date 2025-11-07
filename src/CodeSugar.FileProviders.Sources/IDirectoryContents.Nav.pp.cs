@@ -10,9 +10,9 @@ using System.Diagnostics.CodeAnalysis;
 
 #nullable disable
 
-using _XINFO = Microsoft.Extensions.FileProviders.IFileInfo;
-using _XDIRECTORY = Microsoft.Extensions.FileProviders.IDirectoryContents;
-using _MATCHCASING = System.IO.MatchCasing;
+using __XINFO = Microsoft.Extensions.FileProviders.IFileInfo;
+using __XDIRECTORY = Microsoft.Extensions.FileProviders.IDirectoryContents;
+using __MATCHCASING = System.IO.MatchCasing;
 
 
 #if CODESUGAR_USECODESUGARNAMESPACE
@@ -26,7 +26,7 @@ namespace $rootnamespace$
     static partial class CodeSugarForFileProviders
     {
         [return: NotNull]
-        public static _XINFO FindEntry(this _XINFO xfile, params string[] path)
+        public static __XINFO FindEntry(this __XINFO xfile, params string[] path)
         {
             GuardNotNull(xfile);
             if (!TryGetStringComparison(xfile, out var cmp)) throw new NotSupportedException("name comparer not found");
@@ -34,7 +34,7 @@ namespace $rootnamespace$
         }
 
         [return: NotNull]
-        public static _XINFO FindEntry(this _XINFO xfile, _MATCHCASING casing, params string[] path)
+        public static __XINFO FindEntry(this __XINFO xfile, __MATCHCASING casing, params string[] path)
         {
             GuardNotNull(xfile);
             var cmp = __ToStringComparison(casing);
@@ -42,7 +42,7 @@ namespace $rootnamespace$
         }
 
         [return: NotNull]
-        public static _XINFO FindEntry(this _XDIRECTORY xdir, params string[] path)
+        public static __XINFO FindEntry(this __XDIRECTORY xdir, params string[] path)
         {
             GuardNotNull(xdir);
             if (!TryGetStringComparison(xdir, out var cmp)) throw new NotSupportedException("name comparer not found");
@@ -50,7 +50,7 @@ namespace $rootnamespace$
         }
 
         [return: NotNull]
-        public static _XINFO FindEntry(this _XDIRECTORY xdir, _MATCHCASING casing, params string[] path)
+        public static __XINFO FindEntry(this __XDIRECTORY xdir, __MATCHCASING casing, params string[] path)
         {
             GuardNotNull(xdir);
             var cmp = __ToStringComparison(casing);
@@ -58,7 +58,7 @@ namespace $rootnamespace$
         }
 
         [return: NotNull]
-        private static _XINFO __FindEntry(this _XINFO xfile, StringComparison nameComparer, params string[] path)
+        private static __XINFO __FindEntry(this __XINFO xfile, StringComparison nameComparer, params string[] path)
         {
             // when path is empty, return self.
             if (path.Length == 0 || (path.Length == 1 && string.IsNullOrEmpty(path[0]))) return xfile;
@@ -70,14 +70,14 @@ namespace $rootnamespace$
         }
 
         [return: NotNull]
-        private static _XINFO __FindEntry(this _XDIRECTORY xdir, StringComparison nameComparer, params string[] path)
+        private static __XINFO __FindEntry(this __XDIRECTORY xdir, StringComparison nameComparer, params string[] path)
         {
             if (xdir == null || !xdir.Exists) return __NULLFILE;
 
             // when path is empty, return a best effort to get an self xfile
             if (path.Length == 0 || (path.Length == 1 && string.IsNullOrEmpty(path[0])))
             {
-                var entry = xdir as _XINFO;
+                var entry = xdir as __XINFO;
 
                 return entry != null
                     ? entry

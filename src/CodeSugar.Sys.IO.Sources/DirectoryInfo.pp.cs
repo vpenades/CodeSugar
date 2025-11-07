@@ -11,10 +11,10 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using _FINFO = System.IO.FileInfo;
-using _DINFO = System.IO.DirectoryInfo;
-using _SPECIALFOLDER = System.Environment.SpecialFolder;
-using _PATHCASING = System.IO.MatchCasing;
+using __FINFO = System.IO.FileInfo;
+using __DINFO = System.IO.DirectoryInfo;
+using __SPECIALFOLDER = System.Environment.SpecialFolder;
+using __PATHCASING = System.IO.MatchCasing;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -26,14 +26,14 @@ namespace $rootnamespace$
 {
     static partial class CodeSugarForSystemIO
     {
-        public static void ThrowNotFound(this _DINFO dinfo, Exception innerException = null)
+        public static void ThrowNotFound(this __DINFO dinfo, Exception innerException = null)
         {
             GuardNotNull(dinfo);
             if (innerException == null) throw new System.IO.DirectoryNotFoundException(dinfo.FullName);
             else throw new System.IO.DirectoryNotFoundException(dinfo.FullName, innerException);
         }
 
-        public static bool IsTempPath(this _PATHCASING casing, string path)
+        public static bool IsTempPath(this __PATHCASING casing, string path)
         {
             if (string.IsNullOrWhiteSpace(path)) return false;
             
@@ -50,18 +50,18 @@ namespace $rootnamespace$
         /// </summary>
         /// <param name="directory">The direcyory to check</param>
         /// <returns>true if it's a temporary path</returns>
-        public static bool IsTemp(this _DINFO directory)
+        public static bool IsTemp(this __DINFO directory)
         {
             if (directory == null) return false;
 
-            return IsTempPath(_PATHCASING.PlatformDefault, directory.FullName);
+            return IsTempPath(__PATHCASING.PlatformDefault, directory.FullName);
         }
 
         /// <summary>
         /// Ensures that <paramref name="directory"/> exists in the file system.
         /// </summary>
         /// <returns>the same directory passed as argument, so it can be used fluently.</returns>
-        public static _DINFO EnsureCreated(this _DINFO directory)
+        public static __DINFO EnsureCreated(this __DINFO directory)
         {
             GuardNotNull(directory);
 
@@ -75,7 +75,7 @@ namespace $rootnamespace$
         /// </summary>
         /// <param name="directory">the directory to check</param>
         /// <returns>true if it exists</returns>
-        public static bool RefreshedExists(this _DINFO directory)
+        public static bool RefreshedExists(this __DINFO directory)
         {
             // https://github.com/dotnet/corefx/pull/40677
             // https://github.com/dotnet/runtime/issues/31425
@@ -91,7 +91,7 @@ namespace $rootnamespace$
         /// </summary>
         /// <param name="directory">the directory to check</param>
         /// <returns>true if it exists</returns>
-        public static bool CachedExists(this _DINFO directory)
+        public static bool CachedExists(this __DINFO directory)
         {
             // https://github.com/dotnet/corefx/pull/40677
             // https://github.com/dotnet/runtime/issues/31425
@@ -108,7 +108,7 @@ namespace $rootnamespace$
         /// </summary>
         /// <param name="directory">the directory to check</param>
         /// <returns>true if it exists</returns>
-        public static bool PhysicallyExists(this _DINFO directory)
+        public static bool PhysicallyExists(this __DINFO directory)
         {
             if (directory == null) return false;
             return System.IO.Directory.Exists(directory.FullName);
@@ -118,7 +118,7 @@ namespace $rootnamespace$
         /// Ensures that <paramref name="directory"/> exists in the file system.
         /// </summary>
         /// <returns>true if it needd to create the directory</returns>
-        public static bool EnsureDirectoryExists(this _DINFO directory)
+        public static bool EnsureDirectoryExists(this __DINFO directory)
         {
             GuardNotNull(directory);
 
@@ -126,7 +126,7 @@ namespace $rootnamespace$
             return _EnsureDirectoryExists(directory);
         }
 
-        private static bool _EnsureDirectoryExists(this _DINFO directory)
+        private static bool _EnsureDirectoryExists(this __DINFO directory)
         {
             GuardNotNull(directory);
 
@@ -143,16 +143,16 @@ namespace $rootnamespace$
             return true;
         }
 
-        public static _DINFO GetSpecialFolder(this _SPECIALFOLDER folder)
+        public static __DINFO GetSpecialFolder(this __SPECIALFOLDER folder)
         {
             var path = System.Environment.GetFolderPath(folder);
-            return new _DINFO(path);
+            return new __DINFO(path);
         }
 
-        public static _DINFO GetSpecialFolder(this _SPECIALFOLDER folder, System.Environment.SpecialFolderOption options)
+        public static __DINFO GetSpecialFolder(this __SPECIALFOLDER folder, System.Environment.SpecialFolderOption options)
         {
             var path = System.Environment.GetFolderPath(folder, options);
-            return new _DINFO(path);
+            return new __DINFO(path);
         }
 
     }

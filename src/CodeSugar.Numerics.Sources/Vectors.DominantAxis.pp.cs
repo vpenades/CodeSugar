@@ -10,10 +10,10 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using _SCALAR = System.Single;
-using _VECTOR2 = System.Numerics.Vector2;
-using _VECTOR3 = System.Numerics.Vector3;
-using _VECTOR4 = System.Numerics.Vector4;
+using __SCALAR = System.Single;
+using __VECTOR2 = System.Numerics.Vector2;
+using __VECTOR3 = System.Numerics.Vector3;
+using __VECTOR4 = System.Numerics.Vector4;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -27,31 +27,31 @@ namespace $rootnamespace$
     {
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static int DominantAxis(this _VECTOR2 v)
+        public static int DominantAxis(this __VECTOR2 v)
         {
             System.Diagnostics.Debug.Assert(v.IsFinite(), "v is not finite");
 
-            v = _VECTOR2.Abs(v);
+            v = __VECTOR2.Abs(v);
             return v.X >= v.Y ? 0 : 1;
         }
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static int DominantAxis(this _VECTOR3 v)
+        public static int DominantAxis(this __VECTOR3 v)
         {
             _AssertFinite(v);
 
-            v = _VECTOR3.Abs(v);
+            v = __VECTOR3.Abs(v);
             return v.X >= v.Y ? v.X >= v.Z ? 0 : 2 : v.Y >= v.Z ? 1 : 2;
         }
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static int DominantAxis(this _VECTOR4 v)
+        public static int DominantAxis(this __VECTOR4 v)
         {
             _AssertFinite(v);
 
-            v = _VECTOR4.Abs(v);
+            v = __VECTOR4.Abs(v);
             if (v.X > v.Y && v.X > v.Z && v.X > v.W) return 0;
             if (v.Y > v.Z && v.Y > v.W) return 1;
             if (v.Z > v.W) return 2;

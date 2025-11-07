@@ -10,10 +10,10 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using _SCALAR = System.Single;
-using _VECTOR2 = System.Numerics.Vector2;
-using _VECTOR3 = System.Numerics.Vector3;
-using _VECTOR4 = System.Numerics.Vector4;
+using __SCALAR = System.Single;
+using __VECTOR2 = System.Numerics.Vector2;
+using __VECTOR3 = System.Numerics.Vector3;
+using __VECTOR4 = System.Numerics.Vector4;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -27,59 +27,59 @@ namespace $rootnamespace$
     {
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static float ManhattanLength(this _VECTOR2 v)
+        public static float ManhattanLength(this __VECTOR2 v)
         {
             System.Diagnostics.Debug.Assert(v.IsFinite(), "v is not finite");
 
-            v = _VECTOR2.Abs(v);
+            v = __VECTOR2.Abs(v);
             return v.X + v.Y;
         }
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static _VECTOR2 WithLength(this _VECTOR2 v, float newLen)
+        public static __VECTOR2 WithLength(this __VECTOR2 v, float newLen)
         {
             System.Diagnostics.Debug.Assert(v.IsFinite(), "v is not finite");
 
-            return (v == _VECTOR2.Zero ? _VECTOR2.UnitX : _VECTOR2.Normalize(v)) * newLen;
+            return (v == __VECTOR2.Zero ? __VECTOR2.UnitX : __VECTOR2.Normalize(v)) * newLen;
         }
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static float ManhattanLength(this _VECTOR3 v)
+        public static float ManhattanLength(this __VECTOR3 v)
         {
             _AssertFinite(v);
 
-            v = _VECTOR3.Abs(v);
+            v = __VECTOR3.Abs(v);
             return v.X + v.Y + v.Z;
         }
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static _VECTOR3 WithLength(this _VECTOR3 v, float newLen)
+        public static __VECTOR3 WithLength(this __VECTOR3 v, float newLen)
         {
             _AssertFinite(v);
 
-            return (v == _VECTOR3.Zero ? _VECTOR3.UnitX : _VECTOR3.Normalize(v)) * newLen;
+            return (v == __VECTOR3.Zero ? __VECTOR3.UnitX : __VECTOR3.Normalize(v)) * newLen;
         }
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static float ManhattanLength(this _VECTOR4 v)
+        public static float ManhattanLength(this __VECTOR4 v)
         {
             _AssertFinite(v);
 
-            v = _VECTOR4.Abs(v);
+            v = __VECTOR4.Abs(v);
             return v.X + v.Y + v.Z;
         }
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static _VECTOR4 WithLength(this _VECTOR4 v, float newLen)
+        public static __VECTOR4 WithLength(this __VECTOR4 v, float newLen)
         {
             _AssertFinite(v);
 
-            return (v == _VECTOR4.Zero ? _VECTOR4.UnitX : _VECTOR4.Normalize(v)) * newLen;
+            return (v == __VECTOR4.Zero ? __VECTOR4.UnitX : __VECTOR4.Normalize(v)) * newLen;
         }
     }
 }

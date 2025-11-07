@@ -13,10 +13,10 @@ using Microsoft.Extensions.FileProviders;
 
 #nullable disable
 
-using _FINFO = System.IO.FileInfo;
-using _DINFO = System.IO.DirectoryInfo;
-using _XINFO = Microsoft.Extensions.FileProviders.IFileInfo;
-using _MATCHCASING = System.IO.MatchCasing;
+using __FINFO = System.IO.FileInfo;
+using __DINFO = System.IO.DirectoryInfo;
+using __XINFO = Microsoft.Extensions.FileProviders.IFileInfo;
+using __MATCHCASING = System.IO.MatchCasing;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -31,19 +31,19 @@ namespace $rootnamespace$
         #region API        
 
         [return: NotNull]
-        public static _XINFO ToIFileInfo(this System.IO.FileSystemInfo xinfo)
+        public static __XINFO ToIFileInfo(this System.IO.FileSystemInfo xinfo)
         {
             switch (xinfo)
             {
                 case null: return __NULLFILE;
-                case _DINFO d: return new _BasicPhysicalDirectory(d);
-                case _FINFO f: return new _BasicPhysicalFile(f);                
+                case __DINFO d: return new _BasicPhysicalDirectory(d);
+                case __FINFO f: return new _BasicPhysicalFile(f);                
                 default: throw new NotImplementedException();
             }
         }
 
         [return: NotNull]
-        public static _XINFO ToIFileInfo(this _FINFO finfo)
+        public static __XINFO ToIFileInfo(this __FINFO finfo)
         {
             return finfo == null
                 ? __NULLFILE
@@ -51,14 +51,14 @@ namespace $rootnamespace$
         }
 
         [return: NotNull]
-        public static _XINFO ToIFileInfo(this _DINFO dinfo)
+        public static __XINFO ToIFileInfo(this __DINFO dinfo)
         {
             return dinfo == null
                 ? __NULLFILE
                 : new _BasicPhysicalDirectory(dinfo);
         }
 
-        public static bool TryGetFileInfo(this _XINFO xinfo, out _FINFO finfo)
+        public static bool TryGetFileInfo(this __XINFO xinfo, out __FINFO finfo)
         {
             finfo = null;
             if (xinfo == null) return false;
@@ -68,7 +68,7 @@ namespace $rootnamespace$
             {
                 case _BasicPhysicalFile f: finfo = f.Info; return true;
                 case IServiceProvider s:
-                    finfo = s.GetService(typeof(_FINFO)) as _FINFO;
+                    finfo = s.GetService(typeof(__FINFO)) as __FINFO;
                     if (finfo != null) return true;
                     else break;
             }
@@ -77,13 +77,13 @@ namespace $rootnamespace$
 
             try
             {
-                finfo = new _FINFO(xinfo.PhysicalPath);
+                finfo = new __FINFO(xinfo.PhysicalPath);
                 return true;
             }
             catch { return false; }
         }
 
-        public static bool TryGetDirectoryInfo(this _XINFO xinfo, out _DINFO dinfo)
+        public static bool TryGetDirectoryInfo(this __XINFO xinfo, out __DINFO dinfo)
         {
             dinfo = null;
             if (xinfo == null) return false;
@@ -93,7 +93,7 @@ namespace $rootnamespace$
             {
                 case _BasicPhysicalDirectory d: dinfo = d.Info; return true;
                 case IServiceProvider s:
-                    dinfo = s.GetService(typeof(_DINFO)) as _DINFO;
+                    dinfo = s.GetService(typeof(__DINFO)) as __DINFO;
                     if (dinfo != null) return true;
                     else break;
             }
@@ -102,7 +102,7 @@ namespace $rootnamespace$
 
             try
             {
-                dinfo = new _DINFO(xinfo.PhysicalPath);
+                dinfo = new __DINFO(xinfo.PhysicalPath);
                 return true;
             }
             catch { return false; }
@@ -113,16 +113,16 @@ namespace $rootnamespace$
         #region nested types
 
         [System.Diagnostics.DebuggerDisplay("{PhysicalPath}")]
-        private readonly struct _BasicPhysicalFile : _XINFO , IServiceProvider
+        private readonly struct _BasicPhysicalFile : __XINFO , IServiceProvider
         {
             #region constructor
-            public _BasicPhysicalFile(_FINFO finfo) { Info = finfo; }
+            public _BasicPhysicalFile(__FINFO finfo) { Info = finfo; }
 
             #endregion
 
             #region properties
 
-            public _FINFO Info { get; }
+            public __FINFO Info { get; }
 
             public bool Exists => Info?.Exists ?? false;
 
@@ -144,8 +144,8 @@ namespace $rootnamespace$
 
             public object GetService(Type serviceType)
             {
-                if (serviceType == typeof(_FINFO)) return Info;
-                if (serviceType == typeof(_MATCHCASING)) return FileSystemPathCasing;
+                if (serviceType == typeof(__FINFO)) return Info;
+                if (serviceType == typeof(__MATCHCASING)) return FileSystemPathCasing;
                 if (serviceType == typeof(StringComparison)) return FileSystemPathComparison;                
                 if (serviceType == typeof(Action<ArraySegment<Byte>>)) return (Action<ArraySegment<Byte>>) _WriteBytes;
 
@@ -164,17 +164,17 @@ namespace $rootnamespace$
         }
 
         [System.Diagnostics.DebuggerDisplay("{PhysicalPath}")]
-        private readonly struct _BasicPhysicalDirectory : _XINFO, IDirectoryContents , IServiceProvider
+        private readonly struct _BasicPhysicalDirectory : __XINFO, IDirectoryContents , IServiceProvider
         {
             #region constructor
 
-            public _BasicPhysicalDirectory(_DINFO dinfo) { Info = dinfo; }
+            public _BasicPhysicalDirectory(__DINFO dinfo) { Info = dinfo; }
 
             #endregion
 
             #region properties
 
-            public _DINFO Info { get; }
+            public __DINFO Info { get; }
 
             public bool Exists => Info?.Exists ?? false;
 
@@ -194,7 +194,7 @@ namespace $rootnamespace$
 
             public Stream CreateReadStream() { throw new NotSupportedException(); }
             IEnumerator IEnumerable.GetEnumerator() { return this.GetEnumerator(); }
-            public IEnumerator<_XINFO> GetEnumerator()
+            public IEnumerator<__XINFO> GetEnumerator()
             {
                 return Info
                     .EnumerateFileSystemInfos()
@@ -204,8 +204,8 @@ namespace $rootnamespace$
 
             public object GetService(Type serviceType)
             {
-                if (serviceType == typeof(_MATCHCASING)) return FileSystemPathComparison;
-                if (serviceType == typeof(_DINFO)) return Info;
+                if (serviceType == typeof(__MATCHCASING)) return FileSystemPathComparison;
+                if (serviceType == typeof(__DINFO)) return Info;
 
                 return null;
             }
@@ -218,13 +218,13 @@ namespace $rootnamespace$
         {
             #region constructor
 
-            public _BasicPhysicalDirectoryContents(_DINFO dinfo) { Info = dinfo; }
+            public _BasicPhysicalDirectoryContents(__DINFO dinfo) { Info = dinfo; }
 
             #endregion
 
             #region properties
 
-            public _DINFO Info { get; }
+            public __DINFO Info { get; }
 
             public bool Exists => Info?.Exists ?? false;            
 
@@ -234,7 +234,7 @@ namespace $rootnamespace$
 
             public Stream CreateReadStream() { throw new NotSupportedException(); }
             IEnumerator IEnumerable.GetEnumerator() { return this.GetEnumerator(); }
-            public IEnumerator<_XINFO> GetEnumerator()
+            public IEnumerator<__XINFO> GetEnumerator()
             {
                 return Info
                     .EnumerateFileSystemInfos()
@@ -244,9 +244,9 @@ namespace $rootnamespace$
 
             public object GetService(Type serviceType)
             {
-                if (serviceType == typeof(_MATCHCASING)) return FileSystemPathCasing;
+                if (serviceType == typeof(__MATCHCASING)) return FileSystemPathCasing;
                 if (serviceType == typeof(StringComparison)) return FileSystemPathComparison;
-                if (serviceType == typeof(_DINFO)) return Info;
+                if (serviceType == typeof(__DINFO)) return Info;
 
                 return null;
             }

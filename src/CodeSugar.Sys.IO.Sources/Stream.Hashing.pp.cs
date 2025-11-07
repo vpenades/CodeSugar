@@ -7,9 +7,9 @@ using System.Diagnostics;
 
 #nullable disable
 
-using _STREAM = System.IO.Stream;
-using _MEMSTREAM = System.IO.MemoryStream;
-using _LAZYHASHALGORYTHM = System.Lazy<System.Security.Cryptography.HashAlgorithm>;
+using __STREAM = System.IO.Stream;
+using __MEMSTREAM = System.IO.MemoryStream;
+using __LAZYHASHALGORYTHM = System.Lazy<System.Security.Cryptography.HashAlgorithm>;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -21,10 +21,10 @@ namespace $rootnamespace$
 {
     partial class CodeSugarForSystemIO
     {
-        private static _LAZYHASHALGORYTHM _Sha512Engine = new _LAZYHASHALGORYTHM(System.Security.Cryptography.SHA512.Create);
-        private static _LAZYHASHALGORYTHM _Sha384Engine = new _LAZYHASHALGORYTHM(System.Security.Cryptography.SHA384.Create);
-        private static _LAZYHASHALGORYTHM _Sha256Engine = new _LAZYHASHALGORYTHM(System.Security.Cryptography.SHA256.Create);
-        private static _LAZYHASHALGORYTHM _Md5Engine = new _LAZYHASHALGORYTHM(System.Security.Cryptography.MD5.Create);
+        private static __LAZYHASHALGORYTHM _Sha512Engine = new __LAZYHASHALGORYTHM(System.Security.Cryptography.SHA512.Create);
+        private static __LAZYHASHALGORYTHM _Sha384Engine = new __LAZYHASHALGORYTHM(System.Security.Cryptography.SHA384.Create);
+        private static __LAZYHASHALGORYTHM _Sha256Engine = new __LAZYHASHALGORYTHM(System.Security.Cryptography.SHA256.Create);
+        private static __LAZYHASHALGORYTHM _Md5Engine = new __LAZYHASHALGORYTHM(System.Security.Cryptography.MD5.Create);
 
         private static System.Security.Cryptography.HashAlgorithm __GetHashAlgorythmBySize(int byteSize)
         {
@@ -38,7 +38,7 @@ namespace $rootnamespace$
             }
         }
 
-        public static void ComputeHashes(this Func<_STREAM> streamFunc, params Byte[][] result)
+        public static void ComputeHashes(this Func<__STREAM> streamFunc, params Byte[][] result)
         {
             using(var s = streamFunc()) { ComputeHashes(s, result); }
         }
@@ -49,7 +49,7 @@ namespace $rootnamespace$
         /// <remarks>
         /// The hashing algorythm is selected based in the length of the imput byte array.
         /// </remarks>
-        public static void ComputeHashes(this _STREAM stream, params Byte[][] result)
+        public static void ComputeHashes(this __STREAM stream, params Byte[][] result)
         {
             GuardReadable(stream);
 
@@ -69,7 +69,7 @@ namespace $rootnamespace$
             }
         }
 
-        public static Byte[] ComputeSha512(this Func<_STREAM> streamFunc)
+        public static Byte[] ComputeSha512(this Func<__STREAM> streamFunc)
         {
             using (var s = streamFunc()) { return ComputeSha512(s); }
         }
@@ -77,12 +77,12 @@ namespace $rootnamespace$
         /// <summary>
         /// Computes the <see cref="System.Security.Cryptography.SHA512"/> on the contents of the given stream.
         /// </summary>
-        public static Byte[] ComputeSha512(this _STREAM stream)
+        public static Byte[] ComputeSha512(this __STREAM stream)
         {
             return _ComputeHash(stream, _Sha512Engine.Value);
         }
 
-        public static Byte[] ComputeSha384(this Func<_STREAM> streamFunc)
+        public static Byte[] ComputeSha384(this Func<__STREAM> streamFunc)
         {
             using (var s = streamFunc()) { return ComputeSha384(s); }
         }
@@ -90,12 +90,12 @@ namespace $rootnamespace$
         /// <summary>
         /// Computes the <see cref="System.Security.Cryptography.SHA384"/> on the contents of the given stream.
         /// </summary>
-        public static Byte[] ComputeSha384(this _STREAM stream)
+        public static Byte[] ComputeSha384(this __STREAM stream)
         {
             return _ComputeHash(stream, _Sha384Engine.Value);
         }
 
-        public static Byte[] ComputeSha256(this Func<_STREAM> streamFunc)
+        public static Byte[] ComputeSha256(this Func<__STREAM> streamFunc)
         {
             using (var s = streamFunc()) { return ComputeSha256(s); }
         }
@@ -103,12 +103,12 @@ namespace $rootnamespace$
         /// <summary>
         /// Computes the <see cref="System.Security.Cryptography.SHA256"/> on the contents of the given stream.
         /// </summary>
-        public static Byte[] ComputeSha256(this _STREAM stream)
+        public static Byte[] ComputeSha256(this __STREAM stream)
         {
             return _ComputeHash(stream, _Sha256Engine.Value);
         }
 
-        public static Byte[] ComputeMd5(this Func<_STREAM> streamFunc)
+        public static Byte[] ComputeMd5(this Func<__STREAM> streamFunc)
         {
             using (var s = streamFunc()) { return ComputeMd5(s); }
         }
@@ -116,16 +116,16 @@ namespace $rootnamespace$
         /// <summary>
         /// Computes the <see cref="System.Security.Cryptography.MD5"/> on the contents of the given stream.
         /// </summary>
-        public static Byte[] ComputeMd5(this _STREAM stream)
+        public static Byte[] ComputeMd5(this __STREAM stream)
         {
             return _ComputeHash(stream, _Md5Engine.Value);
         }        
 
-        private static Byte[] _ComputeHash(_STREAM stream, System.Security.Cryptography.HashAlgorithm engine)
+        private static Byte[] _ComputeHash(__STREAM stream, System.Security.Cryptography.HashAlgorithm engine)
         {
             GuardReadable(stream);
 
-            if (stream is _MEMSTREAM memStream)
+            if (stream is __MEMSTREAM memStream)
             {
                 if (memStream.TryGetBuffer(out var buff))
                 {

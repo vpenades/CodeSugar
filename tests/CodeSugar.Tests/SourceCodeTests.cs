@@ -24,6 +24,8 @@ namespace CodeSugar
         
         [TestCase(typeof(CodeSugarForLogging))]
 
+        [TestCase(typeof(CodeSugarForImageSharp))]
+
         [TestCase(typeof(CodeSugarForLinq))]
         public void ListApiMethods(Type t)
         {
@@ -50,7 +52,6 @@ namespace CodeSugar
         }
 
 
-
         [TestCase("CodeSugar.Sys.IO.Sources")]
         [TestCase("CodeSugar.Sys.Sources")]
         [TestCase("CodeSugar.Srlzn.Bin.Sources")]
@@ -75,17 +76,22 @@ namespace CodeSugar
             }            
         }
 
+        
         [TestCase("CodeSugar.Sys.Sources")]
         [TestCase("CodeSugar.Sys.IO.Sources")]        
         [TestCase("CodeSugar.Sys.Text.Sources")]
         [TestCase("CodeSugar.Srlzn.Bin.Sources")]
         [TestCase("CodeSugar.FileProviders.Sources")]
+        
 
         [TestCase("CodeSugar.Linq.Sources")]
         [TestCase("CodeSugar.Numerics.Sources")]
         [TestCase("CodeSugar.Tensors.Sources")]
+
         [TestCase("CodeSugar.Progress.Log")]
-        
+        [TestCase("CodeSugar.AI")]
+        [TestCase("CodeSugar.ImageSharp")]
+
         public void TestNullableDisabled(string projectName)
         {
             var dinfo = new System.IO.DirectoryInfo(TestContext.CurrentContext.TestDirectory).FindDirectoryTree("src", projectName);
@@ -97,7 +103,42 @@ namespace CodeSugar
 
                 Assert.That(sc.Contains("#nullable disable"), $"{projectName}/{finfo.Name} does not have #nullable disable");
             }
+        }
 
+        
+        [TestCase("CodeSugar.Sys.Sources")]
+        [TestCase("CodeSugar.Sys.IO.Sources")]
+        [TestCase("CodeSugar.Sys.Text.Sources")]
+        [TestCase("CodeSugar.Srlzn.Bin.Sources")]
+        [TestCase("CodeSugar.FileProviders.Sources")]        
+
+        [TestCase("CodeSugar.Linq.Sources")]
+        [TestCase("CodeSugar.Numerics.Sources")]
+        [TestCase("CodeSugar.Tensors.Sources")]        
+
+        [TestCase("CodeSugar.Progress.Log")]
+        [TestCase("CodeSugar.AI")]
+        [TestCase("CodeSugar.ImageSharp")]
+        public void TestUsingAlias(string projectName)
+        {
+            var dinfo = new System.IO.DirectoryInfo(TestContext.CurrentContext.TestDirectory).FindDirectoryTree("src", projectName);
+            Assert.That(dinfo.Exists);
+
+            Assert.Multiple(() => { 
+
+            foreach (var finfo in dinfo.EnumerateFiles("*.cs", System.IO.SearchOption.TopDirectoryOnly))
+            {
+                var sc = finfo.ReadAllText();
+
+                foreach (var kvp in _RoslynExtensions.EnumerateUsingAliasDirectives(sc).Distinct())
+                {
+                    var alias = kvp.Key;
+
+                    Assert.That(alias.StartsWith("__"), $"using {alias} in file {finfo.FullName} must begin with '__' to prevent collisions with global using");
+                }
+            }
+
+            });
         }
     }
 }

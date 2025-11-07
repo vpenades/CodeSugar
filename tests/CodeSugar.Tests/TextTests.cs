@@ -56,6 +56,8 @@ namespace CodeSugar
             Assert.That(CodeSugarForText.Tokenize("-a --b -c:hello -d:{hello world} -e",null, blocks), Is.EqualTo(new[] { "-a","--b","-c:hello","-d:hello world","-e" }));
         }
 
+        #if NET8_0_OR_GREATER
+
         [TestCase("")]
         [TestCase("  ")]
         [TestCase("abc")]
@@ -74,6 +76,8 @@ namespace CodeSugar
 
             Assert.That(impSplit, Is.EqualTo(refSplit));
         }
+
+        #endif
 
     }
 }

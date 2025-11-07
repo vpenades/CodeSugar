@@ -12,7 +12,7 @@ using System.Runtime.Versioning;
 
 #nullable disable
 
-using _LOGLEVEL = System.Diagnostics.TraceEventType;
+using __LOGLEVEL = System.Diagnostics.TraceEventType;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -88,16 +88,16 @@ namespace $rootnamespace$
         {
             var logger = logFactory.Invoke(typeof(AppDomain).Name);
 
-            appDomain.UnhandledException += (sender, e) => logger.ReportLog(_LOGLEVEL.Critical, _FormatMessage(e));
-            TaskScheduler.UnobservedTaskException += (sender, e) => logger.ReportLog(_LOGLEVEL.Critical, _FormatMessage(e.Exception));
+            appDomain.UnhandledException += (sender, e) => logger.ReportLog(__LOGLEVEL.Critical, _FormatMessage(e));
+            TaskScheduler.UnobservedTaskException += (sender, e) => logger.ReportLog(__LOGLEVEL.Critical, _FormatMessage(e.Exception));
         }
 
         public static void RedirectCrashLoggingToFactory(this AppDomain appDomain, Func<Type, IProgress<string>> logFactory)
         {
             var logger = logFactory.Invoke(typeof(AppDomain));
 
-            appDomain.UnhandledException += (sender, e) => logger.ReportLog(_LOGLEVEL.Critical, _FormatMessage(e));
-            TaskScheduler.UnobservedTaskException += (sender, e) => logger.ReportLog(_LOGLEVEL.Critical, _FormatMessage(e.Exception));
+            appDomain.UnhandledException += (sender, e) => logger.ReportLog(__LOGLEVEL.Critical, _FormatMessage(e));
+            TaskScheduler.UnobservedTaskException += (sender, e) => logger.ReportLog(__LOGLEVEL.Critical, _FormatMessage(e.Exception));
         }
 
         public static void RedirectCrashLoggingToFile(this AppDomain appDomain, string filePath)
@@ -131,56 +131,67 @@ namespace $rootnamespace$
             catch { }
         }
 
-        private static string _GetAbolutePath(string filePath, string extension)
+        private static string _GetAbolutePath(string fileNameOrPath, string extension)
         {            
             #if NET
-            if (string.IsNullOrWhiteSpace(filePath) && !string.IsNullOrWhiteSpace(Environment.ProcessPath))
+            if (string.IsNullOrWhiteSpace(fileNameOrPath) && !string.IsNullOrWhiteSpace(Environment.ProcessPath))
             {
-                filePath = System.IO.Path.GetFileName(Environment.ProcessPath);
-                filePath = System.IO.Path.ChangeExtension(filePath, extension);
+                fileNameOrPath = System.IO.Path.GetFileName(Environment.ProcessPath);
+                fileNameOrPath = System.IO.Path.ChangeExtension(fileNameOrPath, extension);
             }
             #endif
 
-            if (string.IsNullOrWhiteSpace(filePath)) throw new NullReferenceException(filePath);
+            if (string.IsNullOrWhiteSpace(fileNameOrPath)) throw new NullReferenceException(fileNameOrPath);
 
-            if (System.IO.Path.IsPathFullyQualified(filePath)) return filePath;
+            if (System.IO.Path.IsPathFullyQualified(fileNameOrPath)) return fileNameOrPath;
 
             #if NET
-            if (OperatingSystem.IsWindows())
+            if (OperatingSystem.IsWindows()) // on windows, we can try write the log in the same directory as the executable if we have write access
             {
                 var directoryInfo = new DirectoryInfo(AppContext.BaseDirectory);
 
                 if (_HasWriteAccessToDirectory(directoryInfo))
                 {
-                    filePath = Path.Combine(AppContext.BaseDirectory, filePath);
+                    return Path.Combine(AppContext.BaseDirectory, fileNameOrPath);
                 }
             }
             #endif
 
             var path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "CrashDumps");
-            System.IO.Directory.CreateDirectory(path);
-            return System.IO.Path.Combine(path, filePath);
+            
+            return System.IO.Path.Combine(path, fileNameOrPath);
         }
 
         #if NET
         [SupportedOSPlatform("windows")]        
-        private static bool _HasWriteAccessToDirectory(System.IO.DirectoryInfo dinfo)
+        private static bool _HasWriteAccessToDirectory(System.IO.DirectoryInfo dir)
         {
+            // Check existence first
+            if (!dir.Exists) return false;
+
+            // Compose a temporary file path
+            var testFilePath = Path.Combine(dir.FullName, Guid.NewGuid().ToString() + ".tmp");
+
             try
             {
-                // Get the directory information                
-                var security = dinfo.GetAccessControl();
+                // Try to create and write to a file in that directory
+                using (var fs = File.Create(testFilePath, 1, FileOptions.DeleteOnClose))
+                {
+                    fs.WriteByte(0); // Try writing a single byte
+                }
 
-                // Test if the current user can write to the directory
-                return security.AccessRightType == typeof(FileSystemRights);
-            }
-            catch (UnauthorizedAccessException)
-            {
-                return false;
+                // If no exception occurred, we have write access
+                return true;
             }
             catch
-            {                
+            {
+                // If any exception occurs, we don't have permission
                 return false;
+            }
+            finally
+            {
+                // Attempt to clean up, just in case
+                try { if (File.Exists(testFilePath)) File.Delete(testFilePath); } catch { }
             }
         }
         #endif

@@ -14,9 +14,9 @@ using Microsoft.Extensions.Primitives;
 
 #nullable disable
 
-using _XINFO = Microsoft.Extensions.FileProviders.IFileInfo;
-using _XPROVIDER = Microsoft.Extensions.FileProviders.IFileProvider;
-using _MATCHCASING = System.IO.MatchCasing;
+using __XINFO = Microsoft.Extensions.FileProviders.IFileInfo;
+using __XPROVIDER = Microsoft.Extensions.FileProviders.IFileProvider;
+using __MATCHCASING = System.IO.MatchCasing;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -31,12 +31,12 @@ namespace $rootnamespace$
         #region API
 
         /// <summary>
-        /// Creates a lazily opened <see cref="_XPROVIDER"/> from a <see cref="ZipArchive"/>
+        /// Creates a lazily opened <see cref="__XPROVIDER"/> from a <see cref="ZipArchive"/>
         /// </summary>
         /// <param name="zipFactory">A lambda that will open a <see cref="ZipArchive"/> only when needed</param>
-        /// <returns>A <see cref="_XPROVIDER"/>.</returns>
+        /// <returns>A <see cref="__XPROVIDER"/>.</returns>
         [return: NotNull]
-        public static _XPROVIDER ToIfileProvider(this Func<ZipArchive> zipFactory)
+        public static __XPROVIDER ToIfileProvider(this Func<ZipArchive> zipFactory)
         {
             if (zipFactory == null) return __NULLPROVIDER;
 
@@ -73,13 +73,13 @@ namespace $rootnamespace$
         }
 
         /// <summary>
-        /// Creates a single <see cref="_XINFO"/>.
+        /// Creates a single <see cref="__XINFO"/>.
         /// </summary>
         /// <param name="entry">a collection of file entries</param>
         /// <param name="openReadFunc">a lamda used to open the stream of a file entry.</param>
-        /// <returns>An <see cref="_XINFO"/> representing the data</returns>
+        /// <returns>An <see cref="__XINFO"/> representing the data</returns>
         [return: NotNull]
-        public static _XINFO ToIFileInfo(this (string key, long len) entry, Func<string, System.IO.Stream> openReadFunc)
+        public static __XINFO ToIFileInfo(this (string key, long len) entry, Func<string, System.IO.Stream> openReadFunc)
         {
             if (string.IsNullOrWhiteSpace(entry.key)) return __NULLFILE;
 
@@ -89,13 +89,13 @@ namespace $rootnamespace$
         }
 
         /// <summary>
-        /// Creates a single <see cref="_XINFO"/>.
+        /// Creates a single <see cref="__XINFO"/>.
         /// </summary>
         /// <param name="entry">a collection of file entries</param>
         /// <param name="openReadFunc">a lamda used to open the stream of a file entry.</param>
-        /// <returns>An <see cref="_XINFO"/> representing the data</returns>
+        /// <returns>An <see cref="__XINFO"/> representing the data</returns>
         [return: NotNull]
-        public static _XINFO ToIFileInfo(this (string key, long len, DateTimeOffset dt) entry, Func<string, System.IO.Stream> openReadFunc)
+        public static __XINFO ToIFileInfo(this (string key, long len, DateTimeOffset dt) entry, Func<string, System.IO.Stream> openReadFunc)
         {
             if (string.IsNullOrWhiteSpace(entry.key)) return __NULLFILE;
 
@@ -105,13 +105,13 @@ namespace $rootnamespace$
         }
 
         /// <summary>
-        /// Creates a <see cref="_XPROVIDER"/> from a collection of file entries.
+        /// Creates a <see cref="__XPROVIDER"/> from a collection of file entries.
         /// </summary>
         /// <param name="entries">A collection of file entries representing a Table of Contents (TOC)</param>
         /// <param name="openReadFunc">a lamda used to open the stream of a file entry.</param>
-        /// <returns>A <see cref="_XPROVIDER"/> containing all the entries.</returns>
+        /// <returns>A <see cref="__XPROVIDER"/> containing all the entries.</returns>
         [return: NotNull]
-        public static _XPROVIDER ToIFileProvider(this IEnumerable<(string key, long len)> entries, Func<string, System.IO.Stream> openReadFunc)
+        public static __XPROVIDER ToIFileProvider(this IEnumerable<(string key, long len)> entries, Func<string, System.IO.Stream> openReadFunc)
         {
             if (entries == null) return __NULLPROVIDER;
 
@@ -127,13 +127,13 @@ namespace $rootnamespace$
         }
 
         /// <summary>
-        /// Creates a <see cref="_XPROVIDER"/> from a collection of file entries.
+        /// Creates a <see cref="__XPROVIDER"/> from a collection of file entries.
         /// </summary>
         /// <param name="entries">A collection of file entries representing a Table of Contents (TOC)</param>
         /// <param name="openReadFunc">a lamda used to open the stream of a file entry.</param>
-        /// <returns>A <see cref="_XPROVIDER"/> containing all the entries.</returns>
+        /// <returns>A <see cref="__XPROVIDER"/> containing all the entries.</returns>
         [return: NotNull]
-        public static _XPROVIDER ToIFileProvider(this IEnumerable<(string key, long len, DateTimeOffset dt)> entries, Func<string, System.IO.Stream> openReadFunc)
+        public static __XPROVIDER ToIFileProvider(this IEnumerable<(string key, long len, DateTimeOffset dt)> entries, Func<string, System.IO.Stream> openReadFunc)
         {
             if (entries == null) return __NULLPROVIDER;
 
@@ -151,7 +151,7 @@ namespace $rootnamespace$
         #region nested types
 
         [System.Diagnostics.DebuggerDisplay("{Key} {Length}")]
-        private readonly struct _AnyArchiveFile : _XINFO, IServiceProvider
+        private readonly struct _AnyArchiveFile : __XINFO, IServiceProvider
         {
             #region lifecycle           
 
@@ -208,7 +208,7 @@ namespace $rootnamespace$
 
             public object GetService(Type serviceType)
             {
-                if (serviceType == typeof(_MATCHCASING)) return _MATCHCASING.CaseSensitive;
+                if (serviceType == typeof(__MATCHCASING)) return __MATCHCASING.CaseSensitive;
                 if (serviceType == typeof(StringComparison)) return StringComparison.Ordinal;                
                 return null;
             }
@@ -217,7 +217,7 @@ namespace $rootnamespace$
         }
 
         [System.Diagnostics.DebuggerDisplay("{_Path}")]
-        private readonly struct _AnyArchiveDirectory : _XINFO, IDirectoryContents
+        private readonly struct _AnyArchiveDirectory : __XINFO, IDirectoryContents
         {
             #region lifecycle
             public _AnyArchiveDirectory(_AnyArchive arch, string path)
@@ -275,14 +275,14 @@ namespace $rootnamespace$
 
             IEnumerator IEnumerable.GetEnumerator() { return this.GetEnumerator(); }
 
-            public IEnumerator<_XINFO> GetEnumerator()
+            public IEnumerator<__XINFO> GetEnumerator()
             {
                 var thisPath = _Path;
                 if (thisPath.Length > 0) thisPath += ArchiveDirectorySeparator;
                 return _EnumerateContents(_Archive, thisPath).GetEnumerator();
             }
 
-            private static IEnumerable<_XINFO> _EnumerateContents(_AnyArchive arch, string dirPath)
+            private static IEnumerable<__XINFO> _EnumerateContents(_AnyArchive arch, string dirPath)
             {
                 System.Diagnostics.Debug.Assert(dirPath == string.Empty || !dirPath.StartsWith(ArchiveDirectorySeparator));
                 System.Diagnostics.Debug.Assert(dirPath == string.Empty || dirPath.EndsWith(ArchiveDirectorySeparator));
@@ -329,7 +329,7 @@ namespace $rootnamespace$
             #endregion
         }
 
-        private sealed class _AnyArchive : _XPROVIDER
+        private sealed class _AnyArchive : __XPROVIDER
         {
             #region lifecycle
             public _AnyArchive(_AnyArchiveEntry[] entries)
@@ -360,7 +360,7 @@ namespace $rootnamespace$
                     ?? NotFoundDirectoryContents.Singleton;
             }
 
-            public _XINFO GetFileInfo(string subpath)
+            public __XINFO GetFileInfo(string subpath)
             {
                 subpath ??= string.Empty;
 
@@ -378,7 +378,7 @@ namespace $rootnamespace$
 
                 return dir.Any()
                     ? dir
-                    : (_XINFO)new NotFoundFileInfo(subpath);
+                    : (__XINFO)new NotFoundFileInfo(subpath);
             }
 
             public IChangeToken Watch(string filter)

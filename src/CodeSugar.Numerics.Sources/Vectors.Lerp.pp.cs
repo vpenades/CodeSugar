@@ -10,10 +10,10 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using _SCALAR = System.Single;
-using _VECTOR2 = System.Numerics.Vector2;
-using _VECTOR3 = System.Numerics.Vector3;
-using _VECTOR4 = System.Numerics.Vector4;
+using __SCALAR = System.Single;
+using __VECTOR2 = System.Numerics.Vector2;
+using __VECTOR3 = System.Numerics.Vector3;
+using __VECTOR4 = System.Numerics.Vector4;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -41,7 +41,7 @@ namespace $rootnamespace$
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static _SCALAR Lerp(this (_SCALAR A, _SCALAR B) pair, float bamount)
+        public static __SCALAR Lerp(this (__SCALAR A, __SCALAR B) pair, float bamount)
         {
             var result = pair.A * (1.0f - bamount);
             result += pair.B * bamount;
@@ -51,7 +51,7 @@ namespace $rootnamespace$
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static _SCALAR Lerp(this (_SCALAR? A, _SCALAR B) pair, float deadZone, float smoothDistance)
+        public static __SCALAR Lerp(this (__SCALAR? A, __SCALAR B) pair, float deadZone, float smoothDistance)
         {
             if (!pair.A.HasValue || smoothDistance <= deadZone) return pair.B;
 
@@ -61,7 +61,7 @@ namespace $rootnamespace$
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static _SCALAR Lerp(this (_SCALAR? A, _SCALAR B) pair, float bamount)
+        public static __SCALAR Lerp(this (__SCALAR? A, __SCALAR B) pair, float bamount)
         {
             if (!pair.A.HasValue) return pair.B;
 
@@ -73,59 +73,59 @@ namespace $rootnamespace$
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static _VECTOR2 Lerp(this (_VECTOR2? A, _VECTOR2 B) pair, float deadZone, float smoothDistance)
+        public static __VECTOR2 Lerp(this (__VECTOR2? A, __VECTOR2 B) pair, float deadZone, float smoothDistance)
         {
             if (!pair.A.HasValue || smoothDistance <= deadZone) return pair.B;
 
-            var amount = _GetLerpAmount(_VECTOR2.Distance(pair.A.Value, pair.B), deadZone, smoothDistance);
+            var amount = _GetLerpAmount(__VECTOR2.Distance(pair.A.Value, pair.B), deadZone, smoothDistance);
             return Lerp(pair, amount);
         }
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static _VECTOR2 Lerp(this (_VECTOR2? A, _VECTOR2 B) pair, float bamount)
+        public static __VECTOR2 Lerp(this (__VECTOR2? A, __VECTOR2 B) pair, float bamount)
         {
             return !pair.A.HasValue
                 ? pair.B
-                : _VECTOR2.Lerp(pair.A.Value, pair.B, bamount);
+                : __VECTOR2.Lerp(pair.A.Value, pair.B, bamount);
         }
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static _VECTOR3 Lerp(this (_VECTOR3? A, _VECTOR3 B) pair, float deadZone, float smoothDistance)
+        public static __VECTOR3 Lerp(this (__VECTOR3? A, __VECTOR3 B) pair, float deadZone, float smoothDistance)
         {
             if (!pair.A.HasValue || smoothDistance <= deadZone) return pair.B;
 
-            var amount = _GetLerpAmount(_VECTOR3.Distance(pair.A.Value, pair.B), deadZone, smoothDistance);
+            var amount = _GetLerpAmount(__VECTOR3.Distance(pair.A.Value, pair.B), deadZone, smoothDistance);
             return Lerp(pair, amount);
         }
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static _VECTOR3 Lerp(this (_VECTOR3? A, _VECTOR3 B) pair, float bamount)
+        public static __VECTOR3 Lerp(this (__VECTOR3? A, __VECTOR3 B) pair, float bamount)
         {
             return !pair.A.HasValue
                 ? pair.B
-                : _VECTOR3.Lerp(pair.A.Value, pair.B, bamount);
+                : __VECTOR3.Lerp(pair.A.Value, pair.B, bamount);
         }
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static _VECTOR4 Lerp(this (_VECTOR4? A, _VECTOR4 B) pair, float deadZone, float smoothDistance)
+        public static __VECTOR4 Lerp(this (__VECTOR4? A, __VECTOR4 B) pair, float deadZone, float smoothDistance)
         {
             if (!pair.A.HasValue || smoothDistance <= deadZone) return pair.B;
             
-            var amount = _GetLerpAmount(_VECTOR4.Distance(pair.A.Value, pair.B), deadZone, smoothDistance);
+            var amount = _GetLerpAmount(__VECTOR4.Distance(pair.A.Value, pair.B), deadZone, smoothDistance);
             return Lerp(pair, amount);
         }        
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static _VECTOR4 Lerp(this (_VECTOR4? A, _VECTOR4 B) pair, float bamount)
+        public static __VECTOR4 Lerp(this (__VECTOR4? A, __VECTOR4 B) pair, float bamount)
         {
             return !pair.A.HasValue
                 ? pair.B
-                : _VECTOR4.Lerp(pair.A.Value, pair.B, bamount);
+                : __VECTOR4.Lerp(pair.A.Value, pair.B, bamount);
         }
     }
 }

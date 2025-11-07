@@ -22,8 +22,8 @@ string BYTEWRITER = "target = WriteBytes(target, span);";
 
 #nullable disable
 
-using _READABLEBLOCK = System.ArraySegment<byte>;
-using _WRITEABLEBLOCK = System.ArraySegment<byte>;
+using __READABLEBLOCK = System.ArraySegment<byte>;
+using __WRITEABLEBLOCK = System.ArraySegment<byte>;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar

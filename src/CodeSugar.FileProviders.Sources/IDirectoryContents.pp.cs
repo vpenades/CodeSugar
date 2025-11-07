@@ -10,9 +10,9 @@ using System.Diagnostics.CodeAnalysis;
 
 #nullable disable
 
-using _XINFO = Microsoft.Extensions.FileProviders.IFileInfo;
-using _XDIRECTORY = Microsoft.Extensions.FileProviders.IDirectoryContents;
-using _MATCHCASING = System.IO.MatchCasing;
+using __XINFO = Microsoft.Extensions.FileProviders.IFileInfo;
+using __XDIRECTORY = Microsoft.Extensions.FileProviders.IDirectoryContents;
+using __MATCHCASING = System.IO.MatchCasing;
 using System.Collections;
 using Microsoft.Extensions.FileProviders;
 
@@ -31,12 +31,12 @@ namespace $rootnamespace$
         
 
         [return: NotNull]
-        public static _XDIRECTORY ToIDirectoryContents(this IEnumerable<_XINFO> files)
+        public static __XDIRECTORY ToIDirectoryContents(this IEnumerable<__XINFO> files)
         {
             switch(files)
             {
                 case null: return NotFoundDirectoryContents.Singleton;
-                case _XDIRECTORY xdir: return xdir;
+                case __XDIRECTORY xdir: return xdir;
                 default: return new _DirectoryCollection(files.ToList());
             }            
         }
@@ -47,19 +47,19 @@ namespace $rootnamespace$
 
         
 
-        private sealed class _DirectoryCollection : _XDIRECTORY
+        private sealed class _DirectoryCollection : __XDIRECTORY
         {
-            public _DirectoryCollection(IReadOnlyList<_XINFO> files)
+            public _DirectoryCollection(IReadOnlyList<__XINFO> files)
             {
                 _Files = files;
             }
 
             [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)]
-            private readonly IReadOnlyList<_XINFO> _Files;
+            private readonly IReadOnlyList<__XINFO> _Files;
 
             public bool Exists => true;
 
-            public IEnumerator<_XINFO> GetEnumerator()
+            public IEnumerator<__XINFO> GetEnumerator()
             {
                 return _Files.GetEnumerator();
             }
