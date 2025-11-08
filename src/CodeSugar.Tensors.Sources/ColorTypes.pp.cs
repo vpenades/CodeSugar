@@ -16,23 +16,23 @@ using System.Runtime.Intrinsics;
 #if NET6_0_OR_GREATER
 using __VECTOR2FACTORY = System.Runtime.Intrinsics.Vector64;
 using __VECTOR4FACTORY = System.Runtime.Intrinsics.Vector128;
-using _VECTOR8FACTORY = System.Runtime.Intrinsics.Vector256;
+using __VECTOR8FACTORY = System.Runtime.Intrinsics.Vector256;
 
 using __VECTOR2 = System.Runtime.Intrinsics.Vector64<float>;
 using __VECTOR4 = System.Runtime.Intrinsics.Vector128<float>;
-using _VECTOR8 = System.Runtime.Intrinsics.Vector256<float>;
+using __VECTOR8 = System.Runtime.Intrinsics.Vector256<float>;
 
 #endif
 
 #if NET8_0_OR_GREATER
-using _VECTOR16FACTORY = System.Runtime.Intrinsics.Vector512;
+using __VECTOR16FACTORY = System.Runtime.Intrinsics.Vector512;
 
-using _VECTOR16 = System.Runtime.Intrinsics.Vector512<float>;
+using __VECTOR16 = System.Runtime.Intrinsics.Vector512<float>;
 #endif
 
 using __MMARSHALL = System.Runtime.InteropServices.MemoryMarshal;
-using ___XYZ = System.Numerics.Vector3;
-using ____XYZW = System.Numerics.Vector4;
+using __XYZ = System.Numerics.Vector3;
+using __XYZW = System.Numerics.Vector4;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -66,55 +66,55 @@ namespace $rootnamespace$
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGBA(in __RGBx2<byte> src, out _VECTOR8 dst)
+        private static void _ConvertToRGBA(in __RGBx2<byte> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)255, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)255).ConvertToSingle();
+            dst = __VECTOR8FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)255, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)255).ConvertToSingle();
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGBA(in __RGBx2<float> src, out _VECTOR8 dst)
+        private static void _ConvertToRGBA(in __RGBx2<float> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, 1, src._Element1_R, src._Element1_G, src._Element1_B, 1);
+            dst = __VECTOR8FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, 1, src._Element1_R, src._Element1_G, src._Element1_B, 1);
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGRA(in __RGBx2<byte> src, out _VECTOR8 dst)
+        private static void _ConvertToBGRA(in __RGBx2<byte> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)255, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)255).ConvertToSingle();
+            dst = __VECTOR8FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)255, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)255).ConvertToSingle();
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGRA(in __RGBx2<float> src, out _VECTOR8 dst)
+        private static void _ConvertToBGRA(in __RGBx2<float> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, 1, src._Element1_B, src._Element1_G, src._Element1_R, 1);
+            dst = __VECTOR8FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, 1, src._Element1_B, src._Element1_G, src._Element1_R, 1);
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToARGB(in __RGBx2<byte> src, out _VECTOR8 dst)
+        private static void _ConvertToARGB(in __RGBx2<byte> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create((int)255, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)255, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B).ConvertToSingle();
+            dst = __VECTOR8FACTORY.Create((int)255, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)255, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B).ConvertToSingle();
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToARGB(in __RGBx2<float> src, out _VECTOR8 dst)
+        private static void _ConvertToARGB(in __RGBx2<float> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create(1, src._Element0_R, src._Element0_G, src._Element0_B, 1, src._Element1_R, src._Element1_G, src._Element1_B);
+            dst = __VECTOR8FACTORY.Create(1, src._Element0_R, src._Element0_G, src._Element0_B, 1, src._Element1_R, src._Element1_G, src._Element1_B);
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGBA(ReadOnlySpan<__RGBx2<T>> src, Span<_VECTOR8> dst )
+        public static void CopyToRGBA(ReadOnlySpan<__RGBx2<T>> src, Span<__VECTOR8> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -145,7 +145,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGBA(ReadOnlySpan<__RGBx2<T>> src, Span<_VECTOR8> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToRGBA(ReadOnlySpan<__RGBx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector256();
@@ -181,7 +181,7 @@ namespace $rootnamespace$
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGRA(ReadOnlySpan<__RGBx2<T>> src, Span<_VECTOR8> dst )
+        public static void CopyToBGRA(ReadOnlySpan<__RGBx2<T>> src, Span<__VECTOR8> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -212,7 +212,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGRA(ReadOnlySpan<__RGBx2<T>> src, Span<_VECTOR8> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToBGRA(ReadOnlySpan<__RGBx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector256();
@@ -248,7 +248,7 @@ namespace $rootnamespace$
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToARGB(ReadOnlySpan<__RGBx2<T>> src, Span<_VECTOR8> dst )
+        public static void CopyToARGB(ReadOnlySpan<__RGBx2<T>> src, Span<__VECTOR8> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -279,7 +279,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToARGB(ReadOnlySpan<__RGBx2<T>> src, Span<_VECTOR8> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToARGB(ReadOnlySpan<__RGBx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector256();
@@ -338,55 +338,55 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGBA(in __RGBx4<byte> src, out _VECTOR16 dst)
+        private static void _ConvertToRGBA(in __RGBx4<byte> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)255, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)255, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)255, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)255).ConvertToSingle();
+            dst = __VECTOR16FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)255, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)255, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)255, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)255).ConvertToSingle();
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGBA(in __RGBx4<float> src, out _VECTOR16 dst)
+        private static void _ConvertToRGBA(in __RGBx4<float> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, 1, src._Element1_R, src._Element1_G, src._Element1_B, 1, src._Element2_R, src._Element2_G, src._Element2_B, 1, src._Element3_R, src._Element3_G, src._Element3_B, 1);
+            dst = __VECTOR16FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, 1, src._Element1_R, src._Element1_G, src._Element1_B, 1, src._Element2_R, src._Element2_G, src._Element2_B, 1, src._Element3_R, src._Element3_G, src._Element3_B, 1);
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGRA(in __RGBx4<byte> src, out _VECTOR16 dst)
+        private static void _ConvertToBGRA(in __RGBx4<byte> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)255, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)255, (int)src._Element2_B, (int)src._Element2_G, (int)src._Element2_R, (int)255, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)255).ConvertToSingle();
+            dst = __VECTOR16FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)255, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)255, (int)src._Element2_B, (int)src._Element2_G, (int)src._Element2_R, (int)255, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)255).ConvertToSingle();
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGRA(in __RGBx4<float> src, out _VECTOR16 dst)
+        private static void _ConvertToBGRA(in __RGBx4<float> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, 1, src._Element1_B, src._Element1_G, src._Element1_R, 1, src._Element2_B, src._Element2_G, src._Element2_R, 1, src._Element3_B, src._Element3_G, src._Element3_R, 1);
+            dst = __VECTOR16FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, 1, src._Element1_B, src._Element1_G, src._Element1_R, 1, src._Element2_B, src._Element2_G, src._Element2_R, 1, src._Element3_B, src._Element3_G, src._Element3_R, 1);
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToARGB(in __RGBx4<byte> src, out _VECTOR16 dst)
+        private static void _ConvertToARGB(in __RGBx4<byte> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create((int)255, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)255, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)255, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)255, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B).ConvertToSingle();
+            dst = __VECTOR16FACTORY.Create((int)255, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)255, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)255, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)255, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B).ConvertToSingle();
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToARGB(in __RGBx4<float> src, out _VECTOR16 dst)
+        private static void _ConvertToARGB(in __RGBx4<float> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create(1, src._Element0_R, src._Element0_G, src._Element0_B, 1, src._Element1_R, src._Element1_G, src._Element1_B, 1, src._Element2_R, src._Element2_G, src._Element2_B, 1, src._Element3_R, src._Element3_G, src._Element3_B);
+            dst = __VECTOR16FACTORY.Create(1, src._Element0_R, src._Element0_G, src._Element0_B, 1, src._Element1_R, src._Element1_G, src._Element1_B, 1, src._Element2_R, src._Element2_G, src._Element2_B, 1, src._Element3_R, src._Element3_G, src._Element3_B);
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGBA(ReadOnlySpan<__RGBx4<T>> src, Span<_VECTOR16> dst )
+        public static void CopyToRGBA(ReadOnlySpan<__RGBx4<T>> src, Span<__VECTOR16> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -417,7 +417,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGBA(ReadOnlySpan<__RGBx4<T>> src, Span<_VECTOR16> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToRGBA(ReadOnlySpan<__RGBx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector512();
@@ -453,7 +453,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGRA(ReadOnlySpan<__RGBx4<T>> src, Span<_VECTOR16> dst )
+        public static void CopyToBGRA(ReadOnlySpan<__RGBx4<T>> src, Span<__VECTOR16> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -484,7 +484,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGRA(ReadOnlySpan<__RGBx4<T>> src, Span<_VECTOR16> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToBGRA(ReadOnlySpan<__RGBx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector512();
@@ -520,7 +520,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToARGB(ReadOnlySpan<__RGBx4<T>> src, Span<_VECTOR16> dst )
+        public static void CopyToARGB(ReadOnlySpan<__RGBx4<T>> src, Span<__VECTOR16> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -551,7 +551,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToARGB(ReadOnlySpan<__RGBx4<T>> src, Span<_VECTOR16> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToARGB(ReadOnlySpan<__RGBx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector512();
@@ -622,47 +622,47 @@ namespace $rootnamespace$
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGB(in __RGBx8<byte> src, out _VECTOR8 dstX, out _VECTOR8 dstY, out _VECTOR8 dstZ)
+        private static void _ConvertToRGB(in __RGBx8<byte> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
-            dstX = _VECTOR8FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_R, (int)src._Element2_G).ConvertToSingle();
-            dstY = _VECTOR8FACTORY.Create((int)src._Element2_B, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element4_R, (int)src._Element4_G, (int)src._Element4_B, (int)src._Element5_R).ConvertToSingle();
-            dstZ = _VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B).ConvertToSingle();
+            dstX = __VECTOR8FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_R, (int)src._Element2_G).ConvertToSingle();
+            dstY = __VECTOR8FACTORY.Create((int)src._Element2_B, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element4_R, (int)src._Element4_G, (int)src._Element4_B, (int)src._Element5_R).ConvertToSingle();
+            dstZ = __VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B).ConvertToSingle();
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGB(in __RGBx8<float> src, out _VECTOR8 dstX, out _VECTOR8 dstY, out _VECTOR8 dstZ)
+        private static void _ConvertToRGB(in __RGBx8<float> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
-            dstX = _VECTOR8FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_R, src._Element2_G);
-            dstY = _VECTOR8FACTORY.Create(src._Element2_B, src._Element3_R, src._Element3_G, src._Element3_B, src._Element4_R, src._Element4_G, src._Element4_B, src._Element5_R);
-            dstZ = _VECTOR8FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B);
+            dstX = __VECTOR8FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_R, src._Element2_G);
+            dstY = __VECTOR8FACTORY.Create(src._Element2_B, src._Element3_R, src._Element3_G, src._Element3_B, src._Element4_R, src._Element4_G, src._Element4_B, src._Element5_R);
+            dstZ = __VECTOR8FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B);
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGR(in __RGBx8<byte> src, out _VECTOR8 dstX, out _VECTOR8 dstY, out _VECTOR8 dstZ)
+        private static void _ConvertToBGR(in __RGBx8<byte> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
-            dstX = _VECTOR8FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element2_B, (int)src._Element2_G).ConvertToSingle();
-            dstY = _VECTOR8FACTORY.Create((int)src._Element2_R, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element4_B, (int)src._Element4_G, (int)src._Element4_R, (int)src._Element5_B).ConvertToSingle();
-            dstZ = _VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R).ConvertToSingle();
+            dstX = __VECTOR8FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element2_B, (int)src._Element2_G).ConvertToSingle();
+            dstY = __VECTOR8FACTORY.Create((int)src._Element2_R, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element4_B, (int)src._Element4_G, (int)src._Element4_R, (int)src._Element5_B).ConvertToSingle();
+            dstZ = __VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R).ConvertToSingle();
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGR(in __RGBx8<float> src, out _VECTOR8 dstX, out _VECTOR8 dstY, out _VECTOR8 dstZ)
+        private static void _ConvertToBGR(in __RGBx8<float> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
-            dstX = _VECTOR8FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element1_B, src._Element1_G, src._Element1_R, src._Element2_B, src._Element2_G);
-            dstY = _VECTOR8FACTORY.Create(src._Element2_R, src._Element3_B, src._Element3_G, src._Element3_R, src._Element4_B, src._Element4_G, src._Element4_R, src._Element5_B);
-            dstZ = _VECTOR8FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R);
+            dstX = __VECTOR8FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element1_B, src._Element1_G, src._Element1_R, src._Element2_B, src._Element2_G);
+            dstY = __VECTOR8FACTORY.Create(src._Element2_R, src._Element3_B, src._Element3_G, src._Element3_R, src._Element4_B, src._Element4_G, src._Element4_R, src._Element5_B);
+            dstZ = __VECTOR8FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R);
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGB(ReadOnlySpan<__RGBx8<T>> src, Span<_VECTOR8> dst )
+        public static void CopyToRGB(ReadOnlySpan<__RGBx8<T>> src, Span<__VECTOR8> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -693,7 +693,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGB(ReadOnlySpan<__RGBx8<T>> src, Span<_VECTOR8> dst , in ___XYZ mul, in ___XYZ add)
+        public static void CopyToRGB(ReadOnlySpan<__RGBx8<T>> src, Span<__VECTOR8> dst , in __XYZ mul, in __XYZ add)
         {
 
             var mul3 = __Vector3x256.Repeat(mul);
@@ -733,7 +733,7 @@ namespace $rootnamespace$
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGR(ReadOnlySpan<__RGBx8<T>> src, Span<_VECTOR8> dst )
+        public static void CopyToBGR(ReadOnlySpan<__RGBx8<T>> src, Span<__VECTOR8> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -764,7 +764,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGR(ReadOnlySpan<__RGBx8<T>> src, Span<_VECTOR8> dst , in ___XYZ mul, in ___XYZ add)
+        public static void CopyToBGR(ReadOnlySpan<__RGBx8<T>> src, Span<__VECTOR8> dst , in __XYZ mul, in __XYZ add)
         {
 
             var mul3 = __Vector3x256.Repeat(mul);
@@ -863,47 +863,47 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGB(in __RGBx16<byte> src, out _VECTOR16 dstX, out _VECTOR16 dstY, out _VECTOR16 dstZ)
+        private static void _ConvertToRGB(in __RGBx16<byte> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
-            dstX = _VECTOR16FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element4_R, (int)src._Element4_G, (int)src._Element4_B, (int)src._Element5_R).ConvertToSingle();
-            dstY = _VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B, (int)src._Element8_R, (int)src._Element8_G, (int)src._Element8_B, (int)src._Element9_R, (int)src._Element9_G, (int)src._Element9_B, (int)src._Element10_R, (int)src._Element10_G).ConvertToSingle();
-            dstZ = _VECTOR16FACTORY.Create((int)src._Element10_B, (int)src._Element11_R, (int)src._Element11_G, (int)src._Element11_B, (int)src._Element12_R, (int)src._Element12_G, (int)src._Element12_B, (int)src._Element13_R, (int)src._Element13_G, (int)src._Element13_B, (int)src._Element14_R, (int)src._Element14_G, (int)src._Element14_B, (int)src._Element15_R, (int)src._Element15_G, (int)src._Element15_B).ConvertToSingle();
+            dstX = __VECTOR16FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element4_R, (int)src._Element4_G, (int)src._Element4_B, (int)src._Element5_R).ConvertToSingle();
+            dstY = __VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B, (int)src._Element8_R, (int)src._Element8_G, (int)src._Element8_B, (int)src._Element9_R, (int)src._Element9_G, (int)src._Element9_B, (int)src._Element10_R, (int)src._Element10_G).ConvertToSingle();
+            dstZ = __VECTOR16FACTORY.Create((int)src._Element10_B, (int)src._Element11_R, (int)src._Element11_G, (int)src._Element11_B, (int)src._Element12_R, (int)src._Element12_G, (int)src._Element12_B, (int)src._Element13_R, (int)src._Element13_G, (int)src._Element13_B, (int)src._Element14_R, (int)src._Element14_G, (int)src._Element14_B, (int)src._Element15_R, (int)src._Element15_G, (int)src._Element15_B).ConvertToSingle();
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGB(in __RGBx16<float> src, out _VECTOR16 dstX, out _VECTOR16 dstY, out _VECTOR16 dstZ)
+        private static void _ConvertToRGB(in __RGBx16<float> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
-            dstX = _VECTOR16FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_R, src._Element2_G, src._Element2_B, src._Element3_R, src._Element3_G, src._Element3_B, src._Element4_R, src._Element4_G, src._Element4_B, src._Element5_R);
-            dstY = _VECTOR16FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B, src._Element8_R, src._Element8_G, src._Element8_B, src._Element9_R, src._Element9_G, src._Element9_B, src._Element10_R, src._Element10_G);
-            dstZ = _VECTOR16FACTORY.Create(src._Element10_B, src._Element11_R, src._Element11_G, src._Element11_B, src._Element12_R, src._Element12_G, src._Element12_B, src._Element13_R, src._Element13_G, src._Element13_B, src._Element14_R, src._Element14_G, src._Element14_B, src._Element15_R, src._Element15_G, src._Element15_B);
+            dstX = __VECTOR16FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_R, src._Element2_G, src._Element2_B, src._Element3_R, src._Element3_G, src._Element3_B, src._Element4_R, src._Element4_G, src._Element4_B, src._Element5_R);
+            dstY = __VECTOR16FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B, src._Element8_R, src._Element8_G, src._Element8_B, src._Element9_R, src._Element9_G, src._Element9_B, src._Element10_R, src._Element10_G);
+            dstZ = __VECTOR16FACTORY.Create(src._Element10_B, src._Element11_R, src._Element11_G, src._Element11_B, src._Element12_R, src._Element12_G, src._Element12_B, src._Element13_R, src._Element13_G, src._Element13_B, src._Element14_R, src._Element14_G, src._Element14_B, src._Element15_R, src._Element15_G, src._Element15_B);
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGR(in __RGBx16<byte> src, out _VECTOR16 dstX, out _VECTOR16 dstY, out _VECTOR16 dstZ)
+        private static void _ConvertToBGR(in __RGBx16<byte> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
-            dstX = _VECTOR16FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element2_B, (int)src._Element2_G, (int)src._Element2_R, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element4_B, (int)src._Element4_G, (int)src._Element4_R, (int)src._Element5_B).ConvertToSingle();
-            dstY = _VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R, (int)src._Element8_B, (int)src._Element8_G, (int)src._Element8_R, (int)src._Element9_B, (int)src._Element9_G, (int)src._Element9_R, (int)src._Element10_B, (int)src._Element10_G).ConvertToSingle();
-            dstZ = _VECTOR16FACTORY.Create((int)src._Element10_R, (int)src._Element11_B, (int)src._Element11_G, (int)src._Element11_R, (int)src._Element12_B, (int)src._Element12_G, (int)src._Element12_R, (int)src._Element13_B, (int)src._Element13_G, (int)src._Element13_R, (int)src._Element14_B, (int)src._Element14_G, (int)src._Element14_R, (int)src._Element15_B, (int)src._Element15_G, (int)src._Element15_R).ConvertToSingle();
+            dstX = __VECTOR16FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element2_B, (int)src._Element2_G, (int)src._Element2_R, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element4_B, (int)src._Element4_G, (int)src._Element4_R, (int)src._Element5_B).ConvertToSingle();
+            dstY = __VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R, (int)src._Element8_B, (int)src._Element8_G, (int)src._Element8_R, (int)src._Element9_B, (int)src._Element9_G, (int)src._Element9_R, (int)src._Element10_B, (int)src._Element10_G).ConvertToSingle();
+            dstZ = __VECTOR16FACTORY.Create((int)src._Element10_R, (int)src._Element11_B, (int)src._Element11_G, (int)src._Element11_R, (int)src._Element12_B, (int)src._Element12_G, (int)src._Element12_R, (int)src._Element13_B, (int)src._Element13_G, (int)src._Element13_R, (int)src._Element14_B, (int)src._Element14_G, (int)src._Element14_R, (int)src._Element15_B, (int)src._Element15_G, (int)src._Element15_R).ConvertToSingle();
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGR(in __RGBx16<float> src, out _VECTOR16 dstX, out _VECTOR16 dstY, out _VECTOR16 dstZ)
+        private static void _ConvertToBGR(in __RGBx16<float> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
-            dstX = _VECTOR16FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element1_B, src._Element1_G, src._Element1_R, src._Element2_B, src._Element2_G, src._Element2_R, src._Element3_B, src._Element3_G, src._Element3_R, src._Element4_B, src._Element4_G, src._Element4_R, src._Element5_B);
-            dstY = _VECTOR16FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R, src._Element8_B, src._Element8_G, src._Element8_R, src._Element9_B, src._Element9_G, src._Element9_R, src._Element10_B, src._Element10_G);
-            dstZ = _VECTOR16FACTORY.Create(src._Element10_R, src._Element11_B, src._Element11_G, src._Element11_R, src._Element12_B, src._Element12_G, src._Element12_R, src._Element13_B, src._Element13_G, src._Element13_R, src._Element14_B, src._Element14_G, src._Element14_R, src._Element15_B, src._Element15_G, src._Element15_R);
+            dstX = __VECTOR16FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element1_B, src._Element1_G, src._Element1_R, src._Element2_B, src._Element2_G, src._Element2_R, src._Element3_B, src._Element3_G, src._Element3_R, src._Element4_B, src._Element4_G, src._Element4_R, src._Element5_B);
+            dstY = __VECTOR16FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R, src._Element8_B, src._Element8_G, src._Element8_R, src._Element9_B, src._Element9_G, src._Element9_R, src._Element10_B, src._Element10_G);
+            dstZ = __VECTOR16FACTORY.Create(src._Element10_R, src._Element11_B, src._Element11_G, src._Element11_R, src._Element12_B, src._Element12_G, src._Element12_R, src._Element13_B, src._Element13_G, src._Element13_R, src._Element14_B, src._Element14_G, src._Element14_R, src._Element15_B, src._Element15_G, src._Element15_R);
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGB(ReadOnlySpan<__RGBx16<T>> src, Span<_VECTOR16> dst )
+        public static void CopyToRGB(ReadOnlySpan<__RGBx16<T>> src, Span<__VECTOR16> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -934,7 +934,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGB(ReadOnlySpan<__RGBx16<T>> src, Span<_VECTOR16> dst , in ___XYZ mul, in ___XYZ add)
+        public static void CopyToRGB(ReadOnlySpan<__RGBx16<T>> src, Span<__VECTOR16> dst , in __XYZ mul, in __XYZ add)
         {
 
             var mul3 = __Vector3x512.Repeat(mul);
@@ -974,7 +974,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGR(ReadOnlySpan<__RGBx16<T>> src, Span<_VECTOR16> dst )
+        public static void CopyToBGR(ReadOnlySpan<__RGBx16<T>> src, Span<__VECTOR16> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -1005,7 +1005,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGR(ReadOnlySpan<__RGBx16<T>> src, Span<_VECTOR16> dst , in ___XYZ mul, in ___XYZ add)
+        public static void CopyToBGR(ReadOnlySpan<__RGBx16<T>> src, Span<__VECTOR16> dst , in __XYZ mul, in __XYZ add)
         {
 
             var mul3 = __Vector3x512.Repeat(mul);
@@ -1066,55 +1066,55 @@ namespace $rootnamespace$
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGBA(in __BGRx2<byte> src, out _VECTOR8 dst)
+        private static void _ConvertToRGBA(in __BGRx2<byte> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)255, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)255).ConvertToSingle();
+            dst = __VECTOR8FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)255, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)255).ConvertToSingle();
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGBA(in __BGRx2<float> src, out _VECTOR8 dst)
+        private static void _ConvertToRGBA(in __BGRx2<float> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, 1, src._Element1_R, src._Element1_G, src._Element1_B, 1);
+            dst = __VECTOR8FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, 1, src._Element1_R, src._Element1_G, src._Element1_B, 1);
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGRA(in __BGRx2<byte> src, out _VECTOR8 dst)
+        private static void _ConvertToBGRA(in __BGRx2<byte> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)255, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)255).ConvertToSingle();
+            dst = __VECTOR8FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)255, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)255).ConvertToSingle();
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGRA(in __BGRx2<float> src, out _VECTOR8 dst)
+        private static void _ConvertToBGRA(in __BGRx2<float> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, 1, src._Element1_B, src._Element1_G, src._Element1_R, 1);
+            dst = __VECTOR8FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, 1, src._Element1_B, src._Element1_G, src._Element1_R, 1);
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToARGB(in __BGRx2<byte> src, out _VECTOR8 dst)
+        private static void _ConvertToARGB(in __BGRx2<byte> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create((int)255, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)255, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B).ConvertToSingle();
+            dst = __VECTOR8FACTORY.Create((int)255, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)255, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B).ConvertToSingle();
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToARGB(in __BGRx2<float> src, out _VECTOR8 dst)
+        private static void _ConvertToARGB(in __BGRx2<float> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create(1, src._Element0_R, src._Element0_G, src._Element0_B, 1, src._Element1_R, src._Element1_G, src._Element1_B);
+            dst = __VECTOR8FACTORY.Create(1, src._Element0_R, src._Element0_G, src._Element0_B, 1, src._Element1_R, src._Element1_G, src._Element1_B);
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGBA(ReadOnlySpan<__BGRx2<T>> src, Span<_VECTOR8> dst )
+        public static void CopyToRGBA(ReadOnlySpan<__BGRx2<T>> src, Span<__VECTOR8> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -1145,7 +1145,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGBA(ReadOnlySpan<__BGRx2<T>> src, Span<_VECTOR8> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToRGBA(ReadOnlySpan<__BGRx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector256();
@@ -1181,7 +1181,7 @@ namespace $rootnamespace$
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGRA(ReadOnlySpan<__BGRx2<T>> src, Span<_VECTOR8> dst )
+        public static void CopyToBGRA(ReadOnlySpan<__BGRx2<T>> src, Span<__VECTOR8> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -1212,7 +1212,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGRA(ReadOnlySpan<__BGRx2<T>> src, Span<_VECTOR8> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToBGRA(ReadOnlySpan<__BGRx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector256();
@@ -1248,7 +1248,7 @@ namespace $rootnamespace$
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToARGB(ReadOnlySpan<__BGRx2<T>> src, Span<_VECTOR8> dst )
+        public static void CopyToARGB(ReadOnlySpan<__BGRx2<T>> src, Span<__VECTOR8> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -1279,7 +1279,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToARGB(ReadOnlySpan<__BGRx2<T>> src, Span<_VECTOR8> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToARGB(ReadOnlySpan<__BGRx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector256();
@@ -1338,55 +1338,55 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGBA(in __BGRx4<byte> src, out _VECTOR16 dst)
+        private static void _ConvertToRGBA(in __BGRx4<byte> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)255, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)255, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)255, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)255).ConvertToSingle();
+            dst = __VECTOR16FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)255, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)255, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)255, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)255).ConvertToSingle();
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGBA(in __BGRx4<float> src, out _VECTOR16 dst)
+        private static void _ConvertToRGBA(in __BGRx4<float> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, 1, src._Element1_R, src._Element1_G, src._Element1_B, 1, src._Element2_R, src._Element2_G, src._Element2_B, 1, src._Element3_R, src._Element3_G, src._Element3_B, 1);
+            dst = __VECTOR16FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, 1, src._Element1_R, src._Element1_G, src._Element1_B, 1, src._Element2_R, src._Element2_G, src._Element2_B, 1, src._Element3_R, src._Element3_G, src._Element3_B, 1);
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGRA(in __BGRx4<byte> src, out _VECTOR16 dst)
+        private static void _ConvertToBGRA(in __BGRx4<byte> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)255, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)255, (int)src._Element2_B, (int)src._Element2_G, (int)src._Element2_R, (int)255, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)255).ConvertToSingle();
+            dst = __VECTOR16FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)255, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)255, (int)src._Element2_B, (int)src._Element2_G, (int)src._Element2_R, (int)255, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)255).ConvertToSingle();
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGRA(in __BGRx4<float> src, out _VECTOR16 dst)
+        private static void _ConvertToBGRA(in __BGRx4<float> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, 1, src._Element1_B, src._Element1_G, src._Element1_R, 1, src._Element2_B, src._Element2_G, src._Element2_R, 1, src._Element3_B, src._Element3_G, src._Element3_R, 1);
+            dst = __VECTOR16FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, 1, src._Element1_B, src._Element1_G, src._Element1_R, 1, src._Element2_B, src._Element2_G, src._Element2_R, 1, src._Element3_B, src._Element3_G, src._Element3_R, 1);
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToARGB(in __BGRx4<byte> src, out _VECTOR16 dst)
+        private static void _ConvertToARGB(in __BGRx4<byte> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create((int)255, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)255, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)255, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)255, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B).ConvertToSingle();
+            dst = __VECTOR16FACTORY.Create((int)255, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)255, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)255, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)255, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B).ConvertToSingle();
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToARGB(in __BGRx4<float> src, out _VECTOR16 dst)
+        private static void _ConvertToARGB(in __BGRx4<float> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create(1, src._Element0_R, src._Element0_G, src._Element0_B, 1, src._Element1_R, src._Element1_G, src._Element1_B, 1, src._Element2_R, src._Element2_G, src._Element2_B, 1, src._Element3_R, src._Element3_G, src._Element3_B);
+            dst = __VECTOR16FACTORY.Create(1, src._Element0_R, src._Element0_G, src._Element0_B, 1, src._Element1_R, src._Element1_G, src._Element1_B, 1, src._Element2_R, src._Element2_G, src._Element2_B, 1, src._Element3_R, src._Element3_G, src._Element3_B);
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGBA(ReadOnlySpan<__BGRx4<T>> src, Span<_VECTOR16> dst )
+        public static void CopyToRGBA(ReadOnlySpan<__BGRx4<T>> src, Span<__VECTOR16> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -1417,7 +1417,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGBA(ReadOnlySpan<__BGRx4<T>> src, Span<_VECTOR16> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToRGBA(ReadOnlySpan<__BGRx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector512();
@@ -1453,7 +1453,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGRA(ReadOnlySpan<__BGRx4<T>> src, Span<_VECTOR16> dst )
+        public static void CopyToBGRA(ReadOnlySpan<__BGRx4<T>> src, Span<__VECTOR16> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -1484,7 +1484,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGRA(ReadOnlySpan<__BGRx4<T>> src, Span<_VECTOR16> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToBGRA(ReadOnlySpan<__BGRx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector512();
@@ -1520,7 +1520,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToARGB(ReadOnlySpan<__BGRx4<T>> src, Span<_VECTOR16> dst )
+        public static void CopyToARGB(ReadOnlySpan<__BGRx4<T>> src, Span<__VECTOR16> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -1551,7 +1551,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToARGB(ReadOnlySpan<__BGRx4<T>> src, Span<_VECTOR16> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToARGB(ReadOnlySpan<__BGRx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector512();
@@ -1622,47 +1622,47 @@ namespace $rootnamespace$
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGB(in __BGRx8<byte> src, out _VECTOR8 dstX, out _VECTOR8 dstY, out _VECTOR8 dstZ)
+        private static void _ConvertToRGB(in __BGRx8<byte> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
-            dstX = _VECTOR8FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_R, (int)src._Element2_G).ConvertToSingle();
-            dstY = _VECTOR8FACTORY.Create((int)src._Element2_B, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element4_R, (int)src._Element4_G, (int)src._Element4_B, (int)src._Element5_R).ConvertToSingle();
-            dstZ = _VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B).ConvertToSingle();
+            dstX = __VECTOR8FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_R, (int)src._Element2_G).ConvertToSingle();
+            dstY = __VECTOR8FACTORY.Create((int)src._Element2_B, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element4_R, (int)src._Element4_G, (int)src._Element4_B, (int)src._Element5_R).ConvertToSingle();
+            dstZ = __VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B).ConvertToSingle();
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGB(in __BGRx8<float> src, out _VECTOR8 dstX, out _VECTOR8 dstY, out _VECTOR8 dstZ)
+        private static void _ConvertToRGB(in __BGRx8<float> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
-            dstX = _VECTOR8FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_R, src._Element2_G);
-            dstY = _VECTOR8FACTORY.Create(src._Element2_B, src._Element3_R, src._Element3_G, src._Element3_B, src._Element4_R, src._Element4_G, src._Element4_B, src._Element5_R);
-            dstZ = _VECTOR8FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B);
+            dstX = __VECTOR8FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_R, src._Element2_G);
+            dstY = __VECTOR8FACTORY.Create(src._Element2_B, src._Element3_R, src._Element3_G, src._Element3_B, src._Element4_R, src._Element4_G, src._Element4_B, src._Element5_R);
+            dstZ = __VECTOR8FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B);
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGR(in __BGRx8<byte> src, out _VECTOR8 dstX, out _VECTOR8 dstY, out _VECTOR8 dstZ)
+        private static void _ConvertToBGR(in __BGRx8<byte> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
-            dstX = _VECTOR8FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element2_B, (int)src._Element2_G).ConvertToSingle();
-            dstY = _VECTOR8FACTORY.Create((int)src._Element2_R, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element4_B, (int)src._Element4_G, (int)src._Element4_R, (int)src._Element5_B).ConvertToSingle();
-            dstZ = _VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R).ConvertToSingle();
+            dstX = __VECTOR8FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element2_B, (int)src._Element2_G).ConvertToSingle();
+            dstY = __VECTOR8FACTORY.Create((int)src._Element2_R, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element4_B, (int)src._Element4_G, (int)src._Element4_R, (int)src._Element5_B).ConvertToSingle();
+            dstZ = __VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R).ConvertToSingle();
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGR(in __BGRx8<float> src, out _VECTOR8 dstX, out _VECTOR8 dstY, out _VECTOR8 dstZ)
+        private static void _ConvertToBGR(in __BGRx8<float> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
-            dstX = _VECTOR8FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element1_B, src._Element1_G, src._Element1_R, src._Element2_B, src._Element2_G);
-            dstY = _VECTOR8FACTORY.Create(src._Element2_R, src._Element3_B, src._Element3_G, src._Element3_R, src._Element4_B, src._Element4_G, src._Element4_R, src._Element5_B);
-            dstZ = _VECTOR8FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R);
+            dstX = __VECTOR8FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element1_B, src._Element1_G, src._Element1_R, src._Element2_B, src._Element2_G);
+            dstY = __VECTOR8FACTORY.Create(src._Element2_R, src._Element3_B, src._Element3_G, src._Element3_R, src._Element4_B, src._Element4_G, src._Element4_R, src._Element5_B);
+            dstZ = __VECTOR8FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R);
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGB(ReadOnlySpan<__BGRx8<T>> src, Span<_VECTOR8> dst )
+        public static void CopyToRGB(ReadOnlySpan<__BGRx8<T>> src, Span<__VECTOR8> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -1693,7 +1693,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGB(ReadOnlySpan<__BGRx8<T>> src, Span<_VECTOR8> dst , in ___XYZ mul, in ___XYZ add)
+        public static void CopyToRGB(ReadOnlySpan<__BGRx8<T>> src, Span<__VECTOR8> dst , in __XYZ mul, in __XYZ add)
         {
 
             var mul3 = __Vector3x256.Repeat(mul);
@@ -1733,7 +1733,7 @@ namespace $rootnamespace$
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGR(ReadOnlySpan<__BGRx8<T>> src, Span<_VECTOR8> dst )
+        public static void CopyToBGR(ReadOnlySpan<__BGRx8<T>> src, Span<__VECTOR8> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -1764,7 +1764,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGR(ReadOnlySpan<__BGRx8<T>> src, Span<_VECTOR8> dst , in ___XYZ mul, in ___XYZ add)
+        public static void CopyToBGR(ReadOnlySpan<__BGRx8<T>> src, Span<__VECTOR8> dst , in __XYZ mul, in __XYZ add)
         {
 
             var mul3 = __Vector3x256.Repeat(mul);
@@ -1863,47 +1863,47 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGB(in __BGRx16<byte> src, out _VECTOR16 dstX, out _VECTOR16 dstY, out _VECTOR16 dstZ)
+        private static void _ConvertToRGB(in __BGRx16<byte> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
-            dstX = _VECTOR16FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element4_R, (int)src._Element4_G, (int)src._Element4_B, (int)src._Element5_R).ConvertToSingle();
-            dstY = _VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B, (int)src._Element8_R, (int)src._Element8_G, (int)src._Element8_B, (int)src._Element9_R, (int)src._Element9_G, (int)src._Element9_B, (int)src._Element10_R, (int)src._Element10_G).ConvertToSingle();
-            dstZ = _VECTOR16FACTORY.Create((int)src._Element10_B, (int)src._Element11_R, (int)src._Element11_G, (int)src._Element11_B, (int)src._Element12_R, (int)src._Element12_G, (int)src._Element12_B, (int)src._Element13_R, (int)src._Element13_G, (int)src._Element13_B, (int)src._Element14_R, (int)src._Element14_G, (int)src._Element14_B, (int)src._Element15_R, (int)src._Element15_G, (int)src._Element15_B).ConvertToSingle();
+            dstX = __VECTOR16FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element4_R, (int)src._Element4_G, (int)src._Element4_B, (int)src._Element5_R).ConvertToSingle();
+            dstY = __VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B, (int)src._Element8_R, (int)src._Element8_G, (int)src._Element8_B, (int)src._Element9_R, (int)src._Element9_G, (int)src._Element9_B, (int)src._Element10_R, (int)src._Element10_G).ConvertToSingle();
+            dstZ = __VECTOR16FACTORY.Create((int)src._Element10_B, (int)src._Element11_R, (int)src._Element11_G, (int)src._Element11_B, (int)src._Element12_R, (int)src._Element12_G, (int)src._Element12_B, (int)src._Element13_R, (int)src._Element13_G, (int)src._Element13_B, (int)src._Element14_R, (int)src._Element14_G, (int)src._Element14_B, (int)src._Element15_R, (int)src._Element15_G, (int)src._Element15_B).ConvertToSingle();
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGB(in __BGRx16<float> src, out _VECTOR16 dstX, out _VECTOR16 dstY, out _VECTOR16 dstZ)
+        private static void _ConvertToRGB(in __BGRx16<float> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
-            dstX = _VECTOR16FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_R, src._Element2_G, src._Element2_B, src._Element3_R, src._Element3_G, src._Element3_B, src._Element4_R, src._Element4_G, src._Element4_B, src._Element5_R);
-            dstY = _VECTOR16FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B, src._Element8_R, src._Element8_G, src._Element8_B, src._Element9_R, src._Element9_G, src._Element9_B, src._Element10_R, src._Element10_G);
-            dstZ = _VECTOR16FACTORY.Create(src._Element10_B, src._Element11_R, src._Element11_G, src._Element11_B, src._Element12_R, src._Element12_G, src._Element12_B, src._Element13_R, src._Element13_G, src._Element13_B, src._Element14_R, src._Element14_G, src._Element14_B, src._Element15_R, src._Element15_G, src._Element15_B);
+            dstX = __VECTOR16FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_R, src._Element2_G, src._Element2_B, src._Element3_R, src._Element3_G, src._Element3_B, src._Element4_R, src._Element4_G, src._Element4_B, src._Element5_R);
+            dstY = __VECTOR16FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B, src._Element8_R, src._Element8_G, src._Element8_B, src._Element9_R, src._Element9_G, src._Element9_B, src._Element10_R, src._Element10_G);
+            dstZ = __VECTOR16FACTORY.Create(src._Element10_B, src._Element11_R, src._Element11_G, src._Element11_B, src._Element12_R, src._Element12_G, src._Element12_B, src._Element13_R, src._Element13_G, src._Element13_B, src._Element14_R, src._Element14_G, src._Element14_B, src._Element15_R, src._Element15_G, src._Element15_B);
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGR(in __BGRx16<byte> src, out _VECTOR16 dstX, out _VECTOR16 dstY, out _VECTOR16 dstZ)
+        private static void _ConvertToBGR(in __BGRx16<byte> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
-            dstX = _VECTOR16FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element2_B, (int)src._Element2_G, (int)src._Element2_R, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element4_B, (int)src._Element4_G, (int)src._Element4_R, (int)src._Element5_B).ConvertToSingle();
-            dstY = _VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R, (int)src._Element8_B, (int)src._Element8_G, (int)src._Element8_R, (int)src._Element9_B, (int)src._Element9_G, (int)src._Element9_R, (int)src._Element10_B, (int)src._Element10_G).ConvertToSingle();
-            dstZ = _VECTOR16FACTORY.Create((int)src._Element10_R, (int)src._Element11_B, (int)src._Element11_G, (int)src._Element11_R, (int)src._Element12_B, (int)src._Element12_G, (int)src._Element12_R, (int)src._Element13_B, (int)src._Element13_G, (int)src._Element13_R, (int)src._Element14_B, (int)src._Element14_G, (int)src._Element14_R, (int)src._Element15_B, (int)src._Element15_G, (int)src._Element15_R).ConvertToSingle();
+            dstX = __VECTOR16FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element2_B, (int)src._Element2_G, (int)src._Element2_R, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element4_B, (int)src._Element4_G, (int)src._Element4_R, (int)src._Element5_B).ConvertToSingle();
+            dstY = __VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R, (int)src._Element8_B, (int)src._Element8_G, (int)src._Element8_R, (int)src._Element9_B, (int)src._Element9_G, (int)src._Element9_R, (int)src._Element10_B, (int)src._Element10_G).ConvertToSingle();
+            dstZ = __VECTOR16FACTORY.Create((int)src._Element10_R, (int)src._Element11_B, (int)src._Element11_G, (int)src._Element11_R, (int)src._Element12_B, (int)src._Element12_G, (int)src._Element12_R, (int)src._Element13_B, (int)src._Element13_G, (int)src._Element13_R, (int)src._Element14_B, (int)src._Element14_G, (int)src._Element14_R, (int)src._Element15_B, (int)src._Element15_G, (int)src._Element15_R).ConvertToSingle();
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGR(in __BGRx16<float> src, out _VECTOR16 dstX, out _VECTOR16 dstY, out _VECTOR16 dstZ)
+        private static void _ConvertToBGR(in __BGRx16<float> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
-            dstX = _VECTOR16FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element1_B, src._Element1_G, src._Element1_R, src._Element2_B, src._Element2_G, src._Element2_R, src._Element3_B, src._Element3_G, src._Element3_R, src._Element4_B, src._Element4_G, src._Element4_R, src._Element5_B);
-            dstY = _VECTOR16FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R, src._Element8_B, src._Element8_G, src._Element8_R, src._Element9_B, src._Element9_G, src._Element9_R, src._Element10_B, src._Element10_G);
-            dstZ = _VECTOR16FACTORY.Create(src._Element10_R, src._Element11_B, src._Element11_G, src._Element11_R, src._Element12_B, src._Element12_G, src._Element12_R, src._Element13_B, src._Element13_G, src._Element13_R, src._Element14_B, src._Element14_G, src._Element14_R, src._Element15_B, src._Element15_G, src._Element15_R);
+            dstX = __VECTOR16FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element1_B, src._Element1_G, src._Element1_R, src._Element2_B, src._Element2_G, src._Element2_R, src._Element3_B, src._Element3_G, src._Element3_R, src._Element4_B, src._Element4_G, src._Element4_R, src._Element5_B);
+            dstY = __VECTOR16FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R, src._Element8_B, src._Element8_G, src._Element8_R, src._Element9_B, src._Element9_G, src._Element9_R, src._Element10_B, src._Element10_G);
+            dstZ = __VECTOR16FACTORY.Create(src._Element10_R, src._Element11_B, src._Element11_G, src._Element11_R, src._Element12_B, src._Element12_G, src._Element12_R, src._Element13_B, src._Element13_G, src._Element13_R, src._Element14_B, src._Element14_G, src._Element14_R, src._Element15_B, src._Element15_G, src._Element15_R);
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGB(ReadOnlySpan<__BGRx16<T>> src, Span<_VECTOR16> dst )
+        public static void CopyToRGB(ReadOnlySpan<__BGRx16<T>> src, Span<__VECTOR16> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -1934,7 +1934,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGB(ReadOnlySpan<__BGRx16<T>> src, Span<_VECTOR16> dst , in ___XYZ mul, in ___XYZ add)
+        public static void CopyToRGB(ReadOnlySpan<__BGRx16<T>> src, Span<__VECTOR16> dst , in __XYZ mul, in __XYZ add)
         {
 
             var mul3 = __Vector3x512.Repeat(mul);
@@ -1974,7 +1974,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGR(ReadOnlySpan<__BGRx16<T>> src, Span<_VECTOR16> dst )
+        public static void CopyToBGR(ReadOnlySpan<__BGRx16<T>> src, Span<__VECTOR16> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -2005,7 +2005,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGR(ReadOnlySpan<__BGRx16<T>> src, Span<_VECTOR16> dst , in ___XYZ mul, in ___XYZ add)
+        public static void CopyToBGR(ReadOnlySpan<__BGRx16<T>> src, Span<__VECTOR16> dst , in __XYZ mul, in __XYZ add)
         {
 
             var mul3 = __Vector3x512.Repeat(mul);
@@ -2068,55 +2068,55 @@ namespace $rootnamespace$
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGBA(in __RGBAx2<byte> src, out _VECTOR8 dst)
+        private static void _ConvertToRGBA(in __RGBAx2<byte> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element0_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element1_A).ConvertToSingle();
+            dst = __VECTOR8FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element0_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element1_A).ConvertToSingle();
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGBA(in __RGBAx2<float> src, out _VECTOR8 dst)
+        private static void _ConvertToRGBA(in __RGBAx2<float> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element0_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element1_A);
+            dst = __VECTOR8FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element0_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element1_A);
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGRA(in __RGBAx2<byte> src, out _VECTOR8 dst)
+        private static void _ConvertToBGRA(in __RGBAx2<byte> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element0_A, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element1_A).ConvertToSingle();
+            dst = __VECTOR8FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element0_A, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element1_A).ConvertToSingle();
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGRA(in __RGBAx2<float> src, out _VECTOR8 dst)
+        private static void _ConvertToBGRA(in __RGBAx2<float> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element0_A, src._Element1_B, src._Element1_G, src._Element1_R, src._Element1_A);
+            dst = __VECTOR8FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element0_A, src._Element1_B, src._Element1_G, src._Element1_R, src._Element1_A);
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToARGB(in __RGBAx2<byte> src, out _VECTOR8 dst)
+        private static void _ConvertToARGB(in __RGBAx2<byte> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create((int)src._Element0_A, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B).ConvertToSingle();
+            dst = __VECTOR8FACTORY.Create((int)src._Element0_A, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B).ConvertToSingle();
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToARGB(in __RGBAx2<float> src, out _VECTOR8 dst)
+        private static void _ConvertToARGB(in __RGBAx2<float> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create(src._Element0_A, src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_A, src._Element1_R, src._Element1_G, src._Element1_B);
+            dst = __VECTOR8FACTORY.Create(src._Element0_A, src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_A, src._Element1_R, src._Element1_G, src._Element1_B);
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGBA(ReadOnlySpan<__RGBAx2<T>> src, Span<_VECTOR8> dst )
+        public static void CopyToRGBA(ReadOnlySpan<__RGBAx2<T>> src, Span<__VECTOR8> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -2147,7 +2147,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGBA(ReadOnlySpan<__RGBAx2<T>> src, Span<_VECTOR8> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToRGBA(ReadOnlySpan<__RGBAx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector256();
@@ -2183,7 +2183,7 @@ namespace $rootnamespace$
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGRA(ReadOnlySpan<__RGBAx2<T>> src, Span<_VECTOR8> dst )
+        public static void CopyToBGRA(ReadOnlySpan<__RGBAx2<T>> src, Span<__VECTOR8> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -2214,7 +2214,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGRA(ReadOnlySpan<__RGBAx2<T>> src, Span<_VECTOR8> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToBGRA(ReadOnlySpan<__RGBAx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector256();
@@ -2250,7 +2250,7 @@ namespace $rootnamespace$
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToARGB(ReadOnlySpan<__RGBAx2<T>> src, Span<_VECTOR8> dst )
+        public static void CopyToARGB(ReadOnlySpan<__RGBAx2<T>> src, Span<__VECTOR8> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -2281,7 +2281,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToARGB(ReadOnlySpan<__RGBAx2<T>> src, Span<_VECTOR8> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToARGB(ReadOnlySpan<__RGBAx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector256();
@@ -2344,55 +2344,55 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGBA(in __RGBAx4<byte> src, out _VECTOR16 dst)
+        private static void _ConvertToRGBA(in __RGBAx4<byte> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element0_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element1_A, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element2_A, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element3_A).ConvertToSingle();
+            dst = __VECTOR16FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element0_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element1_A, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element2_A, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element3_A).ConvertToSingle();
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGBA(in __RGBAx4<float> src, out _VECTOR16 dst)
+        private static void _ConvertToRGBA(in __RGBAx4<float> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element0_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element1_A, src._Element2_R, src._Element2_G, src._Element2_B, src._Element2_A, src._Element3_R, src._Element3_G, src._Element3_B, src._Element3_A);
+            dst = __VECTOR16FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element0_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element1_A, src._Element2_R, src._Element2_G, src._Element2_B, src._Element2_A, src._Element3_R, src._Element3_G, src._Element3_B, src._Element3_A);
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGRA(in __RGBAx4<byte> src, out _VECTOR16 dst)
+        private static void _ConvertToBGRA(in __RGBAx4<byte> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element0_A, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element1_A, (int)src._Element2_B, (int)src._Element2_G, (int)src._Element2_R, (int)src._Element2_A, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element3_A).ConvertToSingle();
+            dst = __VECTOR16FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element0_A, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element1_A, (int)src._Element2_B, (int)src._Element2_G, (int)src._Element2_R, (int)src._Element2_A, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element3_A).ConvertToSingle();
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGRA(in __RGBAx4<float> src, out _VECTOR16 dst)
+        private static void _ConvertToBGRA(in __RGBAx4<float> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element0_A, src._Element1_B, src._Element1_G, src._Element1_R, src._Element1_A, src._Element2_B, src._Element2_G, src._Element2_R, src._Element2_A, src._Element3_B, src._Element3_G, src._Element3_R, src._Element3_A);
+            dst = __VECTOR16FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element0_A, src._Element1_B, src._Element1_G, src._Element1_R, src._Element1_A, src._Element2_B, src._Element2_G, src._Element2_R, src._Element2_A, src._Element3_B, src._Element3_G, src._Element3_R, src._Element3_A);
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToARGB(in __RGBAx4<byte> src, out _VECTOR16 dst)
+        private static void _ConvertToARGB(in __RGBAx4<byte> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create((int)src._Element0_A, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_A, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element3_A, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B).ConvertToSingle();
+            dst = __VECTOR16FACTORY.Create((int)src._Element0_A, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_A, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element3_A, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B).ConvertToSingle();
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToARGB(in __RGBAx4<float> src, out _VECTOR16 dst)
+        private static void _ConvertToARGB(in __RGBAx4<float> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create(src._Element0_A, src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_A, src._Element2_R, src._Element2_G, src._Element2_B, src._Element3_A, src._Element3_R, src._Element3_G, src._Element3_B);
+            dst = __VECTOR16FACTORY.Create(src._Element0_A, src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_A, src._Element2_R, src._Element2_G, src._Element2_B, src._Element3_A, src._Element3_R, src._Element3_G, src._Element3_B);
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGBA(ReadOnlySpan<__RGBAx4<T>> src, Span<_VECTOR16> dst )
+        public static void CopyToRGBA(ReadOnlySpan<__RGBAx4<T>> src, Span<__VECTOR16> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -2423,7 +2423,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGBA(ReadOnlySpan<__RGBAx4<T>> src, Span<_VECTOR16> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToRGBA(ReadOnlySpan<__RGBAx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector512();
@@ -2459,7 +2459,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGRA(ReadOnlySpan<__RGBAx4<T>> src, Span<_VECTOR16> dst )
+        public static void CopyToBGRA(ReadOnlySpan<__RGBAx4<T>> src, Span<__VECTOR16> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -2490,7 +2490,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGRA(ReadOnlySpan<__RGBAx4<T>> src, Span<_VECTOR16> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToBGRA(ReadOnlySpan<__RGBAx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector512();
@@ -2526,7 +2526,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToARGB(ReadOnlySpan<__RGBAx4<T>> src, Span<_VECTOR16> dst )
+        public static void CopyToARGB(ReadOnlySpan<__RGBAx4<T>> src, Span<__VECTOR16> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -2557,7 +2557,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToARGB(ReadOnlySpan<__RGBAx4<T>> src, Span<_VECTOR16> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToARGB(ReadOnlySpan<__RGBAx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector512();
@@ -2636,47 +2636,47 @@ namespace $rootnamespace$
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGB(in __RGBAx8<byte> src, out _VECTOR8 dstX, out _VECTOR8 dstY, out _VECTOR8 dstZ)
+        private static void _ConvertToRGB(in __RGBAx8<byte> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
-            dstX = _VECTOR8FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_R, (int)src._Element2_G).ConvertToSingle();
-            dstY = _VECTOR8FACTORY.Create((int)src._Element2_B, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element4_R, (int)src._Element4_G, (int)src._Element4_B, (int)src._Element5_R).ConvertToSingle();
-            dstZ = _VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B).ConvertToSingle();
+            dstX = __VECTOR8FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_R, (int)src._Element2_G).ConvertToSingle();
+            dstY = __VECTOR8FACTORY.Create((int)src._Element2_B, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element4_R, (int)src._Element4_G, (int)src._Element4_B, (int)src._Element5_R).ConvertToSingle();
+            dstZ = __VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B).ConvertToSingle();
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGB(in __RGBAx8<float> src, out _VECTOR8 dstX, out _VECTOR8 dstY, out _VECTOR8 dstZ)
+        private static void _ConvertToRGB(in __RGBAx8<float> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
-            dstX = _VECTOR8FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_R, src._Element2_G);
-            dstY = _VECTOR8FACTORY.Create(src._Element2_B, src._Element3_R, src._Element3_G, src._Element3_B, src._Element4_R, src._Element4_G, src._Element4_B, src._Element5_R);
-            dstZ = _VECTOR8FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B);
+            dstX = __VECTOR8FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_R, src._Element2_G);
+            dstY = __VECTOR8FACTORY.Create(src._Element2_B, src._Element3_R, src._Element3_G, src._Element3_B, src._Element4_R, src._Element4_G, src._Element4_B, src._Element5_R);
+            dstZ = __VECTOR8FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B);
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGR(in __RGBAx8<byte> src, out _VECTOR8 dstX, out _VECTOR8 dstY, out _VECTOR8 dstZ)
+        private static void _ConvertToBGR(in __RGBAx8<byte> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
-            dstX = _VECTOR8FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element2_B, (int)src._Element2_G).ConvertToSingle();
-            dstY = _VECTOR8FACTORY.Create((int)src._Element2_R, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element4_B, (int)src._Element4_G, (int)src._Element4_R, (int)src._Element5_B).ConvertToSingle();
-            dstZ = _VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R).ConvertToSingle();
+            dstX = __VECTOR8FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element2_B, (int)src._Element2_G).ConvertToSingle();
+            dstY = __VECTOR8FACTORY.Create((int)src._Element2_R, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element4_B, (int)src._Element4_G, (int)src._Element4_R, (int)src._Element5_B).ConvertToSingle();
+            dstZ = __VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R).ConvertToSingle();
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGR(in __RGBAx8<float> src, out _VECTOR8 dstX, out _VECTOR8 dstY, out _VECTOR8 dstZ)
+        private static void _ConvertToBGR(in __RGBAx8<float> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
-            dstX = _VECTOR8FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element1_B, src._Element1_G, src._Element1_R, src._Element2_B, src._Element2_G);
-            dstY = _VECTOR8FACTORY.Create(src._Element2_R, src._Element3_B, src._Element3_G, src._Element3_R, src._Element4_B, src._Element4_G, src._Element4_R, src._Element5_B);
-            dstZ = _VECTOR8FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R);
+            dstX = __VECTOR8FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element1_B, src._Element1_G, src._Element1_R, src._Element2_B, src._Element2_G);
+            dstY = __VECTOR8FACTORY.Create(src._Element2_R, src._Element3_B, src._Element3_G, src._Element3_R, src._Element4_B, src._Element4_G, src._Element4_R, src._Element5_B);
+            dstZ = __VECTOR8FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R);
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGB(ReadOnlySpan<__RGBAx8<T>> src, Span<_VECTOR8> dst )
+        public static void CopyToRGB(ReadOnlySpan<__RGBAx8<T>> src, Span<__VECTOR8> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -2707,7 +2707,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGB(ReadOnlySpan<__RGBAx8<T>> src, Span<_VECTOR8> dst , in ___XYZ mul, in ___XYZ add)
+        public static void CopyToRGB(ReadOnlySpan<__RGBAx8<T>> src, Span<__VECTOR8> dst , in __XYZ mul, in __XYZ add)
         {
 
             var mul3 = __Vector3x256.Repeat(mul);
@@ -2747,7 +2747,7 @@ namespace $rootnamespace$
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGR(ReadOnlySpan<__RGBAx8<T>> src, Span<_VECTOR8> dst )
+        public static void CopyToBGR(ReadOnlySpan<__RGBAx8<T>> src, Span<__VECTOR8> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -2778,7 +2778,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGR(ReadOnlySpan<__RGBAx8<T>> src, Span<_VECTOR8> dst , in ___XYZ mul, in ___XYZ add)
+        public static void CopyToBGR(ReadOnlySpan<__RGBAx8<T>> src, Span<__VECTOR8> dst , in __XYZ mul, in __XYZ add)
         {
 
             var mul3 = __Vector3x256.Repeat(mul);
@@ -2893,47 +2893,47 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGB(in __RGBAx16<byte> src, out _VECTOR16 dstX, out _VECTOR16 dstY, out _VECTOR16 dstZ)
+        private static void _ConvertToRGB(in __RGBAx16<byte> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
-            dstX = _VECTOR16FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element4_R, (int)src._Element4_G, (int)src._Element4_B, (int)src._Element5_R).ConvertToSingle();
-            dstY = _VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B, (int)src._Element8_R, (int)src._Element8_G, (int)src._Element8_B, (int)src._Element9_R, (int)src._Element9_G, (int)src._Element9_B, (int)src._Element10_R, (int)src._Element10_G).ConvertToSingle();
-            dstZ = _VECTOR16FACTORY.Create((int)src._Element10_B, (int)src._Element11_R, (int)src._Element11_G, (int)src._Element11_B, (int)src._Element12_R, (int)src._Element12_G, (int)src._Element12_B, (int)src._Element13_R, (int)src._Element13_G, (int)src._Element13_B, (int)src._Element14_R, (int)src._Element14_G, (int)src._Element14_B, (int)src._Element15_R, (int)src._Element15_G, (int)src._Element15_B).ConvertToSingle();
+            dstX = __VECTOR16FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element4_R, (int)src._Element4_G, (int)src._Element4_B, (int)src._Element5_R).ConvertToSingle();
+            dstY = __VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B, (int)src._Element8_R, (int)src._Element8_G, (int)src._Element8_B, (int)src._Element9_R, (int)src._Element9_G, (int)src._Element9_B, (int)src._Element10_R, (int)src._Element10_G).ConvertToSingle();
+            dstZ = __VECTOR16FACTORY.Create((int)src._Element10_B, (int)src._Element11_R, (int)src._Element11_G, (int)src._Element11_B, (int)src._Element12_R, (int)src._Element12_G, (int)src._Element12_B, (int)src._Element13_R, (int)src._Element13_G, (int)src._Element13_B, (int)src._Element14_R, (int)src._Element14_G, (int)src._Element14_B, (int)src._Element15_R, (int)src._Element15_G, (int)src._Element15_B).ConvertToSingle();
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGB(in __RGBAx16<float> src, out _VECTOR16 dstX, out _VECTOR16 dstY, out _VECTOR16 dstZ)
+        private static void _ConvertToRGB(in __RGBAx16<float> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
-            dstX = _VECTOR16FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_R, src._Element2_G, src._Element2_B, src._Element3_R, src._Element3_G, src._Element3_B, src._Element4_R, src._Element4_G, src._Element4_B, src._Element5_R);
-            dstY = _VECTOR16FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B, src._Element8_R, src._Element8_G, src._Element8_B, src._Element9_R, src._Element9_G, src._Element9_B, src._Element10_R, src._Element10_G);
-            dstZ = _VECTOR16FACTORY.Create(src._Element10_B, src._Element11_R, src._Element11_G, src._Element11_B, src._Element12_R, src._Element12_G, src._Element12_B, src._Element13_R, src._Element13_G, src._Element13_B, src._Element14_R, src._Element14_G, src._Element14_B, src._Element15_R, src._Element15_G, src._Element15_B);
+            dstX = __VECTOR16FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_R, src._Element2_G, src._Element2_B, src._Element3_R, src._Element3_G, src._Element3_B, src._Element4_R, src._Element4_G, src._Element4_B, src._Element5_R);
+            dstY = __VECTOR16FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B, src._Element8_R, src._Element8_G, src._Element8_B, src._Element9_R, src._Element9_G, src._Element9_B, src._Element10_R, src._Element10_G);
+            dstZ = __VECTOR16FACTORY.Create(src._Element10_B, src._Element11_R, src._Element11_G, src._Element11_B, src._Element12_R, src._Element12_G, src._Element12_B, src._Element13_R, src._Element13_G, src._Element13_B, src._Element14_R, src._Element14_G, src._Element14_B, src._Element15_R, src._Element15_G, src._Element15_B);
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGR(in __RGBAx16<byte> src, out _VECTOR16 dstX, out _VECTOR16 dstY, out _VECTOR16 dstZ)
+        private static void _ConvertToBGR(in __RGBAx16<byte> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
-            dstX = _VECTOR16FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element2_B, (int)src._Element2_G, (int)src._Element2_R, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element4_B, (int)src._Element4_G, (int)src._Element4_R, (int)src._Element5_B).ConvertToSingle();
-            dstY = _VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R, (int)src._Element8_B, (int)src._Element8_G, (int)src._Element8_R, (int)src._Element9_B, (int)src._Element9_G, (int)src._Element9_R, (int)src._Element10_B, (int)src._Element10_G).ConvertToSingle();
-            dstZ = _VECTOR16FACTORY.Create((int)src._Element10_R, (int)src._Element11_B, (int)src._Element11_G, (int)src._Element11_R, (int)src._Element12_B, (int)src._Element12_G, (int)src._Element12_R, (int)src._Element13_B, (int)src._Element13_G, (int)src._Element13_R, (int)src._Element14_B, (int)src._Element14_G, (int)src._Element14_R, (int)src._Element15_B, (int)src._Element15_G, (int)src._Element15_R).ConvertToSingle();
+            dstX = __VECTOR16FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element2_B, (int)src._Element2_G, (int)src._Element2_R, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element4_B, (int)src._Element4_G, (int)src._Element4_R, (int)src._Element5_B).ConvertToSingle();
+            dstY = __VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R, (int)src._Element8_B, (int)src._Element8_G, (int)src._Element8_R, (int)src._Element9_B, (int)src._Element9_G, (int)src._Element9_R, (int)src._Element10_B, (int)src._Element10_G).ConvertToSingle();
+            dstZ = __VECTOR16FACTORY.Create((int)src._Element10_R, (int)src._Element11_B, (int)src._Element11_G, (int)src._Element11_R, (int)src._Element12_B, (int)src._Element12_G, (int)src._Element12_R, (int)src._Element13_B, (int)src._Element13_G, (int)src._Element13_R, (int)src._Element14_B, (int)src._Element14_G, (int)src._Element14_R, (int)src._Element15_B, (int)src._Element15_G, (int)src._Element15_R).ConvertToSingle();
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGR(in __RGBAx16<float> src, out _VECTOR16 dstX, out _VECTOR16 dstY, out _VECTOR16 dstZ)
+        private static void _ConvertToBGR(in __RGBAx16<float> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
-            dstX = _VECTOR16FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element1_B, src._Element1_G, src._Element1_R, src._Element2_B, src._Element2_G, src._Element2_R, src._Element3_B, src._Element3_G, src._Element3_R, src._Element4_B, src._Element4_G, src._Element4_R, src._Element5_B);
-            dstY = _VECTOR16FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R, src._Element8_B, src._Element8_G, src._Element8_R, src._Element9_B, src._Element9_G, src._Element9_R, src._Element10_B, src._Element10_G);
-            dstZ = _VECTOR16FACTORY.Create(src._Element10_R, src._Element11_B, src._Element11_G, src._Element11_R, src._Element12_B, src._Element12_G, src._Element12_R, src._Element13_B, src._Element13_G, src._Element13_R, src._Element14_B, src._Element14_G, src._Element14_R, src._Element15_B, src._Element15_G, src._Element15_R);
+            dstX = __VECTOR16FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element1_B, src._Element1_G, src._Element1_R, src._Element2_B, src._Element2_G, src._Element2_R, src._Element3_B, src._Element3_G, src._Element3_R, src._Element4_B, src._Element4_G, src._Element4_R, src._Element5_B);
+            dstY = __VECTOR16FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R, src._Element8_B, src._Element8_G, src._Element8_R, src._Element9_B, src._Element9_G, src._Element9_R, src._Element10_B, src._Element10_G);
+            dstZ = __VECTOR16FACTORY.Create(src._Element10_R, src._Element11_B, src._Element11_G, src._Element11_R, src._Element12_B, src._Element12_G, src._Element12_R, src._Element13_B, src._Element13_G, src._Element13_R, src._Element14_B, src._Element14_G, src._Element14_R, src._Element15_B, src._Element15_G, src._Element15_R);
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGB(ReadOnlySpan<__RGBAx16<T>> src, Span<_VECTOR16> dst )
+        public static void CopyToRGB(ReadOnlySpan<__RGBAx16<T>> src, Span<__VECTOR16> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -2964,7 +2964,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGB(ReadOnlySpan<__RGBAx16<T>> src, Span<_VECTOR16> dst , in ___XYZ mul, in ___XYZ add)
+        public static void CopyToRGB(ReadOnlySpan<__RGBAx16<T>> src, Span<__VECTOR16> dst , in __XYZ mul, in __XYZ add)
         {
 
             var mul3 = __Vector3x512.Repeat(mul);
@@ -3004,7 +3004,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGR(ReadOnlySpan<__RGBAx16<T>> src, Span<_VECTOR16> dst )
+        public static void CopyToBGR(ReadOnlySpan<__RGBAx16<T>> src, Span<__VECTOR16> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -3035,7 +3035,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGR(ReadOnlySpan<__RGBAx16<T>> src, Span<_VECTOR16> dst , in ___XYZ mul, in ___XYZ add)
+        public static void CopyToBGR(ReadOnlySpan<__RGBAx16<T>> src, Span<__VECTOR16> dst , in __XYZ mul, in __XYZ add)
         {
 
             var mul3 = __Vector3x512.Repeat(mul);
@@ -3098,55 +3098,55 @@ namespace $rootnamespace$
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGBA(in __BGRAx2<byte> src, out _VECTOR8 dst)
+        private static void _ConvertToRGBA(in __BGRAx2<byte> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element0_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element1_A).ConvertToSingle();
+            dst = __VECTOR8FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element0_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element1_A).ConvertToSingle();
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGBA(in __BGRAx2<float> src, out _VECTOR8 dst)
+        private static void _ConvertToRGBA(in __BGRAx2<float> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element0_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element1_A);
+            dst = __VECTOR8FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element0_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element1_A);
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGRA(in __BGRAx2<byte> src, out _VECTOR8 dst)
+        private static void _ConvertToBGRA(in __BGRAx2<byte> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element0_A, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element1_A).ConvertToSingle();
+            dst = __VECTOR8FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element0_A, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element1_A).ConvertToSingle();
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGRA(in __BGRAx2<float> src, out _VECTOR8 dst)
+        private static void _ConvertToBGRA(in __BGRAx2<float> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element0_A, src._Element1_B, src._Element1_G, src._Element1_R, src._Element1_A);
+            dst = __VECTOR8FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element0_A, src._Element1_B, src._Element1_G, src._Element1_R, src._Element1_A);
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToARGB(in __BGRAx2<byte> src, out _VECTOR8 dst)
+        private static void _ConvertToARGB(in __BGRAx2<byte> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create((int)src._Element0_A, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B).ConvertToSingle();
+            dst = __VECTOR8FACTORY.Create((int)src._Element0_A, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B).ConvertToSingle();
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToARGB(in __BGRAx2<float> src, out _VECTOR8 dst)
+        private static void _ConvertToARGB(in __BGRAx2<float> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create(src._Element0_A, src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_A, src._Element1_R, src._Element1_G, src._Element1_B);
+            dst = __VECTOR8FACTORY.Create(src._Element0_A, src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_A, src._Element1_R, src._Element1_G, src._Element1_B);
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGBA(ReadOnlySpan<__BGRAx2<T>> src, Span<_VECTOR8> dst )
+        public static void CopyToRGBA(ReadOnlySpan<__BGRAx2<T>> src, Span<__VECTOR8> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -3177,7 +3177,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGBA(ReadOnlySpan<__BGRAx2<T>> src, Span<_VECTOR8> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToRGBA(ReadOnlySpan<__BGRAx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector256();
@@ -3213,7 +3213,7 @@ namespace $rootnamespace$
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGRA(ReadOnlySpan<__BGRAx2<T>> src, Span<_VECTOR8> dst )
+        public static void CopyToBGRA(ReadOnlySpan<__BGRAx2<T>> src, Span<__VECTOR8> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -3244,7 +3244,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGRA(ReadOnlySpan<__BGRAx2<T>> src, Span<_VECTOR8> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToBGRA(ReadOnlySpan<__BGRAx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector256();
@@ -3280,7 +3280,7 @@ namespace $rootnamespace$
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToARGB(ReadOnlySpan<__BGRAx2<T>> src, Span<_VECTOR8> dst )
+        public static void CopyToARGB(ReadOnlySpan<__BGRAx2<T>> src, Span<__VECTOR8> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -3311,7 +3311,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToARGB(ReadOnlySpan<__BGRAx2<T>> src, Span<_VECTOR8> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToARGB(ReadOnlySpan<__BGRAx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector256();
@@ -3374,55 +3374,55 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGBA(in __BGRAx4<byte> src, out _VECTOR16 dst)
+        private static void _ConvertToRGBA(in __BGRAx4<byte> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element0_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element1_A, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element2_A, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element3_A).ConvertToSingle();
+            dst = __VECTOR16FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element0_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element1_A, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element2_A, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element3_A).ConvertToSingle();
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGBA(in __BGRAx4<float> src, out _VECTOR16 dst)
+        private static void _ConvertToRGBA(in __BGRAx4<float> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element0_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element1_A, src._Element2_R, src._Element2_G, src._Element2_B, src._Element2_A, src._Element3_R, src._Element3_G, src._Element3_B, src._Element3_A);
+            dst = __VECTOR16FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element0_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element1_A, src._Element2_R, src._Element2_G, src._Element2_B, src._Element2_A, src._Element3_R, src._Element3_G, src._Element3_B, src._Element3_A);
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGRA(in __BGRAx4<byte> src, out _VECTOR16 dst)
+        private static void _ConvertToBGRA(in __BGRAx4<byte> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element0_A, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element1_A, (int)src._Element2_B, (int)src._Element2_G, (int)src._Element2_R, (int)src._Element2_A, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element3_A).ConvertToSingle();
+            dst = __VECTOR16FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element0_A, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element1_A, (int)src._Element2_B, (int)src._Element2_G, (int)src._Element2_R, (int)src._Element2_A, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element3_A).ConvertToSingle();
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGRA(in __BGRAx4<float> src, out _VECTOR16 dst)
+        private static void _ConvertToBGRA(in __BGRAx4<float> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element0_A, src._Element1_B, src._Element1_G, src._Element1_R, src._Element1_A, src._Element2_B, src._Element2_G, src._Element2_R, src._Element2_A, src._Element3_B, src._Element3_G, src._Element3_R, src._Element3_A);
+            dst = __VECTOR16FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element0_A, src._Element1_B, src._Element1_G, src._Element1_R, src._Element1_A, src._Element2_B, src._Element2_G, src._Element2_R, src._Element2_A, src._Element3_B, src._Element3_G, src._Element3_R, src._Element3_A);
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToARGB(in __BGRAx4<byte> src, out _VECTOR16 dst)
+        private static void _ConvertToARGB(in __BGRAx4<byte> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create((int)src._Element0_A, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_A, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element3_A, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B).ConvertToSingle();
+            dst = __VECTOR16FACTORY.Create((int)src._Element0_A, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_A, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element3_A, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B).ConvertToSingle();
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToARGB(in __BGRAx4<float> src, out _VECTOR16 dst)
+        private static void _ConvertToARGB(in __BGRAx4<float> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create(src._Element0_A, src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_A, src._Element2_R, src._Element2_G, src._Element2_B, src._Element3_A, src._Element3_R, src._Element3_G, src._Element3_B);
+            dst = __VECTOR16FACTORY.Create(src._Element0_A, src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_A, src._Element2_R, src._Element2_G, src._Element2_B, src._Element3_A, src._Element3_R, src._Element3_G, src._Element3_B);
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGBA(ReadOnlySpan<__BGRAx4<T>> src, Span<_VECTOR16> dst )
+        public static void CopyToRGBA(ReadOnlySpan<__BGRAx4<T>> src, Span<__VECTOR16> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -3453,7 +3453,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGBA(ReadOnlySpan<__BGRAx4<T>> src, Span<_VECTOR16> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToRGBA(ReadOnlySpan<__BGRAx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector512();
@@ -3489,7 +3489,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGRA(ReadOnlySpan<__BGRAx4<T>> src, Span<_VECTOR16> dst )
+        public static void CopyToBGRA(ReadOnlySpan<__BGRAx4<T>> src, Span<__VECTOR16> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -3520,7 +3520,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGRA(ReadOnlySpan<__BGRAx4<T>> src, Span<_VECTOR16> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToBGRA(ReadOnlySpan<__BGRAx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector512();
@@ -3556,7 +3556,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToARGB(ReadOnlySpan<__BGRAx4<T>> src, Span<_VECTOR16> dst )
+        public static void CopyToARGB(ReadOnlySpan<__BGRAx4<T>> src, Span<__VECTOR16> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -3587,7 +3587,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToARGB(ReadOnlySpan<__BGRAx4<T>> src, Span<_VECTOR16> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToARGB(ReadOnlySpan<__BGRAx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector512();
@@ -3666,47 +3666,47 @@ namespace $rootnamespace$
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGB(in __BGRAx8<byte> src, out _VECTOR8 dstX, out _VECTOR8 dstY, out _VECTOR8 dstZ)
+        private static void _ConvertToRGB(in __BGRAx8<byte> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
-            dstX = _VECTOR8FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_R, (int)src._Element2_G).ConvertToSingle();
-            dstY = _VECTOR8FACTORY.Create((int)src._Element2_B, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element4_R, (int)src._Element4_G, (int)src._Element4_B, (int)src._Element5_R).ConvertToSingle();
-            dstZ = _VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B).ConvertToSingle();
+            dstX = __VECTOR8FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_R, (int)src._Element2_G).ConvertToSingle();
+            dstY = __VECTOR8FACTORY.Create((int)src._Element2_B, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element4_R, (int)src._Element4_G, (int)src._Element4_B, (int)src._Element5_R).ConvertToSingle();
+            dstZ = __VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B).ConvertToSingle();
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGB(in __BGRAx8<float> src, out _VECTOR8 dstX, out _VECTOR8 dstY, out _VECTOR8 dstZ)
+        private static void _ConvertToRGB(in __BGRAx8<float> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
-            dstX = _VECTOR8FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_R, src._Element2_G);
-            dstY = _VECTOR8FACTORY.Create(src._Element2_B, src._Element3_R, src._Element3_G, src._Element3_B, src._Element4_R, src._Element4_G, src._Element4_B, src._Element5_R);
-            dstZ = _VECTOR8FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B);
+            dstX = __VECTOR8FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_R, src._Element2_G);
+            dstY = __VECTOR8FACTORY.Create(src._Element2_B, src._Element3_R, src._Element3_G, src._Element3_B, src._Element4_R, src._Element4_G, src._Element4_B, src._Element5_R);
+            dstZ = __VECTOR8FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B);
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGR(in __BGRAx8<byte> src, out _VECTOR8 dstX, out _VECTOR8 dstY, out _VECTOR8 dstZ)
+        private static void _ConvertToBGR(in __BGRAx8<byte> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
-            dstX = _VECTOR8FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element2_B, (int)src._Element2_G).ConvertToSingle();
-            dstY = _VECTOR8FACTORY.Create((int)src._Element2_R, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element4_B, (int)src._Element4_G, (int)src._Element4_R, (int)src._Element5_B).ConvertToSingle();
-            dstZ = _VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R).ConvertToSingle();
+            dstX = __VECTOR8FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element2_B, (int)src._Element2_G).ConvertToSingle();
+            dstY = __VECTOR8FACTORY.Create((int)src._Element2_R, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element4_B, (int)src._Element4_G, (int)src._Element4_R, (int)src._Element5_B).ConvertToSingle();
+            dstZ = __VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R).ConvertToSingle();
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGR(in __BGRAx8<float> src, out _VECTOR8 dstX, out _VECTOR8 dstY, out _VECTOR8 dstZ)
+        private static void _ConvertToBGR(in __BGRAx8<float> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
-            dstX = _VECTOR8FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element1_B, src._Element1_G, src._Element1_R, src._Element2_B, src._Element2_G);
-            dstY = _VECTOR8FACTORY.Create(src._Element2_R, src._Element3_B, src._Element3_G, src._Element3_R, src._Element4_B, src._Element4_G, src._Element4_R, src._Element5_B);
-            dstZ = _VECTOR8FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R);
+            dstX = __VECTOR8FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element1_B, src._Element1_G, src._Element1_R, src._Element2_B, src._Element2_G);
+            dstY = __VECTOR8FACTORY.Create(src._Element2_R, src._Element3_B, src._Element3_G, src._Element3_R, src._Element4_B, src._Element4_G, src._Element4_R, src._Element5_B);
+            dstZ = __VECTOR8FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R);
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGB(ReadOnlySpan<__BGRAx8<T>> src, Span<_VECTOR8> dst )
+        public static void CopyToRGB(ReadOnlySpan<__BGRAx8<T>> src, Span<__VECTOR8> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -3737,7 +3737,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGB(ReadOnlySpan<__BGRAx8<T>> src, Span<_VECTOR8> dst , in ___XYZ mul, in ___XYZ add)
+        public static void CopyToRGB(ReadOnlySpan<__BGRAx8<T>> src, Span<__VECTOR8> dst , in __XYZ mul, in __XYZ add)
         {
 
             var mul3 = __Vector3x256.Repeat(mul);
@@ -3777,7 +3777,7 @@ namespace $rootnamespace$
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGR(ReadOnlySpan<__BGRAx8<T>> src, Span<_VECTOR8> dst )
+        public static void CopyToBGR(ReadOnlySpan<__BGRAx8<T>> src, Span<__VECTOR8> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -3808,7 +3808,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGR(ReadOnlySpan<__BGRAx8<T>> src, Span<_VECTOR8> dst , in ___XYZ mul, in ___XYZ add)
+        public static void CopyToBGR(ReadOnlySpan<__BGRAx8<T>> src, Span<__VECTOR8> dst , in __XYZ mul, in __XYZ add)
         {
 
             var mul3 = __Vector3x256.Repeat(mul);
@@ -3923,47 +3923,47 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGB(in __BGRAx16<byte> src, out _VECTOR16 dstX, out _VECTOR16 dstY, out _VECTOR16 dstZ)
+        private static void _ConvertToRGB(in __BGRAx16<byte> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
-            dstX = _VECTOR16FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element4_R, (int)src._Element4_G, (int)src._Element4_B, (int)src._Element5_R).ConvertToSingle();
-            dstY = _VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B, (int)src._Element8_R, (int)src._Element8_G, (int)src._Element8_B, (int)src._Element9_R, (int)src._Element9_G, (int)src._Element9_B, (int)src._Element10_R, (int)src._Element10_G).ConvertToSingle();
-            dstZ = _VECTOR16FACTORY.Create((int)src._Element10_B, (int)src._Element11_R, (int)src._Element11_G, (int)src._Element11_B, (int)src._Element12_R, (int)src._Element12_G, (int)src._Element12_B, (int)src._Element13_R, (int)src._Element13_G, (int)src._Element13_B, (int)src._Element14_R, (int)src._Element14_G, (int)src._Element14_B, (int)src._Element15_R, (int)src._Element15_G, (int)src._Element15_B).ConvertToSingle();
+            dstX = __VECTOR16FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element4_R, (int)src._Element4_G, (int)src._Element4_B, (int)src._Element5_R).ConvertToSingle();
+            dstY = __VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B, (int)src._Element8_R, (int)src._Element8_G, (int)src._Element8_B, (int)src._Element9_R, (int)src._Element9_G, (int)src._Element9_B, (int)src._Element10_R, (int)src._Element10_G).ConvertToSingle();
+            dstZ = __VECTOR16FACTORY.Create((int)src._Element10_B, (int)src._Element11_R, (int)src._Element11_G, (int)src._Element11_B, (int)src._Element12_R, (int)src._Element12_G, (int)src._Element12_B, (int)src._Element13_R, (int)src._Element13_G, (int)src._Element13_B, (int)src._Element14_R, (int)src._Element14_G, (int)src._Element14_B, (int)src._Element15_R, (int)src._Element15_G, (int)src._Element15_B).ConvertToSingle();
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGB(in __BGRAx16<float> src, out _VECTOR16 dstX, out _VECTOR16 dstY, out _VECTOR16 dstZ)
+        private static void _ConvertToRGB(in __BGRAx16<float> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
-            dstX = _VECTOR16FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_R, src._Element2_G, src._Element2_B, src._Element3_R, src._Element3_G, src._Element3_B, src._Element4_R, src._Element4_G, src._Element4_B, src._Element5_R);
-            dstY = _VECTOR16FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B, src._Element8_R, src._Element8_G, src._Element8_B, src._Element9_R, src._Element9_G, src._Element9_B, src._Element10_R, src._Element10_G);
-            dstZ = _VECTOR16FACTORY.Create(src._Element10_B, src._Element11_R, src._Element11_G, src._Element11_B, src._Element12_R, src._Element12_G, src._Element12_B, src._Element13_R, src._Element13_G, src._Element13_B, src._Element14_R, src._Element14_G, src._Element14_B, src._Element15_R, src._Element15_G, src._Element15_B);
+            dstX = __VECTOR16FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_R, src._Element2_G, src._Element2_B, src._Element3_R, src._Element3_G, src._Element3_B, src._Element4_R, src._Element4_G, src._Element4_B, src._Element5_R);
+            dstY = __VECTOR16FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B, src._Element8_R, src._Element8_G, src._Element8_B, src._Element9_R, src._Element9_G, src._Element9_B, src._Element10_R, src._Element10_G);
+            dstZ = __VECTOR16FACTORY.Create(src._Element10_B, src._Element11_R, src._Element11_G, src._Element11_B, src._Element12_R, src._Element12_G, src._Element12_B, src._Element13_R, src._Element13_G, src._Element13_B, src._Element14_R, src._Element14_G, src._Element14_B, src._Element15_R, src._Element15_G, src._Element15_B);
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGR(in __BGRAx16<byte> src, out _VECTOR16 dstX, out _VECTOR16 dstY, out _VECTOR16 dstZ)
+        private static void _ConvertToBGR(in __BGRAx16<byte> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
-            dstX = _VECTOR16FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element2_B, (int)src._Element2_G, (int)src._Element2_R, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element4_B, (int)src._Element4_G, (int)src._Element4_R, (int)src._Element5_B).ConvertToSingle();
-            dstY = _VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R, (int)src._Element8_B, (int)src._Element8_G, (int)src._Element8_R, (int)src._Element9_B, (int)src._Element9_G, (int)src._Element9_R, (int)src._Element10_B, (int)src._Element10_G).ConvertToSingle();
-            dstZ = _VECTOR16FACTORY.Create((int)src._Element10_R, (int)src._Element11_B, (int)src._Element11_G, (int)src._Element11_R, (int)src._Element12_B, (int)src._Element12_G, (int)src._Element12_R, (int)src._Element13_B, (int)src._Element13_G, (int)src._Element13_R, (int)src._Element14_B, (int)src._Element14_G, (int)src._Element14_R, (int)src._Element15_B, (int)src._Element15_G, (int)src._Element15_R).ConvertToSingle();
+            dstX = __VECTOR16FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element2_B, (int)src._Element2_G, (int)src._Element2_R, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element4_B, (int)src._Element4_G, (int)src._Element4_R, (int)src._Element5_B).ConvertToSingle();
+            dstY = __VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R, (int)src._Element8_B, (int)src._Element8_G, (int)src._Element8_R, (int)src._Element9_B, (int)src._Element9_G, (int)src._Element9_R, (int)src._Element10_B, (int)src._Element10_G).ConvertToSingle();
+            dstZ = __VECTOR16FACTORY.Create((int)src._Element10_R, (int)src._Element11_B, (int)src._Element11_G, (int)src._Element11_R, (int)src._Element12_B, (int)src._Element12_G, (int)src._Element12_R, (int)src._Element13_B, (int)src._Element13_G, (int)src._Element13_R, (int)src._Element14_B, (int)src._Element14_G, (int)src._Element14_R, (int)src._Element15_B, (int)src._Element15_G, (int)src._Element15_R).ConvertToSingle();
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGR(in __BGRAx16<float> src, out _VECTOR16 dstX, out _VECTOR16 dstY, out _VECTOR16 dstZ)
+        private static void _ConvertToBGR(in __BGRAx16<float> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
-            dstX = _VECTOR16FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element1_B, src._Element1_G, src._Element1_R, src._Element2_B, src._Element2_G, src._Element2_R, src._Element3_B, src._Element3_G, src._Element3_R, src._Element4_B, src._Element4_G, src._Element4_R, src._Element5_B);
-            dstY = _VECTOR16FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R, src._Element8_B, src._Element8_G, src._Element8_R, src._Element9_B, src._Element9_G, src._Element9_R, src._Element10_B, src._Element10_G);
-            dstZ = _VECTOR16FACTORY.Create(src._Element10_R, src._Element11_B, src._Element11_G, src._Element11_R, src._Element12_B, src._Element12_G, src._Element12_R, src._Element13_B, src._Element13_G, src._Element13_R, src._Element14_B, src._Element14_G, src._Element14_R, src._Element15_B, src._Element15_G, src._Element15_R);
+            dstX = __VECTOR16FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element1_B, src._Element1_G, src._Element1_R, src._Element2_B, src._Element2_G, src._Element2_R, src._Element3_B, src._Element3_G, src._Element3_R, src._Element4_B, src._Element4_G, src._Element4_R, src._Element5_B);
+            dstY = __VECTOR16FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R, src._Element8_B, src._Element8_G, src._Element8_R, src._Element9_B, src._Element9_G, src._Element9_R, src._Element10_B, src._Element10_G);
+            dstZ = __VECTOR16FACTORY.Create(src._Element10_R, src._Element11_B, src._Element11_G, src._Element11_R, src._Element12_B, src._Element12_G, src._Element12_R, src._Element13_B, src._Element13_G, src._Element13_R, src._Element14_B, src._Element14_G, src._Element14_R, src._Element15_B, src._Element15_G, src._Element15_R);
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGB(ReadOnlySpan<__BGRAx16<T>> src, Span<_VECTOR16> dst )
+        public static void CopyToRGB(ReadOnlySpan<__BGRAx16<T>> src, Span<__VECTOR16> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -3994,7 +3994,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGB(ReadOnlySpan<__BGRAx16<T>> src, Span<_VECTOR16> dst , in ___XYZ mul, in ___XYZ add)
+        public static void CopyToRGB(ReadOnlySpan<__BGRAx16<T>> src, Span<__VECTOR16> dst , in __XYZ mul, in __XYZ add)
         {
 
             var mul3 = __Vector3x512.Repeat(mul);
@@ -4034,7 +4034,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGR(ReadOnlySpan<__BGRAx16<T>> src, Span<_VECTOR16> dst )
+        public static void CopyToBGR(ReadOnlySpan<__BGRAx16<T>> src, Span<__VECTOR16> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -4065,7 +4065,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGR(ReadOnlySpan<__BGRAx16<T>> src, Span<_VECTOR16> dst , in ___XYZ mul, in ___XYZ add)
+        public static void CopyToBGR(ReadOnlySpan<__BGRAx16<T>> src, Span<__VECTOR16> dst , in __XYZ mul, in __XYZ add)
         {
 
             var mul3 = __Vector3x512.Repeat(mul);
@@ -4128,55 +4128,55 @@ namespace $rootnamespace$
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGBA(in __ARGBx2<byte> src, out _VECTOR8 dst)
+        private static void _ConvertToRGBA(in __ARGBx2<byte> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element0_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element1_A).ConvertToSingle();
+            dst = __VECTOR8FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element0_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element1_A).ConvertToSingle();
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGBA(in __ARGBx2<float> src, out _VECTOR8 dst)
+        private static void _ConvertToRGBA(in __ARGBx2<float> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element0_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element1_A);
+            dst = __VECTOR8FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element0_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element1_A);
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGRA(in __ARGBx2<byte> src, out _VECTOR8 dst)
+        private static void _ConvertToBGRA(in __ARGBx2<byte> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element0_A, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element1_A).ConvertToSingle();
+            dst = __VECTOR8FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element0_A, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element1_A).ConvertToSingle();
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGRA(in __ARGBx2<float> src, out _VECTOR8 dst)
+        private static void _ConvertToBGRA(in __ARGBx2<float> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element0_A, src._Element1_B, src._Element1_G, src._Element1_R, src._Element1_A);
+            dst = __VECTOR8FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element0_A, src._Element1_B, src._Element1_G, src._Element1_R, src._Element1_A);
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToARGB(in __ARGBx2<byte> src, out _VECTOR8 dst)
+        private static void _ConvertToARGB(in __ARGBx2<byte> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create((int)src._Element0_A, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B).ConvertToSingle();
+            dst = __VECTOR8FACTORY.Create((int)src._Element0_A, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B).ConvertToSingle();
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToARGB(in __ARGBx2<float> src, out _VECTOR8 dst)
+        private static void _ConvertToARGB(in __ARGBx2<float> src, out __VECTOR8 dst)
         {
-            dst = _VECTOR8FACTORY.Create(src._Element0_A, src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_A, src._Element1_R, src._Element1_G, src._Element1_B);
+            dst = __VECTOR8FACTORY.Create(src._Element0_A, src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_A, src._Element1_R, src._Element1_G, src._Element1_B);
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGBA(ReadOnlySpan<__ARGBx2<T>> src, Span<_VECTOR8> dst )
+        public static void CopyToRGBA(ReadOnlySpan<__ARGBx2<T>> src, Span<__VECTOR8> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -4207,7 +4207,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGBA(ReadOnlySpan<__ARGBx2<T>> src, Span<_VECTOR8> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToRGBA(ReadOnlySpan<__ARGBx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector256();
@@ -4243,7 +4243,7 @@ namespace $rootnamespace$
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGRA(ReadOnlySpan<__ARGBx2<T>> src, Span<_VECTOR8> dst )
+        public static void CopyToBGRA(ReadOnlySpan<__ARGBx2<T>> src, Span<__VECTOR8> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -4274,7 +4274,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGRA(ReadOnlySpan<__ARGBx2<T>> src, Span<_VECTOR8> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToBGRA(ReadOnlySpan<__ARGBx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector256();
@@ -4310,7 +4310,7 @@ namespace $rootnamespace$
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToARGB(ReadOnlySpan<__ARGBx2<T>> src, Span<_VECTOR8> dst )
+        public static void CopyToARGB(ReadOnlySpan<__ARGBx2<T>> src, Span<__VECTOR8> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -4341,7 +4341,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToARGB(ReadOnlySpan<__ARGBx2<T>> src, Span<_VECTOR8> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToARGB(ReadOnlySpan<__ARGBx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector256();
@@ -4404,55 +4404,55 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGBA(in __ARGBx4<byte> src, out _VECTOR16 dst)
+        private static void _ConvertToRGBA(in __ARGBx4<byte> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element0_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element1_A, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element2_A, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element3_A).ConvertToSingle();
+            dst = __VECTOR16FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element0_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element1_A, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element2_A, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element3_A).ConvertToSingle();
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGBA(in __ARGBx4<float> src, out _VECTOR16 dst)
+        private static void _ConvertToRGBA(in __ARGBx4<float> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element0_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element1_A, src._Element2_R, src._Element2_G, src._Element2_B, src._Element2_A, src._Element3_R, src._Element3_G, src._Element3_B, src._Element3_A);
+            dst = __VECTOR16FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element0_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element1_A, src._Element2_R, src._Element2_G, src._Element2_B, src._Element2_A, src._Element3_R, src._Element3_G, src._Element3_B, src._Element3_A);
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGRA(in __ARGBx4<byte> src, out _VECTOR16 dst)
+        private static void _ConvertToBGRA(in __ARGBx4<byte> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element0_A, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element1_A, (int)src._Element2_B, (int)src._Element2_G, (int)src._Element2_R, (int)src._Element2_A, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element3_A).ConvertToSingle();
+            dst = __VECTOR16FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element0_A, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element1_A, (int)src._Element2_B, (int)src._Element2_G, (int)src._Element2_R, (int)src._Element2_A, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element3_A).ConvertToSingle();
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGRA(in __ARGBx4<float> src, out _VECTOR16 dst)
+        private static void _ConvertToBGRA(in __ARGBx4<float> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element0_A, src._Element1_B, src._Element1_G, src._Element1_R, src._Element1_A, src._Element2_B, src._Element2_G, src._Element2_R, src._Element2_A, src._Element3_B, src._Element3_G, src._Element3_R, src._Element3_A);
+            dst = __VECTOR16FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element0_A, src._Element1_B, src._Element1_G, src._Element1_R, src._Element1_A, src._Element2_B, src._Element2_G, src._Element2_R, src._Element2_A, src._Element3_B, src._Element3_G, src._Element3_R, src._Element3_A);
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToARGB(in __ARGBx4<byte> src, out _VECTOR16 dst)
+        private static void _ConvertToARGB(in __ARGBx4<byte> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create((int)src._Element0_A, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_A, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element3_A, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B).ConvertToSingle();
+            dst = __VECTOR16FACTORY.Create((int)src._Element0_A, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_A, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element3_A, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B).ConvertToSingle();
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToARGB(in __ARGBx4<float> src, out _VECTOR16 dst)
+        private static void _ConvertToARGB(in __ARGBx4<float> src, out __VECTOR16 dst)
         {
-            dst = _VECTOR16FACTORY.Create(src._Element0_A, src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_A, src._Element2_R, src._Element2_G, src._Element2_B, src._Element3_A, src._Element3_R, src._Element3_G, src._Element3_B);
+            dst = __VECTOR16FACTORY.Create(src._Element0_A, src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_A, src._Element2_R, src._Element2_G, src._Element2_B, src._Element3_A, src._Element3_R, src._Element3_G, src._Element3_B);
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGBA(ReadOnlySpan<__ARGBx4<T>> src, Span<_VECTOR16> dst )
+        public static void CopyToRGBA(ReadOnlySpan<__ARGBx4<T>> src, Span<__VECTOR16> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -4483,7 +4483,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGBA(ReadOnlySpan<__ARGBx4<T>> src, Span<_VECTOR16> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToRGBA(ReadOnlySpan<__ARGBx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector512();
@@ -4519,7 +4519,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGRA(ReadOnlySpan<__ARGBx4<T>> src, Span<_VECTOR16> dst )
+        public static void CopyToBGRA(ReadOnlySpan<__ARGBx4<T>> src, Span<__VECTOR16> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -4550,7 +4550,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGRA(ReadOnlySpan<__ARGBx4<T>> src, Span<_VECTOR16> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToBGRA(ReadOnlySpan<__ARGBx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector512();
@@ -4586,7 +4586,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToARGB(ReadOnlySpan<__ARGBx4<T>> src, Span<_VECTOR16> dst )
+        public static void CopyToARGB(ReadOnlySpan<__ARGBx4<T>> src, Span<__VECTOR16> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -4617,7 +4617,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToARGB(ReadOnlySpan<__ARGBx4<T>> src, Span<_VECTOR16> dst , in ____XYZW mul, in ____XYZW add)
+        public static void CopyToARGB(ReadOnlySpan<__ARGBx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
 
             var mul1 = mul.RepeatVector512();
@@ -4696,47 +4696,47 @@ namespace $rootnamespace$
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGB(in __ARGBx8<byte> src, out _VECTOR8 dstX, out _VECTOR8 dstY, out _VECTOR8 dstZ)
+        private static void _ConvertToRGB(in __ARGBx8<byte> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
-            dstX = _VECTOR8FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_R, (int)src._Element2_G).ConvertToSingle();
-            dstY = _VECTOR8FACTORY.Create((int)src._Element2_B, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element4_R, (int)src._Element4_G, (int)src._Element4_B, (int)src._Element5_R).ConvertToSingle();
-            dstZ = _VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B).ConvertToSingle();
+            dstX = __VECTOR8FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_R, (int)src._Element2_G).ConvertToSingle();
+            dstY = __VECTOR8FACTORY.Create((int)src._Element2_B, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element4_R, (int)src._Element4_G, (int)src._Element4_B, (int)src._Element5_R).ConvertToSingle();
+            dstZ = __VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B).ConvertToSingle();
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGB(in __ARGBx8<float> src, out _VECTOR8 dstX, out _VECTOR8 dstY, out _VECTOR8 dstZ)
+        private static void _ConvertToRGB(in __ARGBx8<float> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
-            dstX = _VECTOR8FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_R, src._Element2_G);
-            dstY = _VECTOR8FACTORY.Create(src._Element2_B, src._Element3_R, src._Element3_G, src._Element3_B, src._Element4_R, src._Element4_G, src._Element4_B, src._Element5_R);
-            dstZ = _VECTOR8FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B);
+            dstX = __VECTOR8FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_R, src._Element2_G);
+            dstY = __VECTOR8FACTORY.Create(src._Element2_B, src._Element3_R, src._Element3_G, src._Element3_B, src._Element4_R, src._Element4_G, src._Element4_B, src._Element5_R);
+            dstZ = __VECTOR8FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B);
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGR(in __ARGBx8<byte> src, out _VECTOR8 dstX, out _VECTOR8 dstY, out _VECTOR8 dstZ)
+        private static void _ConvertToBGR(in __ARGBx8<byte> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
-            dstX = _VECTOR8FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element2_B, (int)src._Element2_G).ConvertToSingle();
-            dstY = _VECTOR8FACTORY.Create((int)src._Element2_R, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element4_B, (int)src._Element4_G, (int)src._Element4_R, (int)src._Element5_B).ConvertToSingle();
-            dstZ = _VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R).ConvertToSingle();
+            dstX = __VECTOR8FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element2_B, (int)src._Element2_G).ConvertToSingle();
+            dstY = __VECTOR8FACTORY.Create((int)src._Element2_R, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element4_B, (int)src._Element4_G, (int)src._Element4_R, (int)src._Element5_B).ConvertToSingle();
+            dstZ = __VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R).ConvertToSingle();
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGR(in __ARGBx8<float> src, out _VECTOR8 dstX, out _VECTOR8 dstY, out _VECTOR8 dstZ)
+        private static void _ConvertToBGR(in __ARGBx8<float> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
-            dstX = _VECTOR8FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element1_B, src._Element1_G, src._Element1_R, src._Element2_B, src._Element2_G);
-            dstY = _VECTOR8FACTORY.Create(src._Element2_R, src._Element3_B, src._Element3_G, src._Element3_R, src._Element4_B, src._Element4_G, src._Element4_R, src._Element5_B);
-            dstZ = _VECTOR8FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R);
+            dstX = __VECTOR8FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element1_B, src._Element1_G, src._Element1_R, src._Element2_B, src._Element2_G);
+            dstY = __VECTOR8FACTORY.Create(src._Element2_R, src._Element3_B, src._Element3_G, src._Element3_R, src._Element4_B, src._Element4_G, src._Element4_R, src._Element5_B);
+            dstZ = __VECTOR8FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R);
         }
         #endif
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGB(ReadOnlySpan<__ARGBx8<T>> src, Span<_VECTOR8> dst )
+        public static void CopyToRGB(ReadOnlySpan<__ARGBx8<T>> src, Span<__VECTOR8> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -4767,7 +4767,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGB(ReadOnlySpan<__ARGBx8<T>> src, Span<_VECTOR8> dst , in ___XYZ mul, in ___XYZ add)
+        public static void CopyToRGB(ReadOnlySpan<__ARGBx8<T>> src, Span<__VECTOR8> dst , in __XYZ mul, in __XYZ add)
         {
 
             var mul3 = __Vector3x256.Repeat(mul);
@@ -4807,7 +4807,7 @@ namespace $rootnamespace$
 
         #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGR(ReadOnlySpan<__ARGBx8<T>> src, Span<_VECTOR8> dst )
+        public static void CopyToBGR(ReadOnlySpan<__ARGBx8<T>> src, Span<__VECTOR8> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -4838,7 +4838,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGR(ReadOnlySpan<__ARGBx8<T>> src, Span<_VECTOR8> dst , in ___XYZ mul, in ___XYZ add)
+        public static void CopyToBGR(ReadOnlySpan<__ARGBx8<T>> src, Span<__VECTOR8> dst , in __XYZ mul, in __XYZ add)
         {
 
             var mul3 = __Vector3x256.Repeat(mul);
@@ -4953,47 +4953,47 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGB(in __ARGBx16<byte> src, out _VECTOR16 dstX, out _VECTOR16 dstY, out _VECTOR16 dstZ)
+        private static void _ConvertToRGB(in __ARGBx16<byte> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
-            dstX = _VECTOR16FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element4_R, (int)src._Element4_G, (int)src._Element4_B, (int)src._Element5_R).ConvertToSingle();
-            dstY = _VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B, (int)src._Element8_R, (int)src._Element8_G, (int)src._Element8_B, (int)src._Element9_R, (int)src._Element9_G, (int)src._Element9_B, (int)src._Element10_R, (int)src._Element10_G).ConvertToSingle();
-            dstZ = _VECTOR16FACTORY.Create((int)src._Element10_B, (int)src._Element11_R, (int)src._Element11_G, (int)src._Element11_B, (int)src._Element12_R, (int)src._Element12_G, (int)src._Element12_B, (int)src._Element13_R, (int)src._Element13_G, (int)src._Element13_B, (int)src._Element14_R, (int)src._Element14_G, (int)src._Element14_B, (int)src._Element15_R, (int)src._Element15_G, (int)src._Element15_B).ConvertToSingle();
+            dstX = __VECTOR16FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element4_R, (int)src._Element4_G, (int)src._Element4_B, (int)src._Element5_R).ConvertToSingle();
+            dstY = __VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B, (int)src._Element8_R, (int)src._Element8_G, (int)src._Element8_B, (int)src._Element9_R, (int)src._Element9_G, (int)src._Element9_B, (int)src._Element10_R, (int)src._Element10_G).ConvertToSingle();
+            dstZ = __VECTOR16FACTORY.Create((int)src._Element10_B, (int)src._Element11_R, (int)src._Element11_G, (int)src._Element11_B, (int)src._Element12_R, (int)src._Element12_G, (int)src._Element12_B, (int)src._Element13_R, (int)src._Element13_G, (int)src._Element13_B, (int)src._Element14_R, (int)src._Element14_G, (int)src._Element14_B, (int)src._Element15_R, (int)src._Element15_G, (int)src._Element15_B).ConvertToSingle();
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToRGB(in __ARGBx16<float> src, out _VECTOR16 dstX, out _VECTOR16 dstY, out _VECTOR16 dstZ)
+        private static void _ConvertToRGB(in __ARGBx16<float> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
-            dstX = _VECTOR16FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_R, src._Element2_G, src._Element2_B, src._Element3_R, src._Element3_G, src._Element3_B, src._Element4_R, src._Element4_G, src._Element4_B, src._Element5_R);
-            dstY = _VECTOR16FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B, src._Element8_R, src._Element8_G, src._Element8_B, src._Element9_R, src._Element9_G, src._Element9_B, src._Element10_R, src._Element10_G);
-            dstZ = _VECTOR16FACTORY.Create(src._Element10_B, src._Element11_R, src._Element11_G, src._Element11_B, src._Element12_R, src._Element12_G, src._Element12_B, src._Element13_R, src._Element13_G, src._Element13_B, src._Element14_R, src._Element14_G, src._Element14_B, src._Element15_R, src._Element15_G, src._Element15_B);
+            dstX = __VECTOR16FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_R, src._Element2_G, src._Element2_B, src._Element3_R, src._Element3_G, src._Element3_B, src._Element4_R, src._Element4_G, src._Element4_B, src._Element5_R);
+            dstY = __VECTOR16FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B, src._Element8_R, src._Element8_G, src._Element8_B, src._Element9_R, src._Element9_G, src._Element9_B, src._Element10_R, src._Element10_G);
+            dstZ = __VECTOR16FACTORY.Create(src._Element10_B, src._Element11_R, src._Element11_G, src._Element11_B, src._Element12_R, src._Element12_G, src._Element12_B, src._Element13_R, src._Element13_G, src._Element13_B, src._Element14_R, src._Element14_G, src._Element14_B, src._Element15_R, src._Element15_G, src._Element15_B);
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGR(in __ARGBx16<byte> src, out _VECTOR16 dstX, out _VECTOR16 dstY, out _VECTOR16 dstZ)
+        private static void _ConvertToBGR(in __ARGBx16<byte> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
-            dstX = _VECTOR16FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element2_B, (int)src._Element2_G, (int)src._Element2_R, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element4_B, (int)src._Element4_G, (int)src._Element4_R, (int)src._Element5_B).ConvertToSingle();
-            dstY = _VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R, (int)src._Element8_B, (int)src._Element8_G, (int)src._Element8_R, (int)src._Element9_B, (int)src._Element9_G, (int)src._Element9_R, (int)src._Element10_B, (int)src._Element10_G).ConvertToSingle();
-            dstZ = _VECTOR16FACTORY.Create((int)src._Element10_R, (int)src._Element11_B, (int)src._Element11_G, (int)src._Element11_R, (int)src._Element12_B, (int)src._Element12_G, (int)src._Element12_R, (int)src._Element13_B, (int)src._Element13_G, (int)src._Element13_R, (int)src._Element14_B, (int)src._Element14_G, (int)src._Element14_R, (int)src._Element15_B, (int)src._Element15_G, (int)src._Element15_R).ConvertToSingle();
+            dstX = __VECTOR16FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element2_B, (int)src._Element2_G, (int)src._Element2_R, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element4_B, (int)src._Element4_G, (int)src._Element4_R, (int)src._Element5_B).ConvertToSingle();
+            dstY = __VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R, (int)src._Element8_B, (int)src._Element8_G, (int)src._Element8_R, (int)src._Element9_B, (int)src._Element9_G, (int)src._Element9_R, (int)src._Element10_B, (int)src._Element10_G).ConvertToSingle();
+            dstZ = __VECTOR16FACTORY.Create((int)src._Element10_R, (int)src._Element11_B, (int)src._Element11_G, (int)src._Element11_R, (int)src._Element12_B, (int)src._Element12_G, (int)src._Element12_R, (int)src._Element13_B, (int)src._Element13_G, (int)src._Element13_R, (int)src._Element14_B, (int)src._Element14_G, (int)src._Element14_R, (int)src._Element15_B, (int)src._Element15_G, (int)src._Element15_R).ConvertToSingle();
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        private static void _ConvertToBGR(in __ARGBx16<float> src, out _VECTOR16 dstX, out _VECTOR16 dstY, out _VECTOR16 dstZ)
+        private static void _ConvertToBGR(in __ARGBx16<float> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
-            dstX = _VECTOR16FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element1_B, src._Element1_G, src._Element1_R, src._Element2_B, src._Element2_G, src._Element2_R, src._Element3_B, src._Element3_G, src._Element3_R, src._Element4_B, src._Element4_G, src._Element4_R, src._Element5_B);
-            dstY = _VECTOR16FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R, src._Element8_B, src._Element8_G, src._Element8_R, src._Element9_B, src._Element9_G, src._Element9_R, src._Element10_B, src._Element10_G);
-            dstZ = _VECTOR16FACTORY.Create(src._Element10_R, src._Element11_B, src._Element11_G, src._Element11_R, src._Element12_B, src._Element12_G, src._Element12_R, src._Element13_B, src._Element13_G, src._Element13_R, src._Element14_B, src._Element14_G, src._Element14_R, src._Element15_B, src._Element15_G, src._Element15_R);
+            dstX = __VECTOR16FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element1_B, src._Element1_G, src._Element1_R, src._Element2_B, src._Element2_G, src._Element2_R, src._Element3_B, src._Element3_G, src._Element3_R, src._Element4_B, src._Element4_G, src._Element4_R, src._Element5_B);
+            dstY = __VECTOR16FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R, src._Element8_B, src._Element8_G, src._Element8_R, src._Element9_B, src._Element9_G, src._Element9_R, src._Element10_B, src._Element10_G);
+            dstZ = __VECTOR16FACTORY.Create(src._Element10_R, src._Element11_B, src._Element11_G, src._Element11_R, src._Element12_B, src._Element12_G, src._Element12_R, src._Element13_B, src._Element13_G, src._Element13_R, src._Element14_B, src._Element14_G, src._Element14_R, src._Element15_B, src._Element15_G, src._Element15_R);
         }
         #endif
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGB(ReadOnlySpan<__ARGBx16<T>> src, Span<_VECTOR16> dst )
+        public static void CopyToRGB(ReadOnlySpan<__ARGBx16<T>> src, Span<__VECTOR16> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -5024,7 +5024,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToRGB(ReadOnlySpan<__ARGBx16<T>> src, Span<_VECTOR16> dst , in ___XYZ mul, in ___XYZ add)
+        public static void CopyToRGB(ReadOnlySpan<__ARGBx16<T>> src, Span<__VECTOR16> dst , in __XYZ mul, in __XYZ add)
         {
 
             var mul3 = __Vector3x512.Repeat(mul);
@@ -5064,7 +5064,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGR(ReadOnlySpan<__ARGBx16<T>> src, Span<_VECTOR16> dst )
+        public static void CopyToBGR(ReadOnlySpan<__ARGBx16<T>> src, Span<__VECTOR16> dst )
         {
 
             if (typeof(Byte) == typeof(T))
@@ -5095,7 +5095,7 @@ namespace $rootnamespace$
 
         #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
-        public static void CopyToBGR(ReadOnlySpan<__ARGBx16<T>> src, Span<_VECTOR16> dst , in ___XYZ mul, in ___XYZ add)
+        public static void CopyToBGR(ReadOnlySpan<__ARGBx16<T>> src, Span<__VECTOR16> dst , in __XYZ mul, in __XYZ add)
         {
 
             var mul3 = __Vector3x512.Repeat(mul);
@@ -5142,7 +5142,7 @@ namespace $rootnamespace$
     #region public methods
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBtoRGB(this ReadOnlySpan<byte> src, Span<___XYZ> dst)
+    public static void ConvertRGBtoRGB(this ReadOnlySpan<byte> src, Span<__XYZ> dst)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -5152,7 +5152,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBx16<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __RGBx16<byte>.CopyToRGB(srcX, dstX);
             var len = srcX.Length * 16;
             src = src.Slice(len * 3);
@@ -5162,7 +5162,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBx8<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __RGBx8<byte>.CopyToRGB(srcX, dstX);
             var len = srcX.Length * 8;
             src = src.Slice(len * 3);
@@ -5185,7 +5185,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBtoRGB(this ReadOnlySpan<byte> src, Span<___XYZ> dst, in ___XYZ mul, in ___XYZ add)
+    public static void ConvertRGBtoRGB(this ReadOnlySpan<byte> src, Span<__XYZ> dst, in __XYZ mul, in __XYZ add)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -5195,7 +5195,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBx16<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __RGBx16<byte>.CopyToRGB(srcX, dstX, mul, add);
             var len = srcX.Length * 16;
             src = src.Slice(len * 3);
@@ -5205,7 +5205,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBx8<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __RGBx8<byte>.CopyToRGB(srcX, dstX, mul, add);
             var len = srcX.Length * 8;
             src = src.Slice(len * 3);
@@ -5230,7 +5230,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBtoRGB(this ReadOnlySpan<float> src, Span<___XYZ> dst)
+    public static void ConvertRGBtoRGB(this ReadOnlySpan<float> src, Span<__XYZ> dst)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -5240,7 +5240,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBx16<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __RGBx16<float>.CopyToRGB(srcX, dstX);
             var len = srcX.Length * 16;
             src = src.Slice(len * 3);
@@ -5250,7 +5250,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBx8<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __RGBx8<float>.CopyToRGB(srcX, dstX);
             var len = srcX.Length * 8;
             src = src.Slice(len * 3);
@@ -5273,7 +5273,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBtoRGB(this ReadOnlySpan<float> src, Span<___XYZ> dst, in ___XYZ mul, in ___XYZ add)
+    public static void ConvertRGBtoRGB(this ReadOnlySpan<float> src, Span<__XYZ> dst, in __XYZ mul, in __XYZ add)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -5283,7 +5283,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBx16<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __RGBx16<float>.CopyToRGB(srcX, dstX, mul, add);
             var len = srcX.Length * 16;
             src = src.Slice(len * 3);
@@ -5293,7 +5293,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBx8<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __RGBx8<float>.CopyToRGB(srcX, dstX, mul, add);
             var len = srcX.Length * 8;
             src = src.Slice(len * 3);
@@ -5318,7 +5318,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBtoBGR(this ReadOnlySpan<byte> src, Span<___XYZ> dst)
+    public static void ConvertRGBtoBGR(this ReadOnlySpan<byte> src, Span<__XYZ> dst)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -5328,7 +5328,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBx16<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __RGBx16<byte>.CopyToBGR(srcX, dstX);
             var len = srcX.Length * 16;
             src = src.Slice(len * 3);
@@ -5338,7 +5338,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBx8<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __RGBx8<byte>.CopyToBGR(srcX, dstX);
             var len = srcX.Length * 8;
             src = src.Slice(len * 3);
@@ -5361,7 +5361,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBtoBGR(this ReadOnlySpan<byte> src, Span<___XYZ> dst, in ___XYZ mul, in ___XYZ add)
+    public static void ConvertRGBtoBGR(this ReadOnlySpan<byte> src, Span<__XYZ> dst, in __XYZ mul, in __XYZ add)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -5371,7 +5371,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBx16<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __RGBx16<byte>.CopyToBGR(srcX, dstX, mul, add);
             var len = srcX.Length * 16;
             src = src.Slice(len * 3);
@@ -5381,7 +5381,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBx8<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __RGBx8<byte>.CopyToBGR(srcX, dstX, mul, add);
             var len = srcX.Length * 8;
             src = src.Slice(len * 3);
@@ -5406,7 +5406,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBtoBGR(this ReadOnlySpan<float> src, Span<___XYZ> dst)
+    public static void ConvertRGBtoBGR(this ReadOnlySpan<float> src, Span<__XYZ> dst)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -5416,7 +5416,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBx16<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __RGBx16<float>.CopyToBGR(srcX, dstX);
             var len = srcX.Length * 16;
             src = src.Slice(len * 3);
@@ -5426,7 +5426,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBx8<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __RGBx8<float>.CopyToBGR(srcX, dstX);
             var len = srcX.Length * 8;
             src = src.Slice(len * 3);
@@ -5449,7 +5449,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBtoBGR(this ReadOnlySpan<float> src, Span<___XYZ> dst, in ___XYZ mul, in ___XYZ add)
+    public static void ConvertRGBtoBGR(this ReadOnlySpan<float> src, Span<__XYZ> dst, in __XYZ mul, in __XYZ add)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -5459,7 +5459,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBx16<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __RGBx16<float>.CopyToBGR(srcX, dstX, mul, add);
             var len = srcX.Length * 16;
             src = src.Slice(len * 3);
@@ -5469,7 +5469,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBx8<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __RGBx8<float>.CopyToBGR(srcX, dstX, mul, add);
             var len = srcX.Length * 8;
             src = src.Slice(len * 3);
@@ -5494,7 +5494,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBtoRGBA(this ReadOnlySpan<byte> src, Span<____XYZW> dst)
+    public static void ConvertRGBtoRGBA(this ReadOnlySpan<byte> src, Span<__XYZW> dst)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -5504,7 +5504,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __RGBx4<byte>.CopyToRGBA(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 3);
@@ -5514,7 +5514,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __RGBx2<byte>.CopyToRGBA(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 3);
@@ -5538,7 +5538,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBtoRGBA(this ReadOnlySpan<byte> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertRGBtoRGBA(this ReadOnlySpan<byte> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -5548,7 +5548,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __RGBx4<byte>.CopyToRGBA(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 3);
@@ -5558,7 +5558,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __RGBx2<byte>.CopyToRGBA(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 3);
@@ -5584,7 +5584,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBtoRGBA(this ReadOnlySpan<float> src, Span<____XYZW> dst)
+    public static void ConvertRGBtoRGBA(this ReadOnlySpan<float> src, Span<__XYZW> dst)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -5594,7 +5594,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __RGBx4<float>.CopyToRGBA(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 3);
@@ -5604,7 +5604,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __RGBx2<float>.CopyToRGBA(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 3);
@@ -5628,7 +5628,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBtoRGBA(this ReadOnlySpan<float> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertRGBtoRGBA(this ReadOnlySpan<float> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -5638,7 +5638,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __RGBx4<float>.CopyToRGBA(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 3);
@@ -5648,7 +5648,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __RGBx2<float>.CopyToRGBA(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 3);
@@ -5674,7 +5674,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBtoBGRA(this ReadOnlySpan<byte> src, Span<____XYZW> dst)
+    public static void ConvertRGBtoBGRA(this ReadOnlySpan<byte> src, Span<__XYZW> dst)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -5684,7 +5684,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __RGBx4<byte>.CopyToBGRA(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 3);
@@ -5694,7 +5694,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __RGBx2<byte>.CopyToBGRA(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 3);
@@ -5718,7 +5718,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBtoBGRA(this ReadOnlySpan<byte> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertRGBtoBGRA(this ReadOnlySpan<byte> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -5728,7 +5728,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __RGBx4<byte>.CopyToBGRA(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 3);
@@ -5738,7 +5738,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __RGBx2<byte>.CopyToBGRA(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 3);
@@ -5764,7 +5764,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBtoBGRA(this ReadOnlySpan<float> src, Span<____XYZW> dst)
+    public static void ConvertRGBtoBGRA(this ReadOnlySpan<float> src, Span<__XYZW> dst)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -5774,7 +5774,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __RGBx4<float>.CopyToBGRA(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 3);
@@ -5784,7 +5784,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __RGBx2<float>.CopyToBGRA(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 3);
@@ -5808,7 +5808,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBtoBGRA(this ReadOnlySpan<float> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertRGBtoBGRA(this ReadOnlySpan<float> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -5818,7 +5818,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __RGBx4<float>.CopyToBGRA(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 3);
@@ -5828,7 +5828,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __RGBx2<float>.CopyToBGRA(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 3);
@@ -5854,7 +5854,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBtoARGB(this ReadOnlySpan<byte> src, Span<____XYZW> dst)
+    public static void ConvertRGBtoARGB(this ReadOnlySpan<byte> src, Span<__XYZW> dst)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -5864,7 +5864,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __RGBx4<byte>.CopyToARGB(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 3);
@@ -5874,7 +5874,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __RGBx2<byte>.CopyToARGB(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 3);
@@ -5898,7 +5898,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBtoARGB(this ReadOnlySpan<byte> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertRGBtoARGB(this ReadOnlySpan<byte> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -5908,7 +5908,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __RGBx4<byte>.CopyToARGB(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 3);
@@ -5918,7 +5918,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __RGBx2<byte>.CopyToARGB(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 3);
@@ -5944,7 +5944,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBtoARGB(this ReadOnlySpan<float> src, Span<____XYZW> dst)
+    public static void ConvertRGBtoARGB(this ReadOnlySpan<float> src, Span<__XYZW> dst)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -5954,7 +5954,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __RGBx4<float>.CopyToARGB(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 3);
@@ -5964,7 +5964,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __RGBx2<float>.CopyToARGB(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 3);
@@ -5988,7 +5988,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBtoARGB(this ReadOnlySpan<float> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertRGBtoARGB(this ReadOnlySpan<float> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -5998,7 +5998,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __RGBx4<float>.CopyToARGB(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 3);
@@ -6008,7 +6008,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __RGBx2<float>.CopyToARGB(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 3);
@@ -6034,7 +6034,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRtoRGB(this ReadOnlySpan<byte> src, Span<___XYZ> dst)
+    public static void ConvertBGRtoRGB(this ReadOnlySpan<byte> src, Span<__XYZ> dst)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -6044,7 +6044,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRx16<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __BGRx16<byte>.CopyToRGB(srcX, dstX);
             var len = srcX.Length * 16;
             src = src.Slice(len * 3);
@@ -6054,7 +6054,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRx8<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __BGRx8<byte>.CopyToRGB(srcX, dstX);
             var len = srcX.Length * 8;
             src = src.Slice(len * 3);
@@ -6077,7 +6077,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRtoRGB(this ReadOnlySpan<byte> src, Span<___XYZ> dst, in ___XYZ mul, in ___XYZ add)
+    public static void ConvertBGRtoRGB(this ReadOnlySpan<byte> src, Span<__XYZ> dst, in __XYZ mul, in __XYZ add)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -6087,7 +6087,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRx16<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __BGRx16<byte>.CopyToRGB(srcX, dstX, mul, add);
             var len = srcX.Length * 16;
             src = src.Slice(len * 3);
@@ -6097,7 +6097,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRx8<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __BGRx8<byte>.CopyToRGB(srcX, dstX, mul, add);
             var len = srcX.Length * 8;
             src = src.Slice(len * 3);
@@ -6122,7 +6122,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRtoRGB(this ReadOnlySpan<float> src, Span<___XYZ> dst)
+    public static void ConvertBGRtoRGB(this ReadOnlySpan<float> src, Span<__XYZ> dst)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -6132,7 +6132,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRx16<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __BGRx16<float>.CopyToRGB(srcX, dstX);
             var len = srcX.Length * 16;
             src = src.Slice(len * 3);
@@ -6142,7 +6142,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRx8<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __BGRx8<float>.CopyToRGB(srcX, dstX);
             var len = srcX.Length * 8;
             src = src.Slice(len * 3);
@@ -6165,7 +6165,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRtoRGB(this ReadOnlySpan<float> src, Span<___XYZ> dst, in ___XYZ mul, in ___XYZ add)
+    public static void ConvertBGRtoRGB(this ReadOnlySpan<float> src, Span<__XYZ> dst, in __XYZ mul, in __XYZ add)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -6175,7 +6175,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRx16<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __BGRx16<float>.CopyToRGB(srcX, dstX, mul, add);
             var len = srcX.Length * 16;
             src = src.Slice(len * 3);
@@ -6185,7 +6185,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRx8<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __BGRx8<float>.CopyToRGB(srcX, dstX, mul, add);
             var len = srcX.Length * 8;
             src = src.Slice(len * 3);
@@ -6210,7 +6210,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRtoBGR(this ReadOnlySpan<byte> src, Span<___XYZ> dst)
+    public static void ConvertBGRtoBGR(this ReadOnlySpan<byte> src, Span<__XYZ> dst)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -6220,7 +6220,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRx16<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __BGRx16<byte>.CopyToBGR(srcX, dstX);
             var len = srcX.Length * 16;
             src = src.Slice(len * 3);
@@ -6230,7 +6230,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRx8<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __BGRx8<byte>.CopyToBGR(srcX, dstX);
             var len = srcX.Length * 8;
             src = src.Slice(len * 3);
@@ -6253,7 +6253,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRtoBGR(this ReadOnlySpan<byte> src, Span<___XYZ> dst, in ___XYZ mul, in ___XYZ add)
+    public static void ConvertBGRtoBGR(this ReadOnlySpan<byte> src, Span<__XYZ> dst, in __XYZ mul, in __XYZ add)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -6263,7 +6263,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRx16<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __BGRx16<byte>.CopyToBGR(srcX, dstX, mul, add);
             var len = srcX.Length * 16;
             src = src.Slice(len * 3);
@@ -6273,7 +6273,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRx8<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __BGRx8<byte>.CopyToBGR(srcX, dstX, mul, add);
             var len = srcX.Length * 8;
             src = src.Slice(len * 3);
@@ -6298,7 +6298,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRtoBGR(this ReadOnlySpan<float> src, Span<___XYZ> dst)
+    public static void ConvertBGRtoBGR(this ReadOnlySpan<float> src, Span<__XYZ> dst)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -6308,7 +6308,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRx16<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __BGRx16<float>.CopyToBGR(srcX, dstX);
             var len = srcX.Length * 16;
             src = src.Slice(len * 3);
@@ -6318,7 +6318,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRx8<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __BGRx8<float>.CopyToBGR(srcX, dstX);
             var len = srcX.Length * 8;
             src = src.Slice(len * 3);
@@ -6341,7 +6341,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRtoBGR(this ReadOnlySpan<float> src, Span<___XYZ> dst, in ___XYZ mul, in ___XYZ add)
+    public static void ConvertBGRtoBGR(this ReadOnlySpan<float> src, Span<__XYZ> dst, in __XYZ mul, in __XYZ add)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -6351,7 +6351,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRx16<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __BGRx16<float>.CopyToBGR(srcX, dstX, mul, add);
             var len = srcX.Length * 16;
             src = src.Slice(len * 3);
@@ -6361,7 +6361,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRx8<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __BGRx8<float>.CopyToBGR(srcX, dstX, mul, add);
             var len = srcX.Length * 8;
             src = src.Slice(len * 3);
@@ -6386,7 +6386,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRtoRGBA(this ReadOnlySpan<byte> src, Span<____XYZW> dst)
+    public static void ConvertBGRtoRGBA(this ReadOnlySpan<byte> src, Span<__XYZW> dst)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -6396,7 +6396,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __BGRx4<byte>.CopyToRGBA(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 3);
@@ -6406,7 +6406,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __BGRx2<byte>.CopyToRGBA(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 3);
@@ -6430,7 +6430,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRtoRGBA(this ReadOnlySpan<byte> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertBGRtoRGBA(this ReadOnlySpan<byte> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -6440,7 +6440,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __BGRx4<byte>.CopyToRGBA(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 3);
@@ -6450,7 +6450,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __BGRx2<byte>.CopyToRGBA(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 3);
@@ -6476,7 +6476,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRtoRGBA(this ReadOnlySpan<float> src, Span<____XYZW> dst)
+    public static void ConvertBGRtoRGBA(this ReadOnlySpan<float> src, Span<__XYZW> dst)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -6486,7 +6486,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __BGRx4<float>.CopyToRGBA(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 3);
@@ -6496,7 +6496,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __BGRx2<float>.CopyToRGBA(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 3);
@@ -6520,7 +6520,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRtoRGBA(this ReadOnlySpan<float> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertBGRtoRGBA(this ReadOnlySpan<float> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -6530,7 +6530,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __BGRx4<float>.CopyToRGBA(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 3);
@@ -6540,7 +6540,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __BGRx2<float>.CopyToRGBA(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 3);
@@ -6566,7 +6566,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRtoBGRA(this ReadOnlySpan<byte> src, Span<____XYZW> dst)
+    public static void ConvertBGRtoBGRA(this ReadOnlySpan<byte> src, Span<__XYZW> dst)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -6576,7 +6576,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __BGRx4<byte>.CopyToBGRA(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 3);
@@ -6586,7 +6586,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __BGRx2<byte>.CopyToBGRA(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 3);
@@ -6610,7 +6610,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRtoBGRA(this ReadOnlySpan<byte> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertBGRtoBGRA(this ReadOnlySpan<byte> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -6620,7 +6620,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __BGRx4<byte>.CopyToBGRA(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 3);
@@ -6630,7 +6630,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __BGRx2<byte>.CopyToBGRA(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 3);
@@ -6656,7 +6656,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRtoBGRA(this ReadOnlySpan<float> src, Span<____XYZW> dst)
+    public static void ConvertBGRtoBGRA(this ReadOnlySpan<float> src, Span<__XYZW> dst)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -6666,7 +6666,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __BGRx4<float>.CopyToBGRA(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 3);
@@ -6676,7 +6676,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __BGRx2<float>.CopyToBGRA(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 3);
@@ -6700,7 +6700,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRtoBGRA(this ReadOnlySpan<float> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertBGRtoBGRA(this ReadOnlySpan<float> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -6710,7 +6710,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __BGRx4<float>.CopyToBGRA(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 3);
@@ -6720,7 +6720,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __BGRx2<float>.CopyToBGRA(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 3);
@@ -6746,7 +6746,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRtoARGB(this ReadOnlySpan<byte> src, Span<____XYZW> dst)
+    public static void ConvertBGRtoARGB(this ReadOnlySpan<byte> src, Span<__XYZW> dst)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -6756,7 +6756,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __BGRx4<byte>.CopyToARGB(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 3);
@@ -6766,7 +6766,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __BGRx2<byte>.CopyToARGB(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 3);
@@ -6790,7 +6790,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRtoARGB(this ReadOnlySpan<byte> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertBGRtoARGB(this ReadOnlySpan<byte> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -6800,7 +6800,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __BGRx4<byte>.CopyToARGB(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 3);
@@ -6810,7 +6810,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __BGRx2<byte>.CopyToARGB(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 3);
@@ -6836,7 +6836,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRtoARGB(this ReadOnlySpan<float> src, Span<____XYZW> dst)
+    public static void ConvertBGRtoARGB(this ReadOnlySpan<float> src, Span<__XYZW> dst)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -6846,7 +6846,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __BGRx4<float>.CopyToARGB(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 3);
@@ -6856,7 +6856,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __BGRx2<float>.CopyToARGB(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 3);
@@ -6880,7 +6880,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRtoARGB(this ReadOnlySpan<float> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertBGRtoARGB(this ReadOnlySpan<float> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
@@ -6890,7 +6890,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __BGRx4<float>.CopyToARGB(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 3);
@@ -6900,7 +6900,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __BGRx2<float>.CopyToARGB(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 3);
@@ -6926,7 +6926,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBAtoRGB(this ReadOnlySpan<byte> src, Span<___XYZ> dst)
+    public static void ConvertRGBAtoRGB(this ReadOnlySpan<byte> src, Span<__XYZ> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -6936,7 +6936,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBAx16<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __RGBAx16<byte>.CopyToRGB(srcX, dstX);
             var len = srcX.Length * 16;
             src = src.Slice(len * 4);
@@ -6946,7 +6946,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBAx8<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __RGBAx8<byte>.CopyToRGB(srcX, dstX);
             var len = srcX.Length * 8;
             src = src.Slice(len * 4);
@@ -6969,7 +6969,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBAtoRGB(this ReadOnlySpan<byte> src, Span<___XYZ> dst, in ___XYZ mul, in ___XYZ add)
+    public static void ConvertRGBAtoRGB(this ReadOnlySpan<byte> src, Span<__XYZ> dst, in __XYZ mul, in __XYZ add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -6979,7 +6979,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBAx16<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __RGBAx16<byte>.CopyToRGB(srcX, dstX, mul, add);
             var len = srcX.Length * 16;
             src = src.Slice(len * 4);
@@ -6989,7 +6989,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBAx8<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __RGBAx8<byte>.CopyToRGB(srcX, dstX, mul, add);
             var len = srcX.Length * 8;
             src = src.Slice(len * 4);
@@ -7014,7 +7014,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBAtoRGB(this ReadOnlySpan<float> src, Span<___XYZ> dst)
+    public static void ConvertRGBAtoRGB(this ReadOnlySpan<float> src, Span<__XYZ> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -7024,7 +7024,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBAx16<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __RGBAx16<float>.CopyToRGB(srcX, dstX);
             var len = srcX.Length * 16;
             src = src.Slice(len * 4);
@@ -7034,7 +7034,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBAx8<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __RGBAx8<float>.CopyToRGB(srcX, dstX);
             var len = srcX.Length * 8;
             src = src.Slice(len * 4);
@@ -7057,7 +7057,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBAtoRGB(this ReadOnlySpan<float> src, Span<___XYZ> dst, in ___XYZ mul, in ___XYZ add)
+    public static void ConvertRGBAtoRGB(this ReadOnlySpan<float> src, Span<__XYZ> dst, in __XYZ mul, in __XYZ add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -7067,7 +7067,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBAx16<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __RGBAx16<float>.CopyToRGB(srcX, dstX, mul, add);
             var len = srcX.Length * 16;
             src = src.Slice(len * 4);
@@ -7077,7 +7077,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBAx8<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __RGBAx8<float>.CopyToRGB(srcX, dstX, mul, add);
             var len = srcX.Length * 8;
             src = src.Slice(len * 4);
@@ -7102,7 +7102,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBAtoBGR(this ReadOnlySpan<byte> src, Span<___XYZ> dst)
+    public static void ConvertRGBAtoBGR(this ReadOnlySpan<byte> src, Span<__XYZ> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -7112,7 +7112,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBAx16<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __RGBAx16<byte>.CopyToBGR(srcX, dstX);
             var len = srcX.Length * 16;
             src = src.Slice(len * 4);
@@ -7122,7 +7122,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBAx8<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __RGBAx8<byte>.CopyToBGR(srcX, dstX);
             var len = srcX.Length * 8;
             src = src.Slice(len * 4);
@@ -7145,7 +7145,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBAtoBGR(this ReadOnlySpan<byte> src, Span<___XYZ> dst, in ___XYZ mul, in ___XYZ add)
+    public static void ConvertRGBAtoBGR(this ReadOnlySpan<byte> src, Span<__XYZ> dst, in __XYZ mul, in __XYZ add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -7155,7 +7155,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBAx16<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __RGBAx16<byte>.CopyToBGR(srcX, dstX, mul, add);
             var len = srcX.Length * 16;
             src = src.Slice(len * 4);
@@ -7165,7 +7165,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBAx8<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __RGBAx8<byte>.CopyToBGR(srcX, dstX, mul, add);
             var len = srcX.Length * 8;
             src = src.Slice(len * 4);
@@ -7190,7 +7190,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBAtoBGR(this ReadOnlySpan<float> src, Span<___XYZ> dst)
+    public static void ConvertRGBAtoBGR(this ReadOnlySpan<float> src, Span<__XYZ> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -7200,7 +7200,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBAx16<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __RGBAx16<float>.CopyToBGR(srcX, dstX);
             var len = srcX.Length * 16;
             src = src.Slice(len * 4);
@@ -7210,7 +7210,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBAx8<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __RGBAx8<float>.CopyToBGR(srcX, dstX);
             var len = srcX.Length * 8;
             src = src.Slice(len * 4);
@@ -7233,7 +7233,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBAtoBGR(this ReadOnlySpan<float> src, Span<___XYZ> dst, in ___XYZ mul, in ___XYZ add)
+    public static void ConvertRGBAtoBGR(this ReadOnlySpan<float> src, Span<__XYZ> dst, in __XYZ mul, in __XYZ add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -7243,7 +7243,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBAx16<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __RGBAx16<float>.CopyToBGR(srcX, dstX, mul, add);
             var len = srcX.Length * 16;
             src = src.Slice(len * 4);
@@ -7253,7 +7253,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBAx8<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __RGBAx8<float>.CopyToBGR(srcX, dstX, mul, add);
             var len = srcX.Length * 8;
             src = src.Slice(len * 4);
@@ -7278,7 +7278,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBAtoRGBA(this ReadOnlySpan<byte> src, Span<____XYZW> dst)
+    public static void ConvertRGBAtoRGBA(this ReadOnlySpan<byte> src, Span<__XYZW> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -7288,7 +7288,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBAx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __RGBAx4<byte>.CopyToRGBA(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -7298,7 +7298,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBAx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __RGBAx2<byte>.CopyToRGBA(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -7322,7 +7322,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBAtoRGBA(this ReadOnlySpan<byte> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertRGBAtoRGBA(this ReadOnlySpan<byte> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -7332,7 +7332,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBAx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __RGBAx4<byte>.CopyToRGBA(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -7342,7 +7342,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBAx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __RGBAx2<byte>.CopyToRGBA(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -7368,7 +7368,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBAtoRGBA(this ReadOnlySpan<float> src, Span<____XYZW> dst)
+    public static void ConvertRGBAtoRGBA(this ReadOnlySpan<float> src, Span<__XYZW> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -7378,7 +7378,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBAx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __RGBAx4<float>.CopyToRGBA(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -7388,7 +7388,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBAx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __RGBAx2<float>.CopyToRGBA(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -7412,7 +7412,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBAtoRGBA(this ReadOnlySpan<float> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertRGBAtoRGBA(this ReadOnlySpan<float> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -7422,7 +7422,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBAx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __RGBAx4<float>.CopyToRGBA(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -7432,7 +7432,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBAx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __RGBAx2<float>.CopyToRGBA(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -7458,7 +7458,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBAtoBGRA(this ReadOnlySpan<byte> src, Span<____XYZW> dst)
+    public static void ConvertRGBAtoBGRA(this ReadOnlySpan<byte> src, Span<__XYZW> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -7468,7 +7468,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBAx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __RGBAx4<byte>.CopyToBGRA(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -7478,7 +7478,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBAx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __RGBAx2<byte>.CopyToBGRA(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -7502,7 +7502,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBAtoBGRA(this ReadOnlySpan<byte> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertRGBAtoBGRA(this ReadOnlySpan<byte> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -7512,7 +7512,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBAx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __RGBAx4<byte>.CopyToBGRA(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -7522,7 +7522,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBAx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __RGBAx2<byte>.CopyToBGRA(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -7548,7 +7548,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBAtoBGRA(this ReadOnlySpan<float> src, Span<____XYZW> dst)
+    public static void ConvertRGBAtoBGRA(this ReadOnlySpan<float> src, Span<__XYZW> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -7558,7 +7558,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBAx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __RGBAx4<float>.CopyToBGRA(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -7568,7 +7568,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBAx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __RGBAx2<float>.CopyToBGRA(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -7592,7 +7592,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBAtoBGRA(this ReadOnlySpan<float> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertRGBAtoBGRA(this ReadOnlySpan<float> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -7602,7 +7602,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBAx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __RGBAx4<float>.CopyToBGRA(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -7612,7 +7612,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBAx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __RGBAx2<float>.CopyToBGRA(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -7638,7 +7638,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBAtoARGB(this ReadOnlySpan<byte> src, Span<____XYZW> dst)
+    public static void ConvertRGBAtoARGB(this ReadOnlySpan<byte> src, Span<__XYZW> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -7648,7 +7648,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBAx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __RGBAx4<byte>.CopyToARGB(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -7658,7 +7658,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBAx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __RGBAx2<byte>.CopyToARGB(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -7682,7 +7682,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBAtoARGB(this ReadOnlySpan<byte> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertRGBAtoARGB(this ReadOnlySpan<byte> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -7692,7 +7692,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBAx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __RGBAx4<byte>.CopyToARGB(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -7702,7 +7702,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__RGBAx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __RGBAx2<byte>.CopyToARGB(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -7728,7 +7728,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBAtoARGB(this ReadOnlySpan<float> src, Span<____XYZW> dst)
+    public static void ConvertRGBAtoARGB(this ReadOnlySpan<float> src, Span<__XYZW> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -7738,7 +7738,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBAx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __RGBAx4<float>.CopyToARGB(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -7748,7 +7748,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBAx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __RGBAx2<float>.CopyToARGB(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -7772,7 +7772,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertRGBAtoARGB(this ReadOnlySpan<float> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertRGBAtoARGB(this ReadOnlySpan<float> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -7782,7 +7782,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBAx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __RGBAx4<float>.CopyToARGB(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -7792,7 +7792,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__RGBAx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __RGBAx2<float>.CopyToARGB(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -7818,7 +7818,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRAtoRGB(this ReadOnlySpan<byte> src, Span<___XYZ> dst)
+    public static void ConvertBGRAtoRGB(this ReadOnlySpan<byte> src, Span<__XYZ> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -7828,7 +7828,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRAx16<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __BGRAx16<byte>.CopyToRGB(srcX, dstX);
             var len = srcX.Length * 16;
             src = src.Slice(len * 4);
@@ -7838,7 +7838,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRAx8<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __BGRAx8<byte>.CopyToRGB(srcX, dstX);
             var len = srcX.Length * 8;
             src = src.Slice(len * 4);
@@ -7861,7 +7861,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRAtoRGB(this ReadOnlySpan<byte> src, Span<___XYZ> dst, in ___XYZ mul, in ___XYZ add)
+    public static void ConvertBGRAtoRGB(this ReadOnlySpan<byte> src, Span<__XYZ> dst, in __XYZ mul, in __XYZ add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -7871,7 +7871,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRAx16<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __BGRAx16<byte>.CopyToRGB(srcX, dstX, mul, add);
             var len = srcX.Length * 16;
             src = src.Slice(len * 4);
@@ -7881,7 +7881,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRAx8<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __BGRAx8<byte>.CopyToRGB(srcX, dstX, mul, add);
             var len = srcX.Length * 8;
             src = src.Slice(len * 4);
@@ -7906,7 +7906,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRAtoRGB(this ReadOnlySpan<float> src, Span<___XYZ> dst)
+    public static void ConvertBGRAtoRGB(this ReadOnlySpan<float> src, Span<__XYZ> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -7916,7 +7916,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRAx16<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __BGRAx16<float>.CopyToRGB(srcX, dstX);
             var len = srcX.Length * 16;
             src = src.Slice(len * 4);
@@ -7926,7 +7926,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRAx8<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __BGRAx8<float>.CopyToRGB(srcX, dstX);
             var len = srcX.Length * 8;
             src = src.Slice(len * 4);
@@ -7949,7 +7949,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRAtoRGB(this ReadOnlySpan<float> src, Span<___XYZ> dst, in ___XYZ mul, in ___XYZ add)
+    public static void ConvertBGRAtoRGB(this ReadOnlySpan<float> src, Span<__XYZ> dst, in __XYZ mul, in __XYZ add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -7959,7 +7959,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRAx16<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __BGRAx16<float>.CopyToRGB(srcX, dstX, mul, add);
             var len = srcX.Length * 16;
             src = src.Slice(len * 4);
@@ -7969,7 +7969,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRAx8<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __BGRAx8<float>.CopyToRGB(srcX, dstX, mul, add);
             var len = srcX.Length * 8;
             src = src.Slice(len * 4);
@@ -7994,7 +7994,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRAtoBGR(this ReadOnlySpan<byte> src, Span<___XYZ> dst)
+    public static void ConvertBGRAtoBGR(this ReadOnlySpan<byte> src, Span<__XYZ> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -8004,7 +8004,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRAx16<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __BGRAx16<byte>.CopyToBGR(srcX, dstX);
             var len = srcX.Length * 16;
             src = src.Slice(len * 4);
@@ -8014,7 +8014,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRAx8<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __BGRAx8<byte>.CopyToBGR(srcX, dstX);
             var len = srcX.Length * 8;
             src = src.Slice(len * 4);
@@ -8037,7 +8037,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRAtoBGR(this ReadOnlySpan<byte> src, Span<___XYZ> dst, in ___XYZ mul, in ___XYZ add)
+    public static void ConvertBGRAtoBGR(this ReadOnlySpan<byte> src, Span<__XYZ> dst, in __XYZ mul, in __XYZ add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -8047,7 +8047,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRAx16<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __BGRAx16<byte>.CopyToBGR(srcX, dstX, mul, add);
             var len = srcX.Length * 16;
             src = src.Slice(len * 4);
@@ -8057,7 +8057,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRAx8<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __BGRAx8<byte>.CopyToBGR(srcX, dstX, mul, add);
             var len = srcX.Length * 8;
             src = src.Slice(len * 4);
@@ -8082,7 +8082,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRAtoBGR(this ReadOnlySpan<float> src, Span<___XYZ> dst)
+    public static void ConvertBGRAtoBGR(this ReadOnlySpan<float> src, Span<__XYZ> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -8092,7 +8092,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRAx16<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __BGRAx16<float>.CopyToBGR(srcX, dstX);
             var len = srcX.Length * 16;
             src = src.Slice(len * 4);
@@ -8102,7 +8102,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRAx8<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __BGRAx8<float>.CopyToBGR(srcX, dstX);
             var len = srcX.Length * 8;
             src = src.Slice(len * 4);
@@ -8125,7 +8125,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRAtoBGR(this ReadOnlySpan<float> src, Span<___XYZ> dst, in ___XYZ mul, in ___XYZ add)
+    public static void ConvertBGRAtoBGR(this ReadOnlySpan<float> src, Span<__XYZ> dst, in __XYZ mul, in __XYZ add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -8135,7 +8135,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRAx16<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __BGRAx16<float>.CopyToBGR(srcX, dstX, mul, add);
             var len = srcX.Length * 16;
             src = src.Slice(len * 4);
@@ -8145,7 +8145,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRAx8<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __BGRAx8<float>.CopyToBGR(srcX, dstX, mul, add);
             var len = srcX.Length * 8;
             src = src.Slice(len * 4);
@@ -8170,7 +8170,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRAtoRGBA(this ReadOnlySpan<byte> src, Span<____XYZW> dst)
+    public static void ConvertBGRAtoRGBA(this ReadOnlySpan<byte> src, Span<__XYZW> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -8180,7 +8180,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRAx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __BGRAx4<byte>.CopyToRGBA(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -8190,7 +8190,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRAx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __BGRAx2<byte>.CopyToRGBA(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -8214,7 +8214,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRAtoRGBA(this ReadOnlySpan<byte> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertBGRAtoRGBA(this ReadOnlySpan<byte> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -8224,7 +8224,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRAx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __BGRAx4<byte>.CopyToRGBA(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -8234,7 +8234,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRAx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __BGRAx2<byte>.CopyToRGBA(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -8260,7 +8260,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRAtoRGBA(this ReadOnlySpan<float> src, Span<____XYZW> dst)
+    public static void ConvertBGRAtoRGBA(this ReadOnlySpan<float> src, Span<__XYZW> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -8270,7 +8270,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRAx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __BGRAx4<float>.CopyToRGBA(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -8280,7 +8280,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRAx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __BGRAx2<float>.CopyToRGBA(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -8304,7 +8304,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRAtoRGBA(this ReadOnlySpan<float> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertBGRAtoRGBA(this ReadOnlySpan<float> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -8314,7 +8314,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRAx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __BGRAx4<float>.CopyToRGBA(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -8324,7 +8324,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRAx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __BGRAx2<float>.CopyToRGBA(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -8350,7 +8350,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRAtoBGRA(this ReadOnlySpan<byte> src, Span<____XYZW> dst)
+    public static void ConvertBGRAtoBGRA(this ReadOnlySpan<byte> src, Span<__XYZW> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -8360,7 +8360,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRAx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __BGRAx4<byte>.CopyToBGRA(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -8370,7 +8370,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRAx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __BGRAx2<byte>.CopyToBGRA(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -8394,7 +8394,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRAtoBGRA(this ReadOnlySpan<byte> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertBGRAtoBGRA(this ReadOnlySpan<byte> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -8404,7 +8404,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRAx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __BGRAx4<byte>.CopyToBGRA(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -8414,7 +8414,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRAx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __BGRAx2<byte>.CopyToBGRA(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -8440,7 +8440,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRAtoBGRA(this ReadOnlySpan<float> src, Span<____XYZW> dst)
+    public static void ConvertBGRAtoBGRA(this ReadOnlySpan<float> src, Span<__XYZW> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -8450,7 +8450,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRAx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __BGRAx4<float>.CopyToBGRA(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -8460,7 +8460,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRAx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __BGRAx2<float>.CopyToBGRA(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -8484,7 +8484,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRAtoBGRA(this ReadOnlySpan<float> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertBGRAtoBGRA(this ReadOnlySpan<float> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -8494,7 +8494,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRAx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __BGRAx4<float>.CopyToBGRA(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -8504,7 +8504,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRAx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __BGRAx2<float>.CopyToBGRA(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -8530,7 +8530,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRAtoARGB(this ReadOnlySpan<byte> src, Span<____XYZW> dst)
+    public static void ConvertBGRAtoARGB(this ReadOnlySpan<byte> src, Span<__XYZW> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -8540,7 +8540,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRAx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __BGRAx4<byte>.CopyToARGB(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -8550,7 +8550,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRAx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __BGRAx2<byte>.CopyToARGB(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -8574,7 +8574,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRAtoARGB(this ReadOnlySpan<byte> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertBGRAtoARGB(this ReadOnlySpan<byte> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -8584,7 +8584,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRAx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __BGRAx4<byte>.CopyToARGB(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -8594,7 +8594,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__BGRAx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __BGRAx2<byte>.CopyToARGB(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -8620,7 +8620,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRAtoARGB(this ReadOnlySpan<float> src, Span<____XYZW> dst)
+    public static void ConvertBGRAtoARGB(this ReadOnlySpan<float> src, Span<__XYZW> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -8630,7 +8630,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRAx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __BGRAx4<float>.CopyToARGB(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -8640,7 +8640,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRAx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __BGRAx2<float>.CopyToARGB(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -8664,7 +8664,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertBGRAtoARGB(this ReadOnlySpan<float> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertBGRAtoARGB(this ReadOnlySpan<float> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -8674,7 +8674,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRAx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __BGRAx4<float>.CopyToARGB(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -8684,7 +8684,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__BGRAx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __BGRAx2<float>.CopyToARGB(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -8710,7 +8710,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertARGBtoRGB(this ReadOnlySpan<byte> src, Span<___XYZ> dst)
+    public static void ConvertARGBtoRGB(this ReadOnlySpan<byte> src, Span<__XYZ> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -8720,7 +8720,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__ARGBx16<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __ARGBx16<byte>.CopyToRGB(srcX, dstX);
             var len = srcX.Length * 16;
             src = src.Slice(len * 4);
@@ -8730,7 +8730,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__ARGBx8<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __ARGBx8<byte>.CopyToRGB(srcX, dstX);
             var len = srcX.Length * 8;
             src = src.Slice(len * 4);
@@ -8753,7 +8753,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertARGBtoRGB(this ReadOnlySpan<byte> src, Span<___XYZ> dst, in ___XYZ mul, in ___XYZ add)
+    public static void ConvertARGBtoRGB(this ReadOnlySpan<byte> src, Span<__XYZ> dst, in __XYZ mul, in __XYZ add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -8763,7 +8763,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__ARGBx16<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __ARGBx16<byte>.CopyToRGB(srcX, dstX, mul, add);
             var len = srcX.Length * 16;
             src = src.Slice(len * 4);
@@ -8773,7 +8773,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__ARGBx8<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __ARGBx8<byte>.CopyToRGB(srcX, dstX, mul, add);
             var len = srcX.Length * 8;
             src = src.Slice(len * 4);
@@ -8798,7 +8798,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertARGBtoRGB(this ReadOnlySpan<float> src, Span<___XYZ> dst)
+    public static void ConvertARGBtoRGB(this ReadOnlySpan<float> src, Span<__XYZ> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -8808,7 +8808,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__ARGBx16<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __ARGBx16<float>.CopyToRGB(srcX, dstX);
             var len = srcX.Length * 16;
             src = src.Slice(len * 4);
@@ -8818,7 +8818,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__ARGBx8<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __ARGBx8<float>.CopyToRGB(srcX, dstX);
             var len = srcX.Length * 8;
             src = src.Slice(len * 4);
@@ -8841,7 +8841,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertARGBtoRGB(this ReadOnlySpan<float> src, Span<___XYZ> dst, in ___XYZ mul, in ___XYZ add)
+    public static void ConvertARGBtoRGB(this ReadOnlySpan<float> src, Span<__XYZ> dst, in __XYZ mul, in __XYZ add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -8851,7 +8851,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__ARGBx16<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __ARGBx16<float>.CopyToRGB(srcX, dstX, mul, add);
             var len = srcX.Length * 16;
             src = src.Slice(len * 4);
@@ -8861,7 +8861,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__ARGBx8<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __ARGBx8<float>.CopyToRGB(srcX, dstX, mul, add);
             var len = srcX.Length * 8;
             src = src.Slice(len * 4);
@@ -8886,7 +8886,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertARGBtoBGR(this ReadOnlySpan<byte> src, Span<___XYZ> dst)
+    public static void ConvertARGBtoBGR(this ReadOnlySpan<byte> src, Span<__XYZ> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -8896,7 +8896,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__ARGBx16<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __ARGBx16<byte>.CopyToBGR(srcX, dstX);
             var len = srcX.Length * 16;
             src = src.Slice(len * 4);
@@ -8906,7 +8906,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__ARGBx8<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __ARGBx8<byte>.CopyToBGR(srcX, dstX);
             var len = srcX.Length * 8;
             src = src.Slice(len * 4);
@@ -8929,7 +8929,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertARGBtoBGR(this ReadOnlySpan<byte> src, Span<___XYZ> dst, in ___XYZ mul, in ___XYZ add)
+    public static void ConvertARGBtoBGR(this ReadOnlySpan<byte> src, Span<__XYZ> dst, in __XYZ mul, in __XYZ add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -8939,7 +8939,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__ARGBx16<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __ARGBx16<byte>.CopyToBGR(srcX, dstX, mul, add);
             var len = srcX.Length * 16;
             src = src.Slice(len * 4);
@@ -8949,7 +8949,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__ARGBx8<byte>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __ARGBx8<byte>.CopyToBGR(srcX, dstX, mul, add);
             var len = srcX.Length * 8;
             src = src.Slice(len * 4);
@@ -8974,7 +8974,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertARGBtoBGR(this ReadOnlySpan<float> src, Span<___XYZ> dst)
+    public static void ConvertARGBtoBGR(this ReadOnlySpan<float> src, Span<__XYZ> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -8984,7 +8984,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__ARGBx16<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __ARGBx16<float>.CopyToBGR(srcX, dstX);
             var len = srcX.Length * 16;
             src = src.Slice(len * 4);
@@ -8994,7 +8994,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__ARGBx8<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __ARGBx8<float>.CopyToBGR(srcX, dstX);
             var len = srcX.Length * 8;
             src = src.Slice(len * 4);
@@ -9017,7 +9017,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertARGBtoBGR(this ReadOnlySpan<float> src, Span<___XYZ> dst, in ___XYZ mul, in ___XYZ add)
+    public static void ConvertARGBtoBGR(this ReadOnlySpan<float> src, Span<__XYZ> dst, in __XYZ mul, in __XYZ add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -9027,7 +9027,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__ARGBx16<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR16>(dst);
             __ARGBx16<float>.CopyToBGR(srcX, dstX, mul, add);
             var len = srcX.Length * 16;
             src = src.Slice(len * 4);
@@ -9037,7 +9037,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__ARGBx8<float>>(src);
-            var dstX = __MMARSHALL.Cast<___XYZ,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZ,__VECTOR8>(dst);
             __ARGBx8<float>.CopyToBGR(srcX, dstX, mul, add);
             var len = srcX.Length * 8;
             src = src.Slice(len * 4);
@@ -9062,7 +9062,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertARGBtoRGBA(this ReadOnlySpan<byte> src, Span<____XYZW> dst)
+    public static void ConvertARGBtoRGBA(this ReadOnlySpan<byte> src, Span<__XYZW> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -9072,7 +9072,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__ARGBx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __ARGBx4<byte>.CopyToRGBA(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -9082,7 +9082,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__ARGBx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __ARGBx2<byte>.CopyToRGBA(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -9106,7 +9106,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertARGBtoRGBA(this ReadOnlySpan<byte> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertARGBtoRGBA(this ReadOnlySpan<byte> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -9116,7 +9116,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__ARGBx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __ARGBx4<byte>.CopyToRGBA(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -9126,7 +9126,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__ARGBx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __ARGBx2<byte>.CopyToRGBA(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -9152,7 +9152,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertARGBtoRGBA(this ReadOnlySpan<float> src, Span<____XYZW> dst)
+    public static void ConvertARGBtoRGBA(this ReadOnlySpan<float> src, Span<__XYZW> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -9162,7 +9162,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__ARGBx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __ARGBx4<float>.CopyToRGBA(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -9172,7 +9172,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__ARGBx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __ARGBx2<float>.CopyToRGBA(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -9196,7 +9196,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertARGBtoRGBA(this ReadOnlySpan<float> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertARGBtoRGBA(this ReadOnlySpan<float> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -9206,7 +9206,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__ARGBx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __ARGBx4<float>.CopyToRGBA(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -9216,7 +9216,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__ARGBx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __ARGBx2<float>.CopyToRGBA(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -9242,7 +9242,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertARGBtoBGRA(this ReadOnlySpan<byte> src, Span<____XYZW> dst)
+    public static void ConvertARGBtoBGRA(this ReadOnlySpan<byte> src, Span<__XYZW> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -9252,7 +9252,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__ARGBx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __ARGBx4<byte>.CopyToBGRA(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -9262,7 +9262,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__ARGBx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __ARGBx2<byte>.CopyToBGRA(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -9286,7 +9286,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertARGBtoBGRA(this ReadOnlySpan<byte> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertARGBtoBGRA(this ReadOnlySpan<byte> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -9296,7 +9296,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__ARGBx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __ARGBx4<byte>.CopyToBGRA(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -9306,7 +9306,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__ARGBx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __ARGBx2<byte>.CopyToBGRA(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -9332,7 +9332,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertARGBtoBGRA(this ReadOnlySpan<float> src, Span<____XYZW> dst)
+    public static void ConvertARGBtoBGRA(this ReadOnlySpan<float> src, Span<__XYZW> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -9342,7 +9342,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__ARGBx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __ARGBx4<float>.CopyToBGRA(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -9352,7 +9352,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__ARGBx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __ARGBx2<float>.CopyToBGRA(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -9376,7 +9376,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertARGBtoBGRA(this ReadOnlySpan<float> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertARGBtoBGRA(this ReadOnlySpan<float> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -9386,7 +9386,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__ARGBx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __ARGBx4<float>.CopyToBGRA(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -9396,7 +9396,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__ARGBx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __ARGBx2<float>.CopyToBGRA(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -9422,7 +9422,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertARGBtoARGB(this ReadOnlySpan<byte> src, Span<____XYZW> dst)
+    public static void ConvertARGBtoARGB(this ReadOnlySpan<byte> src, Span<__XYZW> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -9432,7 +9432,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__ARGBx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __ARGBx4<byte>.CopyToARGB(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -9442,7 +9442,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__ARGBx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __ARGBx2<byte>.CopyToARGB(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -9466,7 +9466,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertARGBtoARGB(this ReadOnlySpan<byte> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertARGBtoARGB(this ReadOnlySpan<byte> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -9476,7 +9476,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__ARGBx4<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __ARGBx4<byte>.CopyToARGB(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -9486,7 +9486,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<byte,__ARGBx2<byte>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __ARGBx2<byte>.CopyToARGB(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -9512,7 +9512,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertARGBtoARGB(this ReadOnlySpan<float> src, Span<____XYZW> dst)
+    public static void ConvertARGBtoARGB(this ReadOnlySpan<float> src, Span<__XYZW> dst)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -9522,7 +9522,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__ARGBx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __ARGBx4<float>.CopyToARGB(srcX, dstX);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -9532,7 +9532,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__ARGBx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __ARGBx2<float>.CopyToARGB(srcX, dstX);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);
@@ -9556,7 +9556,7 @@ namespace $rootnamespace$
     }
 
     /// <remarks>Copies <paramref name="src"/> into <paramref name="dst"/>, applying the appropiate color conversion.</remarks>
-    public static void ConvertARGBtoARGB(this ReadOnlySpan<float> src, Span<____XYZW> dst, in ____XYZW mul, in ____XYZW add)
+    public static void ConvertARGBtoARGB(this ReadOnlySpan<float> src, Span<__XYZW> dst, in __XYZW mul, in __XYZW add)
     {
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
@@ -9566,7 +9566,7 @@ namespace $rootnamespace$
         else if (Vector512.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__ARGBx4<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR16>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR16>(dst);
             __ARGBx4<float>.CopyToARGB(srcX, dstX, mul, add);
             var len = srcX.Length * 4;
             src = src.Slice(len * 4);
@@ -9576,7 +9576,7 @@ namespace $rootnamespace$
         else if (Vector256.IsHardwareAccelerated)
         {
             var srcX = __MMARSHALL.Cast<float,__ARGBx2<float>>(src);
-            var dstX = __MMARSHALL.Cast<____XYZW,_VECTOR8>(dst);
+            var dstX = __MMARSHALL.Cast<__XYZW,__VECTOR8>(dst);
             __ARGBx2<float>.CopyToARGB(srcX, dstX, mul, add);
             var len = srcX.Length * 2;
             src = src.Slice(len * 4);

@@ -17,7 +17,7 @@ public class ColorConversionStructuresCodeGen
     
 
     public string SrcColorTypeName => $"__{SrcColorType}x{VectorSize}";
-    public string VectorTypeName => $"_VECTOR{VectorSize}";
+    public string VectorTypeName => $"__VECTOR{VectorSize}";
 
     public void WriteLine(string text) { _LineWriter(text); }
     
@@ -84,7 +84,7 @@ public class ColorConversionStructuresCodeGen
 
             AvailableConverters[dstColorType] = (singleCount, repeats);
 
-            var vectorType = $"_VECTOR{singleCount}";
+            var vectorType = $"__VECTOR{singleCount}";
 
             WriteLine("");
 
@@ -130,11 +130,11 @@ public class ColorConversionStructuresCodeGen
         var madParams = string.Empty;
         if (useMAD)
         {
-            if (repeat == 3) madParams = ", in ___XYZ mul, in ___XYZ add";
-            else madParams = ", in ____XYZW mul, in ____XYZW add";        
+            if (repeat == 3) madParams = ", in __XYZ mul, in __XYZ add";
+            else madParams = ", in __XYZW mul, in __XYZW add";        
         }
 
-        var vectorTypeName = $"_VECTOR{currVectorSize}";
+        var vectorTypeName = $"__VECTOR{currVectorSize}";
 
         WriteLine("[MethodImpl(AGRESSIVE)]");
         WriteLine($"public static void CopyTo{dstColorType}(ReadOnlySpan<{SrcColorTypeName}<T>> src, Span<{vectorTypeName}> dst {madParams})");
@@ -332,11 +332,11 @@ public class ColorConversionStaticFuncCodeGen
 		var madParams = string.Empty;
         if (useMAD)
         {
-            if (DstIs3Elements) madParams = ", in ___XYZ mul, in ___XYZ add";
-            else madParams = ", in ____XYZW mul, in ____XYZW add";        
+            if (DstIs3Elements) madParams = ", in __XYZ mul, in __XYZ add";
+            else madParams = ", in __XYZW mul, in __XYZW add";        
         }
 
-        var dstValueName = DstColorType.Length == 3 ? "___XYZ" : "____XYZW";
+        var dstValueName = DstColorType.Length == 3 ? "__XYZ" : "__XYZW";
 
         yield return "";
         yield return "/// <remarks>Copies <paramref name=\"src\"/> into <paramref name=\"dst\"/>, applying the appropiate color conversion.</remarks>";
@@ -380,7 +380,7 @@ public class ColorConversionStaticFuncCodeGen
 	{
         if (!_SimdVectorHelper.TryGetValue((SrcColorType,DstColorType, vecSize), out var structSize)) yield break;
 
-        var dstValueName = DstColorType.Length == 3 ? "___XYZ" : "____XYZW";        
+        var dstValueName = DstColorType.Length == 3 ? "__XYZ" : "__XYZW";        
 
 		yield return $"else if (Vector{32*vecSize}.IsHardwareAccelerated)";
         yield return "{";        
@@ -388,7 +388,7 @@ public class ColorConversionStaticFuncCodeGen
 		var currentType = $"__{SrcColorType}x{structSize}<{srcElementType}>";
 		
         yield return $"var srcX = __MMARSHALL.Cast<{srcElementType},{currentType}>(src);";
-		yield return $"var dstX = __MMARSHALL.Cast<{dstValueName},_VECTOR{vecSize}>(dst);"; // ".Slice(srcX.Length*{SrcColorType.Length});";
+		yield return $"var dstX = __MMARSHALL.Cast<{dstValueName},__VECTOR{vecSize}>(dst);"; // ".Slice(srcX.Length*{SrcColorType.Length});";
 
         if (useMAD) yield return $"{currentType}.CopyTo{DstColorType}(srcX, dstX, mul, add);";
         else yield return $"{currentType}.CopyTo{DstColorType}(srcX, dstX);";

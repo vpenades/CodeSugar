@@ -16,8 +16,8 @@ using __MMARSHALL = System.Runtime.InteropServices.MemoryMarshal;
 using __UNSAFE = System.Runtime.CompilerServices.Unsafe;
 using __TENSORPRIMS = System.Numerics.Tensors.TensorPrimitives;
 using __XY = System.Numerics.Vector2;
-using ___XYZ = System.Numerics.Vector3;
-using ____XYZW = System.Numerics.Vector4;
+using __XYZ = System.Numerics.Vector3;
+using __XYZW = System.Numerics.Vector4;
 
 
 #if CODESUGAR_USECODESUGARNAMESPACE
@@ -37,7 +37,7 @@ namespace $rootnamespace$
 
             #if NET6_0_OR_GREATER
 
-            public static __Vector3x64 Repeat(___XYZ v)
+            public static __Vector3x64 Repeat(__XYZ v)
             {
                 return new __Vector3x64
                 {
@@ -53,7 +53,7 @@ namespace $rootnamespace$
 
             #else
 
-            public static __Vector3x64 Repeat(___XYZ v)
+            public static __Vector3x64 Repeat(__XYZ v)
             {
                 return new __Vector3x64
                 {

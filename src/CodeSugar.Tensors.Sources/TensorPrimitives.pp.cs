@@ -22,14 +22,14 @@ using __DSTBYTES = System.Span<byte>;
 using __SRCX = System.ReadOnlySpan<float>;
 using __DSTX = System.Span<float>;
 
-using ___SRCXYZ = System.ReadOnlySpan<System.Numerics.Vector3>;
-using ___DSTXYZ = System.Span<System.Numerics.Vector3>;
+using __SRCXYZ = System.ReadOnlySpan<System.Numerics.Vector3>;
+using __DSTXYZ = System.Span<System.Numerics.Vector3>;
 
-using ____SRCXYZW = System.ReadOnlySpan<System.Numerics.Vector4>;
-using ____DSTXYZW = System.Span<System.Numerics.Vector4>;
+using __RCXYZW = System.ReadOnlySpan<System.Numerics.Vector4>;
+using __DSTXYZW = System.Span<System.Numerics.Vector4>;
 
-using ___XYZ = System.Numerics.Vector3;
-using ____XYZW = System.Numerics.Vector4;
+using __XYZ = System.Numerics.Vector3;
+using __XYZW = System.Numerics.Vector4;
 
 
 #if CODESUGAR_USECODESUGARNAMESPACE
@@ -55,11 +55,11 @@ namespace $rootnamespace$
             __TENSORPRIMS.Multiply(span, mul, span);
             __TENSORPRIMS.Add(span, add, span);
         }
-        public static void InPlaceMultiplyAdd(this ___DSTXYZ src, ___XYZ mul, ___XYZ add)
+        public static void InPlaceMultiplyAdd(this __DSTXYZ src, __XYZ mul, __XYZ add)
         {
             MultiplyAddTo(src, mul, add, src);
         }
-        public static void InPlaceMultiplyAdd(this ____DSTXYZW src, ____XYZW mul, ____XYZW add)
+        public static void InPlaceMultiplyAdd(this __DSTXYZW src, __XYZW mul, __XYZW add)
         {
             MultiplyAddTo(src, mul, add, src);
         }        
@@ -195,7 +195,7 @@ namespace $rootnamespace$
                 dst[i] = src[i] * mul + add;
             }
         }
-        public static void MultiplyAddTo(this ___SRCXYZ src, ___XYZ mul, ___XYZ add, ___DSTXYZ dst)
+        public static void MultiplyAddTo(this __SRCXYZ src, __XYZ mul, __XYZ add, __DSTXYZ dst)
         {
             // https://github.com/dotnet/runtime/issues/103756#issuecomment-2180747248
 
@@ -203,8 +203,8 @@ namespace $rootnamespace$
 
             if (mul.X == mul.Y && mul.X == mul.Z && add.X == add.Y && add.X == add.Z)
             {
-                var src1 = __MMARSHALL.Cast<___XYZ, float>(src);
-                var dst1 = __MMARSHALL.Cast<___XYZ, float>(dst);
+                var src1 = __MMARSHALL.Cast<__XYZ, float>(src);
+                var dst1 = __MMARSHALL.Cast<__XYZ, float>(dst);
                 MultiplyAddTo(src1, mul.X, add.X, dst1);
                 return;
             }            
@@ -213,8 +213,8 @@ namespace $rootnamespace$
 
             if (Vector256.IsHardwareAccelerated && Vector256<float>.IsSupported)
             {
-                var srcXXXX = __MMARSHALL.Cast<___XYZ, __Vector3x256>(src);
-                var dstXXXX = __MMARSHALL.Cast<___XYZ, __Vector3x256>(dst);
+                var srcXXXX = __MMARSHALL.Cast<__XYZ, __Vector3x256>(src);
+                var dstXXXX = __MMARSHALL.Cast<__XYZ, __Vector3x256>(dst);
                 var mulXXXX = __Vector3x256.Repeat(mul);
                 var addXXXX = __Vector3x256.Repeat(add);
 
@@ -238,8 +238,8 @@ namespace $rootnamespace$
 
             if (Vector128.IsHardwareAccelerated && Vector128<float>.IsSupported)
             {
-                var srcXXXX = __MMARSHALL.Cast<___XYZ, __Vector3x128>(src);
-                var dstXXXX = __MMARSHALL.Cast<___XYZ, __Vector3x128>(dst);
+                var srcXXXX = __MMARSHALL.Cast<__XYZ, __Vector3x128>(src);
+                var dstXXXX = __MMARSHALL.Cast<__XYZ, __Vector3x128>(dst);
                 var mulXXXX = __Vector3x128.Repeat(mul);
                 var addXXXX = __Vector3x128.Repeat(add);
 
@@ -269,7 +269,7 @@ namespace $rootnamespace$
                 dst[i] = src[i] * mul + add;
             }
         }
-        public static void MultiplyAddTo(this ____SRCXYZW src, ____XYZW mul, ____XYZW add, ____DSTXYZW dst)
+        public static void MultiplyAddTo(this __RCXYZW src, __XYZW mul, __XYZW add, __DSTXYZW dst)
         {
             if (src.Length != dst.Length) throw new ArgumentException("length mismatch", nameof(dst));
 
@@ -277,8 +277,8 @@ namespace $rootnamespace$
 
             if (Vector512.IsHardwareAccelerated && Vector512<float>.IsSupported)
             {
-                var src512 = __MMARSHALL.Cast<____XYZW, Vector512<float>>(src);
-                var dst512 = __MMARSHALL.Cast<____XYZW, Vector512<float>>(dst);
+                var src512 = __MMARSHALL.Cast<__XYZW, Vector512<float>>(src);
+                var dst512 = __MMARSHALL.Cast<__XYZW, Vector512<float>>(dst);
 
                 var mul128 = Vector128.AsVector128(mul);
                 var mul256 = Vector256.Create(mul128, mul128);
@@ -301,8 +301,8 @@ namespace $rootnamespace$
 
             if (Vector256.IsHardwareAccelerated && Vector256<float>.IsSupported)
             {
-                var src256 = __MMARSHALL.Cast<____XYZW, Vector256<float>>(src);
-                var dst256 = __MMARSHALL.Cast<____XYZW, Vector256<float>>(dst);
+                var src256 = __MMARSHALL.Cast<__XYZW, Vector256<float>>(src);
+                var dst256 = __MMARSHALL.Cast<__XYZW, Vector256<float>>(dst);
 
                 var mul128 = Vector128.AsVector128(mul);
                 var mul256 = Vector256.Create(mul128, mul128);
@@ -323,8 +323,8 @@ namespace $rootnamespace$
 
             if (Vector128.IsHardwareAccelerated && Vector128<float>.IsSupported)
             {
-                var src128 = __MMARSHALL.Cast<____XYZW, Vector128<float>>(src);
-                var dst128 = __MMARSHALL.Cast<____XYZW, Vector128<float>>(dst);
+                var src128 = __MMARSHALL.Cast<__XYZW, Vector128<float>>(src);
+                var dst128 = __MMARSHALL.Cast<__XYZW, Vector128<float>>(dst);
 
                 var mul128 = Vector128.AsVector128(mul);
                 var add128 = Vector128.AsVector128(add);
@@ -543,7 +543,7 @@ namespace $rootnamespace$
                 dst[i] = src[i] * mul + add;
             }
         }
-        public static void ScaledMultiplyAddTo(this __SRCBYTES src, ___XYZ mul, ___XYZ add, ___DSTXYZ dst)
+        public static void ScaledMultiplyAddTo(this __SRCBYTES src, __XYZ mul, __XYZ add, __DSTXYZ dst)
         {
             // https://github.com/dotnet/runtime/issues/103756#issuecomment-2180747248
 
@@ -551,7 +551,7 @@ namespace $rootnamespace$
 
             if (mul.X == mul.Y && mul.X == mul.Z && add.X == add.Y && add.X == add.Z)
             {
-                ScaledMultiplyAddTo(src, mul.X, add.X, __MMARSHALL.Cast<___XYZ, float>(dst));
+                ScaledMultiplyAddTo(src, mul.X, add.X, __MMARSHALL.Cast<__XYZ, float>(dst));
                 return;
             }
 
@@ -562,7 +562,7 @@ namespace $rootnamespace$
             if (Vector256.IsHardwareAccelerated && Vector256<float>.IsSupported)
             {
                 var srcXXXX = __MMARSHALL.Cast<byte, __PackedBytes8>(src);
-                var dstXXXX = __MMARSHALL.Cast<___XYZ, __Vector3x256>(dst);
+                var dstXXXX = __MMARSHALL.Cast<__XYZ, __Vector3x256>(dst);
                 var mulXXXX = __Vector3x256.Repeat(mul);
                 var addXXXX = __Vector3x256.Repeat(add);
 
@@ -597,7 +597,7 @@ namespace $rootnamespace$
             if (Vector128.IsHardwareAccelerated && Vector128<float>.IsSupported)
             {
                 var srcXXXX = __MMARSHALL.Cast<byte, __PackedBytes4>(src);
-                var dstXXXX = __MMARSHALL.Cast<___XYZ, __Vector3x128>(dst);
+                var dstXXXX = __MMARSHALL.Cast<__XYZ, __Vector3x128>(dst);
                 var mulXXXX = __Vector3x128.Repeat(mul);
                 var addXXXX = __Vector3x128.Repeat(add);
 
@@ -633,10 +633,10 @@ namespace $rootnamespace$
 
             for(int i=0; i < dst.Length; ++i)
             {
-                dst[i] = new ___XYZ(src[i * 3 + 0], src[i * 3 + 1], src[i * 3 + 2]) * mul + add;
+                dst[i] = new __XYZ(src[i * 3 + 0], src[i * 3 + 1], src[i * 3 + 2]) * mul + add;
             }            
         }
-        public static void ScaledMultiplyAddTo(this __SRCBYTES src, ____XYZW mul, ____XYZW add, ____DSTXYZW dst)
+        public static void ScaledMultiplyAddTo(this __SRCBYTES src, __XYZW mul, __XYZW add, __DSTXYZW dst)
         {
             // https://github.com/dotnet/runtime/issues/103756#issuecomment-2180747248
 
@@ -644,7 +644,7 @@ namespace $rootnamespace$
 
             if (mul.X == mul.Y && mul.X == mul.Z && mul.X == mul.W && add.X == add.Y && add.X == add.Z && add.X == add.W)
             {
-                ScaledMultiplyAddTo(src, mul.X, add.X, __MMARSHALL.Cast<____XYZW, float>(dst));
+                ScaledMultiplyAddTo(src, mul.X, add.X, __MMARSHALL.Cast<__XYZW, float>(dst));
                 return;
             }
 
@@ -655,7 +655,7 @@ namespace $rootnamespace$
             if (Vector256.IsHardwareAccelerated && Vector256<float>.IsSupported)
             {
                 var srcXXXX = __MMARSHALL.Cast<byte, __PackedBytes8>(src);
-                var dstXXXX = __MMARSHALL.Cast<____XYZW, Vector256<float>>(dst);
+                var dstXXXX = __MMARSHALL.Cast<__XYZW, Vector256<float>>(dst);
                 var mulXXXX = Vector256.Create(Vector128.AsVector128(mul), Vector128.AsVector128(mul));
                 var addXXXX = Vector256.Create(Vector128.AsVector128(add), Vector128.AsVector128(add));
 
@@ -682,7 +682,7 @@ namespace $rootnamespace$
             if (Vector128.IsHardwareAccelerated && Vector128<float>.IsSupported)
             {
                 var srcXXXX = __MMARSHALL.Cast<byte, __PackedBytes4>(src);
-                var dstXXXX = __MMARSHALL.Cast<____XYZW, Vector128<float>>(dst);
+                var dstXXXX = __MMARSHALL.Cast<__XYZW, Vector128<float>>(dst);
                 var mulXXXX = Vector128.AsVector128(mul);
                 var addXXXX = Vector128.AsVector128(add);
 
@@ -710,7 +710,7 @@ namespace $rootnamespace$
 
             for (int i = 0; i < dst.Length; ++i)
             {
-                dst[i] = new ____XYZW(src[i * 4 + 0], src[i * 4 + 1], src[i * 4 + 2], src[i * 4 + 3]) * mul + add;
+                dst[i] = new __XYZW(src[i * 4 + 0], src[i * 4 + 1], src[i * 4 + 2], src[i * 4 + 3]) * mul + add;
             }
         }        
         

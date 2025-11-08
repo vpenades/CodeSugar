@@ -15,8 +15,8 @@ using System.Runtime.Intrinsics;
 using __MMARSHALL = System.Runtime.InteropServices.MemoryMarshal;
 using __UNSAFE = System.Runtime.CompilerServices.Unsafe;
 using __TENSORPRIMS = System.Numerics.Tensors.TensorPrimitives;
-using ___XYZ = System.Numerics.Vector3;
-using ____XYZW = System.Numerics.Vector4;
+using __XYZ = System.Numerics.Vector3;
+using __XYZW = System.Numerics.Vector4;
 
 
 #if CODESUGAR_USECODESUGARNAMESPACE
@@ -36,7 +36,7 @@ namespace $rootnamespace$
 
             #if NET6_0_OR_GREATER
 
-            public static __Vector3x128 Repeat(___XYZ v)
+            public static __Vector3x128 Repeat(__XYZ v)
             {
                 return new __Vector3x128
                 {
@@ -52,19 +52,19 @@ namespace $rootnamespace$
 
             #else
 
-            public static __Vector3x128 Repeat(___XYZ v)
+            public static __Vector3x128 Repeat(__XYZ v)
             {
                 return new __Vector3x128
                 {
-                    X = new ____XYZW(v.X, v.Y, v.Z, v.X),
-                    Y = new ____XYZW(v.Y, v.Z, v.X, v.Y),
-                    Z = new ____XYZW(v.Z, v.X, v.Y, v.Z)
+                    X = new __XYZW(v.X, v.Y, v.Z, v.X),
+                    Y = new __XYZW(v.Y, v.Z, v.X, v.Y),
+                    Z = new __XYZW(v.Z, v.X, v.Y, v.Z)
                 };
             }      
 
-            public ____XYZW X;
-            public ____XYZW Y;
-            public ____XYZW Z;
+            public __XYZW X;
+            public __XYZW Y;
+            public __XYZW Z;
 
             #endif
         }
@@ -72,7 +72,7 @@ namespace $rootnamespace$
         #if NET6_0_OR_GREATER
 
         [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        public static Vector128<float> RepeatVector128(this ____XYZW v)
+        public static Vector128<float> RepeatVector128(this __XYZW v)
         {
             return Vector128.AsVector128(v);
         }
