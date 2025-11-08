@@ -36,11 +36,17 @@
 
 	<ItemGroup>
 		<PackageReference Include="System.Numerics.Tensors" Version="10.0.0-rc.2.25502.107" />
-		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
+		<PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />		
+		
+		<PackageReference Include="SixLabors.ImageSharp.Drawing" Version="2.1.7" />		
+		
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.1' ">
-		<PackageReference Update="SixLabors.ImageSharp" Version="2.1.12" />
+		<PackageReference Update="SixLabors.ImageSharp" Version="2.1.12" />		
+		
+		<PackageReference Update="SixLabors.ImageSharp.Drawing" Version="1.0.0" />		
+		
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">

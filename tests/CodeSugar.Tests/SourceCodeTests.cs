@@ -76,7 +76,11 @@ namespace CodeSugar
             }            
         }
 
-        
+        /// <summary>
+        /// tests that all files have #nullable disable
+        /// </summary>
+        /// <param name="projectName"></param>
+
         [TestCase("CodeSugar.Sys.Sources")]
         [TestCase("CodeSugar.Sys.IO.Sources")]        
         [TestCase("CodeSugar.Sys.Text.Sources")]
@@ -106,6 +110,10 @@ namespace CodeSugar
         }
 
         
+        /// <summary>
+        /// Tests whether all using xxx = yyy; instances begin with double underscores '__' to prevent collisions with global usings.
+        /// </summary>
+        /// <param name="projectName"></param>
         [TestCase("CodeSugar.Sys.Sources")]
         [TestCase("CodeSugar.Sys.IO.Sources")]
         [TestCase("CodeSugar.Sys.Text.Sources")]
@@ -118,7 +126,7 @@ namespace CodeSugar
 
         [TestCase("CodeSugar.Progress.Log")]
         [TestCase("CodeSugar.AI")]
-        [TestCase("CodeSugar.ImageSharp")]
+        [TestCase("CodeSugar.ImageSharp")]        
         public void TestUsingAlias(string projectName)
         {
             var dinfo = new System.IO.DirectoryInfo(TestContext.CurrentContext.TestDirectory).FindDirectoryTree("src", projectName);
