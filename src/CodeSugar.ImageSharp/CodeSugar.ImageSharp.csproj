@@ -4,6 +4,7 @@
 		<VersionPrefix>1.0.0</VersionPrefix>
 		<TargetFrameworks>netstandard2.1;net6.0;net8.0</TargetFrameworks>
 		<LangVersion>9</LangVersion>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 
 	<PropertyGroup>

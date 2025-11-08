@@ -16,6 +16,7 @@ using __XY = System.Numerics.Vector2;
 using __XYZ = System.Numerics.Vector3;
 using __XYZW = System.Numerics.Vector4;
 
+
 #if NET8_0_OR_GREATER
 using __TENSORSPAN = System.Numerics.Tensors.TensorSpan<float>;
 using __READONLYTENSORSPAN = System.Numerics.Tensors.ReadOnlyTensorSpan<float>;
@@ -34,6 +35,45 @@ namespace $rootnamespace$
         #if NET8_0_OR_GREATER
 
         #pragma warning disable SYSLIB5001
+
+        public static bool DangerousTryGetSpanTensor<TPixel>(this Image<TPixel> src, out System.Numerics.Tensors.TensorSpan<TPixel> dst)
+            where TPixel : unmanaged, __SIXLABORSPIXFMT.IPixel<TPixel>
+        {
+            if (!src.DangerousTryGetSinglePixelMemory(out var memory))
+            {
+                dst = System.Numerics.Tensors.TensorSpan<TPixel>.Empty;                
+                return false;
+            }
+
+            Span<nint> size = stackalloc nint[2];
+            size[0] = src.Height;
+            size[1] = src.Width;
+
+            dst = new System.Numerics.Tensors.TensorSpan<TPixel>(memory.Span, size);
+
+            return true;
+        }
+
+        public static unsafe bool DangerousTryGetSpanTensor<TPixel>(this Image<TPixel> src, out System.Numerics.Tensors.TensorSpan<Byte> dst)
+            where TPixel : unmanaged, __SIXLABORSPIXFMT.IPixel<TPixel>
+        {
+            if (!src.DangerousTryGetSinglePixelMemory(out var memory))
+            {
+                dst = System.Numerics.Tensors.TensorSpan<byte>.Empty;
+                return false;
+            }
+
+            var imgData = System.Runtime.InteropServices.MemoryMarshal.Cast<TPixel, byte>(memory.Span);
+
+            Span<nint> size = stackalloc nint[3];
+            size[0] = src.Height;
+            size[1] = src.Width;
+            size[2] = sizeof(TPixel);
+
+            dst = new System.Numerics.Tensors.TensorSpan<byte>(imgData, size);
+
+            return true;
+        }
 
         public static void CopyToTensor(this Image src, System.Numerics.Tensors.ITensor dst, bool dstIsBGR = false)
         {

@@ -25,7 +25,11 @@ namespace $rootnamespace$
         public static void DrawImage<TSrcPixel>(this IImageProcessingContext source, Image<TSrcPixel> foreground, System.Numerics.Matrix3x2 foregroundTransform, float opacity = 1)
             where TSrcPixel : unmanaged, IPixel<TSrcPixel>
         {
-            opacity = Math.Clamp(opacity, 0, 1);            
+            opacity = Math.Clamp(opacity, 0, 1);
+
+            // unused
+            // var pixelBlender = PixelOperations<RgbaVector>.Instance.GetPixelBlender(new GraphicsOptions());
+            
 
             if (foregroundTransform.M11 == 1 && foregroundTransform.M12 == 0 && foregroundTransform.M21 == 0 && foregroundTransform.M22 == 1) // translation only
             {
@@ -61,7 +65,6 @@ namespace $rootnamespace$
             // low level fallback
 
             var xformer = new _SamplerTransform(foregroundTransform);
-
             var sampler = new _BilinearSampler<TSrcPixel>(foreground);
 
             void _processRowWithAlpha(Span<Vector4> dstSpan, Point value)
@@ -69,7 +72,7 @@ namespace $rootnamespace$
                 for (int i = 0; i < dstSpan.Length; i++)
                 {
                     var v = xformer.Transform(value.X + i, value.Y);
-                    if (!sampler.TryGetSample(v.X, v.Y, out var forePixel)) continue;                    
+                    if (!sampler.TryGetScaledVectorSample(v.X, v.Y, out var forePixel)) continue;                    
 
                     forePixel.W *= opacity;
 
@@ -82,7 +85,7 @@ namespace $rootnamespace$
                 for (int i = 0; i < dstSpan.Length; i++)
                 {
                     var v = xformer.Transform(value.X + i, value.Y);
-                    if (!sampler.TryGetSample(v.X, v.Y, out var forePixel)) continue;
+                    if (!sampler.TryGetScaledVectorSample(v.X, v.Y, out var forePixel)) continue;
 
                     dstSpan[i] = forePixel;
                 }

@@ -34,8 +34,8 @@ namespace $rootnamespace$
             where TPixel : unmanaged, IPixel<TPixel>
         {
             return bilinear
-                ? ((x, y) => new _BilinearSampler<TPixel>(image).TryGetSample(x, y, out var pixel) ? pixel : default)
-                : ((x, y) => new _StepSampler<TPixel>(image).TryGetSample(x, y, out var pixel) ? pixel : default);
+                ? ((x, y) => new _BilinearSampler<TPixel>(image).TryGetScaledVectorSample(x, y, out var pixel) ? pixel : default)
+                : ((x, y) => new _StepSampler<TPixel>(image).TryGetScaledVectorSample(x, y, out var pixel) ? pixel : default);
         }
 
         private readonly struct _SamplerTransform
@@ -74,7 +74,7 @@ namespace $rootnamespace$
             private readonly float _Width;
             private readonly float _Height;
 
-            public bool TryGetSample(float x, float y, out Vector4 pixel)
+            public bool TryGetScaledVectorSample(float x, float y, out Vector4 pixel)
             {
                 pixel = default;
 
@@ -122,7 +122,7 @@ namespace $rootnamespace$
             /// <param name="y">The Y coordinate (float, pixel space)</param>
             /// <param name="pixel">The sampled result as Vector4</param>
             /// <returns>False if (x, y) is outside image bounds; otherwise true.</returns>
-            public bool TryGetSample(float x, float y, out Vector4 pixel)
+            public bool TryGetScaledVectorSample(float x, float y, out Vector4 pixel)
             {
                 pixel = default;
 
