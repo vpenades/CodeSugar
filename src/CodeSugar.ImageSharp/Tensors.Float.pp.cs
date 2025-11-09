@@ -780,6 +780,11 @@ namespace $rootnamespace$
             channelB = tensor.GetSpan(indices, rowLen);
         }
 
+        public static void SaveToSixLaborsImage(this System.Numerics.Tensors.ITensor tensor, System.IO.FileInfo finfo, bool tensorIsBGR = false)
+        {
+            SaveToSixLaborsImage(tensor, img => img.Save(finfo.FullName), tensorIsBGR);
+        }
+
         public static void SaveToSixLaborsImage(this System.Numerics.Tensors.ITensor tensor, Action<Image> imageAction, bool tensorIsBGR = false)
         {
             if (tensor == null || tensor.IsEmpty) throw new ArgumentNullException("null or empty", nameof(tensor));            
