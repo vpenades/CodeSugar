@@ -54,12 +54,9 @@ namespace CodeSugar
 
             img.CopyToTensor(hwcTensor);
             img.CopyToTensor(chwTensor);
-
-            hwcTensor.CopyToSixLaborsImage(img);
-            AttachmentInfo.From("hwcTensor.png").WriteObject(img.SaveAsPng);
-
-            chwTensor.CopyToSixLaborsImage(img);
-            AttachmentInfo.From("chwTensor.png").WriteObject(img.SaveAsPng);
+            
+            AttachmentInfo.From("hwcTensor.png").WriteObject(f => hwcTensor.SaveToSixLaborsImage(img => img.SaveAsPng(f)));            
+            AttachmentInfo.From("chwTensor.png").WriteObject(f => chwTensor.SaveToSixLaborsImage(img => img.SaveAsPng(f)));
         }
 
         [Test]
@@ -79,11 +76,8 @@ namespace CodeSugar
             img.CopyToTensor(hwcTensor, xform);
             img.CopyToTensor(chwTensor, xform);
 
-            hwcTensor.CopyToSixLaborsImage(img);
-            AttachmentInfo.From("hwcTensor.png").WriteObject(img.SaveAsPng);
-
-            chwTensor.CopyToSixLaborsImage(img);
-            AttachmentInfo.From("chwTensor.png").WriteObject(img.SaveAsPng);
+            AttachmentInfo.From("hwcTensor.png").WriteObject(f => hwcTensor.SaveToSixLaborsImage(img => img.SaveAsPng(f)));
+            AttachmentInfo.From("chwTensor.png").WriteObject(f => chwTensor.SaveToSixLaborsImage(img => img.SaveAsPng(f)));
         }
 
         #endif

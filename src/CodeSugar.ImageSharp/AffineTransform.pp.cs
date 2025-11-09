@@ -72,7 +72,7 @@ namespace $rootnamespace$
                 for (int i = 0; i < dstSpan.Length; i++)
                 {
                     var v = xformer.Transform(value.X + i, value.Y);
-                    if (!sampler.TryGetScaledVectorSample(v.X, v.Y, out var forePixel)) continue;                    
+                    if (!sampler.TryGetScaledVectorSample(v, out var forePixel)) continue;                    
 
                     forePixel.W *= opacity;
 
@@ -85,7 +85,7 @@ namespace $rootnamespace$
                 for (int i = 0; i < dstSpan.Length; i++)
                 {
                     var v = xformer.Transform(value.X + i, value.Y);
-                    if (!sampler.TryGetScaledVectorSample(v.X, v.Y, out var forePixel)) continue;
+                    if (!sampler.TryGetScaledVectorSample(v, out var forePixel)) continue;
 
                     dstSpan[i] = forePixel;
                 }

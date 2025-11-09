@@ -22,6 +22,25 @@ namespace $rootnamespace$
 {
     internal static partial class CodeSugarForImageSharp
     {
+        public static Vector4 ToPremultipliedVector4<TPixel>(this TPixel pixel)
+            where TPixel : unmanaged, IPixel<TPixel>
+        {
+            var value = pixel.ToScaledVector4();
+            value.X *= value.W;
+            value.Y *= value.W;
+            value.Z *= value.W;
+            return value;
+        }
+
+        private static Vector4 _Unpremultiply(this Vector4 value)
+        {
+            if (value.W == 0) return value;            
+            value.X /= value.W;
+            value.Y /= value.W;
+            value.Z /= value.W;
+            return value;
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Vector4 ComposeScaledVectorNormal(this Vector4 backPixel, Vector4 forePixel)
         {

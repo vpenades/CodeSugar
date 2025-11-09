@@ -6,8 +6,7 @@ using System.Numerics.Tensors;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.Advanced;
-
-#nullable disable
+using SixLabors.ImageSharp.PixelFormats;
 
 using __SIXLABORS = SixLabors.ImageSharp;
 using __SIXLABORSPIXFMT = SixLabors.ImageSharp.PixelFormats;
@@ -16,6 +15,10 @@ using __XY = System.Numerics.Vector2;
 using __XYZ = System.Numerics.Vector3;
 using __XYZW = System.Numerics.Vector4;
 
+using System.Security.Cryptography;
+
+
+#nullable disable
 
 #if NET8_0_OR_GREATER
 using __TENSORSPAN = System.Numerics.Tensors.TensorSpan<float>;
@@ -173,11 +176,11 @@ namespace $rootnamespace$
             {
                 Span<nint> dstIndices = stackalloc nint[3];
 
-                var minRows = Math.Min(src.Height, (int)dst.Lengths[0]);
+                var numRows = Math.Min(src.Height, (int)dst.Lengths[0]);
 
                 var rowLen = (int)(dst.Lengths[1] * dst.Lengths[2]);
 
-                for (int y = 0; y < minRows; y++)
+                for (int y = 0; y < numRows; y++)
                 {
                     dstIndices[0] = y;
                     dstIndices[1] = 0;
@@ -254,17 +257,16 @@ namespace $rootnamespace$
 
             if (dst.Lengths[0] == 3) // CHW
             {   
-                var minRows = Math.Min(src.Height, (int)dst.Lengths[0]);
+                var numRows = Math.Min(src.Height, (int)dst.Lengths[1]);
+                var numCols = Math.Min(src.Width, (int)dst.Lengths[2]);
 
-                for (int y = 0; y < minRows; y++)
+                for (int y = 0; y < numRows; y++)
                 {
-                    GetRowChannels(dst, y, dstIsBGR, out var dstRowR, out var dstRowG, out var dstRowB);
+                    _GetRowChannels(dst, y, dstIsBGR, out var dstRowR, out var dstRowG, out var dstRowB);
 
-                    var srcRowPix = src.DangerousGetPixelRowMemory(y).Span;
+                    var srcRowPix = src.DangerousGetPixelRowMemory(y).Span;                    
 
-                    int pixLen = Math.Min(srcRowPix.Length, dstRowR.Length);
-
-                    for (int i = 0; i < pixLen; ++i)
+                    for (int i = 0; i < numCols; ++i)
                     {
                         var pix = srcRowPix[i].ToScaledVector4();
                         dstRowR[i] = pix.X;
@@ -370,8 +372,7 @@ namespace $rootnamespace$
 
                     for (int x = 0; x < pixLen; ++x)
                     {
-                        var v = xformer.Transform(x, y);
-                        src.CopySampleTo(v.X, v.Y, ref pix);
+                        src.CopySampleTo(xformer.Transform(x, y), ref pix);
 
                         dstRowPix[x] = scale * (float)pix.PackedValue;
                     }
@@ -403,8 +404,7 @@ namespace $rootnamespace$
                     {
                         for (int x = 0; x < pixLen; ++x)
                         {
-                            var v = xformer.Transform(x, y);
-                            var pix = src.GetScaledVectorSample(v.X, v.Y);
+                            var pix = src.GetScaledVectorSample(xformer.Transform(x, y));
                             
                             dstRowPix[x] = new __XYZ(pix.Z, pix.Y, pix.X); // BGR
                         }
@@ -413,8 +413,7 @@ namespace $rootnamespace$
                     {
                         for (int x = 0; x < pixLen; ++x)
                         {
-                            var v = xformer.Transform(x, y);
-                            var pix = src.GetScaledVectorSample(v.X, v.Y);
+                            var pix = src.GetScaledVectorSample(xformer.Transform(x, y));
 
                             dstRowPix[x] = new __XYZ(pix.X, pix.Y, pix.Z); // RGB
                         }
@@ -447,8 +446,7 @@ namespace $rootnamespace$
                     {
                         for (int x = 0; x < pixLen; ++x)
                         {
-                            var v = xformer.Transform(x, y);
-                            var pix = src.GetScaledVectorSample(v.X, v.Y);
+                            var pix = src.GetScaledVectorSample(xformer.Transform(x, y));
 
                             dstRowPix[x] = new __XYZW(pix.Z, pix.Y, pix.X, pix.W); // BGRA
                         }
@@ -457,8 +455,7 @@ namespace $rootnamespace$
                     {
                         for (int x = 0; x < pixLen; ++x)
                         {
-                            var v = xformer.Transform(x, y);
-                            var pix = src.GetScaledVectorSample(v.X, v.Y);
+                            var pix = src.GetScaledVectorSample(xformer.Transform(x, y));
 
                             dstRowPix[x] = pix; // RGBA
                         }
@@ -470,18 +467,16 @@ namespace $rootnamespace$
 
             if (dst.Lengths[0] == 3) // CHW
             {
-                var minRows = Math.Min(src.Height, (int)dst.Lengths[0]);
+                var numRows = Math.Min(src.Height, (int)dst.Lengths[1]);
+                var numCols = Math.Min(src.Width, (int)dst.Lengths[2]);
 
-                for (int y = 0; y < minRows; y++)
+                for (int y = 0; y < numRows; y++)
                 {
-                    GetRowChannels(dst, y, dstIsBGR, out var dstRowR, out var dstRowG, out var dstRowB);                    
+                    _GetRowChannels(dst, y, dstIsBGR, out var dstRowR, out var dstRowG, out var dstRowB);                                        
 
-                    int pixLen = Math.Min(src.Width, dstRowR.Length);
-
-                    for (int x = 0; x < pixLen; ++x)
+                    for (int x = 0; x < numCols; ++x)
                     {
-                        var v = xformer.Transform(x, y);
-                        var pix = src.GetScaledVectorSample(v.X, v.Y);
+                        var pix = src.GetScaledVectorSample(xformer.Transform(x, y));
 
                         dstRowR[x] = pix.X;
                         dstRowG[x] = pix.Y;
@@ -708,11 +703,11 @@ namespace $rootnamespace$
 
             if (src.Lengths[0] == 3) // CHW
             {
-                var minRows = Math.Min(dst.Height, (int)src.Lengths[0]);
+                var minRows = Math.Min(dst.Height, (int)src.Lengths[1]);
 
                 for (int y = 0; y < minRows; y++)
                 {                    
-                    GetRowChannels(src, y, srcIsBGR, out var srcRowR, out var srcRowG, out var srcRowB);
+                    _GetRowChannels(src, y, srcIsBGR, out var srcRowR, out var srcRowG, out var srcRowB);
 
                     var dstRowPix = dst.DangerousGetPixelRowMemory(y).Span;
 
@@ -741,14 +736,14 @@ namespace $rootnamespace$
             throw new ArgumentException("invalid lengths[2] range", nameof(dst));
         }
 
-        private static void GetRowChannels(__READONLYTENSORSPAN tensor, int y, bool IsBGR, out ReadOnlySpan<float> channelR, out ReadOnlySpan<float> channelG, out ReadOnlySpan<float> channelB)
+        private static void _GetRowChannels(__READONLYTENSORSPAN tensor, int y, bool IsBGR, out ReadOnlySpan<float> channelR, out ReadOnlySpan<float> channelG, out ReadOnlySpan<float> channelB)
         {
             System.Diagnostics.Debug.Assert(tensor.Rank == 3, ".Rank must be 3");
             System.Diagnostics.Debug.Assert(tensor.Lengths[0] == 3, ".Lengths[0] must be 3");
 
             Span<nint> indices = stackalloc nint[3];
 
-            int rowLen = (int)tensor.Lengths[1];            
+            int rowLen = (int)tensor.Lengths[2];            
 
             indices[1] = y;
             indices[2] = 0;
@@ -763,14 +758,14 @@ namespace $rootnamespace$
             channelB = tensor.GetSpan(indices, rowLen);
         }
 
-        private static void GetRowChannels(__TENSORSPAN tensor, int y, bool IsBGR, out Span<float> channelR, out Span<float> channelG, out Span<float> channelB)
+        private static void _GetRowChannels(__TENSORSPAN tensor, int y, bool IsBGR, out Span<float> channelR, out Span<float> channelG, out Span<float> channelB)
         {
             System.Diagnostics.Debug.Assert(tensor.Rank == 3, ".Rank must be 3");
             System.Diagnostics.Debug.Assert(tensor.Lengths[0] == 3, ".Lengths[0] must be 3");
 
             Span<nint> indices = stackalloc nint[3];
 
-            int rowLen = (int)tensor.Lengths[1];            
+            int rowLen = (int)tensor.Lengths[2];            
 
             indices[1] = y;
             indices[2] = 0;
@@ -783,6 +778,113 @@ namespace $rootnamespace$
 
             indices[0] = IsBGR ? 0 : 2;
             channelB = tensor.GetSpan(indices, rowLen);
+        }
+
+        public static void SaveToSixLaborsImage(this System.Numerics.Tensors.ITensor tensor, Action<Image> imageAction, bool tensorIsBGR = false)
+        {
+            if (tensor == null || tensor.IsEmpty) throw new ArgumentNullException("null or empty", nameof(tensor));            
+            if (!tensor.IsDense) throw new ArgumentException("is not dense", nameof(tensor));
+
+            switch(tensor)
+            {
+                case System.Numerics.Tensors.Tensor<float> typedTensor: typedTensor.AsTensorSpan().SaveToSixLaborsImage(imageAction, tensorIsBGR); break;
+                default: throw new ArgumentException($"{tensor.GetType().Name} not implemented", nameof(tensor));
+            }
+        }
+
+        public static void SaveToSixLaborsImage(this __TENSORSPAN tensor, Action<Image> imageAction, bool tensorIsBGR = false)
+        {
+            tensor.AsReadOnlyTensorSpan().SaveToSixLaborsImage(imageAction, tensorIsBGR);
+        }
+
+        public static void SaveToSixLaborsImage(this __READONLYTENSORSPAN tensor, Action<Image> imageAction, bool tensorIsBGR = false)
+        {
+            if (!_TryInferImageSize(tensor, out _, out _, out var channels)) throw new ArgumentException("cannot infer image size from tensor", nameof(tensor));
+
+            switch(channels)
+            {
+                case 1: _SaveToSixLaborsImage<L16>(tensor, imageAction, tensorIsBGR); break;
+                case 3: _SaveToSixLaborsImage<Rgb24>(tensor, imageAction, tensorIsBGR); break;
+                case 4: _SaveToSixLaborsImage<Rgba32>(tensor, imageAction, tensorIsBGR); break;
+                default: throw new NotSupportedException("number of channels");
+            }
+        }
+
+        private static void _SaveToSixLaborsImage<TPixel>(this __READONLYTENSORSPAN tensor, Action<Image> imageAction, bool tensorIsBGR = false)
+            where TPixel : unmanaged, __SIXLABORSPIXFMT.IPixel<TPixel>
+        {
+            using(var img = tensor.ToSixLaborsImage<TPixel>(tensorIsBGR))
+            {
+                imageAction(img);
+            }            
+        }
+
+        public static Image<TPixel> ToSixLaborsImage<TPixel>(this ITensor tensor, bool tensorIsBGR = false)
+            where TPixel : unmanaged, __SIXLABORSPIXFMT.IPixel<TPixel>
+        {
+            if (tensor == null || tensor.IsEmpty) throw new ArgumentNullException("null or empty", nameof(tensor));            
+            if (!tensor.IsDense) throw new ArgumentException("is not dense", nameof(tensor));
+
+            if (tensor is System.Numerics.Tensors.Tensor<float> ft)
+            {
+                return ft.AsTensorSpan().ToSixLaborsImage<TPixel>(tensorIsBGR);                
+            }
+
+            throw new ArgumentException($"{tensor.GetType().Name} not implemented", nameof(tensor));            
+        }
+
+        public static Image<TPixel> ToSixLaborsImage<TPixel>(this __TENSORSPAN tensor, bool tensorIsBGR = false)
+            where TPixel : unmanaged, __SIXLABORSPIXFMT.IPixel<TPixel>
+        {
+            return tensor.AsReadOnlyTensorSpan().ToSixLaborsImage<TPixel>(tensorIsBGR);
+        }
+
+        public static Image<TPixel> ToSixLaborsImage<TPixel>(this __READONLYTENSORSPAN tensor, bool tensorIsBGR = false)
+            where TPixel : unmanaged, __SIXLABORSPIXFMT.IPixel<TPixel>
+        {
+            if (!_TryInferImageSize(tensor, out int w, out int h, out _)) throw new ArgumentException("cannot infer image size from tensor", nameof(tensor));
+
+            var img = new Image<TPixel>(w, h);
+
+            tensor.CopyToSixLaborsImage(img, tensorIsBGR);
+
+            return img;                
+        }
+
+        private static bool _TryInferImageSize(__READONLYTENSORSPAN tensor, out int width, out int height, out int channels)
+        {
+            tensor = tensor.Squeeze();
+            width = 0;
+            height = 0;
+            channels = 0;
+
+            if (tensor.Rank == 2)
+            {
+                height = (int)tensor.Lengths[0];
+                width = (int)tensor.Lengths[1];
+                channels = 1;
+                return true;
+            }
+
+            if (tensor.Rank != 3) return false;
+
+            if (tensor.Lengths[2] <= 4 && tensor.Lengths[0] > tensor.Lengths[2]) // check is HWC
+            {
+                height = (int)tensor.Lengths[0];
+                width = (int)tensor.Lengths[1];
+                channels = (int)tensor.Lengths[2];
+                return true;
+            }
+
+            if (tensor.Lengths[0] <= 4 && tensor.Lengths[1] > tensor.Lengths[0]) // check is CHW
+            {
+                channels = (int)tensor.Lengths[0];
+                height = (int)tensor.Lengths[1];
+                width = (int)tensor.Lengths[2];
+                return true;
+            }
+
+            return false;
         }
 
         #pragma warning disable SYSLIB5001
