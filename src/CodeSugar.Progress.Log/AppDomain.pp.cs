@@ -81,7 +81,12 @@ namespace $rootnamespace$
 
         public static void RedirectCrashLoggingToConsole(this AppDomain appDomain)
         {
-            RedirectCrashLoggingToFactory(appDomain, type => type.GetProgressToConsoleLogger());
+            static IProgress<string> _func(Type type)
+            {
+                return GetProgressToConsoleLogger(type);
+            }            
+
+            RedirectCrashLoggingToFactory(appDomain, _func);
         }
 
         public static void RedirectCrashLoggingToFactory(this AppDomain appDomain, Func<string, IProgress<string>> logFactory)

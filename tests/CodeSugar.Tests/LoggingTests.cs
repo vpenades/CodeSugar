@@ -10,6 +10,13 @@ namespace CodeSugar
 {
     internal class LoggingTests
     {
+        [Explicit]
+        [Test]
+        public void RegisterLoggerToAppDomain()
+        {
+            System.AppDomain.CurrentDomain.RedirectCrashLoggingToConsole();
+        }
+
         [Test]
         public void TestSharedlogger()
         {
