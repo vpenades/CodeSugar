@@ -57,7 +57,7 @@ namespace $rootnamespace$
             return true;
         }
 
-        public static unsafe bool DangerousTryGetSpanTensor<TPixel>(this Image<TPixel> src, out System.Numerics.Tensors.TensorSpan<Byte> dst)
+        public static bool DangerousTryGetSpanTensor<TPixel>(this Image<TPixel> src, out System.Numerics.Tensors.TensorSpan<Byte> dst)
             where TPixel : unmanaged, __SIXLABORSPIXFMT.IPixel<TPixel>
         {
             if (!src.DangerousTryGetSinglePixelMemory(out var memory))
@@ -71,7 +71,7 @@ namespace $rootnamespace$
             Span<nint> size = stackalloc nint[3];
             size[0] = src.Height;
             size[1] = src.Width;
-            size[2] = sizeof(TPixel);
+            size[2] = System.Runtime.CompilerServices.Unsafe.SizeOf<TPixel>();
 
             dst = new System.Numerics.Tensors.TensorSpan<byte>(imgData, size);
 

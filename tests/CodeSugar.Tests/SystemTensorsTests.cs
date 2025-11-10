@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics.Tensors;
 using System.Runtime.Intrinsics;
 using System.Text;
 using System.Threading.Tasks;
+
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using NUnit.Framework;
 using XYZ = System.Numerics.Vector3;
@@ -265,15 +268,8 @@ namespace CodeSugar
                         dstXYZ[i] += add3;
                     }
                     break;
-            }
-
-            
+            }            
         }
-
-        
-
-
-
 
         [Explicit]
         [Test]
@@ -341,5 +337,36 @@ namespace CodeSugar
                 TestContext.Out.WriteLine($"Run {r}: {sw.Elapsed}  {sw.ElapsedMilliseconds}ms");
             }
         }
+
+
+        #if NET8_0_OR_GREATER
+
+        [Test]
+        public void TestSpanTensorCasting()
+        {
+            var tensorVector3 = System.Numerics.Tensors.Tensor.Create<System.Numerics.Vector3>(new System.Numerics.Vector3[256]).Reshape([16,16]).AsTensorSpan();
+            Assert.That(tensorVector3.FlattenedLength, Is.EqualTo((nint)256));
+            Assert.That(tensorVector3.Rank, Is.EqualTo(2));
+            Assert.That(tensorVector3.Lengths[0], Is.EqualTo((nint)16));
+            Assert.That(tensorVector3.Lengths[1], Is.EqualTo((nint)16));
+
+            tensorVector3.CastTo(out System.Numerics.Tensors.TensorSpan<float> tensorFloats);            
+            Assert.That(tensorFloats.FlattenedLength, Is.EqualTo((nint)256 * 3));
+            Assert.That(tensorFloats.Rank, Is.EqualTo(3));
+            Assert.That(tensorFloats.Lengths[0], Is.EqualTo((nint)16));
+            Assert.That(tensorFloats.Lengths[1], Is.EqualTo((nint)16));
+            Assert.That(tensorFloats.Lengths[2], Is.EqualTo((nint)3));
+
+            tensorFloats[new nint[] { 0, 0, 1 }] = 5;
+
+            tensorFloats.CastTo(out tensorVector3);
+            Assert.That(tensorVector3.FlattenedLength, Is.EqualTo((nint)256));
+            Assert.That(tensorVector3.Rank, Is.EqualTo(2));
+            Assert.That(tensorVector3.Lengths[0], Is.EqualTo((nint)16));
+            Assert.That(tensorVector3.Lengths[1], Is.EqualTo((nint)16));
+            Assert.That(tensorVector3[new nint[] { 0, 0, }], Is.EqualTo(new System.Numerics.Vector3(0,5,0)));
+        }
+
+        #endif
     }
 }

@@ -57,6 +57,13 @@ namespace CodeSugar
             
             AttachmentInfo.From("hwcTensor.png").WriteObjectEx(f => hwcTensor.SaveToSixLaborsImage(f));
             AttachmentInfo.From("chwTensor.png").WriteObjectEx(f => chwTensor.SaveToSixLaborsImage(f));
+
+            hwcTensor.ApplyMultiplyAddToPixelElements(System.Numerics.Vector3.One *2, -System.Numerics.Vector3.One);
+            AttachmentInfo.From("hwcTensor_scaled.png").WriteObjectEx(f => hwcTensor.SaveToSixLaborsImage(f));
+
+            chwTensor.ApplyMultiplyAddToPixelElements(System.Numerics.Vector3.One *2, -System.Numerics.Vector3.One);
+            AttachmentInfo.From("chwTensor_scaled.png").WriteObjectEx(f => chwTensor.SaveToSixLaborsImage(f));
+
         }
 
         [Test]
