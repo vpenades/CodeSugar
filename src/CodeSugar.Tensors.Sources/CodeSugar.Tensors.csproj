@@ -3,7 +3,7 @@
   <PropertyGroup>
     <VersionPrefix>1.0.0</VersionPrefix>
     <TargetFrameworks>netstandard2.1;net6.0;net8.0</TargetFrameworks>
-    <LangVersion>9</LangVersion>
+    <LangVersion>12</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -35,7 +35,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-		<PackageReference Include="System.Numerics.Tensors" Version="10.0.0-rc.2.25502.107" />
+		<PackageReference Include="System.Numerics.Tensors" Version="10.0.0" />
   </ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
