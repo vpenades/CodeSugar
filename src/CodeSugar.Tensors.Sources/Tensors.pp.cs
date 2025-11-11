@@ -5,8 +5,6 @@ using System.Numerics;
 using System.Numerics.Tensors;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Runtime.Serialization;
-
 
 #nullable disable
 
@@ -35,18 +33,34 @@ namespace $rootnamespace$
             where TSrc : unmanaged
             where TDst : unmanaged
         {
-            if (!TryCastTo(src, out dst)) throw new InvalidOperationException($"Can't cast {typeof(TSrc).Name} to {typeof(TDst).Name}");
+            if (!TryCastTo(src, out dst))
+            {
+                if (!src.IsDense) throw new InvalidOperationException($"src is not a dense tensor");
+                if (src.IsPinned) throw new InvalidOperationException($"src is pinned");
+                throw new InvalidOperationException($"Can't cast {typeof(TSrc).Name} to {typeof(TDst).Name}");
+            }
         }
 
+        /// <summary>
+        /// Casts a tensor to use another type, using the same memory.
+        /// </summary>
+        /// <remarks>
+        /// Dimensions will be adjusted based on <typeparamref name="TSrc"/> and <typeparamref name="TDst"/> relative size ratio.
+        /// </remarks>
+        /// <typeparam name="TSrc">The source type</typeparam>
+        /// <typeparam name="TDst">The target type</typeparam>
+        /// <param name="src">The source tensor</param>
+        /// <param name="dst">The casted tensor</param>
+        /// <returns>true if success</returns>
         public static bool TryCastTo<TSrc, TDst>(this System.Numerics.Tensors.TensorSpan<TSrc> src, out System.Numerics.Tensors.TensorSpan<TDst> dst)
             where TSrc: unmanaged
             where TDst: unmanaged
         {
+            ref var srcRef = ref System.Runtime.InteropServices.TensorMarshal.GetReference(src);
+            ref var dstRef = ref System.Runtime.CompilerServices.Unsafe.As<TSrc, TDst>(ref srcRef);
+
             var srcSize = System.Runtime.CompilerServices.Unsafe.SizeOf<TSrc>();
             var dstSize = System.Runtime.CompilerServices.Unsafe.SizeOf<TDst>();
-
-            ref var srcRef = ref System.Runtime.InteropServices.TensorMarshal.GetReference(src);
-            ref var dstRef = ref System.Runtime.CompilerServices.Unsafe.As<TSrc, TDst>(ref srcRef);            
 
             if (srcSize == dstSize)
             {
@@ -56,82 +70,108 @@ namespace $rootnamespace$
 
             dst = System.Numerics.Tensors.TensorSpan<TDst>.Empty;
 
-            if (!src.IsDense) return false;
-            if (src.IsPinned) return false;
+            if (!src.IsDense || src.IsPinned) return false;
 
-            if (srcSize > dstSize) // cast from bigger to smaller (As in Vector4 to float)
-            {
-                var count = Math.DivRem(srcSize, dstSize, out var rem);
+            Span<nint> dstLenghts = stackalloc nint[src.Lengths.Length + (srcSize > dstSize ? 1 : 0)];
 
-                if (count > 0 && rem == 0)
-                {
-                    var flatLen = src.FlattenedLength * count;
+            if (!_CalcCastDimensions(srcSize, dstSize, src.Lengths, src.FlattenedLength, dstLenghts, out var dstFlatLen)) return false;
 
-                    Span<nint> lenghts = stackalloc nint[src.Lengths.Length + 1];
-                    src.Lengths.CopyTo(lenghts);
-                    lenghts[lenghts.Length - 1] = count;                    
+            // remove last dimension if it's redundant
+            if (srcSize < dstSize && dstLenghts[dstLenghts.Length - 1] == 1) dstLenghts = dstLenghts.Slice(0, dstLenghts.Length - 1);
 
-                    dst = System.Runtime.InteropServices.TensorMarshal.CreateTensorSpan(ref dstRef, flatLen, lenghts, Span<nint>.Empty,false);
-                    return true;
-                }
-            }
+            dst = System.Runtime.InteropServices.TensorMarshal.CreateTensorSpan(ref dstRef, dstFlatLen, dstLenghts, Span<nint>.Empty, false);
 
-            if (srcSize < dstSize) // cast from smaller to bigger (As in float to Vector4)
-            {
-                var count = Math.DivRem(dstSize, srcSize, out var rem);                
-
-                if (count > 0 && rem == 0)
-                {
-                    var flatLen = src.FlattenedLength / count;
-
-                    var lastLen = src.Lengths[src.Lengths.Length - 1] / count;
-
-                    if (lastLen == 1) // we can remove the last dimension
-                    {
-                        Span<nint> lenghts = stackalloc nint[src.Lengths.Length -1];
-                        src.Lengths.Slice(0, src.Lengths.Length -1).CopyTo(lenghts);
-
-                        dst = System.Runtime.InteropServices.TensorMarshal.CreateTensorSpan(ref dstRef, flatLen, lenghts, Span<nint>.Empty, false);
-                        return true;
-                    }
-                    else
-                    {
-                        Span<nint> lenghts = stackalloc nint[src.Lengths.Length];
-                        src.Lengths.CopyTo(lenghts);
-                        lenghts[src.Lengths.Length - 1] = lastLen;
-
-                        dst = System.Runtime.InteropServices.TensorMarshal.CreateTensorSpan(ref dstRef, flatLen, lenghts, Span<nint>.Empty, false);
-                        return true;
-                    }                        
-                }
-            }
-
-            return false;
+            return true;
         }
 
-        public static nint GetFlattenedLength<T>(this System.Numerics.Tensors.TensorSpan<T> tensor, int index)
+        public static void CastTo<TSrc, TDst>(this System.Numerics.Tensors.ReadOnlyTensorSpan<TSrc> src, out System.Numerics.Tensors.ReadOnlyTensorSpan<TDst> dst)
+            where TSrc : unmanaged
+            where TDst : unmanaged
         {
-            nint len = tensor.Lengths[index++];
-
-            while(index < tensor.Lengths.Length)
+            if (!TryCastTo(src, out dst))
             {
-                len *= tensor.Lengths[index++];
+                if (!src.IsDense) throw new InvalidOperationException($"src is not a dense tensor");
+                if (src.IsPinned) throw new InvalidOperationException($"src is pinned");
+                throw new InvalidOperationException($"Can't cast {typeof(TSrc).Name} to {typeof(TDst).Name}");
             }
-
-            return len;
         }
 
-        public static nint GetFlattenedLength<T>(this System.Numerics.Tensors.ReadOnlyTensorSpan<T> tensor, int index)
+        /// <summary>
+        /// Casts a tensor to use another type, using the same memory.
+        /// </summary>
+        /// <remarks>
+        /// Dimensions will be adjusted based on <typeparamref name="TSrc"/> and <typeparamref name="TDst"/> relative size ratio.
+        /// </remarks>
+        /// <typeparam name="TSrc">The source type</typeparam>
+        /// <typeparam name="TDst">The target type</typeparam>
+        /// <param name="src">The source tensor</param>
+        /// <param name="dst">The casted tensor</param>
+        /// <returns>true if success</returns>
+        public static bool TryCastTo<TSrc, TDst>(this System.Numerics.Tensors.ReadOnlyTensorSpan<TSrc> src, out System.Numerics.Tensors.ReadOnlyTensorSpan<TDst> dst)
+            where TSrc : unmanaged
+            where TDst : unmanaged
         {
-            nint len = tensor.Lengths[index++];
+            ref readonly var srcRef = ref System.Runtime.InteropServices.TensorMarshal.GetReference(src);
+            ref var tmpRef = ref System.Runtime.CompilerServices.Unsafe.AsRef(in srcRef); // requires langversion 12+
+            ref readonly var dstRef = ref System.Runtime.CompilerServices.Unsafe.As<TSrc, TDst>(ref tmpRef);
 
-            while (index < tensor.Lengths.Length)
+            var srcSize = System.Runtime.CompilerServices.Unsafe.SizeOf<TSrc>();
+            var dstSize = System.Runtime.CompilerServices.Unsafe.SizeOf<TDst>();
+
+            if (srcSize == dstSize)
             {
-                len *= tensor.Lengths[index++];
+                dst = System.Runtime.InteropServices.TensorMarshal.CreateReadOnlyTensorSpan(in dstRef, src.FlattenedLength, src.Lengths, src.Strides, src.IsPinned);
+                return true;
             }
 
-            return len;
+            dst = System.Numerics.Tensors.TensorSpan<TDst>.Empty;
+
+            if (!src.IsDense || src.IsPinned) return false;
+
+            Span<nint> dstLenghts = stackalloc nint[src.Lengths.Length + (srcSize > dstSize ? 1 : 0)];
+
+            if (!_CalcCastDimensions(srcSize, dstSize, src.Lengths, src.FlattenedLength, dstLenghts, out var dstFlatLen)) return false;
+
+            // remove last dimension if it's redundant
+            if (srcSize < dstSize && dstLenghts[dstLenghts.Length - 1] == 1) dstLenghts = dstLenghts.Slice(0, dstLenghts.Length - 1);
+
+            dst = System.Runtime.InteropServices.TensorMarshal.CreateReadOnlyTensorSpan(in dstRef, dstFlatLen, dstLenghts, Span<nint>.Empty, false);
+
+            return true;
         }
+
+        private static bool _CalcCastDimensions(int srcSize, int dstSize, ReadOnlySpan<nint> srcLenghts, nint srcFlatLen, Span<nint> dstLenghts, out nint dstFlatLen)
+        {
+            dstFlatLen = default;
+
+            if (srcSize > dstSize) // cast from bigger to smaller (As in Vector4[1] to float[4])
+            {
+                var mul = Math.DivRem(srcSize, dstSize, out var rem);
+                if (mul <= 0 || rem != 0) return false;
+                
+                dstFlatLen = srcFlatLen * mul;
+
+                srcLenghts.CopyTo(dstLenghts);
+                dstLenghts.Slice(srcLenghts.Length).Fill(1);
+
+                dstLenghts[dstLenghts.Length - 1] *= mul;
+            }
+
+            if (srcSize < dstSize) // cast from smaller to bigger (As in float[4] to Vector4[1])
+            {
+                var div = Math.DivRem(dstSize, srcSize, out var rem);
+                if (div <= 0 || rem != 0) return false;
+                
+                dstFlatLen = srcFlatLen / div;                
+
+                srcLenghts.CopyTo(dstLenghts);
+
+                dstLenghts[dstLenghts.Length - 1] /= div;
+            }
+            
+            return true;
+        }
+        
 
         public static Span<T> GetFullSpan<T>(this System.Numerics.Tensors.TensorSpan<T> tensor)
         {
@@ -189,7 +229,7 @@ namespace $rootnamespace$
             return tensor.GetSpan(indices, (int)flen);
         }
 
-        public static Span<T> GetSpan<T>(this System.Numerics.Tensors.TensorSpan<T> tensor, nint index0, nint index1, nint index2)
+        public static Span<T> GetSubSpan<T>(this System.Numerics.Tensors.TensorSpan<T> tensor, nint index0, nint index1, nint index2)
         {
             var flen = tensor.GetFlattenedLength(3);
             if (flen > int.MaxValue) throw new InvalidOperationException("tensor too large");
@@ -201,7 +241,7 @@ namespace $rootnamespace$
             return tensor.GetSpan(indices, (int)flen);
         }
 
-        public static ReadOnlySpan<T> GetSpan<T>(this System.Numerics.Tensors.ReadOnlyTensorSpan<T> tensor, nint index0, nint index1, nint index2)
+        public static ReadOnlySpan<T> GetSubSpan<T>(this System.Numerics.Tensors.ReadOnlyTensorSpan<T> tensor, nint index0, nint index1, nint index2)
         {
             var flen = tensor.GetFlattenedLength(3);
             if (flen > int.MaxValue) throw new InvalidOperationException("tensor too large");
@@ -211,6 +251,30 @@ namespace $rootnamespace$
             indices[2] = index2;
 
             return tensor.GetSpan(indices, (int)flen);
+        }
+
+        public static nint GetFlattenedLength<T>(this System.Numerics.Tensors.TensorSpan<T> tensor, int index)
+        {
+            nint len = tensor.Lengths[index++];
+
+            while (index < tensor.Lengths.Length)
+            {
+                len *= tensor.Lengths[index++];
+            }
+
+            return len;
+        }
+
+        public static nint GetFlattenedLength<T>(this System.Numerics.Tensors.ReadOnlyTensorSpan<T> tensor, int index)
+        {
+            nint len = tensor.Lengths[index++];
+
+            while (index < tensor.Lengths.Length)
+            {
+                len *= tensor.Lengths[index++];
+            }
+
+            return len;
         }
 
         public static void ApplyMultiplyAddToPixelElements(this Tensor<float> tensor, __XYZ mul, __XYZ add)

@@ -8,8 +8,6 @@ using System.Runtime.Intrinsics;
 using System.Text;
 using System.Threading.Tasks;
 
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-
 using NUnit.Framework;
 using XYZ = System.Numerics.Vector3;
 using XYZW = System.Numerics.Vector4;
