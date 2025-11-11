@@ -160,24 +160,14 @@ namespace $rootnamespace$
         {
             return files.Distinct(MatchCasing.PlatformDefault.GetFullNameComparer<T>());
         }
-
-
-
+        
         public static Dictionary<TKey,TValue> FileSystemToDictionary<TSource,TKey,TValue>(this IEnumerable<TSource> collection, Func<TSource, TKey> keySelector, Func<TSource,TValue> valSelector)
             where TKey: __SINFO
         {
             return collection.ToDictionary(keySelector, valSelector, MatchCasing.PlatformDefault.GetFullNameComparer<TKey>());
         }
-
-        [Obsolete("Use MatchCasing.PlatformDefault.GetFullNameComparer<T>()", true)]
-		public static IEqualityComparer<T> GetFullNameComparer<T>()
-            where T:__SINFO
-        {
-            return _FileSystemInfoComparer<T>.GetInstance(FileSystemStringComparison);
-        }
         
-
-		/// <summary>
+        /// <summary>
 		/// Gets a <see cref="IEqualityComparer{T}"/> specialises in comparing <see cref="__SINFO.FullName"/>
 		/// </summary>		
 		public static IEqualityComparer<T> GetFullNameComparer<T>(this MatchCasing casing)

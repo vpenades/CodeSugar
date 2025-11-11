@@ -150,14 +150,7 @@ namespace $rootnamespace$
             if (fsinfo is __FINFO finfo) return finfo.Directory;
             if (fsinfo is __DINFO dinfo) return dinfo.Parent;
             return null;
-        }
-
-        [Obsolete("Use GetFileInfo", true)]
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static __FINFO GetFile(this __DINFO baseDir, params string[] relativePath)
-        {
-            return GetFileInfo(baseDir, relativePath);
-        }
+        }        
 
         /// <summary>
         /// Gets a <see cref="__FINFO"/> relative to the base directory.
@@ -171,14 +164,7 @@ namespace $rootnamespace$
             var finfo = _CreateFileInfo(baseDir, false, relativePath);
             System.Diagnostics.Debug.Assert(finfo != null && finfo.PhysicallyExists(), $"File {relativePath.Last()} does not exist.");
             return finfo ?? throw new System.IO.FileNotFoundException();
-        }
-
-        [Obsolete("UseFileInfo", true)]
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static __FINFO UseFile(this __DINFO baseDir, params string[] relativePath)
-        {
-            return UseFileInfo(baseDir, relativePath);
-        }
+        }        
 
         /// <summary>
         /// Gets a <see cref="__FINFO"/> relative to the base directory.
@@ -194,14 +180,7 @@ namespace $rootnamespace$
         public static __FINFO UseFileInfo(this __DINFO baseDir, params string[] relativePath)
         {
             return _CreateFileInfo(baseDir, true, relativePath) ?? throw new System.IO.FileNotFoundException();
-        }
-
-        [Obsolete("Use DefineFileInfo", true)]
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        public static __FINFO DefineFile(this __DINFO baseDir, params string[] relativePath)
-        {
-            return DefineFileInfo(baseDir, relativePath);
-        }
+        }        
 
         /// <summary>
         /// Defines a <see cref="__FINFO"/> relative to the base directory.
@@ -236,15 +215,6 @@ namespace $rootnamespace$
             return finfo;
         }
 
-        [Obsolete("Use GetDirectoryInfo", true)]
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        [return: NotNull]
-        public static __DINFO GetDirectory(this __DINFO baseDir, params string[] relativePath)
-        {
-            return GetDirectoryInfo(baseDir, relativePath);
-        }
-
-
         /// <summary>
         /// Gets an existing <see cref="__DINFO"/> relative to the base directory.
         /// </summary>
@@ -256,15 +226,7 @@ namespace $rootnamespace$
         {
             return _CreateDirectoryInfo(baseDir, false, false, relativePath)
                 ?? throw new System.IO.DirectoryNotFoundException();
-        }
-
-        [Obsolete("Use UseDirectoryInfo", true)]
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        [return: NotNull]
-        public static __DINFO UseDirectory(this __DINFO baseDir, params string[] relativePath)
-        {
-            return UseDirectoryInfo(baseDir, relativePath);
-        }
+        }        
 
         /// <summary>
 		/// Uses a <see cref="__DINFO"/> relative to the base directory.
@@ -277,15 +239,7 @@ namespace $rootnamespace$
         {
             return _CreateDirectoryInfo(baseDir, false, true, relativePath)
                 ?? throw new System.IO.DirectoryNotFoundException();
-        }
-
-        [Obsolete("Use DefineDirectoryInfo", true)]
-        [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
-        [return: NotNull]
-        public static __DINFO DefineDirectory(this __DINFO baseDir, params string[] relativePath)
-        {
-            return DefineDirectoryInfo(baseDir, relativePath);
-        }
+        }        
 
         /// <summary>
 		/// Defines a <see cref="__DINFO"/> relative to the base directory.
