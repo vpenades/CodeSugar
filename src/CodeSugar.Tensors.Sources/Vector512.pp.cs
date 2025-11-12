@@ -8,14 +8,13 @@ using System.Text;
 
 #if NET
 using System.Runtime.Intrinsics;
+using __UNSAFE = System.Runtime.CompilerServices.Unsafe;
 #endif
 
 #nullable disable
 
 using __MMARSHALL = System.Runtime.InteropServices.MemoryMarshal;
-using __UNSAFE = System.Runtime.CompilerServices.Unsafe;
 using __TENSORPRIMS = System.Numerics.Tensors.TensorPrimitives;
-
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
