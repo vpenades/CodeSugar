@@ -66,8 +66,8 @@ namespace $rootnamespace$
             where TPixel : unmanaged, IPixel<TPixel>
         {
             return bilinear
-                ? (p => new _BilinearSampler<TPixel>(image).TryGetScaledVectorSample(p, out var pixel) ? pixel : default)
-                : (p => new _StepSampler<TPixel>(image).TryGetScaledVectorSample(p, out var pixel) ? pixel : default);
+                ? (Func<__XY, Vector4>)(p => new _BilinearSampler<TPixel>(image).TryGetScaledVectorSample(p, out var pixel) ? pixel : default)
+                : (Func<__XY, Vector4>)(p => new _StepSampler<TPixel>(image).TryGetScaledVectorSample(p, out var pixel) ? pixel : default);
         }
 
         
