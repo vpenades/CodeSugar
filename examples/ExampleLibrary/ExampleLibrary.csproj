@@ -7,7 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CodeSugar.System.IO.Sources" Version="1.0.0-Preview-20240110-234435" PrivateAssets="all" />
+    <PackageReference Include="CodeSugar.Sys.IO.Sources" Version="1.0.0-Prv-20250721" PrivateAssets="all" />
+		<PackageReference Include="CodeSugar.Srlzn.Bin.Sources" Version="1.0.0-Prv-20250721" PrivateAssets="all" />
     <PackageReference Include="ContentFilesExample" Version="1.0.2" PrivateAssets="all" />
   </ItemGroup>
 
