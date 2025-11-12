@@ -35,9 +35,7 @@ namespace $rootnamespace$
 {
     internal static partial class CodeSugarForImageSharp
     {
-        #if NET8_0_OR_GREATER
-
-        #pragma warning disable SYSLIB5001
+        #if NET8_0_OR_GREATER        
 
         public static bool DangerousTryGetSpanTensor<TPixel>(this Image<TPixel> src, out System.Numerics.Tensors.TensorSpan<TPixel> dst)
             where TPixel : unmanaged, __SIXLABORSPIXFMT.IPixel<TPixel>
@@ -890,9 +888,7 @@ namespace $rootnamespace$
             }
 
             return false;
-        }
-
-        #pragma warning disable SYSLIB5001
+        }        
 
         #endif
     }

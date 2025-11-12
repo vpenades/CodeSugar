@@ -27,8 +27,6 @@ namespace $rootnamespace$
     {
         #if NET8_0_OR_GREATER
 
-        #pragma warning disable SYSLIB5001
-
         public static void CastTo<TSrc, TDst>(this System.Numerics.Tensors.TensorSpan<TSrc> src, out System.Numerics.Tensors.TensorSpan<TDst> dst)
             where TSrc : unmanaged
             where TDst : unmanaged
@@ -357,9 +355,7 @@ namespace $rootnamespace$
             }
 
             return false;
-        }
-
-        #pragma warning disable SYSLIB5001
+        }        
 
         #endif
     }
