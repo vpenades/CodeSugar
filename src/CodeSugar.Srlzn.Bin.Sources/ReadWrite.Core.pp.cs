@@ -179,7 +179,7 @@ namespace $rootnamespace$
         public static __WRITEABLEBLOCK_ARRAY WritePlatform<T>([NotNull] this __WRITEABLEBLOCK_ARRAY target, T value)
             where T : unmanaged
         {
-            var sequence = System.Runtime.InteropServices.MemoryMarshal.Cast<byte, T>(target);
+            var sequence = System.Runtime.InteropServices.MemoryMarshal.Cast<byte, T>(target.AsSpan());
             sequence[0] = value;
 
             return target.Slice(__SizeOf<T>.ByteSize);
@@ -193,7 +193,7 @@ namespace $rootnamespace$
         public static __READABLEBLOCK_ARRAY ReadPlatform<T>([NotNull] this __READABLEBLOCK_ARRAY source, out T value)
             where T : unmanaged
         {
-            var sequence = System.Runtime.InteropServices.MemoryMarshal.Cast<byte, T>(source);
+            var sequence = System.Runtime.InteropServices.MemoryMarshal.Cast<byte, T>(source.AsSpan());
 
             value = sequence[0];
 
