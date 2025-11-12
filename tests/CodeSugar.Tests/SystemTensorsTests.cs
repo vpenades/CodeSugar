@@ -299,7 +299,7 @@ namespace CodeSugar
             new Random().NextBytes(bytes);
 
             var floats = new float[bytes.Length];
-            var vects = System.Runtime.InteropServices.MemoryMarshal.Cast<float, XYZ>(floats);
+            var vects = System.Runtime.InteropServices.MemoryMarshal.Cast<float, XYZ>(floats.AsSpan());
 
             for (int r = 0; r < 2; ++r)
             {
@@ -342,7 +342,7 @@ namespace CodeSugar
         [Test]
         public void TestSpanTensorCasting()
         {
-            var tensorVector3 = System.Numerics.Tensors.Tensor.Create<System.Numerics.Vector3>(new System.Numerics.Vector3[256]).Reshape([16,16]).AsTensorSpan();
+            var tensorVector3 = System.Numerics.Tensors.Tensor.Create<XYZ>(new XYZ[256]).Reshape([16,16]).AsTensorSpan();
             Assert.That(tensorVector3.FlattenedLength, Is.EqualTo((nint)256));
             Assert.That(tensorVector3.Rank, Is.EqualTo(2));
             Assert.That(tensorVector3.Lengths[0], Is.EqualTo((nint)16));
@@ -362,7 +362,7 @@ namespace CodeSugar
             Assert.That(tensorVector3.Rank, Is.EqualTo(2));
             Assert.That(tensorVector3.Lengths[0], Is.EqualTo((nint)16));
             Assert.That(tensorVector3.Lengths[1], Is.EqualTo((nint)16));
-            Assert.That(tensorVector3[new nint[] { 0, 0, }], Is.EqualTo(new System.Numerics.Vector3(0,5,0)));
+            Assert.That(tensorVector3[new nint[] { 0, 0, }], Is.EqualTo(new XYZ(0,5,0)));
         }
 
         #endif
