@@ -2,12 +2,11 @@
 
   <PropertyGroup>
     <VersionPrefix>1.0.0</VersionPrefix>
-    <TargetFrameworks>netstandard2.1;net6.0;net8.0;net10.0</TargetFrameworks>
-    <LangVersion>8</LangVersion>
+    <TargetFrameworks>netstandard2.1;net6.0;net8.0;net10.0</TargetFrameworks>    
   </PropertyGroup>
 
   <PropertyGroup>    
-    <IsPackable>true</IsPackable>
+    <IsPackable>false</IsPackable>
     <IsPackableAsSources>true</IsPackableAsSources>
   </PropertyGroup>
 
@@ -16,7 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="CodeSugar.Tests"/>
+    <InternalsVisibleTo Include="CodeSugar.Tests" />
 		<InternalsVisibleTo Include="CodeSugar.Nullable.Tests" />
   </ItemGroup>
 
