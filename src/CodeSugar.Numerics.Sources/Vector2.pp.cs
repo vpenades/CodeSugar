@@ -103,7 +103,7 @@ namespace $rootnamespace$
         [DebuggerStepThrough]
         public static void InPlaceTransformBy(this Span<Vector2> collection, System.Numerics.Matrix3x2 matrix)            
         {
-            if (collection == null) return;
+            if (collection.IsEmpty) return;
 
             for (int i = 0; i < collection.Length; i++)
             {
@@ -114,7 +114,7 @@ namespace $rootnamespace$
         [DebuggerStepThrough]
         public static void InPlaceTransformNormalBy(this Span<Vector2> collection, System.Numerics.Matrix3x2 matrix)            
         {
-            if (collection == null) return;
+            if (collection.IsEmpty) return;
 
             for (int i = 0; i < collection.Length; i++)
             {
