@@ -15,15 +15,13 @@ using __XY = System.Numerics.Vector2;
 using __XYZ = System.Numerics.Vector3;
 using __XYZW = System.Numerics.Vector4;
 
-using System.Security.Cryptography;
-
-
-#nullable disable
-
 #if NET8_0_OR_GREATER
 using __TENSORSPAN = System.Numerics.Tensors.TensorSpan<float>;
 using __READONLYTENSORSPAN = System.Numerics.Tensors.ReadOnlyTensorSpan<float>;
 #endif
+
+
+#nullable disable
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -567,7 +565,7 @@ namespace $rootnamespace$
 
                 var minRows = Math.Min(dst.Height, (int)src.Lengths[0]);
 
-                var rowLen = (int)(src.Lengths[1] * src.Lengths[2]);
+                var rowLen = (int)src.Lengths[1];
 
                 for (int y = 0; y < minRows; y++)
                 {
@@ -593,6 +591,8 @@ namespace $rootnamespace$
                         dstRowPix[i] = pix;
                     }
                 }
+
+                return;
             }
 
             if (src.Rank != 3) throw new ArgumentException("invalid rank or lengths", nameof(dst));

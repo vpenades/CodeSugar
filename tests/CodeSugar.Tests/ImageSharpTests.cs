@@ -67,6 +67,17 @@ namespace CodeSugar
         }
 
         [Test]
+        public void TestTensorsAlpha()
+        {
+            var hwcTensor = System.Numerics.Tensors.Tensor.Create<float>(new float[256 * 256], new nint[] { 256, 256, 1 });
+
+            using var image = hwcTensor.ToSixLaborsImage<A8>();
+
+            
+
+        }
+
+        [Test]
         public void TestTensorsAffineTransformInterop()
         {
             var icon = ResourceInfo.From("CodeSugar.png");
