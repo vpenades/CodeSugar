@@ -150,18 +150,11 @@ namespace $rootnamespace$
                     var dstRowPix = dst.GetSpan(dstIndices, (int)dst.FlattenedLength);
                     var srcRowPix = src.DangerousGetPixelRowMemory(y).Span;
 
-                    int pixLen = Math.Min(srcRowPix.Length, dstRowPix.Length);
-
-                    // Do faster special cases for Lxx and Axx
-
-                    __SIXLABORSPIXFMT.L16 pix = default;
-
-                    var scale = 1f / (float)ushort.MaxValue;
+                    int pixLen = Math.Min(srcRowPix.Length, dstRowPix.Length);                    
 
                     for (int i = 0; i < pixLen; ++i)
-                    {
-                        pix.FromScaledVector4(srcRowPix[i].ToScaledVector4());
-                        dstRowPix[i] = scale * (float)pix.PackedValue;
+                    {                        
+                        dstRowPix[i] = srcRowPix[i].LuminanceOrAlphaToScalar();
                     }                    
                 }
             }
@@ -575,20 +568,13 @@ namespace $rootnamespace$
                     var srcRowPix = src.GetSpan(srcIndices, rowLen);
                     var dstRowPix = dst.DangerousGetPixelRowMemory(y).Span;
 
-                    int pixLen = Math.Min(srcRowPix.Length, dstRowPix.Length);
-
-                    TPixel pix = default;
-                    __SIXLABORSPIXFMT.L16 tmp = default;
+                    int pixLen = Math.Min(srcRowPix.Length, dstRowPix.Length);                    
 
                     for (int i = 0; i < pixLen; ++i)
                     {
-                        var l = srcRowPix[i];
+                        var s = srcRowPix[i];                        
 
-                        tmp.PackedValue = (ushort)(Math.Clamp(l, 0, 1) * ushort.MaxValue);
-
-                        pix.FromL16(tmp);
-
-                        dstRowPix[i] = pix;
+                        dstRowPix[i] = _ScalarToSixLaborsPixel<TPixel>(s);
                     }
                 }
 
@@ -732,7 +718,7 @@ namespace $rootnamespace$
             }
 
             throw new ArgumentException("invalid lengths[2] range", nameof(dst));
-        }
+        }        
 
         private static void _GetRowChannels(__READONLYTENSORSPAN tensor, int y, bool IsBGR, out ReadOnlySpan<float> channelR, out ReadOnlySpan<float> channelG, out ReadOnlySpan<float> channelB)
         {
