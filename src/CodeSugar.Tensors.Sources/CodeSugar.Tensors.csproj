@@ -34,7 +34,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-		<PackageReference Include="System.Numerics.Tensors" Version="10.0.0" />
+		<PackageReference Include="System.Numerics.Tensors" Version="10.0.1" />
   </ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'net6.0' ">
@@ -42,7 +42,7 @@
 	</ItemGroup>
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.1' ">
-		<PackageReference Update="System.Numerics.Tensors" Version="8.0.0" />
+		<PackageReference Update="System.Numerics.Tensors" Version="10.0.1" />
 	</ItemGroup>
 
   <ItemGroup>

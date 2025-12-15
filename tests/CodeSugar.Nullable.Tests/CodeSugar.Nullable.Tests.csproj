@@ -40,6 +40,6 @@
     <ProjectReference Include="..\..\src\CodeSugar.Sys.Sources\CodeSugar.Sys.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Sys.Text.Sources\CodeSugar.Sys.Text.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Tensors.Sources\CodeSugar.Tensors.csproj" />
-  </ItemGroup>
+  </ItemGroup>    
 
 </Project>
