@@ -1,0 +1,36 @@
+<Solution>
+  <Folder Name="/examples/">
+    <File Path="examples/Directory.Build.props" />
+    <Project Path="examples/ExampleLibrary/ExampleLibrary.csproj" />
+    <Project Path="examples/ExampleWpfApp/ExampleWpfApp.csproj" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".github/actions/PushGithubTag/action.yml" />
+    <File Path=".github/workflows/FormatSemver.sh" />
+    <File Path=".github/workflows/PublishToGithub.yml" />
+    <File Path=".github/workflows/PublishToNuget.yml" />
+    <File Path=".github/workflows/test.yml" />
+    <File Path="CodeSugar.Build.sh" />
+    <File Path="README.md" />
+  </Folder>
+  <Folder Name="/src/">
+    <File Path="src/Directory.Build.props" />
+    <File Path="src/SourcesPackage.props" />
+    <Project Path="src/CodeSugar.AI/CodeSugar.AI.csproj" />
+    <Project Path="src/CodeSugar.FileProviders.Sources/CodeSugar.FileProviders.csproj" />
+    <Project Path="src/CodeSugar.ImageSharp/CodeSugar.ImageSharp.csproj" />
+    <Project Path="src/CodeSugar.Linq.Sources/CodeSugar.Linq.csproj" />
+    <Project Path="src/CodeSugar.Numerics.Sources/CodeSugar.Numerics.csproj" />
+    <Project Path="src/CodeSugar.Progress.Log/CodeSugar.Progress.Log.csproj" />
+    <Project Path="src/CodeSugar.Srlzn.Bin.Sources/CodeSugar.Srlzn.Bin.csproj" />
+    <Project Path="src/CodeSugar.Sys.IO.Sources/CodeSugar.Sys.IO.csproj" />
+    <Project Path="src/CodeSugar.Sys.Sources/CodeSugar.Sys.csproj" />
+    <Project Path="src/CodeSugar.Sys.Text.Sources/CodeSugar.Sys.Text.csproj" />
+    <Project Path="src/CodeSugar.Tensors.Sources/CodeSugar.Tensors.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <File Path="tests/Directory.Build.props" />
+    <Project Path="tests/CodeSugar.Nullable.Tests/CodeSugar.Nullable.Tests.csproj" />
+    <Project Path="tests/CodeSugar.Tests/CodeSugar.Tests.csproj" />
+  </Folder>
+</Solution>

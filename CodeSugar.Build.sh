@@ -21,5 +21,5 @@ echo "package version: $PACKAGEVERSION";
 dotnet tool restore
 dotnet restore
 
-dotnet test -c Release CodeSugar.sln
-dotnet PackAsSourcesNuget CodeSugar.sln -o . --package-version $PACKAGEVERSION --append-sources-suffix
+dotnet test -c Release CodeSugar.slnx
+dotnet PackAsSourcesNuget CodeSugar.slnx -o . --package-version $PACKAGEVERSION --append-sources-suffix
