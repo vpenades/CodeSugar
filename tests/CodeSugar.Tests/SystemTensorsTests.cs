@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
@@ -340,7 +341,7 @@ namespace CodeSugar
         #if NET8_0_OR_GREATER
 
         [Test]
-        public void TestSpanTensorCasting()
+        public void TestTensorSpanCasting()
         {
             var tensorVector3 = System.Numerics.Tensors.Tensor.Create<XYZ>(new XYZ[256]).Reshape([16,16]).AsTensorSpan();
             Assert.That(tensorVector3.FlattenedLength, Is.EqualTo((nint)256));
@@ -364,6 +365,38 @@ namespace CodeSugar
             Assert.That(tensorVector3.Lengths[1], Is.EqualTo((nint)16));
             Assert.That(tensorVector3[new nint[] { 0, 0, }], Is.EqualTo(new XYZ(0,5,0)));
         }
+
+        #if NET10_0_OR_GREATER
+
+        [Test]
+        public void TestSubTensorSpan()
+        {
+            // rank 2 tests
+            var tensor2 = System.Numerics.Tensors.Tensor.Create<int>(Enumerable.Range(0, 16 * 16).ToArray()).Reshape([16,16]).AsTensorSpan();
+            Assert.That(tensor2.IsStrided(), Is.Not.True);
+
+            var row5 = tensor2.SliceSubTensor(5);
+            Assert.That(row5.Rank, Is.EqualTo(tensor2.Rank-1));
+            var row5span = row5.GetFullSpan();            
+            Assert.That(row5span.Length, Is.EqualTo(16));
+            Assert.That(row5span[0], Is.EqualTo(80));
+
+            var xrow5 = tensor2.AsReadOnlyTensorSpan().SliceSubTensor(5);
+            Assert.That(xrow5.Rank, Is.EqualTo(tensor2.Rank - 1));
+            var xrow5span = xrow5.GetFullSpan();
+            Assert.That(xrow5span.Length, Is.EqualTo(16));
+            Assert.That(xrow5span[0], Is.EqualTo(80));
+
+            // rank 3 tests
+            var tensor3 = System.Numerics.Tensors.Tensor.Create<int>(Enumerable.Range(0, 16 * 16 * 16).ToArray()).Reshape([16, 16, 16]).AsTensorSpan();
+            Assert.That(row5.Rank, Is.EqualTo(tensor2.Rank - 1));
+            Assert.That(tensor3.IsStrided(), Is.Not.True);
+
+            var bmp5 = tensor3.SliceSubTensor(5);
+            Assert.That(bmp5.Rank, Is.EqualTo(tensor3.Rank - 1));
+        }
+
+        #endif
 
         #endif
     }
