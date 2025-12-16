@@ -115,7 +115,7 @@ namespace $rootnamespace$
         }		
 
         /// <summary>
-        /// Checks whether <paramref name="a"/> and <paramref name="path"/> have the same <see cref="__SINFO.FullName"/>,
+        /// Checks whether <paramref name="a"/> and <paramref name="bPath"/> have the same <see cref="__SINFO.FullName"/>,
         /// using platform file system casing rules.
         /// </summary>
         /// <param name="a"></param>

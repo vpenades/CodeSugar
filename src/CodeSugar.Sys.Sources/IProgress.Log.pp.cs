@@ -51,7 +51,7 @@ namespace $rootnamespace$
         /// <summary>
         /// Tries to get the underlaying progress sink.
         /// </summary>
-        /// <typeparam name="T">The <see cref="IProgress{T}" type./></typeparam>
+        /// <typeparam name="T">The <see cref="IProgress{T}"/> type.</typeparam>
         /// <param name="srvProvider"></param>
         /// <returns></returns>
         public static IProgress<T> GetProgressOrNull<T>(this IServiceProvider srvProvider)

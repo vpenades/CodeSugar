@@ -13,7 +13,7 @@ namespace CodeSugar
         public static ReadOnlySpan<T> AsReadOnlySpan<T>(this Span<T> span) where T:unmanaged { return span; }
 
 
-        public static System.IO.DirectoryInfo FindDirectoryTree(this System.IO.DirectoryInfo initial, params string[] path)
+        public static System.IO.DirectoryInfo? FindDirectoryTree(this System.IO.DirectoryInfo? initial, params string[] path)
         {
             while(initial != null)
             {

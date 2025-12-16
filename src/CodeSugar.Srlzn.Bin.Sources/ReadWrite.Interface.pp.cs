@@ -397,7 +397,7 @@ namespace $rootnamespace$
         /// <summary>
         /// Unpacks a <see cref="Int64"/> value.
         /// </summary>
-        /// <param name="target">The target memory.</param>
+        /// <param name="source">The source memory.</param>
         /// <param name="result">the read value</param>
         /// <returns>The target memory with pointer moved forward.</returns>
         /// <remarks>
@@ -591,6 +591,7 @@ namespace $rootnamespace$
         /// Read a string.
         /// </summary>
         /// <param name="source">The source stream.</param>
+        /// <param name="value">Read value.</param>
         /// <param name="encoding">The text encoding.</param>
         /// <returns>The string being read.</returns>
         /// <remarks>

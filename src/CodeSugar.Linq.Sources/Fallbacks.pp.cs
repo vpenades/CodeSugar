@@ -199,7 +199,7 @@ namespace System.Linq
         /// Split the elements of a sequence into chunks of size at most size.
         /// </summary>
         /// <typeparam name="TResult"></typeparam>
-        /// <param name="result"></param>
+        /// <param name="source"></param>
         /// <param name="size"></param>
         /// <returns></returns>
         public static IEnumerable<TResult[]> Chunk<TResult>(this IEnumerable<TResult> source, int size)

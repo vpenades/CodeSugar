@@ -45,7 +45,7 @@ namespace $rootnamespace$
         /// <summary>
         /// Tries to get a composite extension of a file.
         /// </summary>
-        /// <param name="fileName">the filename from where to get the extension.</param>
+        /// <param name="finfo">the filename from where to get the extension.</param>
         /// <param name="dots">the number of dots used by the extension.</param>
         /// <param name="extension">the resulting extension.</param>
         /// <returns>true if an extension was found</returns>        

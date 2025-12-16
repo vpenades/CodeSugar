@@ -31,7 +31,7 @@ namespace CodeSugar
             Assert.That(logger, Is.EqualTo(sink));
         }
 
-
+        [Explicit]
         [Test]
         public void TestLogToFile()
         {

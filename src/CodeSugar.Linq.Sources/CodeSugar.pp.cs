@@ -79,6 +79,7 @@ namespace $rootnamespace$
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="collection"></param>
+        /// <param name="action"></param>
         public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
         {
             using (var ptr = collection.GetEnumerator())

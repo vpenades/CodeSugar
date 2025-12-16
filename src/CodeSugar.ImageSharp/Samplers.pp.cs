@@ -134,8 +134,7 @@ namespace $rootnamespace$
             /// Samples the image using bilinear interpolation at normalized coordinates (x, y).
             /// x and y are in pixel space.
             /// </summary>
-            /// <param name="x">The X coordinate (float, pixel space)</param>
-            /// <param name="y">The Y coordinate (float, pixel space)</param>
+            /// <param name="point">The X,Y coordinates (in pixel space)</param>
             /// <param name="pixel">The sampled result as Vector4</param>
             /// <returns>False if (x, y) is outside image bounds; otherwise true.</returns>
             public bool TryGetScaledVectorSample(__XY point, out Vector4 pixel)
@@ -202,10 +201,8 @@ namespace $rootnamespace$
             /// Samples the image using bilinear interpolation at normalized coordinates (x, y).
             /// x and y are in pixel space.
             /// </summary>
-            /// <param name="x">The X coordinate (float, pixel space)</param>
-            /// <param name="y">The Y coordinate (float, pixel space)</param>
-            /// <param name="pixel">The sampled result as Vector4</param>
-            /// <returns>False if (x, y) is outside image bounds; otherwise true.</returns>
+            /// <param name="point">The X,Y coordinates (in pixel space)</param>
+            /// <returns>the sampled value</returns>
             public Vector4 GetScaledVectorSample(__XY point)
             {
                 // center pixel
