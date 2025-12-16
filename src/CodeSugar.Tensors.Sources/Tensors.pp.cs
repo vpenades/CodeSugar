@@ -10,17 +10,9 @@ using System.Reflection;
 using System.Transactions;
 using System.Threading;
 
-
-
-
-
 #nullable disable
 
-#if NET8_0_OR_GREATER
-using __XYZ = System.Numerics.Vector3;
-using __TENSORSPAN = System.Numerics.Tensors.TensorSpan<float>;
-using __READONLYTENSORSPAN = System.Numerics.Tensors.ReadOnlyTensorSpan<float>;
-#endif
+using __TENSORS = System.Numerics.Tensors;
 
 
 #if CODESUGAR_USECODESUGARNAMESPACE
@@ -41,7 +33,7 @@ namespace $rootnamespace$
         /// <typeparam name="T"></typeparam>
         /// <param name="tensor"></param>
         /// <returns>true if the tensor has strides</returns>
-        public static bool IsStrided<T>(this System.Numerics.Tensors.Tensor<T> tensor)
+        public static bool IsStrided<T>(this __TENSORS.Tensor<T> tensor)
         {
             return tensor.AsReadOnlyTensorSpan().IsStrided();
         }
@@ -52,7 +44,7 @@ namespace $rootnamespace$
         /// <typeparam name="T"></typeparam>
         /// <param name="tensor"></param>
         /// <returns>true if the tensor has strides</returns>
-        public static bool IsStrided<T>(in this System.Numerics.Tensors.TensorSpan<T> tensor)
+        public static bool IsStrided<T>(in this __TENSORS.TensorSpan<T> tensor)
         {
             return tensor.AsReadOnlyTensorSpan().IsStrided();
         }
@@ -63,7 +55,7 @@ namespace $rootnamespace$
         /// <typeparam name="T"></typeparam>
         /// <param name="tensor"></param>
         /// <returns>true if the tensor has strides</returns>
-        public static bool IsStrided<T>(in this System.Numerics.Tensors.ReadOnlyTensorSpan<T> tensor)
+        public static bool IsStrided<T>(in this __TENSORS.ReadOnlyTensorSpan<T> tensor)
         {
             var strides = tensor.Strides;
             if (strides.IsEmpty) return false;
@@ -80,7 +72,7 @@ namespace $rootnamespace$
             return strides[strides.Length - 1] != 1;
         }
 
-        public static void CastTo<TSrc, TDst>(this System.Numerics.Tensors.TensorSpan<TSrc> src, out System.Numerics.Tensors.TensorSpan<TDst> dst)
+        public static void CastTo<TSrc, TDst>(this __TENSORS.TensorSpan<TSrc> src, out __TENSORS.TensorSpan<TDst> dst)
             where TSrc : unmanaged
             where TDst : unmanaged
         {
@@ -103,7 +95,7 @@ namespace $rootnamespace$
         /// <param name="src">The source tensor</param>
         /// <param name="dst">The casted tensor</param>
         /// <returns>true if success</returns>
-        public static bool TryCastTo<TSrc, TDst>(this System.Numerics.Tensors.TensorSpan<TSrc> src, out System.Numerics.Tensors.TensorSpan<TDst> dst)
+        public static bool TryCastTo<TSrc, TDst>(this __TENSORS.TensorSpan<TSrc> src, out __TENSORS.TensorSpan<TDst> dst)
             where TSrc: unmanaged
             where TDst: unmanaged
         {
@@ -119,7 +111,7 @@ namespace $rootnamespace$
                 return true;
             }
 
-            dst = System.Numerics.Tensors.TensorSpan<TDst>.Empty;
+            dst = __TENSORS.TensorSpan<TDst>.Empty;
 
             if (!src.IsDense || src.IsPinned) return false;
 
@@ -135,7 +127,7 @@ namespace $rootnamespace$
             return true;
         }
 
-        public static void CastTo<TSrc, TDst>(this System.Numerics.Tensors.ReadOnlyTensorSpan<TSrc> src, out System.Numerics.Tensors.ReadOnlyTensorSpan<TDst> dst)
+        public static void CastTo<TSrc, TDst>(this __TENSORS.ReadOnlyTensorSpan<TSrc> src, out __TENSORS.ReadOnlyTensorSpan<TDst> dst)
             where TSrc : unmanaged
             where TDst : unmanaged
         {
@@ -158,7 +150,7 @@ namespace $rootnamespace$
         /// <param name="src">The source tensor</param>
         /// <param name="dst">The casted tensor</param>
         /// <returns>true if success</returns>
-        public static bool TryCastTo<TSrc, TDst>(this System.Numerics.Tensors.ReadOnlyTensorSpan<TSrc> src, out System.Numerics.Tensors.ReadOnlyTensorSpan<TDst> dst)
+        public static bool TryCastTo<TSrc, TDst>(this __TENSORS.ReadOnlyTensorSpan<TSrc> src, out __TENSORS.ReadOnlyTensorSpan<TDst> dst)
             where TSrc : unmanaged
             where TDst : unmanaged
         {
@@ -175,7 +167,7 @@ namespace $rootnamespace$
                 return true;
             }
 
-            dst = System.Numerics.Tensors.TensorSpan<TDst>.Empty;
+            dst = __TENSORS.TensorSpan<TDst>.Empty;
 
             if (!src.IsDense || src.IsPinned) return false;
 
@@ -223,7 +215,7 @@ namespace $rootnamespace$
             return true;
         }
 
-        public static System.Numerics.Tensors.Tensor<T> SliceSubTensor<T>(this System.Numerics.Tensors.Tensor<T> tensor, nint index0)
+        public static __TENSORS.Tensor<T> SliceSubTensor<T>(this __TENSORS.Tensor<T> tensor, nint index0)
         {
             if (tensor.Rank < 2) throw new ArgumentException("Rank is less than 2", nameof(tensor));
             if (index0 < 0 || index0 >= tensor.Lengths[0]) throw new ArgumentOutOfRangeException(nameof(index0));
@@ -239,7 +231,7 @@ namespace $rootnamespace$
             return tensor.Slice(ranges).SqueezeDimension(0);
         }        
 
-        public static System.Numerics.Tensors.TensorSpan<T> SliceSubTensor<T>(in this System.Numerics.Tensors.TensorSpan<T> tensor, nint index0)
+        public static __TENSORS.TensorSpan<T> SliceSubTensor<T>(in this __TENSORS.TensorSpan<T> tensor, nint index0)
         {
             if (tensor.Rank < 2) throw new ArgumentException("Rank is less than 2", nameof(tensor));
             if (index0 < 0 || index0 >= tensor.Lengths[0]) throw new ArgumentOutOfRangeException(nameof(index0));
@@ -256,7 +248,7 @@ namespace $rootnamespace$
 
         }
 
-        public static System.Numerics.Tensors.ReadOnlyTensorSpan<T> SliceSubTensor<T>(in this System.Numerics.Tensors.ReadOnlyTensorSpan<T> tensor, nint index0)
+        public static __TENSORS.ReadOnlyTensorSpan<T> SliceSubTensor<T>(in this __TENSORS.ReadOnlyTensorSpan<T> tensor, nint index0)
         {
             if (tensor.Rank < 2) throw new ArgumentException("Rank is less than 2", nameof(tensor));
             if (index0 < 0 || index0 >= tensor.Lengths[0]) throw new ArgumentOutOfRangeException(nameof(index0));
@@ -272,7 +264,7 @@ namespace $rootnamespace$
             return tensor.Slice(ranges).SqueezeDimension(0);
         }
 
-        public static Span<T> GetFullSpan<T>(this System.Numerics.Tensors.Tensor<T> tensor)
+        public static Span<T> GetFullSpan<T>(this __TENSORS.Tensor<T> tensor)
         {
             if (tensor.FlattenedLength > int.MaxValue) throw new InvalidOperationException("tensor too large");
             if (tensor.FlattenedLength == 0) return Span<T>.Empty;
@@ -280,7 +272,7 @@ namespace $rootnamespace$
             return tensor.GetSpan(indices, (int)tensor.FlattenedLength);
         }
 
-        public static Span<T> GetFullSpan<T>(in this System.Numerics.Tensors.TensorSpan<T> tensor)
+        public static Span<T> GetFullSpan<T>(in this __TENSORS.TensorSpan<T> tensor)
         {
             if (tensor.FlattenedLength > int.MaxValue) throw new InvalidOperationException("tensor too large");
             if (tensor.FlattenedLength == 0) return Span<T>.Empty;
@@ -288,7 +280,7 @@ namespace $rootnamespace$
             return tensor.GetSpan(indices, (int)tensor.FlattenedLength);
         }
 
-        public static ReadOnlySpan<T> GetFullSpan<T>(in this System.Numerics.Tensors.ReadOnlyTensorSpan<T> tensor)
+        public static ReadOnlySpan<T> GetFullSpan<T>(in this __TENSORS.ReadOnlyTensorSpan<T> tensor)
         {
             if (tensor.FlattenedLength > int.MaxValue) throw new InvalidOperationException("tensor too large");
             if (tensor.FlattenedLength == 0) return Span<T>.Empty;
@@ -296,7 +288,7 @@ namespace $rootnamespace$
             return tensor.GetSpan(indices, (int)tensor.FlattenedLength);
         }
 
-        public static Span<T> GetSubSpan<T>(this System.Numerics.Tensors.Tensor<T> tensor, nint index0)
+        public static Span<T> GetSubSpan<T>(this __TENSORS.Tensor<T> tensor, nint index0)
         {
             var flen = tensor.GetFlattenedLength(1);
             if (flen > int.MaxValue) throw new InvalidOperationException("tensor too large");
@@ -306,7 +298,7 @@ namespace $rootnamespace$
             return tensor.GetSpan(indices, (int)flen);
         }
 
-        public static Span<T> GetSubSpan<T>(in this System.Numerics.Tensors.TensorSpan<T> tensor, nint index0)
+        public static Span<T> GetSubSpan<T>(in this __TENSORS.TensorSpan<T> tensor, nint index0)
         {
             var flen = tensor.GetFlattenedLength(1);
             if (flen > int.MaxValue) throw new InvalidOperationException("tensor too large");            
@@ -316,7 +308,7 @@ namespace $rootnamespace$
             return tensor.GetSpan(indices, (int)flen);
         }
 
-        public static ReadOnlySpan<T> GetSubSpan<T>(in this System.Numerics.Tensors.ReadOnlyTensorSpan<T> tensor, nint index0)
+        public static ReadOnlySpan<T> GetSubSpan<T>(in this __TENSORS.ReadOnlyTensorSpan<T> tensor, nint index0)
         {
             var flen = tensor.GetFlattenedLength(1);
             if (flen > int.MaxValue) throw new InvalidOperationException("tensor too large");
@@ -326,7 +318,7 @@ namespace $rootnamespace$
             return tensor.GetSpan(indices, (int)flen);
         }
 
-        public static Span<T> GetSubSpan<T>(in this System.Numerics.Tensors.TensorSpan<T> tensor, nint index0, nint index1)
+        public static Span<T> GetSubSpan<T>(in this __TENSORS.TensorSpan<T> tensor, nint index0, nint index1)
         {
             var flen = tensor.GetFlattenedLength(2);
             if (flen > int.MaxValue) throw new InvalidOperationException("tensor too large");
@@ -337,7 +329,7 @@ namespace $rootnamespace$
             return tensor.GetSpan(indices, (int)flen);
         }
 
-        public static ReadOnlySpan<T> GetSubSpan<T>(in this System.Numerics.Tensors.ReadOnlyTensorSpan<T> tensor, nint index0, nint index1)
+        public static ReadOnlySpan<T> GetSubSpan<T>(in this __TENSORS.ReadOnlyTensorSpan<T> tensor, nint index0, nint index1)
         {
             var flen = tensor.GetFlattenedLength(2);
             if (flen > int.MaxValue) throw new InvalidOperationException("tensor too large");
@@ -348,7 +340,7 @@ namespace $rootnamespace$
             return tensor.GetSpan(indices, (int)flen);
         }
 
-        public static Span<T> GetSubSpan<T>(in this System.Numerics.Tensors.TensorSpan<T> tensor, nint index0, nint index1, nint index2)
+        public static Span<T> GetSubSpan<T>(in this __TENSORS.TensorSpan<T> tensor, nint index0, nint index1, nint index2)
         {
             var flen = tensor.GetFlattenedLength(3);
             if (flen > int.MaxValue) throw new InvalidOperationException("tensor too large");
@@ -360,7 +352,7 @@ namespace $rootnamespace$
             return tensor.GetSpan(indices, (int)flen);
         }
 
-        public static ReadOnlySpan<T> GetSubSpan<T>(in this System.Numerics.Tensors.ReadOnlyTensorSpan<T> tensor, nint index0, nint index1, nint index2)
+        public static ReadOnlySpan<T> GetSubSpan<T>(in this __TENSORS.ReadOnlyTensorSpan<T> tensor, nint index0, nint index1, nint index2)
         {
             var flen = tensor.GetFlattenedLength(3);
             if (flen > int.MaxValue) throw new InvalidOperationException("tensor too large");
@@ -372,17 +364,17 @@ namespace $rootnamespace$
             return tensor.GetSpan(indices, (int)flen);
         }
 
-        public static nint GetFlattenedLength<T>(this System.Numerics.Tensors.Tensor<T> tensor, int index)
+        public static nint GetFlattenedLength<T>(this __TENSORS.Tensor<T> tensor, int index)
         {
             return GetFlattenedLength(tensor.Lengths, index);
         }
 
-        public static nint GetFlattenedLength<T>(in this System.Numerics.Tensors.TensorSpan<T> tensor, int index)
+        public static nint GetFlattenedLength<T>(in this __TENSORS.TensorSpan<T> tensor, int index)
         {
             return GetFlattenedLength(tensor.Lengths, index);
         }
 
-        public static nint GetFlattenedLength<T>(in this System.Numerics.Tensors.ReadOnlyTensorSpan<T> tensor, int index)
+        public static nint GetFlattenedLength<T>(in this __TENSORS.ReadOnlyTensorSpan<T> tensor, int index)
         {
             return GetFlattenedLength(tensor.Lengths, index);
         }
@@ -397,90 +389,7 @@ namespace $rootnamespace$
             }
 
             return len;
-        }        
-
-        public static void ApplyMultiplyAddToPixelElements(this Tensor<float> tensor, __XYZ mul, __XYZ add)
-        {
-            tensor.AsTensorSpan().ApplyMultiplyAddToPixelElements(mul, add);
-        }
-
-        public static void ApplyMultiplyAddToPixelElements(in this __TENSORSPAN tensor, __XYZ mul, __XYZ add)
-        {
-            // tensor = tensor.Squeeze();
-
-            if (!_TryInferImageSize(tensor, out _, out _, out int channels, out bool isCHW)) throw new ArgumentException("can't infer image size", nameof(tensor));
-
-            if (isCHW)
-            {
-                channels = Math.Min(3, channels);                
-
-                for (nint i = 0; i < channels; ++i)
-                {
-                    var emul = i == 0 ? mul.X : (i == 1 ? mul.Y : mul.Z);
-                    var eadd = i == 0 ? add.X : (i == 1 ? add.Y : add.Z);                    
-                    
-                    var span = tensor.GetSubSpan(i);
-
-                    System.Numerics.Tensors.TensorPrimitives.Multiply(span, emul, span);
-                    System.Numerics.Tensors.TensorPrimitives.Add(span, eadd, span);
-                }
-                return;
-            }
-
-            if (channels == 3)
-            {
-                var span = tensor.GetFullSpan();
-                var vvv = System.Runtime.InteropServices.MemoryMarshal.Cast<float, System.Numerics.Vector3>(span);
-
-                for (int i = 0; i < vvv.Length; ++i)
-                {
-                    vvv[i] = vvv[i] * mul + add;
-                }
-
-                return;
-            }
-
-            throw new NotImplementedException();
-        }
-
-        private static bool _TryInferImageSize(__READONLYTENSORSPAN tensor, out int width, out int height, out int channels, out bool isCHW)
-        {
-            tensor = tensor.Squeeze();
-
-            width = 0;
-            height = 0;
-            channels = 0;
-            isCHW = false;
-
-            if (tensor.Rank == 2)
-            {
-                height = (int)tensor.Lengths[0];
-                width = (int)tensor.Lengths[1];
-                channels = 1;                
-                return true;
-            }
-
-            if (tensor.Rank != 3) return false;
-
-            if (tensor.Lengths[2] <= 4 && tensor.Lengths[0] > tensor.Lengths[2]) // check is HWC
-            {
-                height = (int)tensor.Lengths[0];
-                width = (int)tensor.Lengths[1];
-                channels = (int)tensor.Lengths[2];
-                return true;
-            }
-
-            if (tensor.Lengths[0] <= 4 && tensor.Lengths[1] > tensor.Lengths[0]) // check is CHW
-            {
-                channels = (int)tensor.Lengths[0];
-                height = (int)tensor.Lengths[1];
-                width = (int)tensor.Lengths[2];
-                isCHW = true;
-                return true;
-            }
-
-            return false;
-        }        
+        }     
 
         #endif
     }
