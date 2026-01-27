@@ -21,7 +21,7 @@ namespace $rootnamespace$
 {
     partial class CodeSugarForLinq
     {
-        public static Dictionary<TKey,TValue> ToDicionary<TKey,TValue>(this IEnumerable<KeyValuePair<TKey,TValue>> kvPairs)
+        public static Dictionary<TKey,TValue> ToDictionary<TKey,TValue>(this IEnumerable<KeyValuePair<TKey,TValue>> kvPairs)
         {
             return kvPairs.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
