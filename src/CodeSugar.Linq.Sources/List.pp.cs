@@ -318,11 +318,32 @@ namespace $rootnamespace$
 
         #endregion
 
+        #region range list
+
+        public static IReadOnlyList<int> RangeList(this (int start, int count) range)
+        {
+            return range.start == 0
+                ? new _RangeListZero(range.count)
+                : (IReadOnlyList<int>)new _RangeList(range.start, range.count);
+        }
+
+        public static IReadOnlyList<T> RangeList<T>(this (int start, int count) range, Func<int, T> selector)
+        {
+            return range.start == 0
+                ? new _RangeListZero<T>(range.count, selector)
+                : (IReadOnlyList<T>)new _RangeList<T>(range.start, range.count, selector);
+        }
+
+        #endregion
+
         #region sorting
 
         /// <summary>
-        /// Performs an in-place ascending sort of the items
+        /// Performs an in-place ascending sort of the items.
         /// </summary>
+        /// <remarks>
+        /// <see cref="List{T}"/> has a <see cref="List{T}.Sort()"/> method, but <see cref="IList{T}"/> interface does not.
+        /// </remarks>
         /// <typeparam name="TList"></typeparam>
         /// <typeparam name="TValue"></typeparam>
         /// <typeparam name="TProperty"></typeparam>
@@ -561,6 +582,145 @@ namespace $rootnamespace$
         }
 
         /// <summary>
+        /// Helper class for <see cref="RangeList(ValueTuple{int, int})"/>
+        /// </summary>
+        private readonly struct _RangeListZero : IReadOnlyList<int>
+        {
+            public _RangeListZero(int count)
+            {
+                Count = count;
+            }
+
+            public int this[int index]
+            {
+                get
+                {
+                    if (index < 0 || index >= Count) throw new IndexOutOfRangeException(nameof(index));
+                    return index;
+                }
+            }
+
+            public int Count { get; }
+
+            public IEnumerator<int> GetEnumerator()
+            {
+                for (int i = 0; i < Count; ++i) yield return i;
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+        }
+
+        /// <summary>
+        /// Helper class for <see cref="RangeList{T}(ValueTuple{int, int}, Func{int, T})"/>
+        /// </summary>
+        private readonly struct _RangeListZero<T> : IReadOnlyList<T>
+        {
+            public _RangeListZero(int count, Func<int, T> selector)
+            {
+                Count = count;
+                _Selector = selector;
+            }
+
+            private readonly Func<int, T> _Selector;
+
+            public T this[int index]
+            {
+                get
+                {
+                    if (index < 0 || index >= Count) throw new IndexOutOfRangeException(nameof(index));
+                    return _Selector(index);
+                }
+            }
+
+            public int Count { get; }
+
+            public IEnumerator<T> GetEnumerator()
+            {
+                for (int i = 0; i < Count; ++i) yield return _Selector(i);
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+        }
+
+        /// <summary>
+        /// Helper class for <see cref="RangeList(ValueTuple{int, int})"/>
+        /// </summary>
+        private readonly struct _RangeList : IReadOnlyList<int>
+        {
+            public _RangeList(int start, int count)
+            {
+                _Offset = start;
+                Count = count;
+            }
+
+            private readonly int _Offset;
+
+            public int this[int index]
+            {
+                get
+                {
+                    if (index < 0 || index >= Count) throw new IndexOutOfRangeException(nameof(index));
+                    return index + _Offset;
+                }
+            }
+
+            public int Count { get; }
+
+            public IEnumerator<int> GetEnumerator()
+            {
+                for (int i = 0; i < Count; ++i) yield return i + _Offset;
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+        }
+
+        /// <summary>
+        /// Helper class for <see cref="RangeList{T}(ValueTuple{int, int}, Func{int, T})"/>
+        /// </summary>
+        private readonly struct _RangeList<T> : IReadOnlyList<T>
+        {
+            public _RangeList(int start, int count, Func<int, T> selector)
+            {
+                _Offset = start;
+                Count = count;
+                _Selector = selector;
+            }
+
+            private readonly int _Offset;
+            private readonly Func<int, T> _Selector;
+
+            public T this[int index]
+            {
+                get
+                {
+                    if (index < 0 || index >= Count) throw new IndexOutOfRangeException(nameof(index));
+                    return _Selector(index + _Offset);
+                }
+            }
+
+            public int Count { get; }
+
+            public IEnumerator<T> GetEnumerator()
+            {
+                for (int i = 0; i < Count; ++i) yield return _Selector(i + _Offset);
+            }
+
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return GetEnumerator();
+            }
+        }
+
+        /// <summary>
         /// helper class for <see cref="SelectCollection{TSource, TResult}(IReadOnlyCollection{TSource}, Func{TSource, TResult})"/>
         /// </summary>        
         private readonly struct _SelectCollection<TSource, TResult> : IReadOnlyCollection<TResult>
@@ -599,6 +759,9 @@ namespace $rootnamespace$
             #endregion
         }
 
+        /// <summary>
+        /// Helper class for <see cref="SortAscending{TList, TValue, TProperty}(TList, Func{TValue, TProperty})"/>
+        /// </summary>        
         private readonly struct _SortAscending<TItem,TProperty> : IComparer<TItem>
             where TProperty: IComparable
         {
