@@ -5,6 +5,8 @@ using System.Numerics;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Collections.Generic;
+using System.Linq;
+
 
 #nullable disable
 
@@ -89,6 +91,23 @@ namespace $rootnamespace$
                     action(ptr.Current);
                 }
             }
+        }
+
+        /// <summary>
+        /// returns the same items in the source collection, ensuring that the collection is cached to prevent 
+        /// </summary>
+        /// <remarks>
+        /// this is a solution for CA1851: "Possible multiple enumerations of IEnumerable collection"
+        /// </remarks>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> AsCachedEnumerable<T>(this IEnumerable<T> collection)
+        {
+            if (collection is IReadOnlyCollection<T>) return collection;
+            if (collection is ICollection<T>) return collection;
+
+            return collection.ToList();
         }
 
     }

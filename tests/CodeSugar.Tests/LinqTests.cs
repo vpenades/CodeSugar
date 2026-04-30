@@ -41,14 +41,27 @@ namespace CodeSugar
             Assert.That(array.Slice(1, 2).IndexOf(4), Is.EqualTo(1));            
             var segm = array2.Slice(2, 3);
             Assert.That(segm.IndexOf(7), Is.EqualTo(1));
-            Assert.That(segm.IndexOf(7, EqualityComparer<int>.Default), Is.EqualTo(1));
+            Assert.That(segm.IndexOf(7, EqualityComparer<int>.Default), Is.EqualTo(1));            
+        }
 
-
+        [Test]
+        public void TestRangeList()
+        {
             Assert.That((0, 3).RangeList()[1], Is.EqualTo(1));
             Assert.That((1, 3).RangeList()[1], Is.EqualTo(2));
 
             Assert.That((0, 3).RangeList(idx => idx)[1], Is.EqualTo(1));
             Assert.That((1, 3).RangeList(idx => idx)[1], Is.EqualTo(2));
+        }
+
+        [Test]
+        public void TestCachedEnumerable()
+        {
+            var collection = new int[] { 1, 2, 3 }.Select(item => item - 1);
+
+            collection = collection.AsCachedEnumerable();
+
+            Assert.That(collection.TryGetNonEnumeratedCount(out _));
         }
     }
 }
