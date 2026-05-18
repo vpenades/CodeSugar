@@ -74,7 +74,7 @@ namespace $rootnamespace$
 
         #endregion
 
-        #region nav tree
+        #region tree navigation
 
         /// <summary>
         /// Gets a value indicating whether <paramref name="info"/> exists in the file system.
@@ -180,7 +180,13 @@ namespace $rootnamespace$
         public static __FINFO UseFileInfo(this __DINFO baseDir, params string[] relativePath)
         {
             return _CreateFileInfo(baseDir, true, relativePath) ?? throw new System.IO.FileNotFoundException();
-        }        
+        }
+
+        [return: NotNull]
+        public static __FINFO DefineFileInfo(this Environment.SpecialFolder folder, params string[] relativePath)
+        {
+            return folder.GetSpecialFolder().DefineFileInfo(relativePath);
+        }
 
         /// <summary>
         /// Defines a <see cref="__FINFO"/> relative to the base directory.
@@ -226,7 +232,13 @@ namespace $rootnamespace$
         {
             return _CreateDirectoryInfo(baseDir, false, false, relativePath)
                 ?? throw new System.IO.DirectoryNotFoundException();
-        }        
+        }
+
+        [return: NotNull]
+        public static __DINFO UseDirectoryInfo(this Environment.SpecialFolder folder, params string[] relativePath)
+        {
+            return folder.GetSpecialFolder().UseDirectoryInfo(relativePath);
+        }
 
         /// <summary>
 		/// Uses a <see cref="__DINFO"/> relative to the base directory.
@@ -239,7 +251,13 @@ namespace $rootnamespace$
         {
             return _CreateDirectoryInfo(baseDir, false, true, relativePath)
                 ?? throw new System.IO.DirectoryNotFoundException();
-        }        
+        }
+
+        [return: NotNull]
+        public static __DINFO DefineDirectoryInfo(this Environment.SpecialFolder folder, params string[] relativePath)
+        {
+            return folder.GetSpecialFolder().DefineDirectoryInfo(relativePath);
+        }
 
         /// <summary>
 		/// Defines a <see cref="__DINFO"/> relative to the base directory.
