@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+#pragma warning disable CS8632
+
 namespace CodeSugar
 {
+
     internal static class _Extensions
     {
         public static ReadOnlySpan<T> AsReadOnlySpan<T>(this ArraySegment<T> segment) where T : unmanaged { return segment; }
@@ -48,3 +51,5 @@ namespace CodeSugar
         }
     }
 }
+
+#pragma warning restore CS8632

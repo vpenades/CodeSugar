@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\CodeSugar.AI\CodeSugar.AI.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.FileProviders.Sources\CodeSugar.FileProviders.csproj" />
+    <ProjectReference Include="..\..\src\CodeSugar.ICommand\CodeSugar.ICommand.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.ImageSharp\CodeSugar.ImageSharp.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Linq.Sources\CodeSugar.Linq.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Numerics.Sources\CodeSugar.Numerics.csproj" />
