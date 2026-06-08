@@ -18,7 +18,7 @@
     <File Path="src/SourcesPackage.props" />
     <Project Path="src/CodeSugar.AI/CodeSugar.AI.csproj" />
     <Project Path="src/CodeSugar.FileProviders.Sources/CodeSugar.FileProviders.csproj" />
-    <Project Path="src/CodeSugar.ICommand/CodeSugar.ICommand.csproj" Id="69206b91-bc71-46d1-b467-1db281fc592d" />
+    <Project Path="src/CodeSugar.ICommand/CodeSugar.ICommand.csproj" />
     <Project Path="src/CodeSugar.ImageSharp/CodeSugar.ImageSharp.csproj" />
     <Project Path="src/CodeSugar.Linq.Sources/CodeSugar.Linq.csproj" />
     <Project Path="src/CodeSugar.Numerics.Sources/CodeSugar.Numerics.csproj" />

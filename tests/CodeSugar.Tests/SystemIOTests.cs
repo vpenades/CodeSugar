@@ -209,27 +209,29 @@ namespace CodeSugar
 
             // Assert.That(readme_txt.GetRelativePath(readme_txt.Directory.Parent), Is.EqualTo("Resources\\readme.txt")); // equality
 
-            var dcomparer = MatchCasing.PlatformDefault.GetFullNameComparer<DirectoryInfo>();
+            var dcomparer = MatchCasing.PlatformDefault.GetFullNameEqualityComparer<DirectoryInfo>();
 
             var tmp0 = new System.IO.DirectoryInfo("temp\\");
             var tmp1 = tmp0.DefineDirectoryInfo("a", "..", ".", "b", "..");
             Assert.That(dcomparer.Equals(tmp0, tmp1));
 
-            Assert.That(() => readme_txt.Directory.DefineFileInfo(" abc"), Throws.Exception);
-            Assert.That(() => readme_txt.Directory.DefineFileInfo("abc "), Throws.Exception);
-            Assert.That(() => readme_txt.Directory.DefineFileInfo("abc ", "readme.txt"), Throws.Exception);
+            
 
-            Assert.That(() => readme_txt.Directory.DefineFileInfo(".."), Throws.Exception);
-            Assert.That(() => readme_txt.Directory.DefineFileInfo("."), Throws.Exception);            
-            Assert.That(() => readme_txt.Directory.DefineFileInfo("/"), Throws.Exception);
+            Assert.Throws<ArgumentException>((Action)(() => readme_txt.Directory.DefineFileInfo(" abc")));
+            Assert.Throws<ArgumentException>((Action)(() => readme_txt.Directory.DefineFileInfo("abc ")));
+            Assert.Throws<ArgumentException>((Action)(() => readme_txt.Directory.DefineFileInfo("abc ", "readme.txt")));
+
+            Assert.Throws<ArgumentException>((Action)(() => readme_txt.Directory.DefineFileInfo("..")));
+            Assert.Throws<ArgumentException>((Action)(() => readme_txt.Directory.DefineFileInfo(".")));            
+            Assert.Throws<ArgumentNullException>((Action)(() => readme_txt.Directory.DefineFileInfo("/")));
             
 
             if (IsWindowsPlatform)
             {
-                Assert.That(() => readme_txt.Directory.DefineFileInfo(":"), Throws.Exception);
-                Assert.That(() => readme_txt.Directory.DefineFileInfo("*"), Throws.Exception);
-                Assert.That(() => readme_txt.Directory.DefineFileInfo("?"), Throws.Exception);
-                Assert.That(() => readme_txt.Directory.DefineFileInfo("\\"), Throws.Exception);
+                // Assert.Throws<ArgumentException>((Action)(() => readme_txt.Directory.DefineFileInfo(":"))); // throws DebugAssetException which is internal
+                Assert.Throws<ArgumentException>((Action)(() => readme_txt.Directory.DefineFileInfo("*")));
+                Assert.Throws<ArgumentException>((Action)(() => readme_txt.Directory.DefineFileInfo("?")));
+                Assert.Throws<ArgumentNullException>((Action)(() => readme_txt.Directory.DefineFileInfo("\\")));
             }            
         }
 
@@ -290,8 +292,8 @@ namespace CodeSugar
 
             TestContext.Out.WriteLine($"OS file system is case sensitive: {isCaseSensitiveOS}");
 
-            var fcomparer = MatchCasing.PlatformDefault.GetFullNameComparer<FileInfo>();
-            var dcomparer = MatchCasing.PlatformDefault.GetFullNameComparer<DirectoryInfo>();
+            var fcomparer = MatchCasing.PlatformDefault.GetFullNameEqualityComparer<FileInfo>();
+            var dcomparer = MatchCasing.PlatformDefault.GetFullNameEqualityComparer<DirectoryInfo>();
             
             Assert.That(fcomparer.Equals(readme_txt_0, readme_txt_1), Is.Not.EqualTo(isCaseSensitiveOS));
 

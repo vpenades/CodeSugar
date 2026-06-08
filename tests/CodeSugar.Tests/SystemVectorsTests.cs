@@ -58,7 +58,7 @@ namespace CodeSugar
             Assert.That(v4, Is.EqualTo(v4v));
             */
 
-            Assert.Throws(typeof(TypeInitializationException),()=> v3.ConvertTo<Double>());
+            Assert.Throws<TypeInitializationException>((Action)(()=> v3.ConvertTo<Double>()));
         }
 
         [Test]

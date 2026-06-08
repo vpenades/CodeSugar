@@ -132,7 +132,7 @@ namespace CodeSugar
             var dinfo = new System.IO.DirectoryInfo(TestContext.CurrentContext.TestDirectory).FindDirectoryTree("src", projectName);
             Assert.That(dinfo.Exists);
 
-            Assert.Multiple(() => { 
+            using var scope = Assert.EnterMultipleScope();
 
             foreach (var finfo in dinfo.EnumerateFiles("*.cs", System.IO.SearchOption.TopDirectoryOnly))
             {
@@ -145,8 +145,6 @@ namespace CodeSugar
                     Assert.That(alias.StartsWith("__"), $"using {alias} in file {finfo.FullName} must begin with '__' to prevent collisions with global using");
                 }
             }
-
-            });
         }
     }
 }
