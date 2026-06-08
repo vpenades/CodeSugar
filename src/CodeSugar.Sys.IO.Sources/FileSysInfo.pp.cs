@@ -182,6 +182,26 @@ namespace $rootnamespace$
             return _CreateFileInfo(baseDir, true, relativePath) ?? throw new System.IO.FileNotFoundException();
         }
 
+        
+
+        public static __FINFO DefineRandomFileInfo(this __DINFO baseDir, int maxRetries)
+        {
+            while(true)
+            {
+                var f = DefineRandomFileInfo(baseDir);
+                if (!CachedExists(f)) return f;
+                if (maxRetries <= 0) break;
+                --maxRetries;
+            }
+
+            return null;            
+        }
+
+        public static __FINFO DefineRandomFileInfo(this __DINFO baseDir)
+        {
+            return baseDir.DefineFileInfo(System.IO.Path.GetRandomFileName());
+        }
+
         [return: NotNull]
         public static __FINFO DefineFileInfo(this Environment.SpecialFolder folder, params string[] relativePath)
         {
