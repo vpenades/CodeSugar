@@ -83,7 +83,7 @@ namespace $rootnamespace$
                 
                 // keep digging:
 
-                circularBarrier ??= new HashSet<__FINFO>(MatchCasing.PlatformDefault.GetFullNameComparer<__FINFO>());
+                circularBarrier ??= new HashSet<__FINFO>(MatchCasing.PlatformDefault.GetFullNameEqualityComparer<__FINFO>());
                 circularBarrier.Add(shortcutFile);
 
                 shortcutFile = new __FINFO(uri.LocalPath);                
@@ -134,7 +134,7 @@ namespace $rootnamespace$
                 
                 // keep digging:
 
-                circularBarrier ??= new HashSet<__FINFO>(MatchCasing.PlatformDefault.GetFullNameComparer<__FINFO>());
+                circularBarrier ??= new HashSet<__FINFO>(MatchCasing.PlatformDefault.GetFullNameEqualityComparer<__FINFO>());
                 circularBarrier.Add(shortcutOrFile);
 
                 shortcutOrFile = file;                
@@ -171,7 +171,7 @@ namespace $rootnamespace$
                 
                 // keep digging:
 
-                circularBarrier ??= new HashSet<__SINFO>(MatchCasing.PlatformDefault.GetFullNameComparer<__SINFO>());
+                circularBarrier ??= new HashSet<__SINFO>(MatchCasing.PlatformDefault.GetFullNameEqualityComparer<__SINFO>());
                 circularBarrier.Add(shortcutOrDir);
 
                 shortcutOrDir = new __FINFO(uri.LocalPath);                

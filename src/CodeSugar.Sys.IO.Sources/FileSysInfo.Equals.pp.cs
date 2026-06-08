@@ -158,20 +158,29 @@ namespace $rootnamespace$
         public static IEnumerable<T> FileSystemDistinct<T>(this IEnumerable<T> files)
             where T : __SINFO
         {
-            return files.Distinct(MatchCasing.PlatformDefault.GetFullNameComparer<T>());
+            return files.Distinct(__MATCHCASING.PlatformDefault.GetFullNameEqualityComparer<T>());
         }
         
         public static Dictionary<TKey,TValue> FileSystemToDictionary<TSource,TKey,TValue>(this IEnumerable<TSource> collection, Func<TSource, TKey> keySelector, Func<TSource,TValue> valSelector)
             where TKey: __SINFO
         {
-            return collection.ToDictionary(keySelector, valSelector, MatchCasing.PlatformDefault.GetFullNameComparer<TKey>());
+            return collection.ToDictionary(keySelector, valSelector, __MATCHCASING.PlatformDefault.GetFullNameEqualityComparer<TKey>());
         }
         
         /// <summary>
 		/// Gets a <see cref="IEqualityComparer{T}"/> specialises in comparing <see cref="__SINFO.FullName"/>
 		/// </summary>		
-		public static IEqualityComparer<T> GetFullNameComparer<T>(this MatchCasing casing)
+		public static IEqualityComparer<T> GetFullNameEqualityComparer<T>(this __MATCHCASING casing)
             where T:__SINFO
+        {
+            return _FileSystemInfoComparer<T>.GetInstance(casing);
+        }
+
+        /// <summary>
+		/// Gets a <see cref="IComparer{T}"/> specialises in comparing <see cref="__SINFO.FullName"/>
+		/// </summary>		
+		public static IComparer<T> GetFullNameComparer<T>(this __MATCHCASING casing)
+            where T : __SINFO
         {
             return _FileSystemInfoComparer<T>.GetInstance(casing);
         }
@@ -180,12 +189,12 @@ namespace $rootnamespace$
 
         #region nested types
 
-        private sealed class _FileSystemInfoComparer<T> : IEqualityComparer<T>
+        private sealed class _FileSystemInfoComparer<T> : IEqualityComparer<T>, IComparer<T>
         where T : __SINFO
         {
-            private static IEqualityComparer<T>[] _Comparers;
+            private static _FileSystemInfoComparer<T>[] _Comparers;
 
-            public static IEqualityComparer<T> GetInstance(__MATCHCASING casing)
+            public static _FileSystemInfoComparer<T> GetInstance(__MATCHCASING casing)
             {
                 switch(casing)
                 {
@@ -196,7 +205,7 @@ namespace $rootnamespace$
                 }
             }
 
-            public static IEqualityComparer<T> GetInstance(StringComparison comparison)
+            public static _FileSystemInfoComparer<T> GetInstance(StringComparison comparison)
             {
                 if (_Comparers == null)
                 {
@@ -208,7 +217,7 @@ namespace $rootnamespace$
 
                     var len = values.Max() + 1;
 
-				    _Comparers = new IEqualityComparer<T>[(int)len];
+				    _Comparers = new _FileSystemInfoComparer<T>[(int)len];
 
                     foreach(var idx in values)
                     {
@@ -219,14 +228,26 @@ namespace $rootnamespace$
                 return _Comparers[(int)comparison];
             }
 
-			public static IEqualityComparer<T> Default { get; } = GetInstance(FileSystemStringComparison);
+			public static _FileSystemInfoComparer<T> Default { get; } = GetInstance(FileSystemStringComparison);
 
 			private _FileSystemInfoComparer(StringComparison comparison)
             {
                 _Comparison = comparison;
 			}
 
-            private readonly StringComparison _Comparison;			
+            private readonly StringComparison _Comparison;
+
+            public int Compare(T x, T y)
+            {
+                if (Object.ReferenceEquals(x, y)) return 0;
+                if (x == null) return 1;
+                if (y == null) return -1;
+
+                var apath = GetNormalizedFullName(x);
+                var bpath = GetNormalizedFullName(y);
+
+                return string.Compare(apath, bpath, _Comparison);
+            }
 
             public bool Equals(T x, T y)
             {
@@ -235,7 +256,7 @@ namespace $rootnamespace$
                 if (y == null) return false;
 
                 var apath = GetNormalizedFullName(x);
-                var bpath = GetNormalizedFullName(y);              
+                var bpath = GetNormalizedFullName(y);
 
                 return string.Equals(apath, bpath, _Comparison);
             }
@@ -244,8 +265,10 @@ namespace $rootnamespace$
             {
                 return obj == null ? 0 : GetNormalizedFullName(obj).GetHashCode(_Comparison);
             }
+
+            
         }
 
-#endregion
+        #endregion
     }
 }
