@@ -29,7 +29,7 @@
 
   <PropertyGroup>
     <Description>
-      ICommand implementation without dependencies.
+      ICommand implementations without dependencies.
     </Description>
   </PropertyGroup>
 
