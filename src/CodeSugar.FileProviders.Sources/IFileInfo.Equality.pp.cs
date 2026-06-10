@@ -43,6 +43,37 @@ namespace $rootnamespace$
             return string.Equals(xfile.Name, name, __ToStringComparison(casing));
         }
 
+        /// <summary>
+        /// Tries to determine of <paramref name="left"/> and <paramref name="right"/> represent the same resource.
+        /// </summary>
+        /// <param name="left">A resource reference</param>
+        /// <param name="right">A resource reference</param>
+        /// <param name="casing">if resources define physical paths, the casing to use for comparing the paths</param>
+        /// <returns></returns>
+        public static bool IsSameResourceAs(this __XINFO left, __XINFO right, __MATCHCASING casing)
+        {
+            if (left == null && right == null) return true;
+            if (left == null) return false;
+            if (right == null) return false;
+
+            if (object.ReferenceEquals(left, right)) return true;
+
+            if (left.IsDirectory != right.IsDirectory) return false;
+
+            if (!string.IsNullOrEmpty(left.PhysicalPath) && !string.IsNullOrEmpty(right.PhysicalPath))
+            {
+                var leftPath = System.IO.Path.GetFullPath(left.PhysicalPath);
+                var rightPath = System.IO.Path.GetFullPath(right.PhysicalPath);
+
+                return string.Equals(leftPath, rightPath, casing.__ToStringComparison());
+            }
+
+            // do this only AFTER comparing PhysicalPath
+            if (left.GetType() != right.GetType()) return false;
+
+            return left.Equals(right);
+        }
+
 
         public static bool TryGetStringComparison(this __XDIRECTORY xfile, out StringComparison cmp)
         {

@@ -151,7 +151,7 @@ namespace $rootnamespace$
         #region nested types
 
         [System.Diagnostics.DebuggerDisplay("{Key} {Length}")]
-        private readonly struct _AnyArchiveFile : __XINFO, IServiceProvider
+        private readonly struct _AnyArchiveFile : __XINFO, IServiceProvider, IEquatable<_AnyArchiveFile>
         {
             #region lifecycle           
 
@@ -165,7 +165,22 @@ namespace $rootnamespace$
 
             #region data
 
-            private readonly _IArchiveEntry _Entry;            
+            private readonly _IArchiveEntry _Entry;
+
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(_Entry);
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is _AnyArchiveFile other && Equals(other);
+            }
+
+            public bool Equals(_AnyArchiveFile other)
+            {
+                return this._Entry == other._Entry;
+            }
 
             #endregion
 
@@ -217,7 +232,7 @@ namespace $rootnamespace$
         }
 
         [System.Diagnostics.DebuggerDisplay("{_Path}")]
-        private readonly struct _AnyArchiveDirectory : __XINFO, IDirectoryContents
+        private readonly struct _AnyArchiveDirectory : __XINFO, IDirectoryContents, IEquatable<_AnyArchiveDirectory>
         {
             #region lifecycle
             public _AnyArchiveDirectory(_AnyArchive arch, string path)
@@ -238,6 +253,21 @@ namespace $rootnamespace$
 
             private readonly _AnyArchive _Archive;
             private readonly string _Path;
+
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(_Archive, _Path);
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is _AnyArchiveDirectory other && Equals(other);
+            }
+
+            public bool Equals(_AnyArchiveDirectory other)
+            {
+                return this._Archive == other._Archive && this._Path == other._Path;
+            }
 
             public static readonly char ArchiveDirectorySeparator = '/';
             public static readonly char ArchiveAltDirectorySeparator = '\\';

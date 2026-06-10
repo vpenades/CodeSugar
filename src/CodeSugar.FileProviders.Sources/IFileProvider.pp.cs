@@ -16,6 +16,7 @@ using Microsoft.Extensions.Primitives;
 using __XINFO = Microsoft.Extensions.FileProviders.IFileInfo;
 using __XDIRECTORY = Microsoft.Extensions.FileProviders.IDirectoryContents;
 using __XPROVIDER = Microsoft.Extensions.FileProviders.IFileProvider;
+using __MATCHCASING = System.IO.MatchCasing;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
@@ -30,7 +31,7 @@ namespace $rootnamespace$
         #region API
 
         [return: NotNull]
-        public static IFileInfo GetFileInfo(this __XPROVIDER provider,params string[] subpath)
+        public static __XINFO GetFileInfo(this __XPROVIDER provider, params string[] subpath)
         {
             var path = System.IO.Path.Combine(subpath);
             path = path.Replace(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
@@ -40,7 +41,7 @@ namespace $rootnamespace$
 
 
         [return: NotNull]
-        public static IDirectoryContents GetDirectoryContents(this __XPROVIDER provider, params string[] subpath)
+        public static __XDIRECTORY GetDirectoryContents(this __XPROVIDER provider, params string[] subpath)
         {
             var path = System.IO.Path.Combine(subpath);
             path = path.Replace(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
@@ -49,14 +50,14 @@ namespace $rootnamespace$
         }
 
         [return: NotNull]
-        public static __XPROVIDER ToIFileProvider(this __XDIRECTORY dir)
+        public static __XPROVIDER ToIFileProvider(this __XDIRECTORY dir, __MATCHCASING casing)
         {
-            switch(dir)
+            switch (dir)
             {
                 case null: return _NullFileProvider;
                 case __XPROVIDER provider: return provider; // already a provider
-                default: return new _FileProviderOverDirectoryContents(dir);
-            }            
+                default: return new _FileProviderOverDirectoryContents(dir, casing);
+            }
         }
 
         #endregion
@@ -67,22 +68,33 @@ namespace $rootnamespace$
 
         private sealed class _FileProviderOverDirectoryContents : __XPROVIDER
         {
-            private readonly __XDIRECTORY _Dir;
-
-            public _FileProviderOverDirectoryContents(__XDIRECTORY dir)
+            public _FileProviderOverDirectoryContents(__XDIRECTORY dir, __MATCHCASING casing)
             {
                 _Dir = dir;
+                _Casing = casing;
             }
+
+            private readonly __XDIRECTORY _Dir;
+            private readonly __MATCHCASING _Casing;            
 
             public __XINFO GetFileInfo(string subpath)
             {
-                return _Dir.FindEntry(subpath);
+                var parts = subpath.Replace('\\','/').Split('/');
+
+                return _Dir.FindEntry(_Casing, parts);
             }
 
             public __XDIRECTORY GetDirectoryContents(string subpath)
             {
-                return _Dir.FindEntry(subpath) is __XDIRECTORY
-                    ? _Dir
+                var parts = subpath.Replace('\\', '/').Split('/');
+
+                if (parts.Length == 0 || (parts.Length == 1 && string.IsNullOrEmpty(parts[0])))
+                {
+                    return _Dir;
+                }
+
+                return _Dir.FindEntry(_Casing, subpath) is __XDIRECTORY xdir
+                    ? xdir
                     : Microsoft.Extensions.FileProviders.NotFoundDirectoryContents.Singleton;
             }
 

@@ -113,7 +113,7 @@ namespace $rootnamespace$
         #region nested types
 
         [System.Diagnostics.DebuggerDisplay("{PhysicalPath}")]
-        private readonly struct _BasicPhysicalFile : __XINFO , IServiceProvider
+        private readonly struct _BasicPhysicalFile : __XINFO , IServiceProvider, IEquatable<_BasicPhysicalFile>
         {
             #region constructor
             public _BasicPhysicalFile(__FINFO finfo) { Info = finfo; }
@@ -135,6 +135,27 @@ namespace $rootnamespace$
             public DateTimeOffset LastModified => Info.LastWriteTime;
 
             public bool IsDirectory => false;
+
+            #endregion
+
+            #region equality
+
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(Info);
+            }
+
+            public override bool Equals(object obj)
+            {
+                // we check equality only against self so we don't replace this by other object types in a hashset or dictionary
+
+                return obj is _BasicPhysicalFile other && Equals(other);
+            }
+
+            public bool Equals(_BasicPhysicalFile other)
+            {
+                return this.Info == other.Info;
+            }
 
             #endregion
 
@@ -164,7 +185,7 @@ namespace $rootnamespace$
         }
 
         [System.Diagnostics.DebuggerDisplay("{PhysicalPath}")]
-        private readonly struct _BasicPhysicalDirectory : __XINFO, IDirectoryContents , IServiceProvider
+        private readonly struct _BasicPhysicalDirectory : __XINFO, IDirectoryContents , IServiceProvider, IEquatable<_BasicPhysicalDirectory>
         {
             #region constructor
 
@@ -187,6 +208,27 @@ namespace $rootnamespace$
             public DateTimeOffset LastModified => Info.LastWriteTime;
 
             public bool IsDirectory => true;
+
+            #endregion
+
+            #region equality
+
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(Info);
+            }
+
+            public override bool Equals(object obj)
+            {
+                // we check equality only against self so we don't replace this by other object types in a hashset or dictionary
+
+                return obj is _BasicPhysicalDirectory other && Equals(other);
+            }
+
+            public bool Equals(_BasicPhysicalDirectory other)
+            {
+                return this.Info == other.Info;
+            }
 
             #endregion
 
@@ -214,7 +256,7 @@ namespace $rootnamespace$
         }
 
         [System.Diagnostics.DebuggerDisplay("{Info.FullPath}")]
-        private readonly struct _BasicPhysicalDirectoryContents : IDirectoryContents, IServiceProvider
+        private readonly struct _BasicPhysicalDirectoryContents : IDirectoryContents, IServiceProvider, IEquatable<_BasicPhysicalDirectoryContents>
         {
             #region constructor
 
@@ -226,7 +268,28 @@ namespace $rootnamespace$
 
             public __DINFO Info { get; }
 
-            public bool Exists => Info?.Exists ?? false;            
+            public bool Exists => Info?.Exists ?? false;
+
+            #endregion
+
+            #region equality
+
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(Info);
+            }
+
+            public override bool Equals(object obj)
+            {
+                // we check equality only against self so we don't replace this by other object types in a hashset or dictionary
+
+                return obj is _BasicPhysicalDirectoryContents other && Equals(other);
+            }
+
+            public bool Equals(_BasicPhysicalDirectoryContents other)
+            {
+                return this.Info == other.Info;
+            }
 
             #endregion
 

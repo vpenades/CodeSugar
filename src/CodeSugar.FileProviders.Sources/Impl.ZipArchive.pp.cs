@@ -50,7 +50,7 @@ namespace $rootnamespace$
         #region nested types
 
         [System.Diagnostics.DebuggerDisplay("{Entry.FullName} {Length}")]
-        private readonly struct _ZipArchiveFile : __XINFO, IServiceProvider
+        private readonly struct _ZipArchiveFile : __XINFO, IServiceProvider, IEquatable<_ZipArchiveFile>
         {
             #region lifecycle
 
@@ -65,6 +65,23 @@ namespace $rootnamespace$
             #region data
 
             public System.IO.Compression.ZipArchiveEntry Entry { get; }
+
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(Entry);
+            }
+
+            public override bool Equals(object obj)
+            {
+                // we check equality only against self so we don't replace this by other object types in a hashset or dictionary
+
+                return obj is _ZipArchiveFile other && Equals(other);
+            }
+
+            public bool Equals(_ZipArchiveFile other)
+            {
+                return this.Entry == other.Entry;
+            }
 
             #endregion
 
@@ -111,13 +128,13 @@ namespace $rootnamespace$
                 if (serviceType == typeof(System.IO.Compression.ZipArchiveEntry)) return Entry;
                 if (serviceType == typeof(System.IO.Compression.ZipArchive)) return Entry.Archive;
                 return null;
-            }
+            }            
 
             #endregion
         }
 
         [System.Diagnostics.DebuggerDisplay("{_Path}")]
-        private readonly struct _ZipArchiveDirectory : __XINFO, IDirectoryContents
+        private readonly struct _ZipArchiveDirectory : __XINFO, IDirectoryContents, IEquatable<_ZipArchiveDirectory>
         {
             #region lifecycle
             public _ZipArchiveDirectory(_ZipArchive zip, string path)
@@ -138,6 +155,23 @@ namespace $rootnamespace$
 
             private readonly _ZipArchive _Zip;
             private readonly string _Path;
+
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(_Zip, _Path);
+            }
+
+            public override bool Equals(object obj)
+            {
+                // we check equality only against self so we don't replace this by other object types in a hashset or dictionary
+
+                return obj is _ZipArchiveDirectory other && Equals(other);
+            }
+
+            public bool Equals(_ZipArchiveDirectory other)
+            {
+                return this._Zip.Equals(other._Zip) && this._Path == other._Path;
+            }
 
             public static readonly char ZipDirectorySeparator = '/';
             public static readonly char ZipAltDirectorySeparator = '\\';
@@ -229,7 +263,7 @@ namespace $rootnamespace$
             #endregion
         }        
 
-        private readonly struct _ZipArchive : __XPROVIDER
+        private readonly struct _ZipArchive : __XPROVIDER, IEquatable<_ZipArchive>
         {
             #region lifecycle
             public _ZipArchive(System.IO.Compression.ZipArchive archive)
@@ -243,6 +277,27 @@ namespace $rootnamespace$
 
             [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
             private readonly System.IO.Compression.ZipArchive _Archive;
+
+            public override int GetHashCode()
+            {
+                return HashCode.Combine(_Archive);
+            }
+
+            public override bool Equals(object obj)
+            {
+                // we check equality only against self so we don't replace this by other object types in a hashset or dictionary
+
+                return obj is _ZipArchive other && Equals(other);
+            }
+
+            public bool Equals(_ZipArchive other)
+            {
+                return this._Archive == other._Archive;
+            }
+
+            #endregion
+
+            #region properties
 
             [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)]
             public System.Collections.ObjectModel.ReadOnlyCollection<System.IO.Compression.ZipArchiveEntry> Entries => _Archive.Entries;
