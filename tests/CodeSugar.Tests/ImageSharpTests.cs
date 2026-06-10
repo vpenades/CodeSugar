@@ -91,8 +91,8 @@ namespace CodeSugar
 
             var xform = Matrix3x2.CreateScale((float)dstw / img.Width, (float)dsth / img.Height);
 
-            img.CopyToTensor(hwcTensor, xform);
-            img.CopyToTensor(chwTensor, xform);
+            img.CopyToTensor(xform, hwcTensor);
+            img.CopyToTensor(xform, chwTensor);
 
             AttachmentInfo.From("hwcTensor.png").WriteObjectEx(f => hwcTensor.SaveToSixLaborsImage(f));
             AttachmentInfo.From("chwTensor.png").WriteObjectEx(f => chwTensor.SaveToSixLaborsImage(f));

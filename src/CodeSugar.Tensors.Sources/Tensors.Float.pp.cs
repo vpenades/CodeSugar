@@ -12,26 +12,22 @@ using System.Threading;
 
 #nullable disable
 
-#if NET8_0_OR_GREATER
 using __XYZ = System.Numerics.Vector3;
+using __TENSOR = System.Numerics.Tensors.Tensor<float>;
 using __TENSORSPAN = System.Numerics.Tensors.TensorSpan<float>;
 using __READONLYTENSORSPAN = System.Numerics.Tensors.ReadOnlyTensorSpan<float>;
-#endif
-
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
 #elif CODESUGAR_USESYSTEMNAMESPACE
-namespace System.Numerics
+namespace System.Numerics.Tensors
 #else
 namespace $rootnamespace$
 #endif
 {
     static partial class CodeSugarForTensors
     {
-        #if NET8_0_OR_GREATER
-
-        public static void ApplyMultiplyAddToPixelElements(this Tensor<float> tensor, __XYZ mul, __XYZ add)
+        public static void ApplyMultiplyAddToPixelElements(this __TENSOR tensor, __XYZ mul, __XYZ add)
         {
             tensor.AsTensorSpan().ApplyMultiplyAddToPixelElements(mul, add);
         }
@@ -40,7 +36,7 @@ namespace $rootnamespace$
         {
             // tensor = tensor.Squeeze();
 
-            if (!_TryInferImageSize(tensor, out _, out _, out int channels, out bool isCHW)) throw new ArgumentException("can't infer image size", nameof(tensor));
+            if (!_TryInferImageSize(tensor.Lengths, tensor.Strides, out _, out _, out int channels, out bool isCHW)) throw new ArgumentException("can't infer image size", nameof(tensor));
 
             if (isCHW)
             {
@@ -73,47 +69,6 @@ namespace $rootnamespace$
             }
 
             throw new NotImplementedException();
-        }
-
-        private static bool _TryInferImageSize(__READONLYTENSORSPAN tensor, out int width, out int height, out int channels, out bool isCHW)
-        {
-            tensor = tensor.Squeeze();
-
-            width = 0;
-            height = 0;
-            channels = 0;
-            isCHW = false;
-
-            if (tensor.Rank == 2)
-            {
-                height = (int)tensor.Lengths[0];
-                width = (int)tensor.Lengths[1];
-                channels = 1;                
-                return true;
-            }
-
-            if (tensor.Rank != 3) return false;
-
-            if (tensor.Lengths[2] <= 4 && tensor.Lengths[0] > tensor.Lengths[2]) // check is HWC
-            {
-                height = (int)tensor.Lengths[0];
-                width = (int)tensor.Lengths[1];
-                channels = (int)tensor.Lengths[2];
-                return true;
-            }
-
-            if (tensor.Lengths[0] <= 4 && tensor.Lengths[1] > tensor.Lengths[0]) // check is CHW
-            {
-                channels = (int)tensor.Lengths[0];
-                height = (int)tensor.Lengths[1];
-                width = (int)tensor.Lengths[2];
-                isCHW = true;
-                return true;
-            }
-
-            return false;
         }        
-
-        #endif
     }
 }

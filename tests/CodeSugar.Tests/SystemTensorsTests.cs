@@ -6,10 +6,14 @@ using System.Diagnostics;
 using System.Linq;
 using System.Numerics.Tensors;
 using System.Runtime.Intrinsics;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
 using NUnit.Framework;
+
+using SixLabors.ImageSharp.PixelFormats;
+
 using XYZ = System.Numerics.Vector3;
 using XYZW = System.Numerics.Vector4;
 
@@ -366,6 +370,30 @@ namespace CodeSugar
             Assert.That(tensorVector3[new nint[] { 0, 0, }], Is.EqualTo(new XYZ(0,5,0)));
         }
 
+        [Test]
+        public void TestTensorDrawing()
+        {
+            var icon = ResourceInfo.From("CodeSugar.png");
+            using var img = SixLabors.ImageSharp.Image.Load<Rgba32>(icon.FilePath);
+
+            var srcBmp = img.ToTensor<float>(3, false);
+            
+            var dstBmp = System.Numerics.Tensors.Tensor.Create(new float[512 * 512 * 3], new nint[] { 512, 512, 3 });
+
+            dstBmp.AsTensorSpan().DrawRgbPixelsOverRgb(System.Numerics.Matrix3x2.CreateScale(2, 2) * System.Numerics.Matrix3x2.CreateRotation(0.1f), srcBmp, true);            
+
+            AttachmentInfo.From("dstBmp.png").WriteObjectEx(f => dstBmp.SaveToSixLaborsImage(f));
+
+            var h = dstBmp.AsReadOnlyTensorSpan().GetContentHashCode();
+
+            var expected = -770854322;
+            #if NET10_0_OR_GREATER
+            expected = -987842336;
+            #endif
+
+            Assert.That(h, Is.EqualTo(expected));
+        }
+
         #if NET10_0_OR_GREATER
 
         [Test]
@@ -396,8 +424,8 @@ namespace CodeSugar
             Assert.That(bmp5.Rank, Is.EqualTo(tensor3.Rank - 1));
         }
 
-        #endif
+#endif
 
-        #endif
-    }
+#endif
+        }
 }

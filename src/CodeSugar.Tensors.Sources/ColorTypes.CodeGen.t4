@@ -88,8 +88,8 @@ public class ColorConversionStructuresCodeGen
 
             WriteLine("");
 
-            if (singleCount > 8) WriteLine("#if NET8_0_OR_GREATER");
-            else WriteLine("#if NET6_0_OR_GREATER");
+            // if (singleCount > 8) WriteLine("#if NET8_0_OR_GREATER");
+            // else WriteLine("#if NET6_0_OR_GREATER");
 
             WriteLine("[MethodImpl(AGRESSIVE)]");
 
@@ -116,7 +116,7 @@ public class ColorConversionStructuresCodeGen
 
             WriteLine("}");
 
-            WriteLine("#endif");
+            // WriteLine("#endif");
         }        
     }    
 
@@ -124,8 +124,8 @@ public class ColorConversionStructuresCodeGen
     {
         WriteLine("");
 
-        if (useMAD || currVectorSize > 8) WriteLine("#if NET8_0_OR_GREATER");
-        else WriteLine("#if NET6_0_OR_GREATER");        
+        // if (useMAD || currVectorSize > 8) WriteLine("#if NET8_0_OR_GREATER");
+        // else WriteLine("#if NET6_0_OR_GREATER");        
 
         var madParams = string.Empty;
         if (useMAD)
@@ -174,7 +174,7 @@ public class ColorConversionStructuresCodeGen
 
         WriteLine("}");
 
-        WriteLine($"#endif");
+        // WriteLine($"#endif");
     }
 
     private void _WriteSection1X(string srcElementType, string dstColorFmt, bool useMAD)
@@ -347,7 +347,7 @@ public class ColorConversionStaticFuncCodeGen
         yield return $"if (src.Length > dst.Length * {SrcColorType.Length}) throw new ArgumentOutOfRangeException(nameof(src));";        
         yield return "";
 
-        yield return "#if NET8_0_OR_GREATER";
+        // yield return "#if NET8_0_OR_GREATER";
 
         yield return "if (false) {}"; // hack to handle if-else properly
         foreach(var l in EmitSimdMethodBlock(16, srcElementType, useMAD)) yield return l;
@@ -356,7 +356,7 @@ public class ColorConversionStaticFuncCodeGen
         yield return "";
 		foreach(var l in EmitSimdMethodBlock(4, srcElementType, useMAD)) yield return l;
 
-        yield return "#endif";	
+        // yield return "#endif";	
 
 		
 

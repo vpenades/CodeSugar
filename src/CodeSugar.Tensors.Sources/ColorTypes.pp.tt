@@ -13,28 +13,20 @@ using System.Numerics.Tensors;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-#if NET
 using System.Runtime.Intrinsics;
-#endif
 
 #nullable disable
 
-#if NET6_0_OR_GREATER
+
 using __VECTOR2FACTORY = System.Runtime.Intrinsics.Vector64;
 using __VECTOR4FACTORY = System.Runtime.Intrinsics.Vector128;
 using __VECTOR8FACTORY = System.Runtime.Intrinsics.Vector256;
+using __VECTOR16FACTORY = System.Runtime.Intrinsics.Vector512;
 
 using __VECTOR2 = System.Runtime.Intrinsics.Vector64<float>;
 using __VECTOR4 = System.Runtime.Intrinsics.Vector128<float>;
 using __VECTOR8 = System.Runtime.Intrinsics.Vector256<float>;
-
-#endif
-
-#if NET8_0_OR_GREATER
-using __VECTOR16FACTORY = System.Runtime.Intrinsics.Vector512;
-
 using __VECTOR16 = System.Runtime.Intrinsics.Vector512<float>;
-#endif
 
 using __MMARSHALL = System.Runtime.InteropServices.MemoryMarshal;
 using __XYZ = System.Numerics.Vector3;
@@ -43,7 +35,7 @@ using __XYZW = System.Numerics.Vector4;
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
 #elif CODESUGAR_USESYSTEMNAMESPACE
-namespace System.Numerics
+namespace System.Numerics.Tensors
 #else
 namespace $rootnamespace$
 #endif

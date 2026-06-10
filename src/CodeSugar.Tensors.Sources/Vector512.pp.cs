@@ -6,34 +6,27 @@ using System.Numerics.Tensors;
 using System.Runtime.InteropServices;
 using System.Text;
 
-#if NET
 using System.Runtime.Intrinsics;
-using __UNSAFE = System.Runtime.CompilerServices.Unsafe;
-#endif
 
 #nullable disable
 
-using __MMARSHALL = System.Runtime.InteropServices.MemoryMarshal;
-using __TENSORPRIMS = System.Numerics.Tensors.TensorPrimitives;
+using __XYZ = System.Numerics.Vector3;
+using __XYZW = System.Numerics.Vector4;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
 #elif CODESUGAR_USESYSTEMNAMESPACE
-namespace System.Numerics
+namespace System.Numerics.Tensors
 #else
 namespace $rootnamespace$
 #endif
 {
     static partial class CodeSugarForTensors
     {
-        #if NET8_0_OR_GREATER
-
         [System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, Pack = 1)]
         struct __Vector3x512
         {
-            public const int RepeatXYZCount = 8;
-
-            public static __Vector3x512 Repeat(System.Numerics.Vector3 v)
+            public static __Vector3x512 Repeat(__XYZ v)
             {
                 return new __Vector3x512
                 {
@@ -48,21 +41,19 @@ namespace $rootnamespace$
             public Vector512<float> Z;
         }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        public static Vector512<float> RepeatVector512(this Vector4 v)
+        [System.Runtime.CompilerServices.MethodImpl(AGRESSIVE)]
+        public static Vector512<float> RepeatVector512(this __XYZW v)
         {
             var vvvv = Vector128.AsVector128(v);
             var vvvvvvvv = Vector256.Create(vvvv, vvvv);
             return Vector512.Create(vvvvvvvv, vvvvvvvv);
         }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [System.Runtime.CompilerServices.MethodImpl(AGRESSIVE)]
         public static Vector512<float> ConvertToSingle(this Vector512<int> value)
         {            
             return Vector512.ConvertToSingle(value);            
-        }
-
-        #endif
+        }        
     }
 }
 

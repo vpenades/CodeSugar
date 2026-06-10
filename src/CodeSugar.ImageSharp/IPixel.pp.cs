@@ -125,6 +125,8 @@ namespace $rootnamespace$
             return (float)pixel.ToL16().PackedValue / ushort.MaxValue;
         }
 
+        
+
         private static L16 ToL16<TPixel>(this TPixel pixel)
             where TPixel : unmanaged, IPixel<TPixel>
         {

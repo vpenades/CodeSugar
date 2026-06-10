@@ -6,19 +6,12 @@ using System.Numerics.Tensors;
 using System.Runtime.InteropServices;
 using System.Text;
 
-#if NET
-using System.Runtime.Intrinsics;
-#endif
-
 #nullable disable
-
-using __XYZ = System.Numerics.Vector3;
-using __XYZW = System.Numerics.Vector4;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
 #elif CODESUGAR_USESYSTEMNAMESPACE
-namespace System.Numerics
+namespace System.Numerics.Tensors
 #else
 namespace $rootnamespace$
 #endif

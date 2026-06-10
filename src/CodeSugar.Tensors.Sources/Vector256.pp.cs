@@ -6,35 +6,27 @@ using System.Numerics.Tensors;
 using System.Runtime.InteropServices;
 using System.Text;
 
-#if NET
 using System.Runtime.Intrinsics;
-using __UNSAFE = System.Runtime.CompilerServices.Unsafe;
-#endif
 
 #nullable disable
 
-using __MMARSHALL = System.Runtime.InteropServices.MemoryMarshal;
-using __TENSORPRIMS = System.Numerics.Tensors.TensorPrimitives;
-
+using __XYZ = System.Numerics.Vector3;
+using __XYZW = System.Numerics.Vector4;
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
 #elif CODESUGAR_USESYSTEMNAMESPACE
-namespace System.Numerics
+namespace System.Numerics.Tensors
 #else
 namespace $rootnamespace$
 #endif
 {
     static partial class CodeSugarForTensors
     {
-        #if NET6_0_OR_GREATER
-
         [System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, Pack = 1)]
         struct __Vector3x256
         {
-            public const int RepeatXYZCount = 8;
-
-            public static __Vector3x256 Repeat(System.Numerics.Vector3 v)
+            public static __Vector3x256 Repeat(__XYZ v)
             {
                 return new __Vector3x256
                 {
@@ -49,25 +41,18 @@ namespace $rootnamespace$
             public Vector256<float> Z;
         }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
-        public static Vector256<float> RepeatVector256(this Vector4 v)
+        [System.Runtime.CompilerServices.MethodImpl(AGRESSIVE)]
+        public static Vector256<float> RepeatVector256(this __XYZW v)
         {
             var vvvv = Vector128.AsVector128(v);
             return Vector256.Create(vvvv, vvvv);
         }
 
-        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.AggressiveInlining)]
+        [System.Runtime.CompilerServices.MethodImpl(AGRESSIVE)]
         public static Vector256<float> ConvertToSingle(this Vector256<int> value)
-        {
-            #if NET8_0_OR_GREATER
+        {         
             return Vector256.ConvertToSingle(value);
-            #else
-            var span = __MMARSHALL.Cast<Vector256<int>, int>(__MMARSHALL.CreateSpan(ref value, 1));
-            return Vector256.Create((float)span[0], (float)span[1], (float)span[2], (float)span[3], (float)span[4], (float)span[5], (float)span[6], (float)span[7]);
-            #endif
-        }
-
-        #endif
+        }        
     }
 }
 

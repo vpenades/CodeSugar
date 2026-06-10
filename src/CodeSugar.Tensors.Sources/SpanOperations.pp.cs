@@ -6,12 +6,11 @@ using System.Numerics.Tensors;
 using System.Runtime.InteropServices;
 using System.Text;
 
-#if NET
 using System.Runtime.Intrinsics;
-using __UNSAFE = System.Runtime.CompilerServices.Unsafe;
-#endif
 
 #nullable disable
+
+using __UNSAFE = System.Runtime.CompilerServices.Unsafe;
 
 using __MMARSHALL = System.Runtime.InteropServices.MemoryMarshal;
 using __TENSORPRIMS = System.Numerics.Tensors.TensorPrimitives;
@@ -35,7 +34,7 @@ using __XYZW = System.Numerics.Vector4;
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
 #elif CODESUGAR_USESYSTEMNAMESPACE
-namespace System.Numerics
+namespace System.Numerics.Tensors
 #else
 namespace $rootnamespace$
 #endif
@@ -82,19 +81,11 @@ namespace $rootnamespace$
         }
         public static void TruncatedCastTo(this __SRCBYTES src, __DSTX dst)
         {
-            #if NET8_0_OR_GREATER
-            for (int i = 0; i < dst.Length; ++i) { dst[i] = Byte.CreateTruncating(src[i]); }            
-            #else
-            for (int i = 0; i < dst.Length; ++i) { dst[i] = (byte)src[i]; }
-            #endif
+            for (int i = 0; i < dst.Length; ++i) { dst[i] = Byte.CreateTruncating(src[i]); }
         }        
         public static void SaturatedCastTo(this __SRCX src, __DSTBYTES dst)
         {
-            #if NET8_0_OR_GREATER
-            for (int i = 0; i < dst.Length; ++i) { dst[i] = Byte.CreateSaturating(src[i]); }            
-            #else
-            for (int i = 0; i < dst.Length; ++i) { dst[i] = (byte)Math.Clamp(src[i],0,255); }
-            #endif
+            for (int i = 0; i < dst.Length; ++i) { dst[i] = Byte.CreateSaturating(src[i]); }
         }
 
 
@@ -112,9 +103,7 @@ namespace $rootnamespace$
             {
                 __TENSORPRIMS.Multiply(src, mul, dst);
                 return;
-            }
-
-            #if NET8_0_OR_GREATER
+            }            
 
             if (Vector512.IsHardwareAccelerated && Vector512<float>.IsSupported)
             {
@@ -184,9 +173,7 @@ namespace $rootnamespace$
 
                 src = src.Slice(srcXXXX.Length * 4);
                 dst = dst.Slice(dstXXXX.Length * 4);
-            }
-
-            #endif
+            }            
 
             // fallback
 
@@ -207,9 +194,7 @@ namespace $rootnamespace$
                 var dst1 = __MMARSHALL.Cast<__XYZ, float>(dst);
                 MultiplyAddTo(src1, mul.X, add.X, dst1);
                 return;
-            }            
-
-            #if NET8_0_OR_GREATER
+            }
 
             if (Vector256.IsHardwareAccelerated && Vector256<float>.IsSupported)
             {
@@ -258,9 +243,7 @@ namespace $rootnamespace$
 
                 src = src.Slice(srcXXXX.Length * 4);
                 dst = dst.Slice(dstXXXX.Length * 4);
-            }
-
-            #endif
+            }            
 
             // fallback
 
@@ -271,9 +254,7 @@ namespace $rootnamespace$
         }
         public static void MultiplyAddTo(this __RCXYZW src, __XYZW mul, __XYZW add, __DSTXYZW dst)
         {
-            if (src.Length != dst.Length) throw new ArgumentException("length mismatch", nameof(dst));
-
-            #if NET8_0_OR_GREATER
+            if (src.Length != dst.Length) throw new ArgumentException("length mismatch", nameof(dst));            
 
             if (Vector512.IsHardwareAccelerated && Vector512<float>.IsSupported)
             {
@@ -337,9 +318,7 @@ namespace $rootnamespace$
 
                 src = src.Slice(src128.Length);
                 dst = dst.Slice(dst128.Length);
-            }
-
-            #endif
+            }            
 
             // fallback
 
@@ -357,9 +336,7 @@ namespace $rootnamespace$
 
             if (src.Length != dst.Length) throw new ArgumentException("length mismatch", nameof(dst));
 
-            mul /= 255f;
-
-            #if NET8_0_OR_GREATER
+            mul /= 255f;            
 
             if (Vector512.IsHardwareAccelerated && Vector512<float>.IsSupported)
             {
@@ -433,9 +410,7 @@ namespace $rootnamespace$
 
                 src = src.Slice(srcXXXX.Length * 4);
                 dst = dst.Slice(dstXXXX.Length * 4);
-            }
-
-            #endif
+            }            
 
             // fallback
 
@@ -456,9 +431,7 @@ namespace $rootnamespace$
                 return;
             }
 
-            mul /= 255f;
-
-            #if NET8_0_OR_GREATER
+            mul /= 255f;            
 
             if (Vector512.IsHardwareAccelerated && Vector512<float>.IsSupported)
             {
@@ -532,9 +505,7 @@ namespace $rootnamespace$
 
                 src = src.Slice(srcXXXX.Length * 4);
                 dst = dst.Slice(dstXXXX.Length * 4);
-            }
-
-            #endif
+            }            
 
             // fallback
 
@@ -555,9 +526,7 @@ namespace $rootnamespace$
                 return;
             }
 
-            mul /= 255f;
-
-            #if NET8_0_OR_GREATER
+            mul /= 255f;            
 
             if (Vector256.IsHardwareAccelerated && Vector256<float>.IsSupported)
             {
@@ -625,9 +594,8 @@ namespace $rootnamespace$
 
                 src = src.Slice(dstXXXX.Length * 4 * 3);
                 dst = dst.Slice(dstXXXX.Length * 4);
-            }
+            }           
             
-            #endif
 
             // fallback
 
@@ -648,9 +616,7 @@ namespace $rootnamespace$
                 return;
             }
 
-            mul /= 255f;
-
-            #if NET8_0_OR_GREATER
+            mul /= 255f;            
 
             if (Vector256.IsHardwareAccelerated && Vector256<float>.IsSupported)
             {
@@ -702,9 +668,7 @@ namespace $rootnamespace$
 
                 src = src.Slice(srcXXXX.Length * 4);
                 dst = dst.Slice(dstXXXX.Length * 4);
-            }
-
-            #endif
+            }            
 
             // fallback
 

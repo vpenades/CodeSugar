@@ -14,18 +14,55 @@ using System.Threading;
 
 using __TENSORS = System.Numerics.Tensors;
 
+using System.Runtime.CompilerServices;
+
 
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
 #elif CODESUGAR_USESYSTEMNAMESPACE
-namespace System.Numerics
+namespace System.Numerics.Tensors
 #else
 namespace $rootnamespace$
 #endif
 {
     static partial class CodeSugarForTensors
     {
-        #if NET8_0_OR_GREATER
+        private static bool _TryInferImageSize(ReadOnlySpan<nint> lenghts, ReadOnlySpan<nint> strides, out int width, out int height, out int channels, out bool isCHW)
+        {
+            width = 0;
+            height = 0;
+            channels = 0;
+            isCHW = false;
+
+            if (lenghts.Length == 2)
+            {
+                height = (int)lenghts[0];
+                width = (int)lenghts[1];
+                channels = 1;
+                return true;
+            }
+
+            if (lenghts.Length != 3) return false;
+
+            if (lenghts[2] <= 4 && lenghts[0] > lenghts[2]) // check is HWC
+            {
+                height = (int)lenghts[0];
+                width = (int)lenghts[1];
+                channels = (int)lenghts[2];
+                return true;
+            }
+
+            if (lenghts[0] <= 4 && lenghts[1] > lenghts[0]) // check is CHW
+            {
+                channels = (int)lenghts[0];
+                height = (int)lenghts[1];
+                width = (int)lenghts[2];
+                isCHW = true;
+                return true;
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// checks whether the given tensor has non default strides
@@ -389,8 +426,41 @@ namespace $rootnamespace$
             }
 
             return len;
-        }     
+        }
 
-        #endif
+
+        public static int GetContentHashCode<T>(this __TENSORS.ReadOnlyTensorSpan<T> tensor) where T:unmanaged
+        {
+            int h = 0;
+            tensor.FindIndex(item => { h ^= item.GetHashCode(); h *= 17; return false; });            
+
+            return h;
+        }
+
+        public static nint[] FindIndex<T>(this __TENSORS.ReadOnlyTensorSpan<T> span, Predicate<T> predicate) where T : unmanaged
+        {
+            span = span.Squeeze();            
+
+            nint[] indexes = new nint[span.Rank];            
+
+            while (indexes[0] < span.Lengths[0])
+            {
+                var element = span[indexes];
+                if (predicate(element)) return indexes;
+
+                // increment
+
+                for(int i= indexes.Length-1; i >= 0; i--)
+                {
+                    indexes[i]++; if (indexes[i] < span.Lengths[i]) break;
+                    if (i == 0) break;
+                    indexes[i] = 0;
+                }
+            }
+
+            indexes.AsSpan().Fill(-1);
+
+            return indexes;
+        }
     }
 }

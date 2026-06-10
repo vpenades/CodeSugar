@@ -7,28 +7,20 @@ using System.Numerics.Tensors;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-#if NET
 using System.Runtime.Intrinsics;
-#endif
 
 #nullable disable
 
-#if NET6_0_OR_GREATER
+
 using __VECTOR2FACTORY = System.Runtime.Intrinsics.Vector64;
 using __VECTOR4FACTORY = System.Runtime.Intrinsics.Vector128;
 using __VECTOR8FACTORY = System.Runtime.Intrinsics.Vector256;
+using __VECTOR16FACTORY = System.Runtime.Intrinsics.Vector512;
 
 using __VECTOR2 = System.Runtime.Intrinsics.Vector64<float>;
 using __VECTOR4 = System.Runtime.Intrinsics.Vector128<float>;
 using __VECTOR8 = System.Runtime.Intrinsics.Vector256<float>;
-
-#endif
-
-#if NET8_0_OR_GREATER
-using __VECTOR16FACTORY = System.Runtime.Intrinsics.Vector512;
-
 using __VECTOR16 = System.Runtime.Intrinsics.Vector512<float>;
-#endif
 
 using __MMARSHALL = System.Runtime.InteropServices.MemoryMarshal;
 using __XYZ = System.Numerics.Vector3;
@@ -37,7 +29,7 @@ using __XYZW = System.Numerics.Vector4;
 #if CODESUGAR_USECODESUGARNAMESPACE
 namespace CodeSugar
 #elif CODESUGAR_USESYSTEMNAMESPACE
-namespace System.Numerics
+namespace System.Numerics.Tensors
 #else
 namespace $rootnamespace$
 #endif
@@ -64,55 +56,42 @@ namespace $rootnamespace$
 
         #region API
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGBA(in __RGBx2<byte> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)255, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)255).ConvertToSingle();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGBA(in __RGBx2<float> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, 1, src._Element1_R, src._Element1_G, src._Element1_B, 1);
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGRA(in __RGBx2<byte> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)255, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)255).ConvertToSingle();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGRA(in __RGBx2<float> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, 1, src._Element1_B, src._Element1_G, src._Element1_R, 1);
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToARGB(in __RGBx2<byte> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create((int)255, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)255, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B).ConvertToSingle();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToARGB(in __RGBx2<float> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create(1, src._Element0_R, src._Element0_G, src._Element0_B, 1, src._Element1_R, src._Element1_G, src._Element1_B);
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGBA(ReadOnlySpan<__RGBx2<T>> src, Span<__VECTOR8> dst )
         {
@@ -141,9 +120,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGBA(ReadOnlySpan<__RGBx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
@@ -177,9 +154,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGRA(ReadOnlySpan<__RGBx2<T>> src, Span<__VECTOR8> dst )
         {
@@ -208,9 +183,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGRA(ReadOnlySpan<__RGBx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
@@ -244,9 +217,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToARGB(ReadOnlySpan<__RGBx2<T>> src, Span<__VECTOR8> dst )
         {
@@ -275,9 +246,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToARGB(ReadOnlySpan<__RGBx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
@@ -311,7 +280,6 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
         #endregion
     }
 
@@ -336,55 +304,42 @@ namespace $rootnamespace$
 
         #region API
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGBA(in __RGBx4<byte> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)255, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)255, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)255, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)255).ConvertToSingle();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGBA(in __RGBx4<float> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, 1, src._Element1_R, src._Element1_G, src._Element1_B, 1, src._Element2_R, src._Element2_G, src._Element2_B, 1, src._Element3_R, src._Element3_G, src._Element3_B, 1);
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGRA(in __RGBx4<byte> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)255, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)255, (int)src._Element2_B, (int)src._Element2_G, (int)src._Element2_R, (int)255, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)255).ConvertToSingle();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGRA(in __RGBx4<float> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, 1, src._Element1_B, src._Element1_G, src._Element1_R, 1, src._Element2_B, src._Element2_G, src._Element2_R, 1, src._Element3_B, src._Element3_G, src._Element3_R, 1);
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToARGB(in __RGBx4<byte> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create((int)255, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)255, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)255, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)255, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B).ConvertToSingle();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToARGB(in __RGBx4<float> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create(1, src._Element0_R, src._Element0_G, src._Element0_B, 1, src._Element1_R, src._Element1_G, src._Element1_B, 1, src._Element2_R, src._Element2_G, src._Element2_B, 1, src._Element3_R, src._Element3_G, src._Element3_B);
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGBA(ReadOnlySpan<__RGBx4<T>> src, Span<__VECTOR16> dst )
         {
@@ -413,9 +368,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGBA(ReadOnlySpan<__RGBx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
@@ -449,9 +402,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGRA(ReadOnlySpan<__RGBx4<T>> src, Span<__VECTOR16> dst )
         {
@@ -480,9 +431,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGRA(ReadOnlySpan<__RGBx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
@@ -516,9 +465,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToARGB(ReadOnlySpan<__RGBx4<T>> src, Span<__VECTOR16> dst )
         {
@@ -547,9 +494,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToARGB(ReadOnlySpan<__RGBx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
@@ -583,7 +528,6 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
         #endregion
     }
 
@@ -620,7 +564,6 @@ namespace $rootnamespace$
 
         #region API
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGB(in __RGBx8<byte> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
@@ -628,9 +571,7 @@ namespace $rootnamespace$
             dstY = __VECTOR8FACTORY.Create((int)src._Element2_B, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element4_R, (int)src._Element4_G, (int)src._Element4_B, (int)src._Element5_R).ConvertToSingle();
             dstZ = __VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B).ConvertToSingle();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGB(in __RGBx8<float> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
@@ -638,9 +579,7 @@ namespace $rootnamespace$
             dstY = __VECTOR8FACTORY.Create(src._Element2_B, src._Element3_R, src._Element3_G, src._Element3_B, src._Element4_R, src._Element4_G, src._Element4_B, src._Element5_R);
             dstZ = __VECTOR8FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B);
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGR(in __RGBx8<byte> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
@@ -648,9 +587,7 @@ namespace $rootnamespace$
             dstY = __VECTOR8FACTORY.Create((int)src._Element2_R, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element4_B, (int)src._Element4_G, (int)src._Element4_R, (int)src._Element5_B).ConvertToSingle();
             dstZ = __VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R).ConvertToSingle();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGR(in __RGBx8<float> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
@@ -658,9 +595,7 @@ namespace $rootnamespace$
             dstY = __VECTOR8FACTORY.Create(src._Element2_R, src._Element3_B, src._Element3_G, src._Element3_R, src._Element4_B, src._Element4_G, src._Element4_R, src._Element5_B);
             dstZ = __VECTOR8FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R);
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGB(ReadOnlySpan<__RGBx8<T>> src, Span<__VECTOR8> dst )
         {
@@ -689,9 +624,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGB(ReadOnlySpan<__RGBx8<T>> src, Span<__VECTOR8> dst , in __XYZ mul, in __XYZ add)
         {
@@ -729,9 +662,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGR(ReadOnlySpan<__RGBx8<T>> src, Span<__VECTOR8> dst )
         {
@@ -760,9 +691,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGR(ReadOnlySpan<__RGBx8<T>> src, Span<__VECTOR8> dst , in __XYZ mul, in __XYZ add)
         {
@@ -800,7 +729,6 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
         #endregion
     }
 
@@ -861,7 +789,6 @@ namespace $rootnamespace$
 
         #region API
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGB(in __RGBx16<byte> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
@@ -869,9 +796,7 @@ namespace $rootnamespace$
             dstY = __VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B, (int)src._Element8_R, (int)src._Element8_G, (int)src._Element8_B, (int)src._Element9_R, (int)src._Element9_G, (int)src._Element9_B, (int)src._Element10_R, (int)src._Element10_G).ConvertToSingle();
             dstZ = __VECTOR16FACTORY.Create((int)src._Element10_B, (int)src._Element11_R, (int)src._Element11_G, (int)src._Element11_B, (int)src._Element12_R, (int)src._Element12_G, (int)src._Element12_B, (int)src._Element13_R, (int)src._Element13_G, (int)src._Element13_B, (int)src._Element14_R, (int)src._Element14_G, (int)src._Element14_B, (int)src._Element15_R, (int)src._Element15_G, (int)src._Element15_B).ConvertToSingle();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGB(in __RGBx16<float> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
@@ -879,9 +804,7 @@ namespace $rootnamespace$
             dstY = __VECTOR16FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B, src._Element8_R, src._Element8_G, src._Element8_B, src._Element9_R, src._Element9_G, src._Element9_B, src._Element10_R, src._Element10_G);
             dstZ = __VECTOR16FACTORY.Create(src._Element10_B, src._Element11_R, src._Element11_G, src._Element11_B, src._Element12_R, src._Element12_G, src._Element12_B, src._Element13_R, src._Element13_G, src._Element13_B, src._Element14_R, src._Element14_G, src._Element14_B, src._Element15_R, src._Element15_G, src._Element15_B);
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGR(in __RGBx16<byte> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
@@ -889,9 +812,7 @@ namespace $rootnamespace$
             dstY = __VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R, (int)src._Element8_B, (int)src._Element8_G, (int)src._Element8_R, (int)src._Element9_B, (int)src._Element9_G, (int)src._Element9_R, (int)src._Element10_B, (int)src._Element10_G).ConvertToSingle();
             dstZ = __VECTOR16FACTORY.Create((int)src._Element10_R, (int)src._Element11_B, (int)src._Element11_G, (int)src._Element11_R, (int)src._Element12_B, (int)src._Element12_G, (int)src._Element12_R, (int)src._Element13_B, (int)src._Element13_G, (int)src._Element13_R, (int)src._Element14_B, (int)src._Element14_G, (int)src._Element14_R, (int)src._Element15_B, (int)src._Element15_G, (int)src._Element15_R).ConvertToSingle();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGR(in __RGBx16<float> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
@@ -899,9 +820,7 @@ namespace $rootnamespace$
             dstY = __VECTOR16FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R, src._Element8_B, src._Element8_G, src._Element8_R, src._Element9_B, src._Element9_G, src._Element9_R, src._Element10_B, src._Element10_G);
             dstZ = __VECTOR16FACTORY.Create(src._Element10_R, src._Element11_B, src._Element11_G, src._Element11_R, src._Element12_B, src._Element12_G, src._Element12_R, src._Element13_B, src._Element13_G, src._Element13_R, src._Element14_B, src._Element14_G, src._Element14_R, src._Element15_B, src._Element15_G, src._Element15_R);
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGB(ReadOnlySpan<__RGBx16<T>> src, Span<__VECTOR16> dst )
         {
@@ -930,9 +849,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGB(ReadOnlySpan<__RGBx16<T>> src, Span<__VECTOR16> dst , in __XYZ mul, in __XYZ add)
         {
@@ -970,9 +887,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGR(ReadOnlySpan<__RGBx16<T>> src, Span<__VECTOR16> dst )
         {
@@ -1001,9 +916,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGR(ReadOnlySpan<__RGBx16<T>> src, Span<__VECTOR16> dst , in __XYZ mul, in __XYZ add)
         {
@@ -1041,7 +954,6 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
         #endregion
     }
 
@@ -1064,55 +976,42 @@ namespace $rootnamespace$
 
         #region API
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGBA(in __BGRx2<byte> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)255, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)255).ConvertToSingle();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGBA(in __BGRx2<float> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, 1, src._Element1_R, src._Element1_G, src._Element1_B, 1);
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGRA(in __BGRx2<byte> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)255, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)255).ConvertToSingle();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGRA(in __BGRx2<float> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, 1, src._Element1_B, src._Element1_G, src._Element1_R, 1);
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToARGB(in __BGRx2<byte> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create((int)255, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)255, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B).ConvertToSingle();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToARGB(in __BGRx2<float> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create(1, src._Element0_R, src._Element0_G, src._Element0_B, 1, src._Element1_R, src._Element1_G, src._Element1_B);
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGBA(ReadOnlySpan<__BGRx2<T>> src, Span<__VECTOR8> dst )
         {
@@ -1141,9 +1040,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGBA(ReadOnlySpan<__BGRx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
@@ -1177,9 +1074,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGRA(ReadOnlySpan<__BGRx2<T>> src, Span<__VECTOR8> dst )
         {
@@ -1208,9 +1103,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGRA(ReadOnlySpan<__BGRx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
@@ -1244,9 +1137,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToARGB(ReadOnlySpan<__BGRx2<T>> src, Span<__VECTOR8> dst )
         {
@@ -1275,9 +1166,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToARGB(ReadOnlySpan<__BGRx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
@@ -1311,7 +1200,6 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
         #endregion
     }
 
@@ -1336,55 +1224,42 @@ namespace $rootnamespace$
 
         #region API
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGBA(in __BGRx4<byte> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)255, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)255, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)255, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)255).ConvertToSingle();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGBA(in __BGRx4<float> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, 1, src._Element1_R, src._Element1_G, src._Element1_B, 1, src._Element2_R, src._Element2_G, src._Element2_B, 1, src._Element3_R, src._Element3_G, src._Element3_B, 1);
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGRA(in __BGRx4<byte> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)255, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)255, (int)src._Element2_B, (int)src._Element2_G, (int)src._Element2_R, (int)255, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)255).ConvertToSingle();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGRA(in __BGRx4<float> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, 1, src._Element1_B, src._Element1_G, src._Element1_R, 1, src._Element2_B, src._Element2_G, src._Element2_R, 1, src._Element3_B, src._Element3_G, src._Element3_R, 1);
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToARGB(in __BGRx4<byte> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create((int)255, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)255, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)255, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)255, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B).ConvertToSingle();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToARGB(in __BGRx4<float> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create(1, src._Element0_R, src._Element0_G, src._Element0_B, 1, src._Element1_R, src._Element1_G, src._Element1_B, 1, src._Element2_R, src._Element2_G, src._Element2_B, 1, src._Element3_R, src._Element3_G, src._Element3_B);
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGBA(ReadOnlySpan<__BGRx4<T>> src, Span<__VECTOR16> dst )
         {
@@ -1413,9 +1288,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGBA(ReadOnlySpan<__BGRx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
@@ -1449,9 +1322,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGRA(ReadOnlySpan<__BGRx4<T>> src, Span<__VECTOR16> dst )
         {
@@ -1480,9 +1351,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGRA(ReadOnlySpan<__BGRx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
@@ -1516,9 +1385,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToARGB(ReadOnlySpan<__BGRx4<T>> src, Span<__VECTOR16> dst )
         {
@@ -1547,9 +1414,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToARGB(ReadOnlySpan<__BGRx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
@@ -1583,7 +1448,6 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
         #endregion
     }
 
@@ -1620,7 +1484,6 @@ namespace $rootnamespace$
 
         #region API
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGB(in __BGRx8<byte> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
@@ -1628,9 +1491,7 @@ namespace $rootnamespace$
             dstY = __VECTOR8FACTORY.Create((int)src._Element2_B, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element4_R, (int)src._Element4_G, (int)src._Element4_B, (int)src._Element5_R).ConvertToSingle();
             dstZ = __VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B).ConvertToSingle();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGB(in __BGRx8<float> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
@@ -1638,9 +1499,7 @@ namespace $rootnamespace$
             dstY = __VECTOR8FACTORY.Create(src._Element2_B, src._Element3_R, src._Element3_G, src._Element3_B, src._Element4_R, src._Element4_G, src._Element4_B, src._Element5_R);
             dstZ = __VECTOR8FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B);
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGR(in __BGRx8<byte> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
@@ -1648,9 +1507,7 @@ namespace $rootnamespace$
             dstY = __VECTOR8FACTORY.Create((int)src._Element2_R, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element4_B, (int)src._Element4_G, (int)src._Element4_R, (int)src._Element5_B).ConvertToSingle();
             dstZ = __VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R).ConvertToSingle();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGR(in __BGRx8<float> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
@@ -1658,9 +1515,7 @@ namespace $rootnamespace$
             dstY = __VECTOR8FACTORY.Create(src._Element2_R, src._Element3_B, src._Element3_G, src._Element3_R, src._Element4_B, src._Element4_G, src._Element4_R, src._Element5_B);
             dstZ = __VECTOR8FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R);
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGB(ReadOnlySpan<__BGRx8<T>> src, Span<__VECTOR8> dst )
         {
@@ -1689,9 +1544,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGB(ReadOnlySpan<__BGRx8<T>> src, Span<__VECTOR8> dst , in __XYZ mul, in __XYZ add)
         {
@@ -1729,9 +1582,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGR(ReadOnlySpan<__BGRx8<T>> src, Span<__VECTOR8> dst )
         {
@@ -1760,9 +1611,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGR(ReadOnlySpan<__BGRx8<T>> src, Span<__VECTOR8> dst , in __XYZ mul, in __XYZ add)
         {
@@ -1800,7 +1649,6 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
         #endregion
     }
 
@@ -1861,7 +1709,6 @@ namespace $rootnamespace$
 
         #region API
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGB(in __BGRx16<byte> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
@@ -1869,9 +1716,7 @@ namespace $rootnamespace$
             dstY = __VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B, (int)src._Element8_R, (int)src._Element8_G, (int)src._Element8_B, (int)src._Element9_R, (int)src._Element9_G, (int)src._Element9_B, (int)src._Element10_R, (int)src._Element10_G).ConvertToSingle();
             dstZ = __VECTOR16FACTORY.Create((int)src._Element10_B, (int)src._Element11_R, (int)src._Element11_G, (int)src._Element11_B, (int)src._Element12_R, (int)src._Element12_G, (int)src._Element12_B, (int)src._Element13_R, (int)src._Element13_G, (int)src._Element13_B, (int)src._Element14_R, (int)src._Element14_G, (int)src._Element14_B, (int)src._Element15_R, (int)src._Element15_G, (int)src._Element15_B).ConvertToSingle();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGB(in __BGRx16<float> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
@@ -1879,9 +1724,7 @@ namespace $rootnamespace$
             dstY = __VECTOR16FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B, src._Element8_R, src._Element8_G, src._Element8_B, src._Element9_R, src._Element9_G, src._Element9_B, src._Element10_R, src._Element10_G);
             dstZ = __VECTOR16FACTORY.Create(src._Element10_B, src._Element11_R, src._Element11_G, src._Element11_B, src._Element12_R, src._Element12_G, src._Element12_B, src._Element13_R, src._Element13_G, src._Element13_B, src._Element14_R, src._Element14_G, src._Element14_B, src._Element15_R, src._Element15_G, src._Element15_B);
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGR(in __BGRx16<byte> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
@@ -1889,9 +1732,7 @@ namespace $rootnamespace$
             dstY = __VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R, (int)src._Element8_B, (int)src._Element8_G, (int)src._Element8_R, (int)src._Element9_B, (int)src._Element9_G, (int)src._Element9_R, (int)src._Element10_B, (int)src._Element10_G).ConvertToSingle();
             dstZ = __VECTOR16FACTORY.Create((int)src._Element10_R, (int)src._Element11_B, (int)src._Element11_G, (int)src._Element11_R, (int)src._Element12_B, (int)src._Element12_G, (int)src._Element12_R, (int)src._Element13_B, (int)src._Element13_G, (int)src._Element13_R, (int)src._Element14_B, (int)src._Element14_G, (int)src._Element14_R, (int)src._Element15_B, (int)src._Element15_G, (int)src._Element15_R).ConvertToSingle();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGR(in __BGRx16<float> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
@@ -1899,9 +1740,7 @@ namespace $rootnamespace$
             dstY = __VECTOR16FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R, src._Element8_B, src._Element8_G, src._Element8_R, src._Element9_B, src._Element9_G, src._Element9_R, src._Element10_B, src._Element10_G);
             dstZ = __VECTOR16FACTORY.Create(src._Element10_R, src._Element11_B, src._Element11_G, src._Element11_R, src._Element12_B, src._Element12_G, src._Element12_R, src._Element13_B, src._Element13_G, src._Element13_R, src._Element14_B, src._Element14_G, src._Element14_R, src._Element15_B, src._Element15_G, src._Element15_R);
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGB(ReadOnlySpan<__BGRx16<T>> src, Span<__VECTOR16> dst )
         {
@@ -1930,9 +1769,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGB(ReadOnlySpan<__BGRx16<T>> src, Span<__VECTOR16> dst , in __XYZ mul, in __XYZ add)
         {
@@ -1970,9 +1807,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGR(ReadOnlySpan<__BGRx16<T>> src, Span<__VECTOR16> dst )
         {
@@ -2001,9 +1836,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGR(ReadOnlySpan<__BGRx16<T>> src, Span<__VECTOR16> dst , in __XYZ mul, in __XYZ add)
         {
@@ -2041,7 +1874,6 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
         #endregion
     }
 
@@ -2066,55 +1898,42 @@ namespace $rootnamespace$
 
         #region API
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGBA(in __RGBAx2<byte> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element0_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element1_A).ConvertToSingle();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGBA(in __RGBAx2<float> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element0_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element1_A);
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGRA(in __RGBAx2<byte> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element0_A, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element1_A).ConvertToSingle();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGRA(in __RGBAx2<float> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element0_A, src._Element1_B, src._Element1_G, src._Element1_R, src._Element1_A);
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToARGB(in __RGBAx2<byte> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create((int)src._Element0_A, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B).ConvertToSingle();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToARGB(in __RGBAx2<float> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create(src._Element0_A, src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_A, src._Element1_R, src._Element1_G, src._Element1_B);
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGBA(ReadOnlySpan<__RGBAx2<T>> src, Span<__VECTOR8> dst )
         {
@@ -2143,9 +1962,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGBA(ReadOnlySpan<__RGBAx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
@@ -2179,9 +1996,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGRA(ReadOnlySpan<__RGBAx2<T>> src, Span<__VECTOR8> dst )
         {
@@ -2210,9 +2025,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGRA(ReadOnlySpan<__RGBAx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
@@ -2246,9 +2059,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToARGB(ReadOnlySpan<__RGBAx2<T>> src, Span<__VECTOR8> dst )
         {
@@ -2277,9 +2088,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToARGB(ReadOnlySpan<__RGBAx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
@@ -2313,7 +2122,6 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
         #endregion
     }
 
@@ -2342,55 +2150,42 @@ namespace $rootnamespace$
 
         #region API
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGBA(in __RGBAx4<byte> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element0_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element1_A, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element2_A, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element3_A).ConvertToSingle();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGBA(in __RGBAx4<float> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element0_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element1_A, src._Element2_R, src._Element2_G, src._Element2_B, src._Element2_A, src._Element3_R, src._Element3_G, src._Element3_B, src._Element3_A);
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGRA(in __RGBAx4<byte> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element0_A, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element1_A, (int)src._Element2_B, (int)src._Element2_G, (int)src._Element2_R, (int)src._Element2_A, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element3_A).ConvertToSingle();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGRA(in __RGBAx4<float> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element0_A, src._Element1_B, src._Element1_G, src._Element1_R, src._Element1_A, src._Element2_B, src._Element2_G, src._Element2_R, src._Element2_A, src._Element3_B, src._Element3_G, src._Element3_R, src._Element3_A);
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToARGB(in __RGBAx4<byte> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create((int)src._Element0_A, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_A, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element3_A, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B).ConvertToSingle();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToARGB(in __RGBAx4<float> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create(src._Element0_A, src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_A, src._Element2_R, src._Element2_G, src._Element2_B, src._Element3_A, src._Element3_R, src._Element3_G, src._Element3_B);
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGBA(ReadOnlySpan<__RGBAx4<T>> src, Span<__VECTOR16> dst )
         {
@@ -2419,9 +2214,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGBA(ReadOnlySpan<__RGBAx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
@@ -2455,9 +2248,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGRA(ReadOnlySpan<__RGBAx4<T>> src, Span<__VECTOR16> dst )
         {
@@ -2486,9 +2277,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGRA(ReadOnlySpan<__RGBAx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
@@ -2522,9 +2311,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToARGB(ReadOnlySpan<__RGBAx4<T>> src, Span<__VECTOR16> dst )
         {
@@ -2553,9 +2340,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToARGB(ReadOnlySpan<__RGBAx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
@@ -2589,7 +2374,6 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
         #endregion
     }
 
@@ -2634,7 +2418,6 @@ namespace $rootnamespace$
 
         #region API
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGB(in __RGBAx8<byte> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
@@ -2642,9 +2425,7 @@ namespace $rootnamespace$
             dstY = __VECTOR8FACTORY.Create((int)src._Element2_B, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element4_R, (int)src._Element4_G, (int)src._Element4_B, (int)src._Element5_R).ConvertToSingle();
             dstZ = __VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B).ConvertToSingle();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGB(in __RGBAx8<float> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
@@ -2652,9 +2433,7 @@ namespace $rootnamespace$
             dstY = __VECTOR8FACTORY.Create(src._Element2_B, src._Element3_R, src._Element3_G, src._Element3_B, src._Element4_R, src._Element4_G, src._Element4_B, src._Element5_R);
             dstZ = __VECTOR8FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B);
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGR(in __RGBAx8<byte> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
@@ -2662,9 +2441,7 @@ namespace $rootnamespace$
             dstY = __VECTOR8FACTORY.Create((int)src._Element2_R, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element4_B, (int)src._Element4_G, (int)src._Element4_R, (int)src._Element5_B).ConvertToSingle();
             dstZ = __VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R).ConvertToSingle();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGR(in __RGBAx8<float> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
@@ -2672,9 +2449,7 @@ namespace $rootnamespace$
             dstY = __VECTOR8FACTORY.Create(src._Element2_R, src._Element3_B, src._Element3_G, src._Element3_R, src._Element4_B, src._Element4_G, src._Element4_R, src._Element5_B);
             dstZ = __VECTOR8FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R);
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGB(ReadOnlySpan<__RGBAx8<T>> src, Span<__VECTOR8> dst )
         {
@@ -2703,9 +2478,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGB(ReadOnlySpan<__RGBAx8<T>> src, Span<__VECTOR8> dst , in __XYZ mul, in __XYZ add)
         {
@@ -2743,9 +2516,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGR(ReadOnlySpan<__RGBAx8<T>> src, Span<__VECTOR8> dst )
         {
@@ -2774,9 +2545,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGR(ReadOnlySpan<__RGBAx8<T>> src, Span<__VECTOR8> dst , in __XYZ mul, in __XYZ add)
         {
@@ -2814,7 +2583,6 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
         #endregion
     }
 
@@ -2891,7 +2659,6 @@ namespace $rootnamespace$
 
         #region API
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGB(in __RGBAx16<byte> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
@@ -2899,9 +2666,7 @@ namespace $rootnamespace$
             dstY = __VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B, (int)src._Element8_R, (int)src._Element8_G, (int)src._Element8_B, (int)src._Element9_R, (int)src._Element9_G, (int)src._Element9_B, (int)src._Element10_R, (int)src._Element10_G).ConvertToSingle();
             dstZ = __VECTOR16FACTORY.Create((int)src._Element10_B, (int)src._Element11_R, (int)src._Element11_G, (int)src._Element11_B, (int)src._Element12_R, (int)src._Element12_G, (int)src._Element12_B, (int)src._Element13_R, (int)src._Element13_G, (int)src._Element13_B, (int)src._Element14_R, (int)src._Element14_G, (int)src._Element14_B, (int)src._Element15_R, (int)src._Element15_G, (int)src._Element15_B).ConvertToSingle();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGB(in __RGBAx16<float> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
@@ -2909,9 +2674,7 @@ namespace $rootnamespace$
             dstY = __VECTOR16FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B, src._Element8_R, src._Element8_G, src._Element8_B, src._Element9_R, src._Element9_G, src._Element9_B, src._Element10_R, src._Element10_G);
             dstZ = __VECTOR16FACTORY.Create(src._Element10_B, src._Element11_R, src._Element11_G, src._Element11_B, src._Element12_R, src._Element12_G, src._Element12_B, src._Element13_R, src._Element13_G, src._Element13_B, src._Element14_R, src._Element14_G, src._Element14_B, src._Element15_R, src._Element15_G, src._Element15_B);
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGR(in __RGBAx16<byte> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
@@ -2919,9 +2682,7 @@ namespace $rootnamespace$
             dstY = __VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R, (int)src._Element8_B, (int)src._Element8_G, (int)src._Element8_R, (int)src._Element9_B, (int)src._Element9_G, (int)src._Element9_R, (int)src._Element10_B, (int)src._Element10_G).ConvertToSingle();
             dstZ = __VECTOR16FACTORY.Create((int)src._Element10_R, (int)src._Element11_B, (int)src._Element11_G, (int)src._Element11_R, (int)src._Element12_B, (int)src._Element12_G, (int)src._Element12_R, (int)src._Element13_B, (int)src._Element13_G, (int)src._Element13_R, (int)src._Element14_B, (int)src._Element14_G, (int)src._Element14_R, (int)src._Element15_B, (int)src._Element15_G, (int)src._Element15_R).ConvertToSingle();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGR(in __RGBAx16<float> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
@@ -2929,9 +2690,7 @@ namespace $rootnamespace$
             dstY = __VECTOR16FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R, src._Element8_B, src._Element8_G, src._Element8_R, src._Element9_B, src._Element9_G, src._Element9_R, src._Element10_B, src._Element10_G);
             dstZ = __VECTOR16FACTORY.Create(src._Element10_R, src._Element11_B, src._Element11_G, src._Element11_R, src._Element12_B, src._Element12_G, src._Element12_R, src._Element13_B, src._Element13_G, src._Element13_R, src._Element14_B, src._Element14_G, src._Element14_R, src._Element15_B, src._Element15_G, src._Element15_R);
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGB(ReadOnlySpan<__RGBAx16<T>> src, Span<__VECTOR16> dst )
         {
@@ -2960,9 +2719,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGB(ReadOnlySpan<__RGBAx16<T>> src, Span<__VECTOR16> dst , in __XYZ mul, in __XYZ add)
         {
@@ -3000,9 +2757,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGR(ReadOnlySpan<__RGBAx16<T>> src, Span<__VECTOR16> dst )
         {
@@ -3031,9 +2786,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGR(ReadOnlySpan<__RGBAx16<T>> src, Span<__VECTOR16> dst , in __XYZ mul, in __XYZ add)
         {
@@ -3071,7 +2824,6 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
         #endregion
     }
 
@@ -3096,55 +2848,42 @@ namespace $rootnamespace$
 
         #region API
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGBA(in __BGRAx2<byte> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element0_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element1_A).ConvertToSingle();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGBA(in __BGRAx2<float> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element0_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element1_A);
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGRA(in __BGRAx2<byte> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element0_A, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element1_A).ConvertToSingle();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGRA(in __BGRAx2<float> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element0_A, src._Element1_B, src._Element1_G, src._Element1_R, src._Element1_A);
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToARGB(in __BGRAx2<byte> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create((int)src._Element0_A, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B).ConvertToSingle();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToARGB(in __BGRAx2<float> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create(src._Element0_A, src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_A, src._Element1_R, src._Element1_G, src._Element1_B);
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGBA(ReadOnlySpan<__BGRAx2<T>> src, Span<__VECTOR8> dst )
         {
@@ -3173,9 +2912,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGBA(ReadOnlySpan<__BGRAx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
@@ -3209,9 +2946,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGRA(ReadOnlySpan<__BGRAx2<T>> src, Span<__VECTOR8> dst )
         {
@@ -3240,9 +2975,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGRA(ReadOnlySpan<__BGRAx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
@@ -3276,9 +3009,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToARGB(ReadOnlySpan<__BGRAx2<T>> src, Span<__VECTOR8> dst )
         {
@@ -3307,9 +3038,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToARGB(ReadOnlySpan<__BGRAx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
@@ -3343,7 +3072,6 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
         #endregion
     }
 
@@ -3372,55 +3100,42 @@ namespace $rootnamespace$
 
         #region API
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGBA(in __BGRAx4<byte> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element0_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element1_A, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element2_A, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element3_A).ConvertToSingle();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGBA(in __BGRAx4<float> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element0_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element1_A, src._Element2_R, src._Element2_G, src._Element2_B, src._Element2_A, src._Element3_R, src._Element3_G, src._Element3_B, src._Element3_A);
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGRA(in __BGRAx4<byte> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element0_A, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element1_A, (int)src._Element2_B, (int)src._Element2_G, (int)src._Element2_R, (int)src._Element2_A, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element3_A).ConvertToSingle();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGRA(in __BGRAx4<float> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element0_A, src._Element1_B, src._Element1_G, src._Element1_R, src._Element1_A, src._Element2_B, src._Element2_G, src._Element2_R, src._Element2_A, src._Element3_B, src._Element3_G, src._Element3_R, src._Element3_A);
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToARGB(in __BGRAx4<byte> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create((int)src._Element0_A, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_A, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element3_A, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B).ConvertToSingle();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToARGB(in __BGRAx4<float> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create(src._Element0_A, src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_A, src._Element2_R, src._Element2_G, src._Element2_B, src._Element3_A, src._Element3_R, src._Element3_G, src._Element3_B);
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGBA(ReadOnlySpan<__BGRAx4<T>> src, Span<__VECTOR16> dst )
         {
@@ -3449,9 +3164,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGBA(ReadOnlySpan<__BGRAx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
@@ -3485,9 +3198,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGRA(ReadOnlySpan<__BGRAx4<T>> src, Span<__VECTOR16> dst )
         {
@@ -3516,9 +3227,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGRA(ReadOnlySpan<__BGRAx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
@@ -3552,9 +3261,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToARGB(ReadOnlySpan<__BGRAx4<T>> src, Span<__VECTOR16> dst )
         {
@@ -3583,9 +3290,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToARGB(ReadOnlySpan<__BGRAx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
@@ -3619,7 +3324,6 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
         #endregion
     }
 
@@ -3664,7 +3368,6 @@ namespace $rootnamespace$
 
         #region API
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGB(in __BGRAx8<byte> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
@@ -3672,9 +3375,7 @@ namespace $rootnamespace$
             dstY = __VECTOR8FACTORY.Create((int)src._Element2_B, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element4_R, (int)src._Element4_G, (int)src._Element4_B, (int)src._Element5_R).ConvertToSingle();
             dstZ = __VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B).ConvertToSingle();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGB(in __BGRAx8<float> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
@@ -3682,9 +3383,7 @@ namespace $rootnamespace$
             dstY = __VECTOR8FACTORY.Create(src._Element2_B, src._Element3_R, src._Element3_G, src._Element3_B, src._Element4_R, src._Element4_G, src._Element4_B, src._Element5_R);
             dstZ = __VECTOR8FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B);
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGR(in __BGRAx8<byte> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
@@ -3692,9 +3391,7 @@ namespace $rootnamespace$
             dstY = __VECTOR8FACTORY.Create((int)src._Element2_R, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element4_B, (int)src._Element4_G, (int)src._Element4_R, (int)src._Element5_B).ConvertToSingle();
             dstZ = __VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R).ConvertToSingle();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGR(in __BGRAx8<float> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
@@ -3702,9 +3399,7 @@ namespace $rootnamespace$
             dstY = __VECTOR8FACTORY.Create(src._Element2_R, src._Element3_B, src._Element3_G, src._Element3_R, src._Element4_B, src._Element4_G, src._Element4_R, src._Element5_B);
             dstZ = __VECTOR8FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R);
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGB(ReadOnlySpan<__BGRAx8<T>> src, Span<__VECTOR8> dst )
         {
@@ -3733,9 +3428,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGB(ReadOnlySpan<__BGRAx8<T>> src, Span<__VECTOR8> dst , in __XYZ mul, in __XYZ add)
         {
@@ -3773,9 +3466,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGR(ReadOnlySpan<__BGRAx8<T>> src, Span<__VECTOR8> dst )
         {
@@ -3804,9 +3495,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGR(ReadOnlySpan<__BGRAx8<T>> src, Span<__VECTOR8> dst , in __XYZ mul, in __XYZ add)
         {
@@ -3844,7 +3533,6 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
         #endregion
     }
 
@@ -3921,7 +3609,6 @@ namespace $rootnamespace$
 
         #region API
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGB(in __BGRAx16<byte> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
@@ -3929,9 +3616,7 @@ namespace $rootnamespace$
             dstY = __VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B, (int)src._Element8_R, (int)src._Element8_G, (int)src._Element8_B, (int)src._Element9_R, (int)src._Element9_G, (int)src._Element9_B, (int)src._Element10_R, (int)src._Element10_G).ConvertToSingle();
             dstZ = __VECTOR16FACTORY.Create((int)src._Element10_B, (int)src._Element11_R, (int)src._Element11_G, (int)src._Element11_B, (int)src._Element12_R, (int)src._Element12_G, (int)src._Element12_B, (int)src._Element13_R, (int)src._Element13_G, (int)src._Element13_B, (int)src._Element14_R, (int)src._Element14_G, (int)src._Element14_B, (int)src._Element15_R, (int)src._Element15_G, (int)src._Element15_B).ConvertToSingle();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGB(in __BGRAx16<float> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
@@ -3939,9 +3624,7 @@ namespace $rootnamespace$
             dstY = __VECTOR16FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B, src._Element8_R, src._Element8_G, src._Element8_B, src._Element9_R, src._Element9_G, src._Element9_B, src._Element10_R, src._Element10_G);
             dstZ = __VECTOR16FACTORY.Create(src._Element10_B, src._Element11_R, src._Element11_G, src._Element11_B, src._Element12_R, src._Element12_G, src._Element12_B, src._Element13_R, src._Element13_G, src._Element13_B, src._Element14_R, src._Element14_G, src._Element14_B, src._Element15_R, src._Element15_G, src._Element15_B);
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGR(in __BGRAx16<byte> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
@@ -3949,9 +3632,7 @@ namespace $rootnamespace$
             dstY = __VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R, (int)src._Element8_B, (int)src._Element8_G, (int)src._Element8_R, (int)src._Element9_B, (int)src._Element9_G, (int)src._Element9_R, (int)src._Element10_B, (int)src._Element10_G).ConvertToSingle();
             dstZ = __VECTOR16FACTORY.Create((int)src._Element10_R, (int)src._Element11_B, (int)src._Element11_G, (int)src._Element11_R, (int)src._Element12_B, (int)src._Element12_G, (int)src._Element12_R, (int)src._Element13_B, (int)src._Element13_G, (int)src._Element13_R, (int)src._Element14_B, (int)src._Element14_G, (int)src._Element14_R, (int)src._Element15_B, (int)src._Element15_G, (int)src._Element15_R).ConvertToSingle();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGR(in __BGRAx16<float> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
@@ -3959,9 +3640,7 @@ namespace $rootnamespace$
             dstY = __VECTOR16FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R, src._Element8_B, src._Element8_G, src._Element8_R, src._Element9_B, src._Element9_G, src._Element9_R, src._Element10_B, src._Element10_G);
             dstZ = __VECTOR16FACTORY.Create(src._Element10_R, src._Element11_B, src._Element11_G, src._Element11_R, src._Element12_B, src._Element12_G, src._Element12_R, src._Element13_B, src._Element13_G, src._Element13_R, src._Element14_B, src._Element14_G, src._Element14_R, src._Element15_B, src._Element15_G, src._Element15_R);
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGB(ReadOnlySpan<__BGRAx16<T>> src, Span<__VECTOR16> dst )
         {
@@ -3990,9 +3669,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGB(ReadOnlySpan<__BGRAx16<T>> src, Span<__VECTOR16> dst , in __XYZ mul, in __XYZ add)
         {
@@ -4030,9 +3707,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGR(ReadOnlySpan<__BGRAx16<T>> src, Span<__VECTOR16> dst )
         {
@@ -4061,9 +3736,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGR(ReadOnlySpan<__BGRAx16<T>> src, Span<__VECTOR16> dst , in __XYZ mul, in __XYZ add)
         {
@@ -4101,7 +3774,6 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
         #endregion
     }
 
@@ -4126,55 +3798,42 @@ namespace $rootnamespace$
 
         #region API
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGBA(in __ARGBx2<byte> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element0_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element1_A).ConvertToSingle();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGBA(in __ARGBx2<float> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element0_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element1_A);
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGRA(in __ARGBx2<byte> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element0_A, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element1_A).ConvertToSingle();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGRA(in __ARGBx2<float> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element0_A, src._Element1_B, src._Element1_G, src._Element1_R, src._Element1_A);
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToARGB(in __ARGBx2<byte> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create((int)src._Element0_A, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B).ConvertToSingle();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToARGB(in __ARGBx2<float> src, out __VECTOR8 dst)
         {
             dst = __VECTOR8FACTORY.Create(src._Element0_A, src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_A, src._Element1_R, src._Element1_G, src._Element1_B);
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGBA(ReadOnlySpan<__ARGBx2<T>> src, Span<__VECTOR8> dst )
         {
@@ -4203,9 +3862,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGBA(ReadOnlySpan<__ARGBx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
@@ -4239,9 +3896,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGRA(ReadOnlySpan<__ARGBx2<T>> src, Span<__VECTOR8> dst )
         {
@@ -4270,9 +3925,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGRA(ReadOnlySpan<__ARGBx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
@@ -4306,9 +3959,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToARGB(ReadOnlySpan<__ARGBx2<T>> src, Span<__VECTOR8> dst )
         {
@@ -4337,9 +3988,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToARGB(ReadOnlySpan<__ARGBx2<T>> src, Span<__VECTOR8> dst , in __XYZW mul, in __XYZW add)
         {
@@ -4373,7 +4022,6 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
         #endregion
     }
 
@@ -4402,55 +4050,42 @@ namespace $rootnamespace$
 
         #region API
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGBA(in __ARGBx4<byte> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create((int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element0_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element1_A, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element2_A, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element3_A).ConvertToSingle();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGBA(in __ARGBx4<float> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create(src._Element0_R, src._Element0_G, src._Element0_B, src._Element0_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element1_A, src._Element2_R, src._Element2_G, src._Element2_B, src._Element2_A, src._Element3_R, src._Element3_G, src._Element3_B, src._Element3_A);
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGRA(in __ARGBx4<byte> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create((int)src._Element0_B, (int)src._Element0_G, (int)src._Element0_R, (int)src._Element0_A, (int)src._Element1_B, (int)src._Element1_G, (int)src._Element1_R, (int)src._Element1_A, (int)src._Element2_B, (int)src._Element2_G, (int)src._Element2_R, (int)src._Element2_A, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element3_A).ConvertToSingle();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGRA(in __ARGBx4<float> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create(src._Element0_B, src._Element0_G, src._Element0_R, src._Element0_A, src._Element1_B, src._Element1_G, src._Element1_R, src._Element1_A, src._Element2_B, src._Element2_G, src._Element2_R, src._Element2_A, src._Element3_B, src._Element3_G, src._Element3_R, src._Element3_A);
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToARGB(in __ARGBx4<byte> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create((int)src._Element0_A, (int)src._Element0_R, (int)src._Element0_G, (int)src._Element0_B, (int)src._Element1_A, (int)src._Element1_R, (int)src._Element1_G, (int)src._Element1_B, (int)src._Element2_A, (int)src._Element2_R, (int)src._Element2_G, (int)src._Element2_B, (int)src._Element3_A, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B).ConvertToSingle();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToARGB(in __ARGBx4<float> src, out __VECTOR16 dst)
         {
             dst = __VECTOR16FACTORY.Create(src._Element0_A, src._Element0_R, src._Element0_G, src._Element0_B, src._Element1_A, src._Element1_R, src._Element1_G, src._Element1_B, src._Element2_A, src._Element2_R, src._Element2_G, src._Element2_B, src._Element3_A, src._Element3_R, src._Element3_G, src._Element3_B);
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGBA(ReadOnlySpan<__ARGBx4<T>> src, Span<__VECTOR16> dst )
         {
@@ -4479,9 +4114,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGBA(ReadOnlySpan<__ARGBx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
@@ -4515,9 +4148,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGRA(ReadOnlySpan<__ARGBx4<T>> src, Span<__VECTOR16> dst )
         {
@@ -4546,9 +4177,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGRA(ReadOnlySpan<__ARGBx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
@@ -4582,9 +4211,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToARGB(ReadOnlySpan<__ARGBx4<T>> src, Span<__VECTOR16> dst )
         {
@@ -4613,9 +4240,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToARGB(ReadOnlySpan<__ARGBx4<T>> src, Span<__VECTOR16> dst , in __XYZW mul, in __XYZW add)
         {
@@ -4649,7 +4274,6 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
         #endregion
     }
 
@@ -4694,7 +4318,6 @@ namespace $rootnamespace$
 
         #region API
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGB(in __ARGBx8<byte> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
@@ -4702,9 +4325,7 @@ namespace $rootnamespace$
             dstY = __VECTOR8FACTORY.Create((int)src._Element2_B, (int)src._Element3_R, (int)src._Element3_G, (int)src._Element3_B, (int)src._Element4_R, (int)src._Element4_G, (int)src._Element4_B, (int)src._Element5_R).ConvertToSingle();
             dstZ = __VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B).ConvertToSingle();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGB(in __ARGBx8<float> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
@@ -4712,9 +4333,7 @@ namespace $rootnamespace$
             dstY = __VECTOR8FACTORY.Create(src._Element2_B, src._Element3_R, src._Element3_G, src._Element3_B, src._Element4_R, src._Element4_G, src._Element4_B, src._Element5_R);
             dstZ = __VECTOR8FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B);
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGR(in __ARGBx8<byte> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
@@ -4722,9 +4341,7 @@ namespace $rootnamespace$
             dstY = __VECTOR8FACTORY.Create((int)src._Element2_R, (int)src._Element3_B, (int)src._Element3_G, (int)src._Element3_R, (int)src._Element4_B, (int)src._Element4_G, (int)src._Element4_R, (int)src._Element5_B).ConvertToSingle();
             dstZ = __VECTOR8FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R).ConvertToSingle();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGR(in __ARGBx8<float> src, out __VECTOR8 dstX, out __VECTOR8 dstY, out __VECTOR8 dstZ)
         {
@@ -4732,9 +4349,7 @@ namespace $rootnamespace$
             dstY = __VECTOR8FACTORY.Create(src._Element2_R, src._Element3_B, src._Element3_G, src._Element3_R, src._Element4_B, src._Element4_G, src._Element4_R, src._Element5_B);
             dstZ = __VECTOR8FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R);
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGB(ReadOnlySpan<__ARGBx8<T>> src, Span<__VECTOR8> dst )
         {
@@ -4763,9 +4378,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGB(ReadOnlySpan<__ARGBx8<T>> src, Span<__VECTOR8> dst , in __XYZ mul, in __XYZ add)
         {
@@ -4803,9 +4416,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET6_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGR(ReadOnlySpan<__ARGBx8<T>> src, Span<__VECTOR8> dst )
         {
@@ -4834,9 +4445,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGR(ReadOnlySpan<__ARGBx8<T>> src, Span<__VECTOR8> dst , in __XYZ mul, in __XYZ add)
         {
@@ -4874,7 +4483,6 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
         #endregion
     }
 
@@ -4951,7 +4559,6 @@ namespace $rootnamespace$
 
         #region API
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGB(in __ARGBx16<byte> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
@@ -4959,9 +4566,7 @@ namespace $rootnamespace$
             dstY = __VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_B, (int)src._Element6_R, (int)src._Element6_G, (int)src._Element6_B, (int)src._Element7_R, (int)src._Element7_G, (int)src._Element7_B, (int)src._Element8_R, (int)src._Element8_G, (int)src._Element8_B, (int)src._Element9_R, (int)src._Element9_G, (int)src._Element9_B, (int)src._Element10_R, (int)src._Element10_G).ConvertToSingle();
             dstZ = __VECTOR16FACTORY.Create((int)src._Element10_B, (int)src._Element11_R, (int)src._Element11_G, (int)src._Element11_B, (int)src._Element12_R, (int)src._Element12_G, (int)src._Element12_B, (int)src._Element13_R, (int)src._Element13_G, (int)src._Element13_B, (int)src._Element14_R, (int)src._Element14_G, (int)src._Element14_B, (int)src._Element15_R, (int)src._Element15_G, (int)src._Element15_B).ConvertToSingle();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToRGB(in __ARGBx16<float> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
@@ -4969,9 +4574,7 @@ namespace $rootnamespace$
             dstY = __VECTOR16FACTORY.Create(src._Element5_G, src._Element5_B, src._Element6_R, src._Element6_G, src._Element6_B, src._Element7_R, src._Element7_G, src._Element7_B, src._Element8_R, src._Element8_G, src._Element8_B, src._Element9_R, src._Element9_G, src._Element9_B, src._Element10_R, src._Element10_G);
             dstZ = __VECTOR16FACTORY.Create(src._Element10_B, src._Element11_R, src._Element11_G, src._Element11_B, src._Element12_R, src._Element12_G, src._Element12_B, src._Element13_R, src._Element13_G, src._Element13_B, src._Element14_R, src._Element14_G, src._Element14_B, src._Element15_R, src._Element15_G, src._Element15_B);
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGR(in __ARGBx16<byte> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
@@ -4979,9 +4582,7 @@ namespace $rootnamespace$
             dstY = __VECTOR16FACTORY.Create((int)src._Element5_G, (int)src._Element5_R, (int)src._Element6_B, (int)src._Element6_G, (int)src._Element6_R, (int)src._Element7_B, (int)src._Element7_G, (int)src._Element7_R, (int)src._Element8_B, (int)src._Element8_G, (int)src._Element8_R, (int)src._Element9_B, (int)src._Element9_G, (int)src._Element9_R, (int)src._Element10_B, (int)src._Element10_G).ConvertToSingle();
             dstZ = __VECTOR16FACTORY.Create((int)src._Element10_R, (int)src._Element11_B, (int)src._Element11_G, (int)src._Element11_R, (int)src._Element12_B, (int)src._Element12_G, (int)src._Element12_R, (int)src._Element13_B, (int)src._Element13_G, (int)src._Element13_R, (int)src._Element14_B, (int)src._Element14_G, (int)src._Element14_R, (int)src._Element15_B, (int)src._Element15_G, (int)src._Element15_R).ConvertToSingle();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         private static void _ConvertToBGR(in __ARGBx16<float> src, out __VECTOR16 dstX, out __VECTOR16 dstY, out __VECTOR16 dstZ)
         {
@@ -4989,9 +4590,7 @@ namespace $rootnamespace$
             dstY = __VECTOR16FACTORY.Create(src._Element5_G, src._Element5_R, src._Element6_B, src._Element6_G, src._Element6_R, src._Element7_B, src._Element7_G, src._Element7_R, src._Element8_B, src._Element8_G, src._Element8_R, src._Element9_B, src._Element9_G, src._Element9_R, src._Element10_B, src._Element10_G);
             dstZ = __VECTOR16FACTORY.Create(src._Element10_R, src._Element11_B, src._Element11_G, src._Element11_R, src._Element12_B, src._Element12_G, src._Element12_R, src._Element13_B, src._Element13_G, src._Element13_R, src._Element14_B, src._Element14_G, src._Element14_R, src._Element15_B, src._Element15_G, src._Element15_R);
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGB(ReadOnlySpan<__ARGBx16<T>> src, Span<__VECTOR16> dst )
         {
@@ -5020,9 +4619,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToRGB(ReadOnlySpan<__ARGBx16<T>> src, Span<__VECTOR16> dst , in __XYZ mul, in __XYZ add)
         {
@@ -5060,9 +4657,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGR(ReadOnlySpan<__ARGBx16<T>> src, Span<__VECTOR16> dst )
         {
@@ -5091,9 +4686,7 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
 
-        #if NET8_0_OR_GREATER
         [MethodImpl(AGRESSIVE)]
         public static void CopyToBGR(ReadOnlySpan<__ARGBx16<T>> src, Span<__VECTOR16> dst , in __XYZ mul, in __XYZ add)
         {
@@ -5131,7 +4724,6 @@ namespace $rootnamespace$
             }
             throw new NotImplementedException();
         }
-        #endif
         #endregion
     }
 
@@ -5147,7 +4739,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -5169,7 +4760,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -5190,7 +4780,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -5212,7 +4801,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -5235,7 +4823,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -5257,7 +4844,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -5278,7 +4864,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -5300,7 +4885,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -5323,7 +4907,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -5345,7 +4928,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -5366,7 +4948,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -5388,7 +4969,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -5411,7 +4991,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -5433,7 +5012,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -5454,7 +5032,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -5476,7 +5053,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -5499,7 +5075,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -5521,7 +5096,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -5543,7 +5117,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -5565,7 +5138,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -5589,7 +5161,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -5611,7 +5182,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -5633,7 +5203,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -5655,7 +5224,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -5679,7 +5247,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -5701,7 +5268,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -5723,7 +5289,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -5745,7 +5310,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -5769,7 +5333,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -5791,7 +5354,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -5813,7 +5375,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -5835,7 +5396,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -5859,7 +5419,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -5881,7 +5440,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -5903,7 +5461,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -5925,7 +5482,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -5949,7 +5505,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -5971,7 +5526,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -5993,7 +5547,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -6015,7 +5568,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -6039,7 +5591,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -6061,7 +5612,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -6082,7 +5632,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -6104,7 +5653,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -6127,7 +5675,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -6149,7 +5696,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -6170,7 +5716,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -6192,7 +5737,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -6215,7 +5759,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -6237,7 +5780,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -6258,7 +5800,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -6280,7 +5821,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -6303,7 +5843,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -6325,7 +5864,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -6346,7 +5884,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -6368,7 +5905,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -6391,7 +5927,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -6413,7 +5948,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -6435,7 +5969,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -6457,7 +5990,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -6481,7 +6013,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -6503,7 +6034,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -6525,7 +6055,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -6547,7 +6076,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -6571,7 +6099,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -6593,7 +6120,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -6615,7 +6141,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -6637,7 +6162,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -6661,7 +6185,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -6683,7 +6206,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -6705,7 +6227,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -6727,7 +6248,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -6751,7 +6271,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -6773,7 +6292,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -6795,7 +6313,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -6817,7 +6334,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -6841,7 +6357,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -6863,7 +6378,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -6885,7 +6399,6 @@ namespace $rootnamespace$
         if (src.Length % 3 != 0) throw new ArgumentException("length is not multiple of 3", nameof(src));
         if (src.Length > dst.Length * 3) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -6907,7 +6420,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 3)
@@ -6931,7 +6443,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -6953,7 +6464,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -6974,7 +6484,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -6996,7 +6505,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -7019,7 +6527,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -7041,7 +6548,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -7062,7 +6568,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -7084,7 +6589,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -7107,7 +6611,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -7129,7 +6632,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -7150,7 +6652,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -7172,7 +6673,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -7195,7 +6695,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -7217,7 +6716,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -7238,7 +6736,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -7260,7 +6757,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -7283,7 +6779,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -7305,7 +6800,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -7327,7 +6821,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -7349,7 +6842,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -7373,7 +6865,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -7395,7 +6886,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -7417,7 +6907,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -7439,7 +6928,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -7463,7 +6951,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -7485,7 +6972,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -7507,7 +6993,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -7529,7 +7014,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -7553,7 +7037,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -7575,7 +7058,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -7597,7 +7079,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -7619,7 +7100,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -7643,7 +7123,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -7665,7 +7144,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -7687,7 +7165,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -7709,7 +7186,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -7733,7 +7209,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -7755,7 +7230,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -7777,7 +7251,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -7799,7 +7272,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -7823,7 +7295,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -7845,7 +7316,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -7866,7 +7336,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -7888,7 +7357,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -7911,7 +7379,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -7933,7 +7400,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -7954,7 +7420,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -7976,7 +7441,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -7999,7 +7463,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -8021,7 +7484,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -8042,7 +7504,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -8064,7 +7525,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -8087,7 +7547,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -8109,7 +7568,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -8130,7 +7588,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -8152,7 +7609,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -8175,7 +7631,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -8197,7 +7652,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -8219,7 +7673,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -8241,7 +7694,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -8265,7 +7717,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -8287,7 +7738,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -8309,7 +7759,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -8331,7 +7780,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -8355,7 +7803,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -8377,7 +7824,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -8399,7 +7845,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -8421,7 +7866,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -8445,7 +7889,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -8467,7 +7910,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -8489,7 +7931,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -8511,7 +7952,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -8535,7 +7975,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -8557,7 +7996,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -8579,7 +8017,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -8601,7 +8038,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -8625,7 +8061,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -8647,7 +8082,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -8669,7 +8103,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -8691,7 +8124,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -8715,7 +8147,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -8737,7 +8168,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -8758,7 +8188,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -8780,7 +8209,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -8803,7 +8231,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -8825,7 +8252,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -8846,7 +8272,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -8868,7 +8293,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -8891,7 +8315,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -8913,7 +8336,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -8934,7 +8356,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -8956,7 +8377,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -8979,7 +8399,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -9001,7 +8420,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -9022,7 +8440,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -9044,7 +8461,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -9067,7 +8483,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -9089,7 +8504,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -9111,7 +8525,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -9133,7 +8546,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -9157,7 +8569,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -9179,7 +8590,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -9201,7 +8611,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -9223,7 +8632,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -9247,7 +8655,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -9269,7 +8676,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -9291,7 +8697,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -9313,7 +8718,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -9337,7 +8741,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -9359,7 +8762,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -9381,7 +8783,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -9403,7 +8804,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -9427,7 +8827,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -9449,7 +8848,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -9471,7 +8869,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -9493,7 +8890,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -9517,7 +8913,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -9539,7 +8934,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
@@ -9561,7 +8955,6 @@ namespace $rootnamespace$
         if (src.Length % 4 != 0) throw new ArgumentException("length is not multiple of 4", nameof(src));
         if (src.Length > dst.Length * 4) throw new ArgumentOutOfRangeException(nameof(src));
 
-        #if NET8_0_OR_GREATER
         if (false) {}
         else if (Vector512.IsHardwareAccelerated)
         {
@@ -9583,7 +8976,6 @@ namespace $rootnamespace$
             dst = dst.Slice(len);
         }
 
-        #endif
         // fallback
         {
             while(src.Length >= 4)
