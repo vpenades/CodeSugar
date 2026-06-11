@@ -21,6 +21,9 @@ echo "package version: $PACKAGEVERSION";
 
 # build
 
+# stop on first error
+set -e
+
 dotnet tool restore
 dotnet restore
 
