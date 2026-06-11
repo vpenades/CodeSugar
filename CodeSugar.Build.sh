@@ -1,5 +1,8 @@
 # this script can be run directly or from the github actions.
 
+# stop on first error
+set -e
+
 # set input or default
 
 DEFAULTPACKAGEVERSION="1.0.0-Test-DATE-TIME"
