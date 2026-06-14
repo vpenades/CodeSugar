@@ -36,17 +36,15 @@ namespace $rootnamespace$
         #region wrappers
 
         [return: NotNull]
-        public static __XINFO ToIFileInfo(this __XDIRECTORY dir, string name)
+        public static __XINFO ToIFileInfo(this __XDIRECTORY dir, string fallbackName)
         {
             switch (dir)
             {
-                case null: return new NotFoundFileInfo(name);
-                case __XINFO xinfo:
-                    if (!string.IsNullOrWhiteSpace(name) && name != xinfo.Name) throw new ArgumentException($"Name mismatch. Expected {xinfo.Name} but was {name}");
-                    return xinfo;
+                case null: return new NotFoundFileInfo(fallbackName);
+                case __XINFO xinfo: return xinfo;
                 default:
-                    if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
-                    return new _DirectoryFile(name, dir);
+                    if (string.IsNullOrWhiteSpace(fallbackName)) throw new ArgumentNullException(nameof(fallbackName));
+                    return new _DirectoryFile(fallbackName, dir);
             }
         }
 
@@ -175,6 +173,7 @@ namespace $rootnamespace$
             public bool IsDirectory => false;
         }
 
+        [System.Diagnostics.DebuggerDisplay("_DirectoryFile {Name,nq}")]
         private sealed class _DirectoryFile : __XINFO, __XDIRECTORY
         {
             #region lifecycle
@@ -197,9 +196,9 @@ namespace $rootnamespace$
 
             public bool Exists => true;
 
-            public long Length => -1;
+            long __XINFO.Length => -1;
 
-            public string PhysicalPath => null;
+            string __XINFO.PhysicalPath => null;
 
             public string Name { get; }
 
@@ -221,7 +220,7 @@ namespace $rootnamespace$
                 return _Source.GetEnumerator();
             }
 
-            public Stream CreateReadStream()
+            Stream __XINFO.CreateReadStream()
             {
                 throw new NotSupportedException();
             }

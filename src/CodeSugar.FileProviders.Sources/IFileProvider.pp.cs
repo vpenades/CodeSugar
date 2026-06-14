@@ -66,16 +66,26 @@ namespace $rootnamespace$
 
         private static readonly NullFileProvider _NullFileProvider = new NullFileProvider();
 
+        [System.Diagnostics.DebuggerDisplay("{_Dir}")]
         private sealed class _FileProviderOverDirectoryContents : __XPROVIDER
         {
+            #region lifecycle
             public _FileProviderOverDirectoryContents(__XDIRECTORY dir, __MATCHCASING casing)
             {
                 _Dir = dir;
                 _Casing = casing;
             }
 
+            #endregion
+
+            #region data
+
             private readonly __XDIRECTORY _Dir;
-            private readonly __MATCHCASING _Casing;            
+            private readonly __MATCHCASING _Casing;
+
+            #endregion
+
+            #region API
 
             public __XINFO GetFileInfo(string subpath)
             {
@@ -86,12 +96,9 @@ namespace $rootnamespace$
 
             public __XDIRECTORY GetDirectoryContents(string subpath)
             {
-                var parts = subpath.Replace('\\', '/').Split('/');
+                subpath ??= string.Empty;
 
-                if (parts.Length == 0 || (parts.Length == 1 && string.IsNullOrEmpty(parts[0])))
-                {
-                    return _Dir;
-                }
+                var parts = subpath.Replace('\\', '/').Split('/');                
 
                 return _Dir.FindEntry(_Casing, subpath) is __XDIRECTORY xdir
                     ? xdir
@@ -102,6 +109,8 @@ namespace $rootnamespace$
             {
                 return NullChangeToken.Singleton;
             }
+
+            #endregion
         }
 
         #endregion

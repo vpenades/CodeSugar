@@ -78,7 +78,7 @@ namespace $rootnamespace$
         #region nested types        
 
         /// <summary>
-        /// Represents a simple grouping of a collection of <see cref="__XINFO"/> entries
+        /// Represents a flat grouping of a collection of <see cref="__XINFO"/> entries
         /// </summary>
         /// <remarks>
         /// The elements listed by this collection do not neccesarily require to be children of the same logical parent.
@@ -233,7 +233,9 @@ namespace $rootnamespace$
         /// </summary>
         /// <typeparam name="T"></typeparam>
         [System.Diagnostics.DebuggerDisplay("{Name,nq}/")]
-        private sealed class _WrappedDirectoryCollectionSlice<T> : _DirectoryCollectionSlice<T>
+        private sealed class _WrappedDirectoryCollectionSlice<T>
+            : _DirectoryCollectionSlice<T>
+            , IGrouping<__XINFO,__XINFO>
             where T : __XINFO
         {
             #region lifecycle            
@@ -254,7 +256,12 @@ namespace $rootnamespace$
 
             #endregion
 
-            #region properties            
+            #region properties
+
+            /// <summary>
+            /// Parent
+            /// </summary>
+            __XINFO IGrouping<__XINFO, __XINFO>.Key => _DirInfo;
 
             public override string PhysicalPath => _DirInfo.PhysicalPath;
 

@@ -39,6 +39,7 @@ namespace CodeSugar
             Assert.That(slicer.Filter(new[] { "dir/x", "dir/y"}).All(item => item.isDirectory==false));
             Assert.That(slicer.Filter(new[] { "dir/x/" }).Single().isDirectory == true);
         }
+        
 
         [Test]
         public void TestMicrosoftPhysicalFileProvider()
@@ -77,21 +78,23 @@ namespace CodeSugar
             Assert.That(childDir.Count(), Is.EqualTo(1));
             Assert.That(childDir.First().Name, Is.EqualTo("def.txt"));
 
-
-
             var provider = rootDir.ToIFileProvider(MatchCasing.CaseSensitive);
 
-            var f1 = provider.GetFileInfo("abc.txt");
-            Assert.That(f1, Is.Not.Null);
+            var f1 = provider.GetFileInfo("abc.txt");            
+            Assert.That(f1.Exists);
 
-            var f2 = provider.GetFileInfo("dir","def.txt");
-            Assert.That(f2, Is.Not.Null);
+            var f2 = provider.GetFileInfo("dir","def.txt");            
+            Assert.That(f2.Exists);
 
             var c1 = provider.GetDirectoryContents(string.Empty);
             Assert.That(c1.Count(), Is.EqualTo(2));
 
             var c2 = provider.GetDirectoryContents("dir");
-            Assert.That(c2.Count(), Is.EqualTo(1));
+            Assert.That(c2.Select(item => item.Name), Is.EquivalentTo(new[] { "def.txt" }));
+
+            var subPrivider = c2.ToIFileProvider(MatchCasing.CaseSensitive);
+            var c3 = subPrivider.GetDirectoryContents(string.Empty);
+            Assert.That(c3.Select(item => item.Name), Is.EquivalentTo(new[] { "def.txt" }));
         }
 
         private static System.IO.DirectoryInfo _CreateMockup1()

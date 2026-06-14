@@ -77,12 +77,7 @@ namespace $rootnamespace$
             // when path is empty, return a best effort to get an self xfile
             if (path.Length == 0 || (path.Length == 1 && string.IsNullOrEmpty(path[0])))
             {
-                var entry = xdir as __XINFO;
-
-                return entry != null
-                    ? entry
-                    // TODO: it it can't be cast back, we might want to wrap a IDirectoryContents as an IFileInfo
-                    : new Microsoft.Extensions.FileProviders.NotFoundFileInfo(path[path.Length - 1]);
+                return xdir.ToIFileInfo("🗀");
             }
 
             for (int i = 0; i < path.Length; ++i)
