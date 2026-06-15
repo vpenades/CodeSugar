@@ -172,13 +172,14 @@ namespace $rootnamespace$
             public virtual object GetService(Type serviceType)
             {
                 if (serviceType == typeof(System.IO.MatchCasing)) return System.IO.MatchCasing.CaseSensitive;
+                if (serviceType == typeof(StringComparison)) return StringComparison.Ordinal;
                 return null;
             }
 
             #endregion
         }
 
-        [System.Diagnostics.DebuggerDisplay("🗎 {Name}")]
+        [System.Diagnostics.DebuggerDisplay("🗎 {Name,nq}")]
         sealed class _AndroidAssetFile : _AndroidAsset, __XINFO
         {
             #region lifecycle
@@ -237,8 +238,11 @@ namespace $rootnamespace$
             #endregion
         }
 
-        [System.Diagnostics.DebuggerDisplay("📁 {Name}")]
-        sealed class _AndroidAssetDirectory : _AndroidAsset, __XINFO, __XDIRECTORY
+        [System.Diagnostics.DebuggerDisplay("📁 {Name,nq}")]
+        sealed class _AndroidAssetDirectory : _AndroidAsset
+            , __XINFO
+            , __XDIRECTORY
+            , IGrouping<__XINFO,__XINFO>
         {
             #region lifecycle
 
@@ -259,6 +263,9 @@ namespace $rootnamespace$
             #endregion
 
             #region properties
+
+            __XINFO IGrouping<__XINFO, __XINFO>.Key => this;
+
             public long Length => -1;
             public DateTimeOffset LastModified { get; } = DateTimeOffset.Now.Date;
             public bool IsDirectory => true;

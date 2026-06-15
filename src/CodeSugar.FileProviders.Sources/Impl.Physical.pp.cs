@@ -31,14 +31,14 @@ namespace $rootnamespace$
         #region API        
 
         [return: NotNull]
-        public static __XINFO ToIFileInfo(this System.IO.FileSystemInfo xinfo)
+        public static __XINFO ToIFileInfo<T>(this T xinfo) where T: System.IO.FileSystemInfo
         {
             switch (xinfo)
             {
                 case null: return __NULLFILE;
                 case __DINFO d: return new _BasicPhysicalDirectory(d);
                 case __FINFO f: return new _BasicPhysicalFile(f);                
-                default: throw new NotImplementedException();
+                default: throw new NotImplementedException(typeof(T).Name);
             }
         }
 
@@ -58,7 +58,7 @@ namespace $rootnamespace$
                 : new _BasicPhysicalDirectory(dinfo);
         }
 
-        public static bool TryGetFileInfo(this __XINFO xinfo, out __FINFO finfo)
+        public static bool TryGetFileInfo(this __XINFO xinfo, [NotNullWhen(true)] out __FINFO finfo)
         {
             finfo = null;
             if (xinfo == null) return false;
@@ -83,7 +83,7 @@ namespace $rootnamespace$
             catch { return false; }
         }
 
-        public static bool TryGetDirectoryInfo(this __XINFO xinfo, out __DINFO dinfo)
+        public static bool TryGetDirectoryInfo(this __XINFO xinfo, [NotNullWhen(true)] out __DINFO dinfo)
         {
             dinfo = null;
             if (xinfo == null) return false;
@@ -113,7 +113,10 @@ namespace $rootnamespace$
         #region nested types
 
         [System.Diagnostics.DebuggerDisplay("{PhysicalPath}")]
-        private readonly struct _BasicPhysicalFile : __XINFO , IServiceProvider, IEquatable<_BasicPhysicalFile>
+        private readonly struct _BasicPhysicalFile :
+            __XINFO,
+            IServiceProvider,
+            IEquatable<_BasicPhysicalFile>
         {
             #region constructor
             public _BasicPhysicalFile(__FINFO finfo) { Info = finfo; }
@@ -142,12 +145,13 @@ namespace $rootnamespace$
 
             public override int GetHashCode()
             {
-                return HashCode.Combine(Info);
+                return Info.FullName.GetHashCode(FileSystemPathComparison);
             }
 
             public override bool Equals(object obj)
             {
-                // we check equality only against self so we don't replace this by other object types in a hashset or dictionary
+                // we check equality only against self so we don't replace this by other
+                // object types with LESS functionality in HashSets and Dictionaries.
 
                 return obj is _BasicPhysicalFile other && Equals(other);
             }
@@ -167,7 +171,8 @@ namespace $rootnamespace$
             {
                 if (serviceType == typeof(__FINFO)) return Info;
                 if (serviceType == typeof(__MATCHCASING)) return FileSystemPathCasing;
-                if (serviceType == typeof(StringComparison)) return FileSystemPathComparison;                
+                if (serviceType == typeof(StringComparison)) return FileSystemPathComparison;
+
                 if (serviceType == typeof(Action<ArraySegment<Byte>>)) return (Action<ArraySegment<Byte>>) _WriteBytes;
 
                 return null;
@@ -185,7 +190,13 @@ namespace $rootnamespace$
         }
 
         [System.Diagnostics.DebuggerDisplay("{PhysicalPath}")]
-        private readonly struct _BasicPhysicalDirectory : __XINFO, IDirectoryContents , IServiceProvider, IEquatable<_BasicPhysicalDirectory>
+        private readonly struct _BasicPhysicalDirectory :
+            __XINFO,
+            IDirectoryContents,
+            IServiceProvider,
+            IEquatable<_BasicPhysicalDirectory>,
+            IGrouping<__DINFO, __XINFO>,
+            IGrouping<__XINFO, __XINFO>
         {
             #region constructor
 
@@ -196,6 +207,8 @@ namespace $rootnamespace$
             #region properties
 
             public __DINFO Info { get; }
+            __DINFO IGrouping<__DINFO, __XINFO>.Key => this.Info;
+            __XINFO IGrouping<__XINFO, __XINFO>.Key => this;
 
             public bool Exists => Info?.Exists ?? false;
 
@@ -215,12 +228,13 @@ namespace $rootnamespace$
 
             public override int GetHashCode()
             {
-                return HashCode.Combine(Info);
+                return Info.FullName.GetHashCode(FileSystemPathComparison);
             }
 
             public override bool Equals(object obj)
             {
-                // we check equality only against self so we don't replace this by other object types in a hashset or dictionary
+                // we check equality only against self so we don't replace this by other
+                // object types with LESS functionality in HashSets and Dictionaries.
 
                 return obj is _BasicPhysicalDirectory other && Equals(other);
             }
@@ -246,68 +260,7 @@ namespace $rootnamespace$
 
             public object GetService(Type serviceType)
             {
-                if (serviceType == typeof(__MATCHCASING)) return FileSystemPathComparison;
-                if (serviceType == typeof(__DINFO)) return Info;
-
-                return null;
-            }
-
-            #endregion
-        }
-
-        [System.Diagnostics.DebuggerDisplay("{Info.FullPath}")]
-        private readonly struct _BasicPhysicalDirectoryContents : IDirectoryContents, IServiceProvider, IEquatable<_BasicPhysicalDirectoryContents>
-        {
-            #region constructor
-
-            public _BasicPhysicalDirectoryContents(__DINFO dinfo) { Info = dinfo; }
-
-            #endregion
-
-            #region properties
-
-            public __DINFO Info { get; }
-
-            public bool Exists => Info?.Exists ?? false;
-
-            #endregion
-
-            #region equality
-
-            public override int GetHashCode()
-            {
-                return HashCode.Combine(Info);
-            }
-
-            public override bool Equals(object obj)
-            {
-                // we check equality only against self so we don't replace this by other object types in a hashset or dictionary
-
-                return obj is _BasicPhysicalDirectoryContents other && Equals(other);
-            }
-
-            public bool Equals(_BasicPhysicalDirectoryContents other)
-            {
-                return this.Info == other.Info;
-            }
-
-            #endregion
-
-            #region API
-
-            public Stream CreateReadStream() { throw new NotSupportedException(); }
-            IEnumerator IEnumerable.GetEnumerator() { return this.GetEnumerator(); }
-            public IEnumerator<__XINFO> GetEnumerator()
-            {
-                return Info
-                    .EnumerateFileSystemInfos()
-                    .Select(ToIFileInfo)
-                    .GetEnumerator();
-            }
-
-            public object GetService(Type serviceType)
-            {
-                if (serviceType == typeof(__MATCHCASING)) return FileSystemPathCasing;
+                if (serviceType == typeof(__MATCHCASING))    return FileSystemPathCasing;
                 if (serviceType == typeof(StringComparison)) return FileSystemPathComparison;
                 if (serviceType == typeof(__DINFO)) return Info;
 
@@ -315,7 +268,7 @@ namespace $rootnamespace$
             }
 
             #endregion
-        }
+        }        
 
         #endregion
     }

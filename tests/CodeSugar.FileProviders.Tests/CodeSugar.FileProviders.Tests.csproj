@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>CodeSugar</RootNamespace>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PublishAot>true</PublishAot>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CodeSugar.Sys.IO.Sources" Version="1.0.0-Prv-20251216" />
+    <PackageReference Include="TUnit" Version="1.55.2" />
+    <PackageReference Include="TestAttachments.TUnit" Version="4.0.0-Preview-20260129-1218" />
+  </ItemGroup>
+
+  <ItemGroup>    
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="10.0.8" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="10.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\CodeSugar.Sys.IO.Sources\CodeSugar.Sys.IO.csproj" />
+    <ProjectReference Include="..\..\src\CodeSugar.FileProviders.SourceGenerator\CodeSugar.FileProviders.SourceGenerator.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false"/>
+  </ItemGroup>  
+
+</Project>

@@ -75,6 +75,66 @@ namespace $rootnamespace$
 
         #endregion
 
+        #region creation functions
+        
+        public static bool TryCreateFile([NotNull] this __XDIRECTORY xdir, string fileName, [NotNullWhen(true)] out __XINFO xinfo)
+        {
+            GuardNotNull(xdir);
+
+            if (TryGetPhysicalPath(xdir, out var physicalPath))
+            {
+                var path = System.IO.Path.Combine(physicalPath, fileName);
+                var finfo = new FileInfo(path);
+                xinfo = new _BasicPhysicalFile(finfo);
+                return true;
+            }
+            
+            xinfo = null;
+            return false;            
+        }
+
+        public static bool TryCreateDirectory([NotNull] this __XDIRECTORY xdir, string fileName, [NotNullWhen(true)] out __XINFO xinfo)
+        {
+            GuardNotNull(xdir);
+
+            if (TryGetPhysicalPath(xdir, out var physicalPath))
+            {
+                var path = System.IO.Path.Combine(physicalPath, fileName);
+                var dinfo = new DirectoryInfo(path);
+                xinfo = new _BasicPhysicalDirectory(dinfo);
+                return true;
+            }
+
+            xinfo = null;
+            return false;
+        }
+
+        public static bool TryGetPhysicalPath([NotNull] this __XDIRECTORY xdir, [NotNullWhen(true)] out string physicalPath)
+        {
+            GuardNotNull(xdir);
+
+            physicalPath = null;
+
+            if (xdir is IGrouping<__XINFO, __XINFO> grouping)
+            {
+                physicalPath ??= grouping.Key.PhysicalPath;
+            }
+
+            if (xdir is _BasicPhysicalDirectory internalPhysicalDir)
+            {
+                physicalPath ??= internalPhysicalDir.Info.FullName;
+            }
+
+            if (xdir is __XINFO xinfo)
+            {
+                physicalPath ??= xinfo.PhysicalPath;
+            }
+
+            return !string.IsNullOrWhiteSpace(physicalPath);
+        }
+
+        #endregion
+
         #region nested types        
 
         /// <summary>
@@ -144,7 +204,7 @@ namespace $rootnamespace$
 
             #region data
 
-            [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.RootHidden)]
+            [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Collapsed)]
             private readonly IEnumerable<T> _Entries;
 
             [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]

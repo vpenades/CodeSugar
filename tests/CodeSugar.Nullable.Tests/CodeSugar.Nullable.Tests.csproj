@@ -13,6 +13,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="10.0.8" />
+    <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.1" />
+    <PackageReference Include="System.CommandLine" Version="2.0.8" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.3.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="5.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="TestAttachments.NUnit" Version="4.0.0-Preview-20260129-1218" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.6.0" />
+    <PackageReference Include="NUnit" Version="4.6.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="6.2.0" />
+    <PackageReference Include="NUnit.Analyzers" Version="4.14.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="10.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="..\CodeSugar.Tests\FileProvidersTests.cs" Link="FileProvidersTests.cs" />
     <Compile Include="..\CodeSugar.Tests\LinqTests.cs" Link="LinqTests.cs" />
     <Compile Include="..\CodeSugar.Tests\LoggingTests.cs" Link="LoggingTests.cs" />
@@ -41,17 +64,8 @@
     <ProjectReference Include="..\..\src\CodeSugar.Sys.Sources\CodeSugar.Sys.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Sys.Text.Sources\CodeSugar.Sys.Text.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Tensors.Sources\CodeSugar.Tensors.csproj" />
-  </ItemGroup>  
+  </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Update="coverlet.collector" Version="10.0.1" />
-    <PackageReference Update="Microsoft.CodeAnalysis.CSharp" Version="5.3.0" />
-    <PackageReference Update="Microsoft.Extensions.FileProviders.Physical" Version="10.0.8" />
-    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="18.6.0" />
-    <PackageReference Update="NUnit" Version="4.6.1" />
-    <PackageReference Update="NUnit.Analyzers" Version="4.14.0" />
-    <PackageReference Update="NUnit3TestAdapter" Version="6.2.0" />
-    <PackageReference Update="System.CommandLine" Version="2.0.8" />
-  </ItemGroup>    
+  
 
 </Project>

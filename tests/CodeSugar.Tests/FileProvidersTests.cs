@@ -37,7 +37,7 @@ namespace CodeSugar
 
             Assert.That(slicer.Filter(new[] { "dir/x", "dir/y" }).Count() == 2);
             Assert.That(slicer.Filter(new[] { "dir/x", "dir/y"}).All(item => item.isDirectory==false));
-            Assert.That(slicer.Filter(new[] { "dir/x/" }).Single().isDirectory == true);
+            Assert.That(slicer.Filter(new[] { "dir/x/" }).Single().isDirectory == true);            
         }
         
 
@@ -92,10 +92,15 @@ namespace CodeSugar
             var c2 = provider.GetDirectoryContents("dir");
             Assert.That(c2.Select(item => item.Name), Is.EquivalentTo(new[] { "def.txt" }));
 
+            var c2x = c1.FindEntry(MatchCasing.CaseSensitive, "dir").GetDirectoryContents();
+            Assert.That(c2x.Select(item => item.Name), Is.EquivalentTo(new[] { "def.txt" }));
+
             var subPrivider = c2.ToIFileProvider(MatchCasing.CaseSensitive);
             var c3 = subPrivider.GetDirectoryContents(string.Empty);
             Assert.That(c3.Select(item => item.Name), Is.EquivalentTo(new[] { "def.txt" }));
-        }
+
+            
+        }        
 
         private static System.IO.DirectoryInfo _CreateMockup1()
         {
@@ -127,8 +132,8 @@ namespace CodeSugar
 
         private static IEnumerable<_ZipEntry> CreateZipFlatEntries()
         {
-            yield return new _ZipEntry("abc.txt");            
             yield return new _ZipEntry("dir/def.txt");
+            yield return new _ZipEntry("abc.txt");
             yield return new _ZipEntry("dir/");
         }
 

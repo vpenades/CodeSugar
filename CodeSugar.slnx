@@ -17,6 +17,7 @@
     <File Path="src/Directory.Build.props" />
     <File Path="src/SourcesPackage.props" />
     <Project Path="src/CodeSugar.AI/CodeSugar.AI.csproj" />
+    <Project Path="src/CodeSugar.FileProviders.SourceGenerator/CodeSugar.FileProviders.SourceGenerator.csproj" />
     <Project Path="src/CodeSugar.FileProviders.Sources/CodeSugar.FileProviders.csproj" />
     <Project Path="src/CodeSugar.ICommand/CodeSugar.ICommand.csproj" />
     <Project Path="src/CodeSugar.ImageSharp/CodeSugar.ImageSharp.csproj" />
@@ -31,6 +32,7 @@
   </Folder>
   <Folder Name="/tests/">
     <File Path="tests/Directory.Build.props" />
+    <Project Path="tests/CodeSugar.FileProviders.Tests/CodeSugar.FileProviders.Tests.csproj" Id="57d3b748-a512-46ed-b66c-5ac65216baa9" />
     <Project Path="tests/CodeSugar.Nullable.Tests/CodeSugar.Nullable.Tests.csproj" />
     <Project Path="tests/CodeSugar.Tests/CodeSugar.Tests.csproj" />
   </Folder>

@@ -44,7 +44,7 @@ namespace $rootnamespace$
                 case __XINFO xinfo: return xinfo;
                 default:
                     if (string.IsNullOrWhiteSpace(fallbackName)) throw new ArgumentNullException(nameof(fallbackName));
-                    return new _DirectoryFile(fallbackName, dir);
+                    return new _GenericDirectoryInfo(fallbackName, dir);
             }
         }
 
@@ -138,9 +138,10 @@ namespace $rootnamespace$
 
         #region nested types
 
-        [System.Diagnostics.DebuggerDisplay("{Name} {Length}")]
-        class _GenericFileInfo : __XINFO
+        [System.Diagnostics.DebuggerDisplay("{GenericFileInfo} {Name} {Length}")]
+        sealed class _GenericFileInfo : __XINFO
         {
+            #region lifecycle
             public _GenericFileInfo(string name, long length, DateTimeOffset lastModified, Func<Stream> reader)
             {
                 if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
@@ -154,30 +155,41 @@ namespace $rootnamespace$
                 LastModified = lastModified;
                 _Reader = reader;
             }
+            #endregion
+
+            #region data
+
+            public string Name { get; }
+            public long Length { get; } // ToDo this should be another lambda.
+            public DateTimeOffset LastModified { get; }
 
             [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-            private readonly Func<System.IO.Stream> _Reader;            
+            private readonly Func<System.IO.Stream> _Reader;
 
-            public Stream CreateReadStream() { return _Reader.Invoke(); }
+            #endregion
+
+            #region properties
 
             public bool Exists => true;
 
-            public long Length { get; }
-
             public string PhysicalPath => null;
 
-            public string Name { get; }
-
-            public DateTimeOffset LastModified { get; }
-
             public bool IsDirectory => false;
+
+            #endregion
+
+            #region API
+
+            public Stream CreateReadStream() { return _Reader.Invoke(); }
+
+            #endregion
         }
 
-        [System.Diagnostics.DebuggerDisplay("_DirectoryFile {Name,nq}")]
-        private sealed class _DirectoryFile : __XINFO, __XDIRECTORY
+        [System.Diagnostics.DebuggerDisplay("GenericDirectoryInfo {Name,nq}")]
+        sealed class _GenericDirectoryInfo : __XINFO, __XDIRECTORY
         {
             #region lifecycle
-            public _DirectoryFile(string name, __XDIRECTORY source)
+            public _GenericDirectoryInfo(string name, __XDIRECTORY source)
             {
                 _Source = source;
                 Name = name;

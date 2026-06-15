@@ -57,7 +57,7 @@ namespace $rootnamespace$
                 // it may be odd for a IFileInfo to also implement IFileProvider, but it may happen in the wild.
                 case __XPROVIDER asFP:
                     xdir = asFP.GetDirectoryContents(string.Empty);
-                    return true;
+                    return true;                
 
                 // easter egg: some implementations may choose to expose the IDirectoryContents as a service.
                 case System.IServiceProvider asSrv:
