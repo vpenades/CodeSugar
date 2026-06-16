@@ -14,6 +14,7 @@ using Microsoft.Extensions.FileProviders;
 #nullable disable
 
 using __XINFO = Microsoft.Extensions.FileProviders.IFileInfo;
+using __XPROVIDER = Microsoft.Extensions.FileProviders.IFileProvider;
 using __XDIRECTORY = Microsoft.Extensions.FileProviders.IDirectoryContents;
 using __MATCHCASING = System.IO.MatchCasing;
 
@@ -32,6 +33,51 @@ namespace $rootnamespace$
         #region API
 
         /// <summary>
+        /// If <paramref name="xfile"/> is a directory, it tries to return its <paramref name="xdir"/>
+        /// </summary>
+        /// <param name="xfile">the input file</param>
+        /// <param name="xdir">the output directory contents</param>
+        /// <returns>true on success</returns>
+        public static bool TryGetDirectoryContents([DisallowNull] this __XINFO xfile, out __XDIRECTORY xdir)
+        {
+            // notice that we're not handling .Exist here, because if the file does not exist,
+            // the returned IDirectoryInfo returned should also have the .Exist to false
+
+            xdir = null;
+            if (xfile == null || !xfile.IsDirectory) return false;
+
+            switch (xfile)
+            {
+                // IFileInfo implements IDirectoryContents on Microsoft.Extensions.FileProviders.Physical.9.0.0 and up.
+                case __XDIRECTORY asDC:
+                    xdir = asDC;
+                    return true;
+
+                // it may be odd for a IFileInfo to also implement IFileProvider, but it may happen in the wild.
+                case __XPROVIDER asFP:
+                    xdir = asFP.GetDirectoryContents(string.Empty);
+                    return true;
+
+                // easter egg: some implementations may choose to expose the IDirectoryContents as a service.
+                case System.IServiceProvider asSrv:
+                    xdir = asSrv.GetService(typeof(__XDIRECTORY)) as __XDIRECTORY;
+                    if (xdir != null) return true;
+                    break;
+            }
+
+            // fallback for physical IFileInfo directories not implementing IDirectoryContents
+            // (Microsoft.Extensions.FileProviders.Physical.8.0.0 and below)
+            if (IsPhysical(xfile) && System.IO.Path.IsPathFullyQualified(xfile.PhysicalPath))
+            {
+                System.Diagnostics.Debug.Assert(xfile.IsDirectory);
+                var dinfo = new DirectoryInfo(xfile.PhysicalPath);
+                xdir = ToIFileInfo(dinfo) as __XDIRECTORY;
+            }
+
+            return xdir != null;
+        }
+
+        /// <summary>
         /// Joins a collection of <see cref="__XINFO"/> as a <see cref="__XDIRECTORY"/>.
         /// </summary>
         /// <param name="files">the collection of entries to join</param>
@@ -40,7 +86,7 @@ namespace $rootnamespace$
         /// This will create a <see cref="__XDIRECTORY"/> even if the entries are not in the same logical path.
         /// </remarks>
         [return: NotNull]
-        public static __XDIRECTORY ToIDirectoryContents(this IEnumerable<__XINFO> files)
+        public static __XDIRECTORY ToIDirectoryContents([DisallowNull] this IEnumerable<__XINFO> files)
         {
             switch(files)
             {
@@ -52,7 +98,7 @@ namespace $rootnamespace$
         }
 
         [return: NotNull]
-        public static __XDIRECTORY ToIDirectoryContents<T>(this IEnumerable<T> files, Func<T, string> fullPathFunc, string pathSelector, __MATCHCASING casing)
+        public static __XDIRECTORY ToIDirectoryContents<T>([DisallowNull] this IEnumerable<T> files, Func<T, string> fullPathFunc, string pathSelector, __MATCHCASING casing)
             where T: __XINFO
         {
             switch (files)
@@ -63,7 +109,7 @@ namespace $rootnamespace$
         }
 
         [return: NotNull]
-        public static __XDIRECTORY ToIDirectoryContents<T>(this IEnumerable<T> files, string name, Func<T, string> fullPathFunc, string pathSelector, __MATCHCASING casing)
+        public static __XDIRECTORY ToIDirectoryContents<T>([DisallowNull] this IEnumerable<T> files, string name, Func<T, string> fullPathFunc, string pathSelector, __MATCHCASING casing)
             where T : __XINFO
         {
             switch (files)

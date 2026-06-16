@@ -30,16 +30,12 @@ namespace $rootnamespace$
         {
             GuardReadable(entry);            
 
-            var m = new System.IO.MemoryStream();
-
             using(var s = entry.Open())
             {                
-                s.CopyTo(m);
+                var ms = ToMemoryStream(s);
+                ms.Position = 0;
+                return ms;
             }
-
-            m.Position = 0;
-
-            return m;
         }
 
 

@@ -23,7 +23,7 @@ namespace $rootnamespace$
     {
         #region constants
 
-        private static Dictionary<string, System.IO.DriveInfo> _InternedFixedDrives;
+        private static System.Collections.Concurrent.ConcurrentDictionary<string, System.IO.DriveInfo> _InternedFixedDrives;
 
         private static readonly char[] _DirectorySeparators = _GetDirectorySeparators();
 

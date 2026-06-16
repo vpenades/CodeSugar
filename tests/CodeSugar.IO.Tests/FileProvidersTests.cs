@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 using Microsoft.Extensions.FileProviders;
 
+using TUnit;
+
 namespace CodeSugar
 {
     internal class FileProvidersTests
@@ -66,7 +68,7 @@ namespace CodeSugar
 
             await Assert.That(rootDir).Count().IsEqualTo(2);
             await Assert.That(rootDir.Count(item => item.IsDirectory)).IsEqualTo(1);
-            await Assert.That(rootDir.Select(item => item.Name)).IsEquivalentTo(new[] { "dir","abc.txt" });
+            await Assert.That(rootDir.Select(item => item.Name)).IsEquivalentTo(new[] { "dir","abc.txt" }, StringComparer.Ordinal);
 
             var childDir = CreateZipFlatEntries().ToIDirectoryContents(entry => entry.Key, "dir\\", MatchCasing.CaseSensitive);
             await Assert.That(childDir).Count().IsEqualTo(1);
@@ -88,25 +90,42 @@ namespace CodeSugar
             await Assert.That(c1).Count().IsEqualTo(2);
 
             var c2 = provider.GetDirectoryContents("dir");
-            await Assert.That(c2.Select(item => item.Name)).IsEquivalentTo(new[] { "def.txt" });
+            await Assert.That(c2.Select(item => item.Name)).IsEquivalentTo(new[] { "def.txt" }, StringComparer.Ordinal);
 
             var c2x = c1.FindEntry(MatchCasing.CaseSensitive, "dir").GetDirectoryContents();
-            await Assert.That(c2x.Select(item => item.Name)).IsEquivalentTo(new[] { "def.txt" });
+            await Assert.That(c2x.Select(item => item.Name)).IsEquivalentTo(new[] { "def.txt" }, StringComparer.Ordinal);
 
             var subPrivider = c2.ToIFileProvider(MatchCasing.CaseSensitive);
             var c3 = subPrivider.GetDirectoryContents(string.Empty);
-            await Assert.That(c3.Select(item => item.Name)).IsEquivalentTo(new[] { "def.txt" });            
-        }        
+            await Assert.That(c3.Select(item => item.Name)).IsEquivalentTo(new[] { "def.txt" }, StringComparer.Ordinal);            
+        }
+
+
+
+        [Test]
+        [Arguments("arch.cbz")]
+        [Arguments("arch.cb7")]
+        public async Task TestSharpCompress(string archiveName)
+        {
+            var provider = await ResourceInfo.From(archiveName).File.TryLoadSharpCompressArchiveAsync(null, null, null);
+
+            await Assert.That(provider.GetFileInfo("subd\\02.png").Exists).IsTrue();
+        }
+
+        private static readonly Object _CreateMockup1Mutex = new Object();
 
         private static System.IO.DirectoryInfo _CreateMockup1()
         {
-            var baseDir = new System.IO.DirectoryInfo(AppContext.BaseDirectory).DefineDirectoryInfo("FileProviders");
+            lock (_CreateMockup1Mutex)
+            {
+                var baseDir = new System.IO.DirectoryInfo(AppContext.BaseDirectory).DefineDirectoryInfo("FileProviders");
 
-            baseDir.DefineFileInfo("file1.txt").WriteAllText("hello");
-            baseDir.DefineFileInfo("file2.txt").WriteAllText("hello");
-            baseDir.UseDirectoryInfo("subdir1").DefineFileInfo("file3.txt").WriteAllText("hello");
+                baseDir.DefineFileInfo("file1.txt").WriteAllText("hello");
+                baseDir.DefineFileInfo("file2.txt").WriteAllText("hello");
+                baseDir.UseDirectoryInfo("subdir1").DefineFileInfo("file3.txt").WriteAllText("hello");
 
-            return baseDir;
+                return baseDir;
+            }
         }
 
         private static async Task _TestMockup1(IDirectoryContents root)
@@ -149,10 +168,7 @@ namespace CodeSugar
             public string Name => System.IO.Path.GetFileName(Key.TrimEnd('/'));
             public DateTimeOffset LastModified => DateTime.Today;
             public bool IsDirectory => Key.EndsWith('/');
-        }
-
-        
-        #nullable enable
+        }        
 
         private static async Task _TestMockup2(IDirectoryContents root)
         {
@@ -170,6 +186,6 @@ namespace CodeSugar
             }
         }
 
-        #nullable restore
+        
     }
 }

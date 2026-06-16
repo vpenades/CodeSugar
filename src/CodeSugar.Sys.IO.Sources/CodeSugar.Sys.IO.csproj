@@ -7,16 +7,20 @@
 
   <PropertyGroup>    
     <IsPackable>false</IsPackable>
-    <IsPackableAsSources>true</IsPackableAsSources>
+    <IsPackableAsSources>false</IsPackableAsSources>
   </PropertyGroup>
 
   <PropertyGroup>
-    <DefineConstants>$(DefineConstants);CODESUGAR_USECODESUGARNAMESPACE</DefineConstants>
+    <DefineConstants>$(DefineConstants);CODESUGAR_USECODESUGARNAMESPACE;__REFERENCES_MICROSOFTIORECYCLABLEMEMORYSTREAM</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
     <InternalsVisibleTo Include="CodeSugar.Tests" />
 		<InternalsVisibleTo Include="CodeSugar.Nullable.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.1" />
   </ItemGroup>
 
   <ItemGroup>

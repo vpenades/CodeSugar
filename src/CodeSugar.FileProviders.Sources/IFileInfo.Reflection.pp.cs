@@ -33,50 +33,7 @@ namespace $rootnamespace$
                 : Microsoft.Extensions.FileProviders.NotFoundDirectoryContents.Singleton;
         }
 
-        /// <summary>
-        /// If <paramref name="xfile"/> is a directory, it tries to return its <paramref name="xdir"/>
-        /// </summary>
-        /// <param name="xfile">the input file</param>
-        /// <param name="xdir">the output directory contents</param>
-        /// <returns>true on success</returns>
-        public static bool TryGetDirectoryContents(this __XINFO xfile, out __XDIRECTORY xdir)
-        {
-            // notice that we're not handling .Exist here, because if the file does not exist,
-            // the returned IDirectoryInfo returned should also have the .Exist to false
-
-            xdir = null;
-            if (xfile == null || !xfile.IsDirectory) return false;
-
-            switch (xfile)
-            {
-                // IFileInfo implements IDirectoryContents on Microsoft.Extensions.FileProviders.Physical.9.0.0 and up.
-                case __XDIRECTORY asDC:
-                    xdir = asDC;
-                    return true;
-
-                // it may be odd for a IFileInfo to also implement IFileProvider, but it may happen in the wild.
-                case __XPROVIDER asFP:
-                    xdir = asFP.GetDirectoryContents(string.Empty);
-                    return true;                
-
-                // easter egg: some implementations may choose to expose the IDirectoryContents as a service.
-                case System.IServiceProvider asSrv:
-                    xdir = asSrv.GetService(typeof(__XDIRECTORY)) as __XDIRECTORY;
-                    if (xdir != null) return true;
-                    break;                
-            }
-
-            // fallback for physical IFileInfo directories not implementing IDirectoryContents
-            // (Microsoft.Extensions.FileProviders.Physical.8.0.0 and below)
-            if (IsPhysical(xfile) && System.IO.Path.IsPathFullyQualified(xfile.PhysicalPath))
-            {
-                System.Diagnostics.Debug.Assert(xfile.IsDirectory);
-                var dinfo = new DirectoryInfo(xfile.PhysicalPath);
-                xdir = ToIFileInfo(dinfo) as __XDIRECTORY;
-            }
-
-            return xdir != null;
-        }
+        
 
         public static bool IsPhysical(this __XINFO entry)
         {            

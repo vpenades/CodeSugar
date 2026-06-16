@@ -40,7 +40,8 @@ namespace $rootnamespace$
 
         public static bool NameEquals(this __XINFO xfile, string name, __MATCHCASING casing)
         {
-            return string.Equals(xfile.Name, name, __ToStringComparison(casing));
+            var cmp = __ToStringComparison(casing);
+            return string.Equals(xfile.Name, name, cmp);
         }
 
         /// <summary>
@@ -62,10 +63,10 @@ namespace $rootnamespace$
 
             if (!string.IsNullOrEmpty(left.PhysicalPath) && !string.IsNullOrEmpty(right.PhysicalPath))
             {
-                var leftPath = System.IO.Path.GetFullPath(left.PhysicalPath);
-                var rightPath = System.IO.Path.GetFullPath(right.PhysicalPath);
+                var leftPath = System.IO.Path.GetFullPath(left.PhysicalPath).Replace('\\', '/').TrimEnd('/');
+                var rightPath = System.IO.Path.GetFullPath(right.PhysicalPath).Replace('\\', '/').TrimEnd('/');
 
-                return string.Equals(leftPath, rightPath, casing.__ToStringComparison());
+                return string.Equals(leftPath, rightPath, __ToStringComparison(casing));
             }
 
             // do this only AFTER comparing PhysicalPath
@@ -91,7 +92,7 @@ namespace $rootnamespace$
             return true;
         }
 
-        private static bool _TryGetMatchCasing<T>(this T casingSource, out __MATCHCASING casing)
+        private static bool _TryGetMatchCasing<T>(T casingSource, out __MATCHCASING casing)
         {
             if (casingSource == null) throw new ArgumentNullException(nameof(casingSource));
 
@@ -125,14 +126,14 @@ namespace $rootnamespace$
             return false;
         }
 
-        private static StringComparison __ToStringComparison(this __MATCHCASING casing)
+        private static StringComparison __ToStringComparison(__MATCHCASING casing)
         {
             switch (casing)
             {
                 case __MATCHCASING.PlatformDefault: return FileSystemPathComparison;
                 case __MATCHCASING.CaseSensitive: return StringComparison.Ordinal;
                 case __MATCHCASING.CaseInsensitive: return StringComparison.OrdinalIgnoreCase;
-                default: throw new NotImplementedException();
+                default: throw new NotImplementedException($"{casing}");
             }
         }
     }

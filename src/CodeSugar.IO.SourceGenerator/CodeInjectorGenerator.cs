@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace CodeSugar.FileProviders.SourceGenerators
+namespace CodeSugar.IO.SourceGenerators
 {
     
     public abstract class CodeInjectorGenerator : IIncrementalGenerator
@@ -21,7 +21,7 @@ namespace CodeSugar.FileProviders.SourceGenerators
             // triggers | todo: get frameworks  
             var languageDataProvider = context.ParseOptionsProvider.Select(TryGetLanguageFeatures);    // trigger when language changes
             var withRootNamespace = context.AnalyzerConfigOptionsProvider.Select(TryGetRootNamespace); // trigger when RootNamespace changes
-            var withNugetPackages = context.CompilationProvider.Select(TryGetNugetPackages);           // trigger when package references changes                      
+            var withNugetPackages = context.CompilationProvider.Select(TryGetNugetPackages);           // trigger when package references changes            
 
             // combined triggers
             var provider = withRootNamespace
@@ -52,7 +52,7 @@ namespace CodeSugar.FileProviders.SourceGenerators
 
         private static Dictionary<string,string>? TryGetNugetPackages(Compilation compilation, CancellationToken token)
         {
-            var dict = new Dictionary<string, string>();
+            var dict = new Dictionary<string, string>();            
 
             foreach (var reference in compilation.References)
             {

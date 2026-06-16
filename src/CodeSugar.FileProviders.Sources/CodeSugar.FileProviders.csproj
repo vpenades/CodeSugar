@@ -7,11 +7,11 @@
 
   <PropertyGroup>    
     <IsPackable>false</IsPackable>
-    <IsPackableAsSources>true</IsPackableAsSources>
+    <IsPackableAsSources>false</IsPackableAsSources>
   </PropertyGroup>
 
   <PropertyGroup>
-    <DefineConstants>$(DefineConstants);CODESUGAR_USECODESUGARNAMESPACE</DefineConstants>
+    <DefineConstants>$(DefineConstants);CODESUGAR_USECODESUGARNAMESPACE;__REFERENCES_SHARPCOMPRESS</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -40,6 +40,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="10.0.8" />
+    <PackageReference Include="SharpCompress" Version="0.49.1" />
   </ItemGroup>  
 
 </Project>

@@ -73,7 +73,7 @@ namespace $rootnamespace$
         {
             if (_InternedFixedDrives == null) // initialize
             {
-                _InternedFixedDrives = new Dictionary<string, __DRIVE>(GetStringComparer(MatchCasing.PlatformDefault));
+                _InternedFixedDrives = new System.Collections.Concurrent.ConcurrentDictionary<string, __DRIVE>(GetStringComparer(MatchCasing.PlatformDefault));
 
                 foreach(var d in __DRIVE.GetDrives())
                 {

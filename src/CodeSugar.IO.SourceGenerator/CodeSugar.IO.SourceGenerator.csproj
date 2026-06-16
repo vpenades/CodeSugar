@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   
   <PropertyGroup>
-    <RootNamespace>CodeSugar.FileProviders.SourceGenerators</RootNamespace>
+    <RootNamespace>CodeSugar.IO.SourceGenerators</RootNamespace>
     <TargetFramework>netstandard2.0</TargetFramework>        
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>    
@@ -14,14 +14,11 @@
 
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
-  </PropertyGroup>
+  </PropertyGroup>  
 
-  <PropertyGroup>
-    <IsPackable>false</IsPackable> <!-- until it's ready -->
-  </PropertyGroup>
-
-  <ItemGroup>    
-    <EmbeddedResource Include="..\CodeSugar.FileProviders.Sources\*.cs" LinkBase="Templates" />
+  <ItemGroup>
+    <EmbeddedResource Include="..\CodeSugar.Sys.IO.Sources\*.cs" LinkBase="Templates\SysIO" />
+    <EmbeddedResource Include="..\CodeSugar.FileProviders.Sources\*.cs" LinkBase="Templates\FileProviders" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,7 +28,10 @@
 
   <PropertyGroup>
     <Description>
-      Generates internal extensions for Microsoft.Extensions.FileProviders based on the referenced packages.
+      Source generator that emits useful extension methods for:
+      - System.IO
+      - Microsoft.Extensions.FileProviders
+      - SharpCompress
     </Description>
   </PropertyGroup>
 

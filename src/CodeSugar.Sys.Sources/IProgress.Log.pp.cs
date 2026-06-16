@@ -271,8 +271,8 @@ namespace $rootnamespace$
         {
             public static readonly _ConsoleProgressSink Instance = new _ConsoleProgressSink();
 
-            public void Report(int value) { Console.WriteLine(value); }
-            public void Report(string value) { if (value != null) Console.WriteLine(value); }
+            public void Report(int value) { Console.Out.WriteLine(value); }
+            public void Report(string value) { if (value != null) Console.Out.WriteLine(value); }
             public void Report((__LOGLEVEL level, string msg) value)
             {
                 var msg = _CombineLevelAndMessage(value.level, value.msg);
@@ -280,7 +280,7 @@ namespace $rootnamespace$
 
                 var cc = System.Console.ForegroundColor;
                 System.Console.ForegroundColor = _FromLevel(value.level);
-                Console.WriteLine(msg);
+                Console.Out.WriteLine(msg);
                 System.Console.ForegroundColor = cc;
             }
 
@@ -304,9 +304,9 @@ namespace $rootnamespace$
 
                 var cc = System.Console.ForegroundColor;
                 System.Console.ForegroundColor = ConsoleColor.Red;
-                System.Console.WriteLine(value.GetType().Name);
-                System.Console.WriteLine(value.Message);
-                System.Console.WriteLine(value.StackTrace);
+                System.Console.Out.WriteLine(value.GetType().Name);
+                System.Console.Out.WriteLine(value.Message);
+                System.Console.Out.WriteLine(value.StackTrace);
                 System.Console.ForegroundColor = cc;
             }
 

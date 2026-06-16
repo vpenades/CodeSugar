@@ -8,12 +8,11 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Diagnostics.CodeAnalysis;
 
+#nullable disable
+
 using __FINFO = System.IO.FileInfo;
 using __DINFO = System.IO.DirectoryInfo;
 using __SINFO = System.IO.FileSystemInfo;
-
-
-#nullable disable
 
 
 #if CODESUGAR_USECODESUGARNAMESPACE
@@ -116,7 +115,7 @@ namespace $rootnamespace$
         /// <remarks>
         /// this is supported only on physical NTFS drives.
         /// </remarks>
-        public static bool TryGetAlternateDataStream(this __FINFO baseFile, string adsName, out __FINFO adsFile)
+        public static bool TryGetAlternateDataStream([DisallowNull] this __FINFO baseFile, string adsName, out __FINFO adsFile)
         {
             GuardNotNull(baseFile);
             GuardIsValidFileName(adsName, true);
@@ -137,7 +136,7 @@ namespace $rootnamespace$
         /// Gets the parent directory of the current instance.
         /// </summary>
         [return: NotNull]
-        public static __DINFO GetParent(this __SINFO fsinfo)
+        public static __DINFO GetParent([DisallowNull] this __SINFO fsinfo)
         {
             return GetParentOrNull(fsinfo) ?? throw new System.IO.DirectoryNotFoundException();
         }        
@@ -145,7 +144,7 @@ namespace $rootnamespace$
         /// <summary>
         /// Gets the parent directory of the current instance, or null if it has no parent.
         /// </summary>
-        public static __DINFO GetParentOrNull(this __SINFO fsinfo)
+        public static __DINFO GetParentOrNull([DisallowNull] this __SINFO fsinfo)
         {
             if (fsinfo is __FINFO finfo) return finfo.Directory;
             if (fsinfo is __DINFO dinfo) return dinfo.Parent;
@@ -159,7 +158,7 @@ namespace $rootnamespace$
         /// <param name="relativePath">the relative path parts</param>
         /// <returns>a new <see cref="__FINFO"/> instance.</returns>
         [return: NotNull]
-        public static __FINFO GetFileInfo(this __DINFO baseDir, params string[] relativePath)
+        public static __FINFO GetFileInfo([DisallowNull] this __DINFO baseDir, params string[] relativePath)
         {
             var finfo = _CreateFileInfo(baseDir, false, relativePath);
             System.Diagnostics.Debug.Assert(finfo != null && finfo.PhysicallyExists(), $"File {relativePath.Last()} does not exist.");
@@ -177,14 +176,14 @@ namespace $rootnamespace$
         /// <param name="relativePath">the relative path parts</param>
         /// <returns>a new <see cref="__FINFO"/> instance.</returns>
         [return: NotNull]
-        public static __FINFO UseFileInfo(this __DINFO baseDir, params string[] relativePath)
+        public static __FINFO UseFileInfo([DisallowNull] this __DINFO baseDir, params string[] relativePath)
         {
             return _CreateFileInfo(baseDir, true, relativePath) ?? throw new System.IO.FileNotFoundException();
         }
 
         
 
-        public static __FINFO DefineRandomFileInfo(this __DINFO baseDir, int maxRetries)
+        public static __FINFO DefineRandomFileInfo([DisallowNull] this __DINFO baseDir, int maxRetries)
         {
             while(true)
             {
@@ -197,7 +196,7 @@ namespace $rootnamespace$
             return null;            
         }
 
-        public static __FINFO DefineRandomFileInfo(this __DINFO baseDir)
+        public static __FINFO DefineRandomFileInfo([DisallowNull] this __DINFO baseDir)
         {
             return baseDir.DefineFileInfo(System.IO.Path.GetRandomFileName());
         }
@@ -215,13 +214,13 @@ namespace $rootnamespace$
         /// <param name="relativePath">the relative path parts</param>
         /// <returns>a new <see cref="__FINFO"/> instance.</returns>
         [return: NotNull]
-        public static __FINFO DefineFileInfo(this __DINFO baseDir, params string[] relativePath)
+        public static __FINFO DefineFileInfo([DisallowNull] this __DINFO baseDir, params string[] relativePath)
         {
             return _CreateFileInfo(baseDir, false, relativePath);
         }
 
         [return: NotNull]
-        private static __FINFO _CreateFileInfo(this __DINFO baseDir, bool canCreate, params string[] relativePath)
+        private static __FINFO _CreateFileInfo([DisallowNull] this __DINFO baseDir, bool canCreate, params string[] relativePath)
         {
             GuardNotNull(baseDir);           
             
@@ -248,14 +247,14 @@ namespace $rootnamespace$
         /// <param name="relativePath">the relative path parts</param>
         /// <returns>a new <see cref="__DINFO"/> instance.</returns>
         [return: NotNull]
-        public static __DINFO GetDirectoryInfo(this __DINFO baseDir, params string[] relativePath)
+        public static __DINFO GetDirectoryInfo([DisallowNull] this __DINFO baseDir, params string[] relativePath)
         {
             return _CreateDirectoryInfo(baseDir, false, false, relativePath)
                 ?? throw new System.IO.DirectoryNotFoundException();
         }
 
         [return: NotNull]
-        public static __DINFO UseDirectoryInfo(this Environment.SpecialFolder folder, params string[] relativePath)
+        public static __DINFO UseDirectoryInfo([DisallowNull] this Environment.SpecialFolder folder, params string[] relativePath)
         {
             return folder.GetSpecialFolder().UseDirectoryInfo(relativePath);
         }
@@ -267,14 +266,14 @@ namespace $rootnamespace$
 		/// <param name="relativePath">the relative path parts</param>
 		/// <returns>a new <see cref="__DINFO"/> instance.</returns>
         [return: NotNull]
-        public static __DINFO UseDirectoryInfo(this __DINFO baseDir, params string[] relativePath)
+        public static __DINFO UseDirectoryInfo([DisallowNull] this __DINFO baseDir, params string[] relativePath)
         {
             return _CreateDirectoryInfo(baseDir, false, true, relativePath)
                 ?? throw new System.IO.DirectoryNotFoundException();
         }
 
         [return: NotNull]
-        public static __DINFO DefineDirectoryInfo(this Environment.SpecialFolder folder, params string[] relativePath)
+        public static __DINFO DefineDirectoryInfo([DisallowNull] this Environment.SpecialFolder folder, params string[] relativePath)
         {
             return folder.GetSpecialFolder().DefineDirectoryInfo(relativePath);
         }
@@ -286,14 +285,14 @@ namespace $rootnamespace$
 		/// <param name="relativePath">the relative path parts</param>
 		/// <returns>a new <see cref="__DINFO"/> instance.</returns>
         [return: NotNull]
-        public static __DINFO DefineDirectoryInfo(this __DINFO baseDir, params string[] relativePath)
+        public static __DINFO DefineDirectoryInfo([DisallowNull] this __DINFO baseDir, params string[] relativePath)
         {
             return _CreateDirectoryInfo(baseDir, false, false, relativePath)
                 ?? throw new System.IO.DirectoryNotFoundException();
         }
 
         [return: NotNull]
-        private static __DINFO _CreateDirectoryInfo(this __DINFO baseDir, bool mustExist, bool canCreate, params string[] relativePath)
+        private static __DINFO _CreateDirectoryInfo([DisallowNull] this __DINFO baseDir, bool mustExist, bool canCreate, params string[] relativePath)
         {
             GuardNotNull(baseDir);
 
@@ -311,7 +310,7 @@ namespace $rootnamespace$
             return baseDir;
         }        
 
-        public static void CopyTo(this __FINFO src, __DINFO dst, bool overwrite = false)
+        public static void CopyTo([DisallowNull] this __FINFO src, [DisallowNull] __DINFO dst, bool overwrite = false)
         {
             GuardExists(src);
             GuardNotNull(dst);
@@ -319,7 +318,7 @@ namespace $rootnamespace$
             src.CopyTo(dstf.FullName, overwrite);
         }
 
-        public static void CopyTo(this __FINFO src, __FINFO dst, bool overwrite = false)
+        public static void CopyTo([DisallowNull] this __FINFO src, [DisallowNull] __FINFO dst, bool overwrite = false)
         {
             GuardExists(src);
             GuardNotNull(dst);
@@ -327,7 +326,7 @@ namespace $rootnamespace$
             dst.Refresh();
         }
 
-        public static void Rename(this __FINFO finfo, string newName, bool overwrite)
+        public static void Rename([DisallowNull] this __FINFO finfo, string newName, bool overwrite)
         {
             GuardNotNull(finfo);
 
@@ -338,7 +337,7 @@ namespace $rootnamespace$
         }
 
         #if NETSTANDARD
-        public static void MoveTo(this __FINFO finfo, string newPath, bool overwrite)
+        public static void MoveTo([DisallowNull] this __FINFO finfo, [DisallowNull] string newPath, bool overwrite)
         {
             var dstInfo = new __FINFO(newPath);
 

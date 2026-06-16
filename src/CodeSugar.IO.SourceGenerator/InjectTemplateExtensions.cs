@@ -4,7 +4,7 @@ using System.Text;
 
 using Microsoft.CodeAnalysis;
 
-namespace CodeSugar.FileProviders.SourceGenerators
+namespace CodeSugar.IO.SourceGenerators
 {
     [Generator]
     public sealed class InjectTemplateExtensions : CodeInjectorGenerator
@@ -15,29 +15,40 @@ namespace CodeSugar.FileProviders.SourceGenerators
             var hasPhysical = this.NugetPackages.ContainsKey("Microsoft.Extensions.FileProviders.Physical");
             var hasEmbedded = this.NugetPackages.ContainsKey("Microsoft.Extensions.FileProviders.Embedded");
             var hasComposite = this.NugetPackages.ContainsKey("Microsoft.Extensions.FileProviders.Composite");
-            var hasSharpCompress = this.NugetPackages.ContainsKey("SharpCompress");
+            var hasBigMemoryStream = this.NugetPackages.ContainsKey("Microsoft.IO.RecyclableMemoryStream");
+            var hasSharpCompress = this.NugetPackages.ContainsKey("SharpCompress");            
 
-            if (!hasAbstractions) return; // nothing to do
+            ProcessTemplates(context,"SysIO", n => n.Contains(".SysIO."));
 
+            if (hasAbstractions)
+            {
+                ProcessTemplates(context,"FileProviders", n => n.Contains(".FileProviders."));
+            }
+        }
+
+        private int _TemplateIndex = 0;
+
+        private void ProcessTemplates(SourceProductionContext context, string name, Predicate<string> nameChecker)
+        {
             var selfAssembly = typeof(InjectTemplateExtensions).Assembly;
 
-            int index = 0;            
-
-            foreach(var resName in selfAssembly.GetManifestResourceNames())
+            foreach (var resName in selfAssembly.GetManifestResourceNames())
             {
-                if (resName.EndsWith(".cs"))
+                if (!resName.EndsWith(".cs")) continue;
+
+                if (!nameChecker(resName)) continue;
+
+
+                using (var s = selfAssembly.GetManifestResourceStream(resName))
                 {
-                    using (var s = selfAssembly.GetManifestResourceStream(resName))
+                    using (var t = new System.IO.StreamReader(s))
                     {
-                        using (var t = new System.IO.StreamReader(s))
-                        {
-                            var code = t.ReadToEnd();
-                            code = ProcessTemplate(code, this.RootNameSpace, this.NugetPackages);
-                            context.AddSource($"CodeSugar.FileProviders{index}.g.cs", code);
-                            index++;
-                        }
+                        var code = t.ReadToEnd();
+                        code = ProcessTemplate(code, this.RootNameSpace, this.NugetPackages);
+                        context.AddSource($"CodeSugar.{name}{_TemplateIndex}.g.cs", code);
+                        _TemplateIndex++;
                     }
-                }                
+                }
             }
         }
 
@@ -50,7 +61,7 @@ namespace CodeSugar.FileProviders.SourceGenerators
 
             foreach (var n in nugets)
             {
-                if (n.Key.StartsWith("Microsoft.Extensions") || n.Key == "SharpCompress")
+                if (n.Key.StartsWith("Microsoft.Extensions") || n.Key == "SharpCompress" || n.Key.EndsWith("RecyclableMemoryStream"))
                 {
                     var declaration = "#define __REFERENCES_" + n.Key.Replace(".", "").ToUpper();
                     sb.AppendLine(declaration);

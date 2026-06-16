@@ -6,6 +6,7 @@ using System.Text;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Diagnostics.CodeAnalysis;
 
 #nullable disable
 
@@ -29,7 +30,7 @@ namespace $rootnamespace$
         /// <param name="entry"></param>
         /// <param name="onlyIfRequired">if true, it will wrap with quotes only if the path contains namespaces</param>
         /// <returns>the path, with quotes</returns>
-        public static string FullNameWithQuotes(this __SINFO entry, bool onlyIfRequired = true)
+        public static string FullNameWithQuotes([DisallowNull] this __SINFO entry, bool onlyIfRequired = true)
         {
             GuardNotNull(entry);
 
@@ -43,7 +44,7 @@ namespace $rootnamespace$
         /// Opens a file only if it's a media file, like an image, a video or a text document. Executables and scripts are explicitly omitted
         /// </summary>
         /// <param name="finfo">the file to open</param>
-        public static bool ShellOpenMedia(this __FINFO finfo)
+        public static bool ShellOpenMedia([DisallowNull] this __FINFO finfo)
         {
             var psi = __GetProcessStartMedia(finfo);
             if (psi == null) return false;
@@ -53,7 +54,7 @@ namespace $rootnamespace$
             return true;
         }
 
-        public static bool ShellShowInExplorer(this __FINFO finfo)
+        public static bool ShellShowInExplorer([DisallowNull] this __FINFO finfo)
         {
             if (System.Environment.OSVersion.Platform != System.PlatformID.Win32NT) return false;
 
@@ -76,7 +77,7 @@ namespace $rootnamespace$
             return true;
         }
 
-        public static bool ShellShowInExplorer(this __DINFO dirInfo)
+        public static bool ShellShowInExplorer([DisallowNull] this __DINFO dirInfo)
         {
             if (System.Environment.OSVersion.Platform != System.PlatformID.Win32NT) return false;
 
@@ -89,7 +90,7 @@ namespace $rootnamespace$
             return true;
         }        
 
-        private static System.Diagnostics.ProcessStartInfo GetProcessStartWeb(this Uri uri, bool allowLocalFiles = false)
+        private static System.Diagnostics.ProcessStartInfo GetProcessStartWeb([DisallowNull] this Uri uri, bool allowLocalFiles = false)
         {
             if (uri == null) return null;
             if (!allowLocalFiles && uri.IsFile) throw new ArgumentException("local files not supported");
@@ -107,7 +108,7 @@ namespace $rootnamespace$
         /// </summary>
         /// <param name="finfo">an existing file</param>
         /// <returns>A <see cref="System.Diagnostics.ProcessStartInfo"/> object, or null if the file does not exist or it's a script/executable</returns>
-        private static System.Diagnostics.ProcessStartInfo __GetProcessStartMedia(this __FINFO finfo)
+        private static System.Diagnostics.ProcessStartInfo __GetProcessStartMedia([DisallowNull] this __FINFO finfo)
         {
             if (finfo == null || !finfo.RefreshedExists()) return null;
 
@@ -124,7 +125,7 @@ namespace $rootnamespace$
             };
         }
 
-        private static System.Diagnostics.ProcessStartInfo __GetProcessStartInfo(this __DINFO dirInfo)
+        private static System.Diagnostics.ProcessStartInfo __GetProcessStartInfo([DisallowNull] this __DINFO dirInfo)
         {
             if (dirInfo == null || !dirInfo.RefreshedExists()) return null;
 
