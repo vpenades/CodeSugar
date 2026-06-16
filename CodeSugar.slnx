@@ -33,7 +33,6 @@
   <Folder Name="/tests/">
     <File Path="tests/Directory.Build.props" />
     <Project Path="tests/CodeSugar.IO.Tests/CodeSugar.IO.Tests.csproj" />
-    <Project Path="tests/CodeSugar.Nullable.Tests/CodeSugar.Nullable.Tests.csproj" />
     <Project Path="tests/CodeSugar.Tests/CodeSugar.Tests.csproj" />
   </Folder>
 </Solution>
