@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
+		<IsPackable>true</IsPackable>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     <IsRoslynComponent>true</IsRoslynComponent>
   </PropertyGroup>
