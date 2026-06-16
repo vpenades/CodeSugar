@@ -48,5 +48,8 @@ jobs:
       - name: Build
         run: dotnet build
 
-      - name: Test
+      - name: Test 1
         run: dotnet test ./tests/CodeSugar.Tests/CodeSugar.Tests.csproj
+
+      - name: Test 2
+        run: dotnet test ./tests/CodeSugar.IO.Tests/CodeSugar.IO.Tests.csproj
