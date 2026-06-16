@@ -16,13 +16,14 @@ PACKAGEVERSION="${PACKAGEVERSION/DATE/$DATE_SHORT}"
 TIME_SHORT=$(date +'%H%M%S')
 PACKAGEVERSION="${PACKAGEVERSION/TIME/$TIME_SHORT}"
 
+# extract suffix
+PACKAGESUFFIX="${PACKAGEVERSION#*-}"
+
 # report semver
 echo "package version: $PACKAGEVERSION";
+echo "package suffix: $PACKAGESUFFIX";
 
 # build
-
-# stop on first error
-set -e
 
 dotnet tool restore
 dotnet restore
@@ -30,4 +31,7 @@ dotnet restore
 # temporarily disable tests
 # dotnet test -c Release CodeSugar.slnx
 
+dotnet pack -c Release CodeSugar.slnx -o . --version $PACKAGEVERSION
 dotnet PackAsSourcesNuget CodeSugar.slnx -o . --package-version $PACKAGEVERSION --append-sources-suffix
+
+# read -p "Press [ENTER] to continue..."

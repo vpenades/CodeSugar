@@ -9,6 +9,8 @@
 
   <PropertyGroup>
 		<IsPackable>true</IsPackable>
+		<NoPackageAnalysis>true</NoPackageAnalysis>
+		<DevelopmentDependency>true</DevelopmentDependency>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     <IsRoslynComponent>true</IsRoslynComponent>
   </PropertyGroup>
