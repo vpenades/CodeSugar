@@ -2,13 +2,14 @@ name: Build a preview and release it to NUGET
 
 on: workflow_dispatch
     
-jobs:
+jobs:      
 
   build:
 
     runs-on: ubuntu-latest
     permissions:
       contents: write # required for pushing the tag    
+      id-token: write # enable GitHub OIDC token issuance for this job
     
     steps:
 
@@ -51,8 +52,16 @@ jobs:
         chmod +x ./CodeSugar.Build.sh
         ./CodeSugar.Build.sh $GHENV_PACKAGEVERSION
 
-    - name: Push to NuGet
-      run: dotnet nuget push "*.nupkg" --api-key ${{secrets.CodeSugar_PublishToNuget}} --source https://api.nuget.org/v3/index.json
+    # Get a short-lived NuGet API key
+    - name: NuGet login
+      uses: NuGet/login@v1
+      id: login
+      with:
+        user: ${{ secrets.NUGET_USER_NAME }}
+        
+    # Push the package
+    - name: NuGet push
+      run: dotnet nuget push "*.nupkg" --api-key ${{steps.login.outputs.NUGET_API_KEY}} --source https://api.nuget.org/v3/index.json
 
     - name: create tag
       uses: ./.github/actions/PushGithubTag
