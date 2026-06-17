@@ -47,10 +47,22 @@ jobs:
         chmod +x ./.github/workflows/FormatSemver.sh
         ./.github/workflows/FormatSemver.sh "1.0.0-Prv-DATE" >> $GITHUB_ENV
 
-    - name: Build
+    - name: Build Packed Sources
       run: |
-        chmod +x ./CodeSugar.Build.sh
-        ./CodeSugar.Build.sh $GHENV_PACKAGEVERSION
+        chmod +x ./CodeSugar.Src.Build.sh
+        ./CodeSugar.Src.Build.sh $GHENV_PACKAGEVERSION
+
+    - name: Define Version at GHENV_PACKAGEVERSION
+      run: |
+        chmod +x ./.github/workflows/FormatSemver.sh
+        ./.github/workflows/FormatSemver.sh "1.0.0-Prv-DATE-TIME" >> $GITHUB_ENV
+
+    - name: Build Source Generators
+      run: |
+        chmod +x ./CodeSugar.Gen.Build.sh
+        ./CodeSugar.Gen.Build.sh $GHENV_PACKAGEVERSION
+
+
 
     # Get a short-lived NuGet API key
     - name: NuGet login

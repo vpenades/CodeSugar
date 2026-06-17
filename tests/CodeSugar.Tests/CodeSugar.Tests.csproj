@@ -2,12 +2,14 @@
 
 	<PropertyGroup>
 		<RootNamespace>CodeSugar</RootNamespace>
-		<TargetFrameworks>net8.0;net10.0</TargetFrameworks>
-		<IsPackable>false</IsPackable>
-		<IsTestProject>true</IsTestProject>
+		<TargetFrameworks>net8.0;net10.0</TargetFrameworks>		
 		<Nullable>disable</Nullable>
     <LangVersion>latest</LangVersion>
 	</PropertyGroup>
+
+  <PropertyGroup>
+    <PublishAot>true</PublishAot>
+  </PropertyGroup>
 
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);CODESUGAR_USECODESUGARNAMESPACE</DefineConstants>

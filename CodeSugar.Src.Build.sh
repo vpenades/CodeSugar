@@ -30,7 +30,6 @@ dotnet restore
 
 dotnet test -c Release CodeSugar.slnx
 
-dotnet pack -c Release CodeSugar.slnx -o . --version $PACKAGEVERSION
 dotnet PackAsSourcesNuget CodeSugar.slnx -o . --package-version $PACKAGEVERSION --append-sources-suffix
 
 # read -p "Press [ENTER] to continue..."

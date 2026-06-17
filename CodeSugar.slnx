@@ -11,6 +11,8 @@
     <File Path=".github/workflows/PublishToNuget.yml" />
     <File Path=".github/workflows/test.yml" />
     <File Path="CodeSugar.Build.sh" />
+    <File Path="CodeSugar.Gen.Build.sh" />
+    <File Path="CodeSugar.Src.Build.sh" />
     <File Path="README.md" />
   </Folder>
   <Folder Name="/src/">

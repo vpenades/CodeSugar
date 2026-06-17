@@ -3,21 +3,26 @@
   <PropertyGroup>
     <RootNamespace>CodeSugar.IO.SourceGenerators</RootNamespace>
     <TargetFramework>netstandard2.0</TargetFramework>        
+    <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>    
   </PropertyGroup>
+  
+  <!-- https://www.devleader.ca/2026/03/23/how-to-create-your-first-c-source-generator-stepbystep -->
 
-  <PropertyGroup>
-		<IsPackable>true</IsPackable>
-		<NoPackageAnalysis>true</NoPackageAnalysis>
-		<DevelopmentDependency>true</DevelopmentDependency>
-    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+  <PropertyGroup>    
+    <IsPackable>true</IsPackable>
     <IsRoslynComponent>true</IsRoslynComponent>
+		<NoPackageAnalysis>true</NoPackageAnalysis>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>  
+  <!-- Package the generator as an analyzer -->
+  <ItemGroup>
+    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+  </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="..\CodeSugar.Sys.IO.Sources\*.cs" LinkBase="Templates\SysIO" />
