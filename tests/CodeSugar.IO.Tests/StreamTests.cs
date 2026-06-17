@@ -5,8 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using InteropTypes.IO;
-
 using TUnit;
 
 namespace CodeSugar
@@ -49,19 +47,26 @@ namespace CodeSugar
             }
         }
 
-
-
-        [Test]
-        [Explicit]
+        [Test]        
         [Arguments(65536 * 10, 10000, false)]
         [Arguments(65536 * 10, 65536 * 20, false)]
         [Arguments(65536 * 10, 1, true)]
+        public async Task TestStreamEqualitySmall(long streamsLen, int buffLen, bool useFactory)
+        {
+            await _TestStreamEquality(streamsLen, buffLen, useFactory);
+        }
 
-        // explicits due to being very large
-        [Arguments(65536L * 65536 * 2, 10000, true)]        
-        [Arguments(65536L * 65536 * 2, 65536 * 20, true)]        
-        [Arguments(65536L * 65536 * 2, 1, true)]       
-        public async Task TestStreamEquality(long streamsLen, int buffLen, bool useFactory)
+
+        [Test] [Explicit] // explicits due to being very large
+        [Arguments(65536L * 65536 * 2, 10000, true)]
+        [Arguments(65536L * 65536 * 2, 65536 * 20, true)]
+        [Arguments(65536L * 65536 * 2, 1, true)]
+        public async Task TestStreamEqualityLarge(long streamsLen, int buffLen, bool useFactory)
+        {
+            await _TestStreamEquality(streamsLen, buffLen, useFactory);
+        }
+
+        private async Task _TestStreamEquality(long streamsLen, int buffLen, bool useFactory)
         {
             var rnd1 = new RandomStream(streamsLen, 1);
             var rnd2 = new RandomStream(streamsLen, 2);
@@ -75,7 +80,7 @@ namespace CodeSugar
                 return new Microsoft.IO.RecyclableMemoryStream(mgr, null, len);
             }
 
-            Func<long, System.IO.MemoryStream> factory = memStreamFactory;
+            Func<long, System.IO.MemoryStream>? factory = memStreamFactory;
 
             if (!useFactory) factory = null;
 
@@ -109,9 +114,7 @@ namespace CodeSugar
         {
             using (var m = new System.IO.MemoryStream())
             {
-                m.WriteU8(1);
-                m.WriteU8(2);
-                m.WriteU8(3);
+                m.WriteAllBytes(new byte[] { 1, 2, 3 });
 
                 m.Position = 1;
                 var fromPosition1 = m.ReadAllBytes();

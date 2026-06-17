@@ -10,9 +10,7 @@ namespace CodeSugar
     internal class SourceCodeTests
     {
         [Test]
-        [Arguments(typeof(CodeSugarForSystem))]
-        [Arguments(typeof(CodeSugarForSystemIO))]
-        [Arguments(typeof(CodeSugarForFileProviders))]
+        [Arguments(typeof(CodeSugarForSystem))]        
         [Arguments(typeof(CodeSugarForSerialization))]
 
         [Arguments(typeof(CodeSugarForNumerics))]

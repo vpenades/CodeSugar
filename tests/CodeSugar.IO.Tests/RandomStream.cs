@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace InteropTypes.IO
+namespace CodeSugar
 {
     /// <summary>
     /// This is an in-memory stream to simulate a very large stream of random data.
