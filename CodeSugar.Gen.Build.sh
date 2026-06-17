@@ -1,7 +1,7 @@
 # this script can be run directly or from the github actions.
 
 # stop on first error
-# set -e
+set -e
 
 # set input or default
 
@@ -32,4 +32,4 @@ dotnet test -c Release CodeSugar.slnx
 
 dotnet pack -c Release CodeSugar.slnx -o . --version $PACKAGEVERSION
 
-read -p "Press [ENTER] to continue..."
+# read -p "Press [ENTER] to continue..."
