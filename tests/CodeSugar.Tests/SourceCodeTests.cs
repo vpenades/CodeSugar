@@ -104,7 +104,7 @@ namespace CodeSugar
                 var sc = finfo.ReadAllText();
                 // TODO: TUnit migration - Complex NUnit constraint. Manual conversion required.
 
-                await Assert.That(sc).Contains("#nullable disable"); //$"{projectName}/{finfo.Name} does not have #nullable disable"
+                await Assert.That(sc).Contains("#nullable disable").Because($"{projectName}/{finfo.Name} does not have #nullable disable");
             }
         }
 
@@ -143,7 +143,7 @@ namespace CodeSugar
                     var alias = kvp.Key;
                     // TODO: TUnit migration - Complex NUnit constraint. Manual conversion required.
 
-                    await Assert.That(alias).StartsWith("__"); // , $"using {alias} in file {finfo.FullName} must begin with '__' to prevent collisions with global using");
+                    await Assert.That(alias).StartsWith("__").Because($"using {alias} in file {finfo.FullName} must begin with '__' to prevent collisions with global using");
                 }
             }
         }
