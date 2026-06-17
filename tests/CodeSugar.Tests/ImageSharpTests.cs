@@ -5,12 +5,12 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
-using NUnit.Framework;
-
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
+
+using TUnit;
 
 namespace CodeSugar
 {

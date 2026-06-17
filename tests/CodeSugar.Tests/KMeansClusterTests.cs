@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-using NUnit.Framework;
-
 namespace CodeSugar
 {
     internal class KMeansClusterTests
@@ -22,11 +20,11 @@ namespace CodeSugar
 
             foreach (var group in groups)
             {
-                TestContext.Out.WriteLine($"Key: {group.Key.ToText()}");
+                Console.Out.WriteLine($"Key: {group.Key.ToText()}");
 
                 foreach(var val in group)
                 {
-                    TestContext.Out.WriteLine("     " + val.ToText());
+                    Console.Out.WriteLine("     " + val.ToText());
                 }
 
             }            

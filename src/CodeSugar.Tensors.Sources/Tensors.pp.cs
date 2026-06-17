@@ -70,9 +70,9 @@ namespace $rootnamespace$
         /// <typeparam name="T"></typeparam>
         /// <param name="tensor"></param>
         /// <returns>true if the tensor has strides</returns>
-        public static bool IsStrided<T>(this __TENSORS.Tensor<T> tensor)
+        public static bool IsStrided(this __TENSORS.ITensor tensor)
         {
-            return tensor.AsReadOnlyTensorSpan().IsStrided();
+            return _IsStrided(tensor.FlattenedLength, tensor.Lengths, tensor.Strides);
         }
 
         /// <summary>
@@ -93,17 +93,18 @@ namespace $rootnamespace$
         /// <param name="tensor"></param>
         /// <returns>true if the tensor has strides</returns>
         public static bool IsStrided<T>(in this __TENSORS.ReadOnlyTensorSpan<T> tensor)
-        {
-            var strides = tensor.Strides;
-            if (strides.IsEmpty) return false;
+        {            
+            return _IsStrided(tensor.FlattenedLength, tensor.Lengths, tensor.Strides);
+        }
 
-            var lengths = tensor.Lengths;
-            var k = tensor.FlattenedLength;
+        private static bool _IsStrided(nint flatlen, ReadOnlySpan<nint> lengths, ReadOnlySpan<nint> strides)
+        {
+            if (strides.IsEmpty) return false;            
 
             for (int i = 0; i < lengths.Length - 1; ++i)
             {
-                k /= lengths[i];
-                if (strides[i] != k) return true;                
+                flatlen /= lengths[i];
+                if (strides[i] != flatlen) return true;
             }
 
             return strides[strides.Length - 1] != 1;

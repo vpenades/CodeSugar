@@ -5,28 +5,24 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-using Microsoft.ApplicationInsights.DataContracts;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel.DataCollection;
-
-using NUnit.Framework;
-
 namespace CodeSugar
 {
     internal class SourceCodeTests
     {
-        [TestCase(typeof(CodeSugarForSystem))]
-        [TestCase(typeof(CodeSugarForSystemIO))]
-        [TestCase(typeof(CodeSugarForFileProviders))]
-        [TestCase(typeof(CodeSugarForSerialization))]
+        [Test]
+        [Arguments(typeof(CodeSugarForSystem))]
+        [Arguments(typeof(CodeSugarForSystemIO))]
+        [Arguments(typeof(CodeSugarForFileProviders))]
+        [Arguments(typeof(CodeSugarForSerialization))]
 
-        [TestCase(typeof(CodeSugarForNumerics))]
-        [TestCase(typeof(CodeSugarForTensors))]
+        [Arguments(typeof(CodeSugarForNumerics))]
+        [Arguments(typeof(CodeSugarForTensors))]
         
-        [TestCase(typeof(CodeSugarForLogging))]
+        [Arguments(typeof(CodeSugarForLogging))]
 
-        [TestCase(typeof(CodeSugarForImageSharp))]
+        [Arguments(typeof(CodeSugarForImageSharp))]
 
-        [TestCase(typeof(CodeSugarForLinq))]
+        [Arguments(typeof(CodeSugarForLinq))]
         public void ListApiMethods(Type t)
         {
             var methods = ApiInfo.ListMethods(t.Assembly).ToList();
@@ -35,7 +31,7 @@ namespace CodeSugar
 
             foreach (var group in groups)
             {
-                TestContext.Out.WriteLine($"--------- {group.Key.Name}");
+                Console.Out.WriteLine($"--------- {group.Key.Name}");
 
                 var maxReturnLen = methods.Max(item => item.ToReturnString().Length);
 
@@ -44,35 +40,36 @@ namespace CodeSugar
                     var retName = method.ToReturnString();
                     while (retName.Length < maxReturnLen) retName += " ";
 
-                    TestContext.Out.WriteLine($"{retName} {method.ToBodyString()}");
+                    Console.Out.WriteLine($"{retName} {method.ToBodyString()}");
                 }
 
-                TestContext.Out.WriteLine(string.Empty);
+                Console.Out.WriteLine(string.Empty);
             }
         }
 
 
-        [TestCase("CodeSugar.Sys.IO.Sources")]
-        [TestCase("CodeSugar.Sys.Sources")]
-        [TestCase("CodeSugar.Srlzn.Bin.Sources")]
-        [TestCase("CodeSugar.FileProviders.Sources")]        
-        public void TestUsingExistsProperty(string projectName)
+        [Test]
+        [Arguments("CodeSugar.Sys.IO.Sources")]
+        [Arguments("CodeSugar.Sys.Sources")]
+        [Arguments("CodeSugar.Srlzn.Bin.Sources")]
+        [Arguments("CodeSugar.FileProviders.Sources")]        
+        public async Task TestUsingExistsProperty(string projectName)
         {
-            var dinfo = new System.IO.DirectoryInfo(TestContext.CurrentContext.TestDirectory).FindDirectoryTree("src", projectName);
-            Assert.That(dinfo.Exists);
+            var dinfo = new System.IO.DirectoryInfo(AppContext.BaseDirectory).FindDirectoryTree("src", projectName);
+            await Assert.That(dinfo.Exists).IsTrue();
 
             foreach(var finfo in dinfo.EnumerateFiles("*.cs", System.IO.SearchOption.TopDirectoryOnly))
             {
                 var sc = finfo.ReadAllText();
 
                 var result1 = _RoslynExtensions.CheckUsesProperty<System.IO.FileInfo>(sc, "Exists");
-                Assert.That(result1, Is.False, $"{finfo.Name} uses System.IO.FileInfo.Exists");
+                await Assert.That(result1).IsFalse().Because($"{finfo.Name} uses System.IO.FileInfo.Exists");
 
                 var result2 = _RoslynExtensions.CheckUsesProperty<System.IO.FileInfo>(sc, "Length");
-                Assert.That(result2, Is.False, $"{finfo.Name} uses System.IO.FileInfo.Length");
+                await Assert.That(result2).IsFalse().Because($"{finfo.Name} uses System.IO.FileInfo.Length");
 
                 var result3 = _RoslynExtensions.CheckUsesProperty<System.IO.DirectoryInfo>(sc, "Exists");
-                Assert.That(result3, Is.False, $"{finfo.Name} uses System.IO.DirectoryInfo.Exists");
+                await Assert.That(result3).IsFalse().Because($"{finfo.Name} uses System.IO.DirectoryInfo.Exists");
             }            
         }
 
@@ -81,58 +78,61 @@ namespace CodeSugar
         /// </summary>
         /// <param name="projectName"></param>
 
-        [TestCase("CodeSugar.Sys.Sources")]
-        [TestCase("CodeSugar.Sys.IO.Sources")]        
-        [TestCase("CodeSugar.Sys.Text.Sources")]
-        [TestCase("CodeSugar.Srlzn.Bin.Sources")]
-        [TestCase("CodeSugar.FileProviders.Sources")]
+        [Test]
+        [Arguments("CodeSugar.Sys.Sources")]
+        [Arguments("CodeSugar.Sys.IO.Sources")]        
+        [Arguments("CodeSugar.Sys.Text.Sources")]
+        [Arguments("CodeSugar.Srlzn.Bin.Sources")]
+        [Arguments("CodeSugar.FileProviders.Sources")]
         
 
-        [TestCase("CodeSugar.Linq.Sources")]
-        [TestCase("CodeSugar.Numerics.Sources")]
-        [TestCase("CodeSugar.Tensors.Sources")]
+        [Arguments("CodeSugar.Linq.Sources")]
+        [Arguments("CodeSugar.Numerics.Sources")]
+        [Arguments("CodeSugar.Tensors.Sources")]
 
-        [TestCase("CodeSugar.Progress.Log")]
-        [TestCase("CodeSugar.AI")]
-        [TestCase("CodeSugar.ImageSharp")]
+        [Arguments("CodeSugar.Progress.Log")]
+        [Arguments("CodeSugar.AI")]
+        [Arguments("CodeSugar.ImageSharp")]
 
-        public void TestNullableDisabled(string projectName)
+        public async Task TestNullableDisabled(string projectName)
         {
-            var dinfo = new System.IO.DirectoryInfo(TestContext.CurrentContext.TestDirectory).FindDirectoryTree("src", projectName);
-            Assert.That(dinfo.Exists);
+            var dinfo = new System.IO.DirectoryInfo(AppContext.BaseDirectory).FindDirectoryTree("src", projectName);
+            await Assert.That(dinfo.Exists).IsTrue();
 
             foreach (var finfo in dinfo.EnumerateFiles("*.cs", System.IO.SearchOption.TopDirectoryOnly))
             {
                 var sc = finfo.ReadAllText();
+                // TODO: TUnit migration - Complex NUnit constraint. Manual conversion required.
 
-                Assert.That(sc.Contains("#nullable disable"), $"{projectName}/{finfo.Name} does not have #nullable disable");
+                await Assert.That(sc).Contains("#nullable disable"); //$"{projectName}/{finfo.Name} does not have #nullable disable"
             }
         }
 
-        
+
         /// <summary>
         /// Tests whether all using xxx = yyy; instances begin with double underscores '__' to prevent collisions with global usings.
         /// </summary>
         /// <param name="projectName"></param>
-        [TestCase("CodeSugar.Sys.Sources")]
-        [TestCase("CodeSugar.Sys.IO.Sources")]
-        [TestCase("CodeSugar.Sys.Text.Sources")]
-        [TestCase("CodeSugar.Srlzn.Bin.Sources")]
-        [TestCase("CodeSugar.FileProviders.Sources")]        
+        [Test]
+        [Arguments("CodeSugar.Sys.Sources")]
+        [Arguments("CodeSugar.Sys.IO.Sources")]
+        [Arguments("CodeSugar.Sys.Text.Sources")]
+        [Arguments("CodeSugar.Srlzn.Bin.Sources")]
+        [Arguments("CodeSugar.FileProviders.Sources")]        
 
-        [TestCase("CodeSugar.Linq.Sources")]
-        [TestCase("CodeSugar.Numerics.Sources")]
-        [TestCase("CodeSugar.Tensors.Sources")]        
+        [Arguments("CodeSugar.Linq.Sources")]
+        [Arguments("CodeSugar.Numerics.Sources")]
+        [Arguments("CodeSugar.Tensors.Sources")]        
 
-        [TestCase("CodeSugar.Progress.Log")]
-        [TestCase("CodeSugar.AI")]
-        [TestCase("CodeSugar.ImageSharp")]        
-        public void TestUsingAlias(string projectName)
+        [Arguments("CodeSugar.Progress.Log")]
+        [Arguments("CodeSugar.AI")]
+        [Arguments("CodeSugar.ImageSharp")]        
+        public async Task TestUsingAlias(string projectName)
         {
-            var dinfo = new System.IO.DirectoryInfo(TestContext.CurrentContext.TestDirectory).FindDirectoryTree("src", projectName);
-            Assert.That(dinfo.Exists);
+            var dinfo = new System.IO.DirectoryInfo(AppContext.BaseDirectory).FindDirectoryTree("src", projectName);
+            await Assert.That(dinfo.Exists).IsTrue();
 
-            using var scope = Assert.EnterMultipleScope();
+            using var scope = Assert.Multiple();
 
             foreach (var finfo in dinfo.EnumerateFiles("*.cs", System.IO.SearchOption.TopDirectoryOnly))
             {
@@ -141,8 +141,9 @@ namespace CodeSugar
                 foreach (var kvp in _RoslynExtensions.EnumerateUsingAliasDirectives(sc).Distinct())
                 {
                     var alias = kvp.Key;
+                    // TODO: TUnit migration - Complex NUnit constraint. Manual conversion required.
 
-                    Assert.That(alias.StartsWith("__"), $"using {alias} in file {finfo.FullName} must begin with '__' to prevent collisions with global using");
+                    await Assert.That(alias).StartsWith("__"); // , $"using {alias} in file {finfo.FullName} must begin with '__' to prevent collisions with global using");
                 }
             }
         }

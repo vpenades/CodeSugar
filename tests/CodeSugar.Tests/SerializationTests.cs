@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using NUnit.Framework;
-
 namespace CodeSugar
 {
     internal class SerializationTests
@@ -13,28 +11,28 @@ namespace CodeSugar
         private static readonly DateTimeOffset _NOW = DateTimeOffset.Now;
 
         [Test]
-        public void TestStateful()
+        public async Task TestStateful()
         {
             var list = new List<byte>();
 
             list.AsStatefulProgressWriter().WriteLeS32(100).WriteBeS64(200).WriteString("hello world").WritePackedS64(-10);
 
-            Assert.That(list, Has.Count.EqualTo(25));
+            await Assert.That(list).Count().IsEqualTo(25);
 
-            using(var reader = list.GetEnumerator())
+            using (var reader = list.GetEnumerator())
             {
                 reader.ReadLeS32(out var val1).ReadBeS64(out var val2).ReadString(out var val3).ReadPackedS64(out var val4);
 
-                Assert.That(val1, Is.EqualTo(100));
-                Assert.That(val2, Is.EqualTo(200));
-                Assert.That(val3, Is.EqualTo("hello world"));
-                Assert.That(val4, Is.EqualTo(-10));
+                await Assert.That(val1).IsEqualTo(100);
+                await Assert.That(val2).IsEqualTo(200);
+                await Assert.That(val3).IsEqualTo("hello world");
+                await Assert.That(val4).IsEqualTo(-10);
             }
         }
 
 
         [Test]
-        public void TestEndianness()
+        public async Task TestEndianness()
         {
             var list = new List<byte>();
 
@@ -42,11 +40,11 @@ namespace CodeSugar
 
             list.AsStatefulProgressWriter().WriteLeS32(100).WriteBeS32(100);
 
-            Assert.That(list, Is.EqualTo(new byte[] { 100, 0, 0, 0, 0, 0, 0, 100 }));
+            await Assert.That(list).IsSequenceEqualTo(new byte[] { 100, 0, 0, 0, 0, 0, 0, 100 });
         }
 
         [Test]
-        public void TestBinaryWriterCompat()
+        public async Task TestBinaryWriterCompat()
         {
             using(var m = new System.IO.MemoryStream())
             {
@@ -58,8 +56,8 @@ namespace CodeSugar
 
                 m.Position = 0;
 
-                m.ReadLeS32(out var v1); Assert.That(v1, Is.EqualTo(100));
-                m.ReadLeS16(out var v2); Assert.That(v2, Is.EqualTo(100));
+                m.ReadLeS32(out var v1); await Assert.That(v1).IsEqualTo(100);
+                m.ReadLeS16(out var v2); await Assert.That((int)v2).IsEqualTo(100);
             }
         }
 
@@ -251,7 +249,7 @@ namespace CodeSugar
                 return stream.ReadLeF32(out v.X).ReadLeF32(out v.Y).ReadLeF32(out v.Z);
             }
 
-            public void Check()
+            public async Task Check()
             {
                 var other = new _SerializableObject();
                 other.Init();
@@ -260,7 +258,7 @@ namespace CodeSugar
                 
                 foreach(var (left,right) in pairs)
                 {
-                    Assert.That(left, Is.EqualTo(right));
+                    await Assert.That(left).IsEqualTo(right);
                 }
             }
 
