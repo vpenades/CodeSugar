@@ -7,7 +7,7 @@ using System.Linq;
 
 using TUnit;
 
-using CODESUGARIO = CodeSugar.CodeSugarForSystemIO;
+using CODESUGARIO = CodeSugar.CodeSugarExtensions;
 
 namespace CodeSugar
 {

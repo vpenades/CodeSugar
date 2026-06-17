@@ -19,7 +19,7 @@ namespace CodeSugar
         [Test]
         public async Task TestPathSlicer()
         {
-            var slicer = new CodeSugarForFileProviders._PathSlicer("dir\\", StringComparison.OrdinalIgnoreCase);
+            var slicer = new CodeSugarExtensions._PathSlicer("dir\\", StringComparison.OrdinalIgnoreCase);
             await Assert.That(slicer.FullPath).IsEqualTo("dir");
 
             await Assert.That(slicer.Contains("")).IsFalse();
