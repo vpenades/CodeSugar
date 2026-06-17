@@ -310,7 +310,7 @@ namespace CodeSugar
         {
             var uri = new Uri("http://www.google.com");
 
-            var finfo = AttachmentInfo.From("test.url").WriteObjectEx(f => f.WriteShortcut(uri));
+            var finfo = AttachmentInfo.From("test.url").WriteObjectEx(f => f.WriteShortcut(uri));            
 
             await Assert.That(finfo.ReadShortcutUri()).IsEqualTo(uri);
 

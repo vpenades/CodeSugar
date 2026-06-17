@@ -30,15 +30,15 @@ namespace __CODESUGAR_ROOTNAMESPACE__
     {
         #region API
 
-        public static bool TryLoadSharpCompressArchive([DisallowNull] this __FINFO finfo, [AllowNull] SharpCompress.Readers.ReaderOptions options, [AllowNull] __PROGRESS progress, [AllowNull] __LOGGER logger, [NotNullWhen(true)] out IFileProvider provider)
+        public static bool TryLoadSharpCompressArchive([DisallowNull] this __FINFO finfo, [AllowNull] SharpCompress.Readers.ReaderOptions options, [AllowNull] __LOGGER logger, [NotNullWhen(true)] out IFileProvider provider)
         {
-            provider = _SharpCompressProvider.TryCreate(finfo, options, progress, logger);
+            provider = _SharpCompressProvider.TryCreate(finfo, options, logger);
             return provider != null;
         }
         
-        public static async Task<IFileProvider> TryLoadSharpCompressArchiveAsync([DisallowNull] this __FINFO finfo, [AllowNull] SharpCompress.Readers.ReaderOptions options, [AllowNull] __PROGRESS progress, [AllowNull] __LOGGER logger)
+        public static async Task<IFileProvider> TryLoadSharpCompressArchiveAsync([DisallowNull] this __FINFO finfo, [AllowNull] SharpCompress.Readers.ReaderOptions options, [AllowNull] __LOGGER logger)
         {
-            return await _SharpCompressProvider.TryCreateAsync(finfo, options, progress, logger);
+            return await _SharpCompressProvider.TryCreateAsync(finfo, options, logger);
         }
 
         #endregion
@@ -59,13 +59,13 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 return null;
             }            
 
-            public static _SharpCompressProvider TryCreate([DisallowNull] __FINFO finfo, SharpCompress.Readers.ReaderOptions options, __PROGRESS progress, __LOGGER logger)
+            public static _SharpCompressProvider TryCreate([DisallowNull] __FINFO finfo, SharpCompress.Readers.ReaderOptions options, __LOGGER logger)
             {
                 if (finfo == null || !finfo.Exists) return null;
 
                 try
                 {
-                    var entries = _SharpCompressEntry.ReadEntries(finfo, options, progress, logger);
+                    var entries = _SharpCompressEntry.ReadEntries(finfo, options, logger);
 
                     return new _SharpCompressProvider(entries, finfo.FullName);
                 }                
@@ -78,13 +78,13 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 return null;
             }
 
-            public static async Task<_SharpCompressProvider> TryCreateAsync([DisallowNull] __FINFO finfo, SharpCompress.Readers.ReaderOptions options, __PROGRESS progress, __LOGGER logger)
+            public static async Task<_SharpCompressProvider> TryCreateAsync([DisallowNull] __FINFO finfo, SharpCompress.Readers.ReaderOptions options, __LOGGER logger)
             {
                 if (finfo == null || !finfo.Exists) return null;
 
                 try
                 {
-                    var entries = await _SharpCompressEntry.ReadEntriesAsync(finfo, options, progress, logger);
+                    var entries = await _SharpCompressEntry.ReadEntriesAsync(finfo, options, logger);
 
                     return new _SharpCompressProvider(entries, finfo.FullName);
                 }
@@ -105,11 +105,11 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             private _SharpCompressProvider(IEnumerable<_SharpCompressEntry> entries, string archName)
             {
-#if NET10_0_OR_GREATER
+                #if NET10_0_OR_GREATER
                 var comparer = StringComparer.Create(System.Globalization.CultureInfo.InvariantCulture, System.Globalization.CompareOptions.NumericOrdering);
-#else
+                #else
                 var comparer = StringComparer.Create(System.Globalization.CultureInfo.InvariantCulture, System.Globalization.CompareOptions.OrdinalIgnoreCase);
-#endif
+                #endif
 
                 _ArchiveName = archName;
 
@@ -187,12 +187,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             public static IReadOnlyList<_SharpCompressEntry> EmptyArray { get; } = Array.Empty<_SharpCompressEntry>();
 
-            public static IReadOnlyList<_SharpCompressEntry> ReadEntries(__FINFO finfo, SharpCompress.Readers.ReaderOptions options, __PROGRESS progress, __LOGGER logger)
+            public static IReadOnlyList<_SharpCompressEntry> ReadEntries(__FINFO finfo, SharpCompress.Readers.ReaderOptions options, __LOGGER logger)
             {
-                if (finfo == null || !finfo.Exists) return EmptyArray;                
-
-                progress ??= logger as __PROGRESS;
-                logger ??= progress as __LOGGER;
+                if (finfo == null || !finfo.Exists) return EmptyArray;
 
                 using var arch = SharpCompress.Archives.ArchiveFactory.OpenArchive(finfo.FullName, options);                
                 if (arch == null) throw new InvalidOperationException("Could not open archive");
@@ -200,25 +197,22 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 if (arch.IsEncrypted && string.IsNullOrEmpty(options?.Password)) throw new ArgumentNullException("Password required", nameof(options));
 
                 return arch.IsSolid
-                    ? _SharpCompressCachedEntry.ReadEntries(finfo, arch, progress)
-                    : _SharpCompressRandomEntry.ReadEntries(finfo, options, arch, progress);
+                    ? _SharpCompressCachedEntry.ReadEntries(finfo, arch)
+                    : _SharpCompressRandomEntry.ReadEntries(finfo, options, arch);
             }
 
-            public static async Task<IReadOnlyList<_SharpCompressEntry>> ReadEntriesAsync(__FINFO finfo, SharpCompress.Readers.ReaderOptions options, __PROGRESS progress, __LOGGER logger)
+            public static async Task<IReadOnlyList<_SharpCompressEntry>> ReadEntriesAsync(__FINFO finfo, SharpCompress.Readers.ReaderOptions options, __LOGGER logger)
             {
                 if (finfo == null || !finfo.Exists) return EmptyArray;
-
-                progress ??= logger as __PROGRESS;
-                logger ??= progress as __LOGGER;
-
+                
                 await using var arch = await SharpCompress.Archives.ArchiveFactory.OpenAsyncArchive(finfo.FullName, options);
                 if (arch == null) throw new InvalidOperationException("Could not open archive");
 
                 if (await arch.IsEncryptedAsync() && string.IsNullOrEmpty(options?.Password)) throw new ArgumentNullException("Password required", nameof(options));
 
                 return await arch.IsSolidAsync()
-                    ? await _SharpCompressCachedEntry.ReadEntriesAsync(finfo, arch, progress)
-                    : await _SharpCompressRandomEntry.ReadEntriesAsync(finfo, options, arch, progress);
+                    ? await _SharpCompressCachedEntry.ReadEntriesAsync(finfo, arch)
+                    : await _SharpCompressRandomEntry.ReadEntriesAsync(finfo, options, arch);
             }
 
             protected _SharpCompressEntry(string key, bool isDirectory)
@@ -276,7 +270,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 return true;
             }            
 
-            public Stream CreateReadStream() { throw new NotImplementedException(); }            
+            public virtual Stream CreateReadStream() { throw new NotImplementedException(); }            
 
             #endregion
         }
@@ -287,10 +281,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         [System.Diagnostics.DebuggerDisplay("_SharpCompressDummyDir {Name}")]
         sealed class _SharpCompressDirectory : _SharpCompressEntry , __XINFO
         {
-            public _SharpCompressDirectory(string key) : base(key, true) { }
-
-            string __XINFO.PhysicalPath => null;
-            public Stream CreateReadStream() { throw new NotImplementedException(); }
+            public _SharpCompressDirectory(string key) : base(key, true) { }                        
         }
 
         /// <summary>
@@ -299,6 +290,8 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         [System.Diagnostics.DebuggerDisplay("_SharpCompressRandomArchive {_Archive.FullName}")]
         sealed class _SharpCompressRandomArchive
         {
+            #region lifecycle
+
             public _SharpCompressRandomArchive(__FINFO archive, ReaderOptions options, bool useCache)
             {
                 _Archive = archive;
@@ -307,15 +300,23 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 _UseCache = useCache;
             }
 
+            #endregion
+
+            #region data
+
             private readonly __FINFO _Archive;
 
             private readonly SharpCompress.Readers.ReaderOptions _Options;
 
             private readonly Object _Mutex = new object();
 
-            private readonly bool _UseCache;            
+            private readonly bool _UseCache;
 
-            public System.IO.MemoryStream CreateReadStream(string key)
+            #endregion
+
+            #region API
+
+            public System.IO.MemoryStream CreateMemoryStream(string key)
             {
                 lock (_Mutex)
                 {
@@ -336,6 +337,23 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                     }
                 }
             }
+
+            public System.IO.Stream CreateDirectStream(string key)
+            {
+                var arch = SharpCompress.Archives.ArchiveFactory.OpenArchive(_Archive.FullName, _Options);
+                
+                var entry = arch.Entries.FirstOrDefault(item => item.Key == key);
+                var stream = entry?.OpenEntryStream();
+                if (stream == null)
+                {
+                    arch.Dispose();
+                    return null;
+                }
+
+                return stream.WithDisposeObserver(() => arch.Dispose());
+            }
+
+            #endregion
         }
 
         /// <summary>
@@ -345,42 +363,32 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         /// It also has weak content cache support (may be counterproductive if we know the entry is read only once)
         /// </remarks>
         [System.Diagnostics.DebuggerDisplay("_SharpCompressRandomEntry {Name}")]
-        sealed class _SharpCompressRandomEntry : _SharpCompressEntry, __XINFO, IEquatable<_SharpCompressRandomEntry>
+        sealed class _SharpCompressRandomEntry : _SharpCompressEntry, IEquatable<_SharpCompressRandomEntry>
         {
             #region lifecycle                
 
-            internal static IReadOnlyList<_SharpCompressEntry> ReadEntries(__FINFO finfo, SharpCompress.Readers.ReaderOptions options, IArchive arch, __PROGRESS progress)
+            internal static IReadOnlyList<_SharpCompressEntry> ReadEntries(__FINFO finfo, SharpCompress.Readers.ReaderOptions options, IArchive arch)
             {
-                using var prog = _SharpCompressProgress.Create(progress, arch);
-
                 var context = new _SharpCompressRandomArchive(finfo, options, true);
-
                 var entries = new List<_SharpCompressEntry>();
 
                 foreach (var entry in arch.Entries)
                 {
-                    entries.Add(_ProcessEntry(context, entry));
-                    prog.Report(entry);
+                    entries.Add(_ProcessEntry(context, entry));                    
                 }                
 
                 return entries;
             }
 
-            internal static async Task<IReadOnlyList<_SharpCompressEntry>> ReadEntriesAsync(__FINFO finfo, SharpCompress.Readers.ReaderOptions options, IAsyncArchive arch, __PROGRESS progress)
+            internal static async Task<IReadOnlyList<_SharpCompressEntry>> ReadEntriesAsync(__FINFO finfo, SharpCompress.Readers.ReaderOptions options, IAsyncArchive arch)
             {
-                using var prog = await _SharpCompressProgress.CreateAsync(progress, arch);
-
                 var context = new _SharpCompressRandomArchive(finfo, options, true);
-
                 var entries = new List<_SharpCompressEntry>();
 
                 await foreach (var entry in arch.EntriesAsync)
                 {
-                    entries.Add(_ProcessEntry(context, entry));
-                    prog.Report(entry);
-                }
-
-                
+                    entries.Add(_ProcessEntry(context, entry));                    
+                }                
 
                 return entries;
             }
@@ -405,6 +413,8 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             #region data
             private readonly _SharpCompressRandomArchive _Context;
 
+            private const int _CacheMaxSize = int.MaxValue / 2;
+
             private WeakReference<Byte[]> _WeakContent;
 
             public override int GetHashCode()
@@ -428,9 +438,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             #endregion
 
-            #region API
-
-            string __XINFO.PhysicalPath => null;
+            #region API            
 
             public async Task PreloadAsync()
             {
@@ -444,14 +452,18 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             internal void PreloadFrom(SharpCompress.Readers.IReader reader)
             {
-                using var m = _Context.CreateReadStream(Key);
+                using var m = _Context.CreateMemoryStream(Key);
 
                 _WeakContent = new WeakReference<byte[]>(m.ToArray());
             }
 
-            public Stream CreateReadStream()
+            public override Stream CreateReadStream()
             {
-                
+                if (this.Length >= _CacheMaxSize)
+                {
+                    return _Context.CreateDirectStream(Key);
+                }
+
                 if (_WeakContent != null && _WeakContent.TryGetTarget(out var strongContent))
                 {
                     return new MemoryStream(strongContent, false);
@@ -459,12 +471,12 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
                 _WeakContent = null;
 
-                using var m = _Context.CreateReadStream(Key);
+                using var m = _Context.CreateMemoryStream(Key);
 
                 _WeakContent = new WeakReference<byte[]>(m.ToArray());
 
                 m.Position = 0;
-                return m;                
+                return m;
             }
 
             #endregion
@@ -474,14 +486,12 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         /// An archive entry that hard caches the content of the archive in memory
         /// </summary>
         [System.Diagnostics.DebuggerDisplay("_SharpCompressCachedEntry {Name}")]
-        sealed class _SharpCompressCachedEntry : _SharpCompressEntry, __XINFO, IEquatable<_SharpCompressCachedEntry>
+        sealed class _SharpCompressCachedEntry : _SharpCompressEntry, IEquatable<_SharpCompressCachedEntry>
         {
             #region lifecycle                
 
-            internal static IReadOnlyList<_SharpCompressEntry> ReadEntries(__FINFO finfo, IArchive arch, __PROGRESS progress)
+            internal static IReadOnlyList<_SharpCompressEntry> ReadEntries(__FINFO finfo, IArchive arch)
             {
-                using var prog = _SharpCompressProgress.Create(progress, arch);
-
                 var entries = new List<_SharpCompressEntry>();
 
                 using (var reader = arch.ExtractAllEntries())
@@ -496,8 +506,6 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                         {
                             var entry = CreateFromCurrent(reader);
                             if (entry != null) entries.Add(entry);
-
-                            prog.Report(reader.Entry);
                         }
                     }
                 }                
@@ -505,10 +513,8 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 return entries;
             }
 
-            internal static async Task<IReadOnlyList<_SharpCompressEntry>> ReadEntriesAsync(__FINFO finfo, IAsyncArchive arch, __PROGRESS progress)
+            internal static async Task<IReadOnlyList<_SharpCompressEntry>> ReadEntriesAsync(__FINFO finfo, IAsyncArchive arch)
             {
-                using var prog = await _SharpCompressProgress.CreateAsync(progress, arch);
-
                 var entries = new List<_SharpCompressEntry>();
 
                 await using var reader = await arch.ExtractAllEntriesAsync();
@@ -523,8 +529,6 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                     {
                         var entry = await CreateFromCurrentAsync(reader);
                         if (entry != null) entries.Add(entry);
-
-                        prog.Report(reader.Entry);
                     }
                 }                
 
@@ -628,82 +632,12 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             #endregion
 
-            #region API
+            #region API            
 
-            string __XINFO.PhysicalPath => null;
-
-            public Stream CreateReadStream()
+            public override Stream CreateReadStream()
             {
                 return new MemoryStream(_Content.Array, _Content.Offset, _Content.Count, false);
             }
-
-            #endregion
-        }
-
-
-        /// <summary>
-        /// Used to track the progress of reading an archive.
-        /// </summary>
-        sealed class _SharpCompressProgress : IProgress<SharpCompress.Common.IEntry>, IDisposable
-        {
-            #region lifecycle
-
-            public static _SharpCompressProgress Create(__PROGRESS progress, IArchive archive)
-            {
-                return new _SharpCompressProgress(progress, archive.TotalSize, archive.TotalUncompressedSize);
-            }
-
-            public static async Task<_SharpCompressProgress> CreateAsync(__PROGRESS progress, IAsyncArchive archive)
-            {
-                var compressed = await archive.TotalSizeAsync();
-                var uncompressed = await archive.TotalUncompressedSizeAsync();
-
-                return new _SharpCompressProgress(progress, compressed, uncompressed);
-            }
-
-            private _SharpCompressProgress(__PROGRESS progress, long compressed, long uncompressed)
-            {
-                _Progress = progress;
-                _TotalCompressed = compressed;
-                _TotalUncompressed = uncompressed;
-            }
-
-            public void Dispose()
-            {
-                _Progress?.Report(100);
-            }
-
-            #endregion
-
-            #region data
-
-            private readonly __PROGRESS _Progress;
-            private readonly long _TotalCompressed;
-            private readonly long _TotalUncompressed;
-
-            private long _Compressed;
-            private long _Uncompressed;
-            private int _EntryCount;
-
-            #endregion
-
-            #region API
-
-            public void Report(SharpCompress.Common.IEntry entry)
-            {
-                _Compressed += entry.CompressedSize;
-                _Uncompressed += entry.Size;
-                _EntryCount++;
-
-                if (_Progress == null) return;
-
-                long percent = 0;
-
-                if (_TotalCompressed > 0) percent = _Compressed * 100 / _TotalCompressed;
-                if (_TotalUncompressed > 0) percent = _Uncompressed * 100 / _TotalUncompressed;
-
-                _Progress.Report((int)percent);
-            }            
 
             #endregion
         }

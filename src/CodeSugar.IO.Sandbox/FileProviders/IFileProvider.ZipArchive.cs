@@ -24,15 +24,23 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         #region API
 
         [return: NotNull]
-        public static __XINFO ToIFileInfo(this System.IO.Compression.ZipArchiveEntry entry)
+        public static __XINFO ToIFileInfo([DisallowNull] this System.IO.Compression.ZipArchiveEntry entry)
         {
             return entry == null
                 ? __NULLFILE
                 : new _ZipArchiveFile(entry);
         }
 
+        /// <summary>
+        /// Wraps the <see cref=".IO.Compression.ZipArchive"/> as a <see cref="__XPROVIDER"/>
+        /// </summary>
+        /// <param name="zip">The archive to wrap</param>
+        /// <returns>A <see cref="__XPROVIDER"/> which is valid as long as the underlaying archive is not disposed.</returns>
+        /// <remarks>
+        /// The caller is responsible of disposing the zip archive.
+        /// </remarks>
         [return: NotNull]
-        public static __XPROVIDER ToIFileProvider(this System.IO.Compression.ZipArchive zip)
+        public static __XPROVIDER ToIFileProvider([DisallowNull] this System.IO.Compression.ZipArchive zip)
         {
             return zip == null
                 ? __NULLPROVIDER

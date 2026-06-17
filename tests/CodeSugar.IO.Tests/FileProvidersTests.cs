@@ -107,7 +107,7 @@ namespace CodeSugar
         [Arguments("arch.cb7")]
         public async Task TestSharpCompress(string archiveName)
         {
-            var provider = await ResourceInfo.From(archiveName).File.TryLoadSharpCompressArchiveAsync(null, null, null);
+            var provider = await ResourceInfo.From(archiveName).File.TryLoadSharpCompressArchiveAsync(null, null);
 
             await Assert.That(provider.GetFileInfo("subd\\02.png").Exists).IsTrue();
         }

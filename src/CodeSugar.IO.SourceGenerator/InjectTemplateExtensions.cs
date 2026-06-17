@@ -18,12 +18,10 @@ namespace CodeSugar.IO.SourceGenerators
             var hasBigMemoryStream = this.NugetPackages.ContainsKey("Microsoft.IO.RecyclableMemoryStream");
             var hasSharpCompress = this.NugetPackages.ContainsKey("SharpCompress");            
 
-            ProcessTemplates(context,"SysIO", n => n.Contains(".SysIO."));
+            ProcessTemplates(context,"SystemIO", n => n.Contains(".Templates.SystemIO."));
 
-            if (hasAbstractions)
-            {
-                ProcessTemplates(context,"FileProviders", n => n.Contains(".FileProviders."));
-            }
+            if (hasAbstractions) ProcessTemplates(context,"FileProviders", n => n.Contains(".Templates.FileProviders."));
+            if (hasSharpCompress) ProcessTemplates(context, "SharpCompress", n => n.Contains(".Templates.SharpCompress."));
         }
 
         private int _TemplateIndex = 0;

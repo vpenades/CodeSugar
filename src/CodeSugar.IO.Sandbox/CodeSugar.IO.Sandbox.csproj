@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <DefineConstants>$(DefineConstants);__REFERENCES_MICROSOFTIORECYCLABLEMEMORYSTREAM</DefineConstants>
+    <DefineConstants>$(DefineConstants);__REFERENCES_MICROSOFTIORECYCLABLEMEMORYSTREAM;__REFERENCES_SHARPCOMPRESS</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

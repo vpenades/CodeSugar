@@ -21,6 +21,12 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarExtensions
     {
+        [return: NotNull]
+        private static System.IO.MemoryStream _ToMemoryStream(__BYTESSEGMENT segment)
+        {
+            return new MemoryStream(segment.Array ?? Array.Empty<byte>(), segment.Offset, segment.Count, false);
+        }
+
         public static __MEMSTREAM ToMemoryStream([DisallowNull] this __STREAM stream)
         {
             switch (stream)

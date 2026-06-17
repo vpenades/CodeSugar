@@ -25,8 +25,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="..\CodeSugar.IO.Sandbox\*.cs" LinkBase="Templates\SysIO" />
+    <EmbeddedResource Include="..\CodeSugar.IO.Sandbox\*.cs" LinkBase="Templates\SystemIO" />
+    <EmbeddedResource Include="..\CodeSugar.IO.Sandbox\SystemIO.FileSystem\*.cs" LinkBase="Templates\SystemIO" />
+    <EmbeddedResource Include="..\CodeSugar.IO.Sandbox\SystemIO.Streams\*.cs" LinkBase="Templates\SystemIO" />
+    <EmbeddedResource Include="..\CodeSugar.IO.Sandbox\SystemIO.Zip\*.cs" LinkBase="Templates\SystemIO" />
     <EmbeddedResource Include="..\CodeSugar.IO.Sandbox\FileProviders\*.cs" LinkBase="Templates\FileProviders" />
+    <EmbeddedResource Include="..\CodeSugar.IO.Sandbox\SharpCompress\*.cs" LinkBase="Templates\SharpCompress" />
   </ItemGroup>
 
   <ItemGroup>
