@@ -1,5 +1,4 @@
-
-using System;
+﻿using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
@@ -98,27 +97,31 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             GuardNotNull(xinfo);
             if (xinfo.IsDirectory) throw new ArgumentException("directories don't have a stream", nameof(xinfo));
 
-            if (!string.IsNullOrWhiteSpace(xinfo.PhysicalPath))
+            // if we can get the internal FileInfo, use it over PhysicalPath because we can update
+            // it after writing, which will also update the public properties of the IFileInfo.
+            if (TryGetInternalFileInfo(xinfo, out var finfo)) 
             {
-                return new System.IO.FileInfo(xinfo.PhysicalPath).Create;
+                return GetWriteStreamFunction(finfo, true); // true to update after finished writing
             }
 
-            if (xinfo is IServiceProvider srv) // lambdas
+            // use the physical path.
+            if (!string.IsNullOrWhiteSpace(xinfo.PhysicalPath))
             {
-                // this one has the advantage of updating the internal FileInfo's state. (.Exists and .Length)
-                if (srv.GetService(typeof(Func<System.IO.FileInfo>)) is System.IO.FileInfo finfo)
-                {
-                    return finfo.Create;
-                }
+                finfo = new System.IO.FileInfo(xinfo.PhysicalPath);
+                return GetWriteStreamFunction(finfo, false); // false because there's nothing to update
+            }
 
+            // try get the open stream lambdas
+            if (xinfo is IServiceProvider srv2)
+            {
                 // file system writer
-                if (srv.GetService(typeof(Func<FileMode, System.IO.Stream>)) is Func<FileMode, System.IO.Stream> lambda0)
+                if (srv2.GetService(typeof(Func<FileMode, System.IO.Stream>)) is Func<FileMode, System.IO.Stream> lambda0)
                 {
                     return () => lambda0.Invoke(FileMode.Create);
                 }                
 
-                // poor man's writer
-                if (srv.GetService(typeof(Action<ArraySegment<Byte>>)) is Action<ArraySegment<Byte>> lambda1)
+                // WriteAllBytes
+                if (srv2.GetService(typeof(Action<ArraySegment<Byte>>)) is Action<ArraySegment<Byte>> lambda1)
                 {
                     return ()=> new _ObservableMemoryStream(lambda1);
                 }                
