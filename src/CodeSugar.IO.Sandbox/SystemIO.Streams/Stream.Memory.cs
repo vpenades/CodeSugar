@@ -9,9 +9,6 @@ using System.Diagnostics.CodeAnalysis;
 using __STREAM = System.IO.Stream;
 using __MEMSTREAM = System.IO.MemoryStream;
 using __BYTESSEGMENT = System.ArraySegment<byte>;
-using System.Runtime.CompilerServices;
-
-
 
 #if __REFERENCES_MICROSOFTIORECYCLABLEMEMORYSTREAM
 using __BIGMEMSTREAM = Microsoft.IO.RecyclableMemoryStream;

@@ -7,10 +7,6 @@ using System.Runtime.CompilerServices;
 
 #nullable disable
 
-using __FINFO = System.IO.FileInfo;
-using __DINFO = System.IO.DirectoryInfo;
-using __SINFO = System.IO.FileSystemInfo;
-
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarExtensions

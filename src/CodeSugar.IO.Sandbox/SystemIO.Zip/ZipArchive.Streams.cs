@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.CompilerServices;
+using System.Diagnostics.CodeAnalysis;
 
 #nullable disable
 
 using __ZIPENTRY = System.IO.Compression.ZipArchiveEntry;
 using __BYTESSEGMENT = System.ArraySegment<byte>;
-
-using System.IO;
-using System.Diagnostics.CodeAnalysis;
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {

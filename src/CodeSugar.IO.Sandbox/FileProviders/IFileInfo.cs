@@ -25,7 +25,12 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
         #endregion
 
-        #region wrappers
+        #region API
+
+        public static bool IsPhysical(this __XINFO entry)
+        {
+            return !string.IsNullOrEmpty(entry?.PhysicalPath);
+        }
 
         [return: NotNull]
         public static __XINFO ToIFileInfo(this __XDIRECTORY dir, string fallbackName)

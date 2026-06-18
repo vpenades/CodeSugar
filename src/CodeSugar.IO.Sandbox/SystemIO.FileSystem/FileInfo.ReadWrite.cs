@@ -4,15 +4,12 @@ using System.Text;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Diagnostics.CodeAnalysis;
 
 #nullable disable
 
 using __FINFO = System.IO.FileInfo;
 using __BYTESSEGMENT = System.ArraySegment<byte>;
-
-using System.Diagnostics.CodeAnalysis;
-
-using static System.Net.Mime.MediaTypeNames;
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {

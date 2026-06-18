@@ -11,7 +11,6 @@ using System.Diagnostics.CodeAnalysis;
 
 using __STREAM = System.IO.Stream;
 using __BYTESSEGMENT = System.ArraySegment<byte>;
-using System.Xml.Serialization;
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {

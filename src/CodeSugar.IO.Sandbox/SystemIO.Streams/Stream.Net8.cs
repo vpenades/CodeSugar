@@ -10,7 +10,6 @@ using System.Threading;
 
 using __STREAM = System.IO.Stream;
 
-
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarExtensions

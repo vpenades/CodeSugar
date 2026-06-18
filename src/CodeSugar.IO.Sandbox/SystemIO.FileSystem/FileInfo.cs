@@ -8,7 +8,6 @@ using System.Runtime.CompilerServices;
 #nullable disable
 
 using __FINFO = System.IO.FileInfo;
-using __BYTESSEGMENT = System.ArraySegment<byte>;
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
