@@ -270,15 +270,15 @@ namespace CodeSugar
             var readme_txt_0 = testDir.UseFileInfo("readme.txt");
             var readme_txt_1 = testDir.UseFileInfo("README.txt");
 
-            readme_txt_0.WriteAllText("lowercase");
-            readme_txt_1.WriteAllText("uppercase");
+            readme_txt_0.GetWriteStreamFunction().WriteAllText("lowercase");
+            readme_txt_1.GetWriteStreamFunction().WriteAllText("uppercase");
 
             foreach(var readme_txt in testDir.GetFiles("*.txt"))
             {
                 Console.Out.WriteLine(readme_txt.FullName);
             }
 
-            bool isCaseSensitiveOS = readme_txt_0.ReadAllText() == "lowercase";
+            bool isCaseSensitiveOS = readme_txt_0.GetReadStreamFunction().ReadAllText() == "lowercase";
 
             Console.Out.WriteLine($"OS file system is case sensitive: {isCaseSensitiveOS}");            
 
@@ -336,7 +336,7 @@ namespace CodeSugar
 
             // test resolve file:            
 
-            url1 = AttachmentInfo.From("dir.1.url").WriteShortcut(textFile.Directory.FullName);
+            url1 = AttachmentInfo.From("dir.1.url").WriteShortcut(textFile.Directory!.FullName);
             url2 = AttachmentInfo.From("dir.2.url").WriteShortcut(url1.FullName);
 
             await Assert.That(url2.TryResolveShortcutDir(out var resolvedDir)).IsTrue();
@@ -378,7 +378,7 @@ namespace CodeSugar
         {
             var rinfo = ResourceInfo.From("readme.txt");            
 
-            var file = await rinfo.File.Directory.Parent.FindFirstFileAsync(f => f.Name == "readme.txt", SearchOption.AllDirectories, System.Threading.CancellationToken.None, this);
+            var file = await rinfo.File.Directory!.Parent.FindFirstFileAsync(f => f.Name == "readme.txt", SearchOption.AllDirectories, System.Threading.CancellationToken.None, this);
             await Assert.That(file).IsNotNull();
             
             var files = await rinfo.File.Directory.Parent.FindAllFilesAsync(f => f.Name == "readme.txt", SearchOption.AllDirectories, System.Threading.CancellationToken.None, this);
