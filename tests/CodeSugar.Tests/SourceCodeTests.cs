@@ -12,10 +12,7 @@ namespace CodeSugar
         [Test]
         [Explicit] // to be replaced by a template analyzer
         [Arguments(typeof(CodeSugarForSystem))]        
-        [Arguments(typeof(CodeSugarForSerialization))]
-
-        [Arguments(typeof(CodeSugarForNumerics))]
-        [Arguments(typeof(CodeSugarForTensors))]
+        [Arguments(typeof(CodeSugarForSerialization))]        
         
         [Arguments(typeof(CodeSugarForLogging))]
 

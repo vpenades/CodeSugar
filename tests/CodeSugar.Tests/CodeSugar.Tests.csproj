@@ -45,12 +45,10 @@
     <ProjectReference Include="..\..\src\CodeSugar.ICommand\CodeSugar.ICommand.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.ImageSharp\CodeSugar.ImageSharp.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Linq.Sources\CodeSugar.Linq.csproj" />
-    <ProjectReference Include="..\..\src\CodeSugar.Numerics.Sources\CodeSugar.Numerics.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Progress.Log\CodeSugar.Progress.Log.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Srlzn.Bin.Sources\CodeSugar.Srlzn.Bin.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Sys.Sources\CodeSugar.Sys.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Sys.Text.Sources\CodeSugar.Sys.Text.csproj" />
-    <ProjectReference Include="..\..\src\CodeSugar.Tensors.Sources\CodeSugar.Tensors.csproj" />
   </ItemGroup>
 
   <ItemGroup>

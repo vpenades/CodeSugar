@@ -4,24 +4,18 @@ using System.Text;
 
 using Microsoft.CodeAnalysis;
 
-namespace CodeSugar.IO
+namespace CodeSugar.Numerics
 {
     [Generator]
     public sealed class InjectTemplateExtensions : CodeInjectorGenerator
     {
         protected override void InjectSources(SourceProductionContext context)
         {
-            var hasAbstractions = this.NugetPackages.ContainsKey("Microsoft.Extensions.FileProviders.Abstractions");
-            var hasPhysical = this.NugetPackages.ContainsKey("Microsoft.Extensions.FileProviders.Physical");
-            var hasEmbedded = this.NugetPackages.ContainsKey("Microsoft.Extensions.FileProviders.Embedded");
-            var hasComposite = this.NugetPackages.ContainsKey("Microsoft.Extensions.FileProviders.Composite");
-            var hasBigMemoryStream = this.NugetPackages.ContainsKey("Microsoft.IO.RecyclableMemoryStream");
-            var hasSharpCompress = this.NugetPackages.ContainsKey("SharpCompress");            
+            var hasTensors = this.NugetPackages.ContainsKey("System.Numerics.Tensors");        
 
-            ProcessTemplates(context,"SystemIO", n => n.Contains(".Templates.SystemIO."));
+            ProcessTemplates(context,"Vectors", n => n.Contains(".Templates.Vectors."));
 
-            if (hasAbstractions) ProcessTemplates(context,"FileProviders", n => n.Contains(".Templates.FileProviders."));
-            if (hasSharpCompress) ProcessTemplates(context, "SharpCompress", n => n.Contains(".Templates.SharpCompress."));
+            if (hasTensors) ProcessTemplates(context,"Tensors", n => n.Contains(".Templates.Tensors."));
         }
 
         private int _TemplateIndex = 0;
@@ -61,7 +55,7 @@ namespace CodeSugar.IO
 
             foreach (var n in nugets)
             {
-                if (n.Key.StartsWith("Microsoft.Extensions") || n.Key == "SharpCompress" || n.Key.EndsWith("RecyclableMemoryStream"))
+                if (n.Key == "System.Numerics.Tensors" || n.Key == "SixLabors.ImageSharp")
                 {
                     var declaration = "#define __REFERENCES_" + n.Key.Replace(".", "").ToUpper();
                     sb.AppendLine(declaration);
