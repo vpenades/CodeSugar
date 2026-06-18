@@ -18,51 +18,26 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarExtensions
     {
-        #region diagnostics
-
-        #if !NET
-
-        /// <summary>
-		/// Checks whether a <see cref="__SINFO"/> is not null.
-		/// </summary>        
-		/// <exception cref="ArgumentNullException"></exception>
-        public static void GuardNotNull(this __SINFO info, string name = null)
-        {
-            if (info == null) throw new ArgumentNullException(name ?? nameof(info));
-        }        
-
-        /// <summary>
-		/// Checks whether a <see cref="__SINFO"/> exists in the file system.
-		/// </summary>        
-		/// <exception cref="ArgumentNullException"></exception>
-        public static void GuardExists(this __SINFO info, string name = null)
-        {
-            if (info == null) throw new ArgumentNullException(name);
-            if (!info.RefreshedExists()) throw new ArgumentException($"'{info.FullName}' does not exist.", name ?? nameof(info));
-        }  
-
-        #else
+        #region diagnostics        
 
         /// <summary>
         /// Checks whether a <see cref="__SINFO"/> is not null.
         /// </summary>        
         /// <exception cref="ArgumentNullException"></exception>
-        public static void GuardNotNull(this __SINFO info, [CallerArgumentExpression("info")] string name = null)
+        public static void GuardNotNull(this __SINFO info, [CallerArgumentExpression(nameof(info))] string name = null)
         {
-            if (info == null) throw new ArgumentNullException(name);            
+            if (info == null) throw new ArgumentNullException(name ?? nameof(info));            
         }
 
 		/// <summary>
 		/// Checks whether a <see cref="__SINFO"/> exists in the file system.
 		/// </summary>        
 		/// <exception cref="ArgumentNullException"></exception>
-		public static void GuardExists(this __SINFO info, [CallerArgumentExpression("info")] string name = null)
+		public static void GuardExists(this __SINFO info, [CallerArgumentExpression(nameof(info))] string name = null)
         {
             if (info == null) throw new ArgumentNullException(name);
-            if (!info.RefreshedExists()) throw new ArgumentException($"'{info.FullName}' does not exist.", name);
-        }
-
-        #endif
+            if (!info.RefreshedExists()) throw new ArgumentException($"'{info.FullName}' does not exist.", name ?? nameof(info));
+        }        
 
         #endregion
 

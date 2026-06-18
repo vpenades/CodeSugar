@@ -11,6 +11,8 @@ using System.Diagnostics.CodeAnalysis;
 using __STREAM = System.IO.Stream;
 using __MEMSTREAM = System.IO.MemoryStream;
 using __BYTESSEGMENT = System.ArraySegment<byte>;
+using System.Runtime.CompilerServices;
+
 
 
 #if __REFERENCES_MICROSOFTIORECYCLABLEMEMORYSTREAM
@@ -21,10 +23,19 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarExtensions
     {
-        [return: NotNull]
-        private static System.IO.MemoryStream _ToMemoryStream(__BYTESSEGMENT segment)
+        public static __MEMSTREAM ToMemoryStream([DisallowNull] this Func<__STREAM> readerFunc)
         {
-            return new MemoryStream(segment.Array ?? Array.Empty<byte>(), segment.Offset, segment.Count, false);
+            using(var s = readerFunc.Invoke())
+            {
+                return ToMemoryStream(s);
+            }
+        }
+
+
+        [return: NotNull]
+        private static __MEMSTREAM _ToMemoryStream(__BYTESSEGMENT segment)
+        {
+            return new __MEMSTREAM(segment.Array ?? Array.Empty<byte>(), segment.Offset, segment.Count, false);
         }
 
         public static __MEMSTREAM ToMemoryStream([DisallowNull] this __STREAM stream)

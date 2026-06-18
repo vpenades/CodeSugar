@@ -16,35 +16,17 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarExtensions
     {
-        #if !NET
-
-        public static void GuardReadable(this __ZIPENTRY entry)
-        {
-            if (entry == null) throw new ArgumentNullException(nameof(entry));
-            if (entry.Archive.Mode != System.IO.Compression.ZipArchiveMode.Read) throw new ArgumentException("Can't read from strean", nameof(entry));
-        }
-
-        public static void GuardWriteable(this __ZIPENTRY entry)
-        {
-            if (entry == null) throw new ArgumentNullException(nameof(entry));
-            if (entry.Archive.Mode != System.IO.Compression.ZipArchiveMode.Create) throw new ArgumentException("Can't read from strean", nameof(entry));
-        }
-
-        #else
-
-        public static void GuardReadable(this __ZIPENTRY entry, [CallerArgumentExpression("entry")] string name = null)
+        public static void GuardReadable(this __ZIPENTRY entry, [CallerArgumentExpression(nameof(entry))] string name = null)
         {
             if (entry == null) throw new ArgumentNullException(name);
-            if (entry.Archive.Mode != System.IO.Compression.ZipArchiveMode.Read) throw new ArgumentException("Can't read from strean", name);
+            if (entry.Archive.Mode != System.IO.Compression.ZipArchiveMode.Read) throw new ArgumentException("Can't read from strean", name ?? nameof(entry));
         }
 
-        public static void GuardWriteable(this __ZIPENTRY entry, [CallerArgumentExpression("entry")] string name = null)
+        public static void GuardWriteable(this __ZIPENTRY entry, [CallerArgumentExpression(nameof(entry))] string name = null)
         {
             if (entry == null) throw new ArgumentNullException(name);
-            if (entry.Archive.Mode != System.IO.Compression.ZipArchiveMode.Create) throw new ArgumentException("Can't read from strean", name);
-        }
-
-        #endif
+            if (entry.Archive.Mode != System.IO.Compression.ZipArchiveMode.Create) throw new ArgumentException("Can't read from strean", name ?? nameof(entry));
+        }        
 
         public static __ZIPARCHIVE CreateZipArchive(this System.IO.FileInfo finfo, System.Text.Encoding entryNameEncoding = null)
         {
@@ -63,7 +45,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         {
             if (archive == null) throw new ArgumentNullException(nameof(archive));
 
-            return archive.Entries.ToDictionary(entry => entry.FullName, entry => entry.ReadAllBytes());
+            return archive.Entries.ToDictionary(entry => entry.FullName, entry => entry.GetReadStreamFunction().ReadAllBytes());
         }
 
         public static void AddEntries(this __ZIPARCHIVE archive, IReadOnlyDictionary<string,__BYTESSEGMENT> entries)
@@ -74,7 +56,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             foreach(var entry in entries)
             {
                 var zipPath = entry.Key.Replace(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
-                archive.CreateEntry(zipPath).WriteAllBytes(entry.Value);
+                archive.CreateEntry(zipPath).GetWriteStreamFunction().WriteAllBytes(entry.Value);
             }        
         }
     }

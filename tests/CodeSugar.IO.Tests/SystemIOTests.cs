@@ -182,7 +182,7 @@ namespace CodeSugar
             var text = readme_txt.ReadAllText();
             await Assert.That(text).IsEqualTo("hello world");
 
-            var file2 = readme_txt.Directory.GetFileInfo("readme.txt");
+            var file2 = readme_txt.Directory!.GetFileInfo("readme.txt");
 
             await Assert.That(file2.Exists).IsTrue();
             // Assert.That(readme_txt.FullNameEquals(file2)); // must fix equality handling
@@ -356,12 +356,12 @@ namespace CodeSugar
 
                 using (var zip = zpath.CreateZipArchive())
                 {
-                    zip.CreateEntry("readme.txt").WriteAllText("hello world");
+                    zip.CreateEntry("readme.txt").GetWriteStreamFunction().WriteAllText("hello world");
                 }                
 
                 using (var zip = zpath.OpenReadZipArchive())
                 {
-                    var txt = zip.GetEntry("readme.txt").ReadAllText();
+                    var txt = zip.GetEntry("readme.txt").GetReadStreamFunction().ReadAllText();
                     await Assert.That(txt).IsEqualTo("hello world");
 
                     var dict = zip.ToDictionary();

@@ -74,7 +74,7 @@ namespace CodeSugar
             {
                 foreach(var item in content)
                 {                    
-                    writeZip.CreateEntry(item.Key).WriteAllBytes(item.Value);
+                    writeZip.CreateEntry(item.Key).GetWriteStreamFunction().WriteAllBytes(item.Value);
                 }
             }
 
