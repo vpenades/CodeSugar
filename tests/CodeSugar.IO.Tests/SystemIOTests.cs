@@ -365,7 +365,7 @@ namespace CodeSugar
                     await Assert.That(txt).IsEqualTo("hello world");
 
                     var dict = zip.ToDictionary();
-                    await Assert.That(dict).ContainsKey("readme.txt");
+                    await Assert.That(dict.ContainsKey("readme.txt")).IsTrue();
                 }
             }            
 

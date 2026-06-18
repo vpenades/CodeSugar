@@ -66,16 +66,16 @@ namespace CodeSugar
 
             var rootDir = CreateZipFlatEntries().ToIDirectoryContents(entry => entry.Key, null, MatchCasing.CaseSensitive);
 
-            await Assert.That(rootDir).Count().IsEqualTo(2);
+            await Assert.That(rootDir.Count).IsEqualTo(2);
             await Assert.That(rootDir.Count(item => item.IsDirectory)).IsEqualTo(1);
             await Assert.That(rootDir.Select(item => item.Name)).IsEquivalentTo(new[] { "dir","abc.txt" }, StringComparer.Ordinal);
 
             var childDir = CreateZipFlatEntries().ToIDirectoryContents(entry => entry.Key, "dir\\", MatchCasing.CaseSensitive);
-            await Assert.That(childDir).Count().IsEqualTo(1);
+            await Assert.That(childDir.Count).IsEqualTo(1);
             await Assert.That(childDir.First().Name).IsEqualTo("def.txt");
 
             childDir = rootDir.FirstOrDefault(item => item.IsDirectory).GetDirectoryContents();
-            await Assert.That(childDir).Count().IsEqualTo(1);
+            await Assert.That(childDir.Count).IsEqualTo(1);
             await Assert.That(childDir.First().Name).IsEqualTo("def.txt");
 
             var provider = rootDir.ToIFileProvider(MatchCasing.CaseSensitive);
@@ -87,7 +87,7 @@ namespace CodeSugar
             await Assert.That(f2.Exists).IsTrue();
 
             var c1 = provider.GetDirectoryContents(string.Empty);
-            await Assert.That(c1).Count().IsEqualTo(2);
+            await Assert.That(c1.Count).IsEqualTo(2);
 
             var c2 = provider.GetDirectoryContents("dir");
             await Assert.That(c2.Select(item => item.Name)).IsEquivalentTo(new[] { "def.txt" }, StringComparer.Ordinal);
