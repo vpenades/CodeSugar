@@ -16,6 +16,7 @@ namespace CodeSugar
 {
     internal class ImageSharpTests
     {
+        /*
         [Test]
         public void TestDrawAffineTransform()
         {
@@ -36,11 +37,11 @@ namespace CodeSugar
             target.Mutate(dc => dc.DrawImage(icon, xform));
 
             AttachmentInfo.From("affineTransform1.png").WriteObject(target.SaveAsPng);
-        }
+        }*/
 
 
 
-        #if NET8_0_OR_GREATER
+        
 
         [Test]
         public void TestTensorsInterop()
@@ -77,6 +78,7 @@ namespace CodeSugar
 
         }
 
+        /*
         [Test]
         public void TestTensorsAffineTransformInterop()
         {
@@ -96,8 +98,6 @@ namespace CodeSugar
 
             AttachmentInfo.From("hwcTensor.png").WriteObjectEx(f => hwcTensor.SaveToSixLaborsImage(f));
             AttachmentInfo.From("chwTensor.png").WriteObjectEx(f => chwTensor.SaveToSixLaborsImage(f));
-        }
-
-        #endif
+        }*/       
     }
 }

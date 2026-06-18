@@ -8,6 +8,8 @@ using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.Advanced;
 using SixLabors.ImageSharp.PixelFormats;
 
+#nullable disable
+
 using __SIXLABORS = SixLabors.ImageSharp;
 using __SIXLABORSPIXFMT = SixLabors.ImageSharp.PixelFormats;
 
@@ -15,26 +17,13 @@ using __XY = System.Numerics.Vector2;
 using __XYZ = System.Numerics.Vector3;
 using __XYZW = System.Numerics.Vector4;
 
-#if NET8_0_OR_GREATER
 using __TENSORSPAN = System.Numerics.Tensors.TensorSpan<float>;
 using __READONLYTENSORSPAN = System.Numerics.Tensors.ReadOnlyTensorSpan<float>;
-#endif
 
-
-#nullable disable
-
-#if CODESUGAR_USECODESUGARNAMESPACE
-namespace CodeSugar
-#elif CODESUGAR_USESIXLABORSNAMESPACE
-namespace SixLabors.ImageSharp
-#else
-namespace $rootnamespace$
-#endif
+namespace __CODESUGAR_ROOTNAMESPACE__
 {
-    internal static partial class CodeSugarForImageSharp
+    partial class CodeSugarNumericsExtensions
     {
-        #if NET8_0_OR_GREATER
-
         public static void CopyToTensor(this Image src, __TENSORSPAN dst, bool dstIsBGR = false)
         {
             switch (src)
@@ -180,7 +169,7 @@ namespace $rootnamespace$
 
                     for (int i = 0; i < pixLen; ++i)
                     {                        
-                        dstRowPix[i] = srcRowPix[i].LuminanceOrAlphaToScalar();
+                        dstRowPix[i] = _LuminanceOrAlphaToScalar(srcRowPix[i]);
                     }                    
                 }
             }
@@ -295,162 +284,6 @@ namespace $rootnamespace$
 
             throw new ArgumentException("invalid lengths[2] range", nameof(dst));
         }        
-
-        public static void CopyToTensor<TPixel>(this Image<TPixel> src, System.Numerics.Matrix3x2 srcXform, __TENSORSPAN dst, bool dstIsBGR = false)
-            where TPixel : unmanaged, __SIXLABORSPIXFMT.IPixel<TPixel>
-        {
-            var sampler = new _ClampedBilinearSampler<TPixel>(src);
-
-            _CopyToTensor(sampler, srcXform, dst, dstIsBGR);
-        }        
-
-        private static void _CopyToTensor<TPixel>(this _ClampedBilinearSampler<TPixel> src, System.Numerics.Matrix3x2 srcXform, __TENSORSPAN dst, bool dstIsBGR = false)
-            where TPixel : unmanaged, __SIXLABORSPIXFMT.IPixel<TPixel>
-        {
-            var xformer = new _SamplerTransform(srcXform);
-
-            dst = dst.Squeeze();
-
-            if (dst.Rank == 2)
-            {
-                Span<nint> dstIndices = stackalloc nint[2];
-
-                var minRows = Math.Min(src.Height, (int)dst.Lengths[0]);
-
-                for (int y = 0; y < minRows; y++)
-                {
-                    dstIndices[0] = y;
-                    dstIndices[1] = 0;
-
-                    var dstRowPix = dst.GetSpan(dstIndices, (int)dst.FlattenedLength);                   
-
-                    int pixLen = Math.Min(src.Width, dstRowPix.Length);                    
-
-                    __SIXLABORSPIXFMT.L16 pix = default;
-
-                    var scale = 1f / (float)ushort.MaxValue;
-
-                    for (int x = 0; x < pixLen; ++x)
-                    {
-                        src.CopySampleTo(xformer.Transform(x, y), ref pix);
-
-                        dstRowPix[x] = scale * (float)pix.PackedValue;
-                    }
-                }
-            }
-
-            if (dst.Rank != 3) throw new ArgumentException("invalid rank or lengths", nameof(dst));
-
-            if (dst.Lengths[2] == 3) // HWC
-            {
-                Span<nint> dstIndices = stackalloc nint[3];
-
-                var minRows = Math.Min(src.Height, (int)dst.Lengths[0]);
-
-                var rowLen = (int)(dst.Lengths[1] * dst.Lengths[2]);
-
-                for (int y = 0; y < minRows; y++)
-                {
-                    dstIndices[0] = y;
-                    dstIndices[1] = 0;
-                    dstIndices[2] = 0;
-
-                    var dstRow = dst.GetSpan(dstIndices, rowLen);
-                    var dstRowPix = System.Runtime.InteropServices.MemoryMarshal.Cast<float, __XYZ>(dstRow);                    
-
-                    int pixLen = Math.Min(src.Width, dstRowPix.Length);
-
-                    if (dstIsBGR)
-                    {
-                        for (int x = 0; x < pixLen; ++x)
-                        {
-                            var pix = src.GetScaledVectorSample(xformer.Transform(x, y));
-                            
-                            dstRowPix[x] = new __XYZ(pix.Z, pix.Y, pix.X); // BGR
-                        }
-                    }
-                    else
-                    {
-                        for (int x = 0; x < pixLen; ++x)
-                        {
-                            var pix = src.GetScaledVectorSample(xformer.Transform(x, y));
-
-                            dstRowPix[x] = new __XYZ(pix.X, pix.Y, pix.Z); // RGB
-                        }
-                    }
-                }
-
-                return;
-            }
-
-            if (dst.Lengths[2] == 4) // HWC
-            {
-                Span<nint> dstIndices = stackalloc nint[3];
-
-                var minRows = Math.Min(src.Height, (int)dst.Lengths[0]);
-
-                var rowLen = (int)(dst.Lengths[1] * dst.Lengths[2]);
-
-                for (int y = 0; y < minRows; y++)
-                {
-                    dstIndices[0] = y;
-                    dstIndices[1] = 0;
-                    dstIndices[2] = 0;
-
-                    var dstRow = dst.GetSpan(dstIndices, rowLen);
-                    var dstRowPix = System.Runtime.InteropServices.MemoryMarshal.Cast<float, __XYZW>(dstRow);
-
-                    int pixLen = Math.Min(src.Width, dstRowPix.Length);
-
-                    if (dstIsBGR)
-                    {
-                        for (int x = 0; x < pixLen; ++x)
-                        {
-                            var pix = src.GetScaledVectorSample(xformer.Transform(x, y));
-
-                            dstRowPix[x] = new __XYZW(pix.Z, pix.Y, pix.X, pix.W); // BGRA
-                        }
-                    }
-                    else
-                    {
-                        for (int x = 0; x < pixLen; ++x)
-                        {
-                            var pix = src.GetScaledVectorSample(xformer.Transform(x, y));
-
-                            dstRowPix[x] = pix; // RGBA
-                        }
-                    }
-                }
-
-                return;
-            }
-
-            if (dst.Lengths[0] == 3) // CHW
-            {
-                var numRows = Math.Min(src.Height, (int)dst.Lengths[1]);
-                var numCols = Math.Min(src.Width, (int)dst.Lengths[2]);
-
-                for (int y = 0; y < numRows; y++)
-                {
-                    _GetRowChannels(dst, y, dstIsBGR, out var dstRowR, out var dstRowG, out var dstRowB);                                        
-
-                    for (int x = 0; x < numCols; ++x)
-                    {
-                        var pix = src.GetScaledVectorSample(xformer.Transform(x, y));
-
-                        dstRowR[x] = pix.X;
-                        dstRowG[x] = pix.Y;
-                        dstRowB[x] = pix.Z;
-                    }
-                }
-
-                return;
-            }
-
-            throw new ArgumentException("invalid lengths[2] range", nameof(dst));
-        }
-
-        
 
         public static void CopyToSixLaborsImage(this __TENSORSPAN src, Image dst, bool srcIsBGR = false)
         {
@@ -711,9 +544,7 @@ namespace $rootnamespace$
             {
                 imageAction(img);
             }            
-        }
-
-        
+        }        
 
         public static Image<TPixel> ToSixLaborsImage<TPixel>(this __TENSORSPAN tensor, bool tensorIsBGR = false)
             where TPixel : unmanaged, __SIXLABORSPIXFMT.IPixel<TPixel>
@@ -768,8 +599,6 @@ namespace $rootnamespace$
 
             return false;
         }        
-
-        #endif
     }
 
 }

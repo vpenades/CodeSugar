@@ -8,34 +8,19 @@ using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.Advanced;
 using SixLabors.ImageSharp.PixelFormats;
 
+#nullable disable
+
 using __SIXLABORS = SixLabors.ImageSharp;
 using __SIXLABORSPIXFMT = SixLabors.ImageSharp.PixelFormats;
 
-using __XY = System.Numerics.Vector2;
-using __XYZ = System.Numerics.Vector3;
-using __XYZW = System.Numerics.Vector4;
-
-#if NET8_0_OR_GREATER
 using __TENSORSPAN = System.Numerics.Tensors.TensorSpan<byte>;
 using __READONLYTENSORSPAN = System.Numerics.Tensors.ReadOnlyTensorSpan<byte>;
-#endif
 
-
-#nullable disable
-
-#if CODESUGAR_USECODESUGARNAMESPACE
-namespace CodeSugar
-#elif CODESUGAR_USESIXLABORSNAMESPACE
-namespace SixLabors.ImageSharp
-#else
-namespace $rootnamespace$
-#endif
+namespace __CODESUGAR_ROOTNAMESPACE__
 {
-    internal static partial class CodeSugarForImageSharp
+    partial class CodeSugarNumericsExtensions
     {
-        #if NET8_0_OR_GREATER       
-
-        public static bool DangerousTryGetSpanTensor<TPixel>(this Image<TPixel> src, out __TENSORSPAN dst)
+        public static bool DangerousTryGetBytesTensor<TPixel>(this Image<TPixel> src, out __TENSORSPAN dst)
             where TPixel : unmanaged, __SIXLABORSPIXFMT.IPixel<TPixel>
         {
             if (!src.DangerousTryGetSinglePixelMemory(out var memory))
@@ -191,8 +176,6 @@ namespace $rootnamespace$
         {
             throw new NotImplementedException();
         }
-
-        #endif
     }
 
 }

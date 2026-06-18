@@ -11,11 +11,14 @@ namespace CodeSugar.Numerics
     {
         protected override void InjectSources(SourceProductionContext context)
         {
-            var hasTensors = this.NugetPackages.ContainsKey("System.Numerics.Tensors");        
+            var hasTensors = this.NugetPackages.ContainsKey("System.Numerics.Tensors");
+            var hasImageSharp = this.NugetPackages.ContainsKey("SixLabors.ImageSharp");
 
             ProcessTemplates(context,"Vectors", n => n.Contains(".Templates.Vectors."));
 
             if (hasTensors) ProcessTemplates(context,"Tensors", n => n.Contains(".Templates.Tensors."));
+
+            if (hasTensors && hasImageSharp) ProcessTemplates(context, "ImageSharpTs", n => n.Contains(".Templates.ImageSharpTensors."));
         }
 
         private int _TemplateIndex = 0;
