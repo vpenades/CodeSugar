@@ -11,6 +11,7 @@ using System.Diagnostics.CodeAnalysis;
 
 using __STREAM = System.IO.Stream;
 using __BYTESSEGMENT = System.ArraySegment<byte>;
+using System.Xml.Serialization;
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
@@ -20,29 +21,45 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         {
             if (onDispose == null) return stream;
 
-            switch(stream)
-            {
-                case null: return null;
+            if (stream == null) return null;
 
-                // don't wrap streams that are already observable
+            if (_ObservableStream.TryAddObserver(stream, onDispose)) return stream;
 
-                case _ObservableStream observable: 
-                    observable.AddObserver(onDispose);
-                    return observable;
-                case _ObservableMemoryStream observable:
-                    observable.AddObserver(bbb => onDispose.Invoke());
-                    return observable;
+            if (_ObservableMemoryStream.TryAddObserver(stream, bytes => onDispose.Invoke())) return stream;
 
-                default: return new _ObservableStream(stream, onDispose);
-            }
+            return new _ObservableStream(stream, onDispose);
         }
 
         /// <summary>
         /// A <see cref="__STREAM"/> that, when closed, reports back to the host
         /// </summary>
-        private sealed class _ObservableStream : __STREAM
+        private sealed class _ObservableStream : __STREAM, IServiceProvider
         {
             #region lifecycle
+
+            public static bool TryAddObserver(__STREAM stream, Action onDispose)
+            {
+                switch(stream)
+                {
+                    case null: return false;
+
+                    case _ObservableStream observable:
+                        observable.AddObserver(onDispose);
+                        return true;
+
+                    // this is a special use case when we're consuming the _ObservableStream produced by another library using this generator
+                    case IServiceProvider srv when stream.GetType().Name == nameof(_ObservableStream):
+                        if (srv.GetService(typeof(List<Action>)) is List<Action> actions)
+                        {
+                            actions.Add(onDispose);
+                            return true;
+                        }
+                        break;
+                }
+
+                return false;
+            }
+
             public _ObservableStream(__STREAM strean, Action onDispose)
             {
                 _Stream = strean;
@@ -128,7 +145,13 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 return _BaseStream().WriteAsync(buffer, cancellationToken);
             }
             public override void Write(byte[] buffer, int offset, int count) { _BaseStream().Write(buffer, offset, count); }
-            public override void Flush() { _BaseStream().Flush(); }            
+            public override void Flush() { _BaseStream().Flush(); }
+
+            public object GetService(Type serviceType)
+            {
+                if (serviceType == typeof(List<Action>)) return _OnDispose;
+                return null;
+            }
 
             #endregion
         }
@@ -136,9 +159,33 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         /// <summary>
         /// A <see cref="MemoryStream"/> that, when closed, reports its underlaying data back to the host
         /// </summary>
-        private sealed class _ObservableMemoryStream : System.IO.MemoryStream
+        private sealed class _ObservableMemoryStream : System.IO.MemoryStream, IServiceProvider
         {
             #region lifecycle
+
+            public static bool TryAddObserver(__STREAM stream, Action<__BYTESSEGMENT> onDispose)
+            {
+                switch (stream)
+                {
+                    case null: return false;
+
+                    case _ObservableMemoryStream observable:
+                        observable.AddObserver(onDispose);
+                        return true;
+
+                    // this is a special use case when we're consuming the _ObservableStream produced by another library using this generator
+                    case IServiceProvider srv when stream.GetType().Name == nameof(_ObservableMemoryStream):
+                        if (srv.GetService(typeof(List<Action<__BYTESSEGMENT>>)) is List<Action<__BYTESSEGMENT>> actions)
+                        {
+                            actions.Add(onDispose);
+                            return true;
+                        }
+                        break;
+                }
+
+                return false;
+            }
+
             public _ObservableMemoryStream(Action<__BYTESSEGMENT> onClose)
             {
                 _OnDispose.Add(onClose);
@@ -176,6 +223,12 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 if (_OnDispose == null) throw new ObjectDisposedException(nameof(_OnDispose));
 
                 _OnDispose.Add(onDispose);
+            }
+
+            public object GetService(Type serviceType)
+            {
+                if (serviceType == typeof(List<Action<__BYTESSEGMENT>>)) return _OnDispose;
+                return null;
             }
 
             #endregion
