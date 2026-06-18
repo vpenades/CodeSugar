@@ -121,9 +121,9 @@ namespace CodeSugar
             {
                 var baseDir = new System.IO.DirectoryInfo(AppContext.BaseDirectory).DefineDirectoryInfo("FileProviders");
 
-                baseDir.DefineFileInfo("file1.txt").WriteAllText("hello");
-                baseDir.DefineFileInfo("file2.txt").WriteAllText("hello");
-                baseDir.UseDirectoryInfo("subdir1").DefineFileInfo("file3.txt").WriteAllText("hello");
+                baseDir.DefineFileInfo("file1.txt").GetWriteStreamFunction().WriteAllText("hello");
+                baseDir.DefineFileInfo("file2.txt").GetWriteStreamFunction().WriteAllText("hello");
+                baseDir.UseDirectoryInfo("subdir1").DefineFileInfo("file3.txt").GetWriteStreamFunction().WriteAllText("hello");
 
                 return baseDir;
             }
@@ -171,6 +171,7 @@ namespace CodeSugar
             public bool IsDirectory => Key.EndsWith('/');
         }        
 
+        /*
         private static async Task _TestMockup2(IDirectoryContents root)
         {
             await Assert.That(root).IsNotNull();
@@ -185,7 +186,7 @@ namespace CodeSugar
             {
                 await Assert.That(root.FindEntry("subdir1", "FILE3.txt").Exists).IsTrue();
             }
-        }
+        }*/
 
         
     }

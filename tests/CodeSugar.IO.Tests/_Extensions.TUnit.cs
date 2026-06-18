@@ -13,15 +13,12 @@ namespace CodeSugar
 {
     internal static class _TUnitExtensions
     {
-
-        
-
-
+        #pragma warning disable IL2026 // Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code
 
         /// <summary>
         /// Extension method for IsEquivalentToAssertion.
         /// </summary>
-        [global::System.Diagnostics.CodeAnalysis.RequiresUnreferencedCode("Collection equivalency uses structural comparison for complex objects, which requires reflection and is not compatible with AOT")]
+        // [global::System.Diagnostics.CodeAnalysis.RequiresUnreferencedCode("Collection equivalency uses structural comparison for complex objects, which requires reflection and is not compatible with AOT")]
         public static IsEquivalentToAssertion<TCollection, TItem> IsSequenceEqualTo<TCollection, TItem>(this IAssertionSource<TCollection> source, System.Collections.Generic.IEnumerable<TItem> expected, [CallerArgumentExpression(nameof(expected))] string? expectedExpression = null)
             where TCollection : System.Collections.Generic.IEnumerable<TItem>
         {
@@ -34,7 +31,10 @@ namespace CodeSugar
                 added = true;
             }
             source.Context.ExpressionBuilder.Append(")");
+
             return new IsEquivalentToAssertion<TCollection, TItem>(source.Context, expected, CollectionOrdering.Matching);
         }
+
+        #pragma warning restore IL2026 // Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code
     }
 }

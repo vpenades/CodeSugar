@@ -187,7 +187,7 @@ namespace CodeSugar
             await Assert.That(file2.Exists).IsTrue();
             // Assert.That(readme_txt.FullNameEquals(file2)); // must fix equality handling
 
-            var rfinfo = AttachmentInfo.From("readme_2.txt").WriteObjectEx(f => f.WriteAllText("hello world 2"));
+            var rfinfo = AttachmentInfo.From("readme_2.txt").WriteObjectEx(f => f.GetWriteStreamFunction().WriteAllText("hello world 2"));
 
             await Assert.That(rfinfo.GetReadStreamFunction().ReadAllText()).IsEqualTo("hello world 2");
 
@@ -243,11 +243,11 @@ namespace CodeSugar
 
             var data = new Byte[] { 1, 2, 3, 4 };
 
-            adsInfo.WriteAllBytes(data);
+            adsInfo.GetWriteStreamFunction().WriteAllBytes(data);
             await Assert.That(adsInfo.Exists).IsTrue();
 
-            await Assert.That(workFile.ReadAllText()).IsEqualTo("hello world");
-            await Assert.That(adsInfo.ReadAllBytes()).IsEquivalentTo(data, ordering: TUnit.Assertions.Enums.CollectionOrdering.Matching);
+            await Assert.That(workFile.GetReadStreamFunction().ReadAllText()).IsEqualTo("hello world");
+            await Assert.That(adsInfo.GetReadStreamFunction().ReadAllBytes()).IsEquivalentTo(data, ordering: TUnit.Assertions.Enums.CollectionOrdering.Matching);
         }
 
 
