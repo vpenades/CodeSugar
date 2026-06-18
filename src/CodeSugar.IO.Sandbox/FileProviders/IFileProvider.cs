@@ -83,7 +83,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             {
                 var parts = subpath.Replace('\\','/').Split('/');
 
-                return _Dir.FindEntry(_Casing, parts);
+                return FindEntry(_Dir, _Casing, parts);
             }
 
             public __XDIRECTORY GetDirectoryContents(string subpath)
@@ -92,7 +92,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
                 var parts = subpath.Replace('\\', '/').Split('/');                
 
-                return _Dir.FindEntry(_Casing, subpath) is __XDIRECTORY xdir
+                return FindEntry(_Dir, _Casing, subpath) is __XDIRECTORY xdir
                     ? xdir
                     : Microsoft.Extensions.FileProviders.NotFoundDirectoryContents.Singleton;
             }
