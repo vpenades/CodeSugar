@@ -46,7 +46,7 @@ namespace CodeSugar
         {
             using (var pp = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(_CreateMockup1().FullName))
             {
-                _TestMockup1(pp.GetDirectoryContents(string.Empty));                
+                await _TestMockup1(pp.GetDirectoryContents(string.Empty));                
             }
         }
 
@@ -55,7 +55,7 @@ namespace CodeSugar
         {
             var root = _CreateMockup1().ToIFileInfo().GetDirectoryContents();
 
-            _TestMockup1(root);
+            await _TestMockup1(root);
         }
 
         [Test]
@@ -79,6 +79,7 @@ namespace CodeSugar
             await Assert.That(childDir.First().Name).IsEqualTo("def.txt");
 
             var provider = rootDir.ToIFileProvider(MatchCasing.CaseSensitive);
+            await Assert.That(provider).IsNotNull();
 
             var f1 = provider.GetFileInfo("abc.txt");
             await Assert.That(f1.Exists).IsTrue();

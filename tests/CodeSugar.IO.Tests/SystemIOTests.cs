@@ -179,7 +179,7 @@ namespace CodeSugar
             Console.Out.WriteLine(readme_txt.FullName);
 
 
-            var text = readme_txt.ReadAllText();
+            var text = readme_txt.GetReadStreamFunction().ReadAllText();
             await Assert.That(text).IsEqualTo("hello world");
 
             var file2 = readme_txt.Directory!.GetFileInfo("readme.txt");
@@ -189,7 +189,7 @@ namespace CodeSugar
 
             var rfinfo = AttachmentInfo.From("readme_2.txt").WriteObjectEx(f => f.WriteAllText("hello world 2"));
 
-            await Assert.That(rfinfo.ReadAllText()).IsEqualTo("hello world 2");
+            await Assert.That(rfinfo.GetReadStreamFunction().ReadAllText()).IsEqualTo("hello world 2");
 
             await Assert.That(System.Convert.ToHexString(readme_txt.ComputeSha256())).IsEqualTo("B94D27B9934D3E08A52E52D7DA7DABFAC484EFE37A5380EE9088F7ACE2EFCDE9");
 
@@ -207,21 +207,21 @@ namespace CodeSugar
             var tmp1 = tmp0.DefineDirectoryInfo("a", "..", ".", "b", "..");
             await Assert.That(dcomparer.Equals(tmp0, tmp1)).IsTrue();            
 
-            Assert.Throws<ArgumentException>(() => readme_txt.Directory.DefineFileInfo(" abc"));
-            Assert.Throws<ArgumentException>(() => readme_txt.Directory.DefineFileInfo("abc "));
-            Assert.Throws<ArgumentException>(() => readme_txt.Directory.DefineFileInfo("abc ", "readme.txt"));
+            Assert.Throws<ArgumentException>(() => readme_txt.Directory!.DefineFileInfo(" abc"));
+            Assert.Throws<ArgumentException>(() => readme_txt.Directory!.DefineFileInfo("abc "));
+            Assert.Throws<ArgumentException>(() => readme_txt.Directory!.DefineFileInfo("abc ", "readme.txt"));
 
-            Assert.Throws<ArgumentException>(() => readme_txt.Directory.DefineFileInfo(".."));
-            Assert.Throws<ArgumentException>(() => readme_txt.Directory.DefineFileInfo("."));
-            Assert.Throws<ArgumentNullException>(() => readme_txt.Directory.DefineFileInfo("/"));
+            Assert.Throws<ArgumentException>(() => readme_txt.Directory!.DefineFileInfo(".."));
+            Assert.Throws<ArgumentException>(() => readme_txt.Directory!.DefineFileInfo("."));
+            Assert.Throws<ArgumentNullException>(() => readme_txt.Directory!.DefineFileInfo("/"));
             
 
             if (IsWindowsPlatform)
             {
                 // Assert.Throws<ArgumentException>((Action)(() => readme_txt.Directory.DefineFileInfo(":"))); // throws DebugAssetException which is internal
-                Assert.Throws<ArgumentException>(() => readme_txt.Directory.DefineFileInfo("*"));
-                Assert.Throws<ArgumentException>(() => readme_txt.Directory.DefineFileInfo("?"));
-                Assert.Throws<ArgumentNullException>(() => readme_txt.Directory.DefineFileInfo("\\"));
+                Assert.Throws<ArgumentException>(() => readme_txt.Directory!.DefineFileInfo("*"));
+                Assert.Throws<ArgumentException>(() => readme_txt.Directory!.DefineFileInfo("?"));
+                Assert.Throws<ArgumentNullException>(() => readme_txt.Directory!.DefineFileInfo("\\"));
             }            
         }
 

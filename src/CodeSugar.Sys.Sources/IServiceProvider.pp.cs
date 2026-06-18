@@ -20,12 +20,6 @@ namespace $rootnamespace$
 {    
     partial class CodeSugarForSystem
     {
-        [Obsolete("Use GetServiceOrDefault instead", true)]
-        public static T GetService<T>(this IServiceProvider serviceProvider)
-        {
-            return serviceProvider.GetServiceOrDefault<T>();
-        }
-
         /// <summary>
         /// Gets the given service object from a <see cref="IServiceProvider"/>, or <paramref name="defval"/> if the service does not exist.
         /// </summary>
