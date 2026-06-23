@@ -13,12 +13,16 @@ namespace CodeSugar.Numerics
         {
             var hasTensors = this.NugetPackages.ContainsKey("System.Numerics.Tensors");
             var hasImageSharp = this.NugetPackages.ContainsKey("SixLabors.ImageSharp");
+            var hasMagicScaler = this.NugetPackages.ContainsKey("PhotoSauce.MagicScaler");
+            var hasSkiaSharp = this.NugetPackages.ContainsKey("PhotoSauce.MagicScaler");
 
             ProcessTemplates(context,"Vectors", n => n.Contains(".Templates.Vectors."));
 
             if (hasTensors) ProcessTemplates(context,"Tensors", n => n.Contains(".Templates.Tensors."));
 
             if (hasTensors && hasImageSharp) ProcessTemplates(context, "ImageSharpTs", n => n.Contains(".Templates.ImageSharpTensors."));
+            if (hasTensors && hasMagicScaler) ProcessTemplates(context, "MagicScalerTs", n => n.Contains(".Templates.MagicScalerTensors."));
+            if (hasTensors && hasSkiaSharp) ProcessTemplates(context, "SkiaSharpTs", n => n.Contains(".Templates.SkiaSharpTensors."));
         }
 
         private int _TemplateIndex = 0;
@@ -58,7 +62,7 @@ namespace CodeSugar.Numerics
 
             foreach (var n in nugets)
             {
-                if (n.Key == "System.Numerics.Tensors" || n.Key == "SixLabors.ImageSharp")
+                if (n.Key == "System.Numerics.Tensors" || n.Key == "SixLabors.ImageSharp" || n.Key == "PhotoSauce.MagicScaler" || n.Key == "SkiaSharp")
                 {
                     var declaration = "#define __REFERENCES_" + n.Key.Replace(".", "").ToUpper();
                     sb.AppendLine(declaration);

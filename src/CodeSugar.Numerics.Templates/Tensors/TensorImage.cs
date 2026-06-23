@@ -20,6 +20,20 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
         public delegate Span<TPixel> TensorBitmapRowEvalDelegate<TPixel>(int index) where TPixel : unmanaged;        
 
+
+        public static Tensor<T> CreateCompatibleTensorHWC<T>(this System.Drawing.Size rect, int numChannels)
+            where T:unmanaged
+        {
+            var lll = new nint[3];
+            lll[0] = rect.Height;
+            lll[1] = rect.Width;
+            lll[2] = numChannels;
+
+            var buff = new T[rect.Width * rect.Height * numChannels];
+
+            return Tensor.Create<T>(buff, lll);
+        }
+
         /// <summary>
         /// tries to get a delegate that can be used to query bitmap rows of a tensor representing a bitmap.
         /// </summary>
@@ -111,6 +125,22 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             where TPixel : unmanaged
         {
             #region lifecycle
+
+            public static bool TryCreate(System.Numerics.Tensors.TensorSpan<TElement> tensor, _TensorSpanBitmapHWC<TElement, TPixel> bitmap)
+            {
+                try
+                {
+                    bitmap = new _TensorSpanBitmapHWC<TElement, TPixel>(tensor);
+                    return true;
+                }
+                catch
+                {
+                    bitmap = default;
+                    return false;
+                }
+
+            }
+
             public _TensorSpanBitmapHWC(System.Numerics.Tensors.TensorSpan<TElement> bitmap)
             {
                 _VerifyTensorIsBitmapHWC<TElement, TPixel>(bitmap.Lengths, bitmap.Strides);

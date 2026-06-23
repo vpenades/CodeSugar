@@ -147,6 +147,8 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         public static __ITENSOR ToTensor<TElement>(this Image img, int numChannels, bool dstIsBgr)
             where TElement : unmanaged
         {
+            if (numChannels < 1 || numChannels > 4) throw new ArgumentOutOfRangeException("must be a value between 1 and 4", nameof(numChannels));
+
             if (typeof(TElement) == typeof(Byte))
             {
                 var srcBmp = System.Numerics.Tensors.Tensor.Create(new byte[img.Width * img.Height * numChannels], new nint[] { img.Height, img.Width, numChannels });
@@ -161,7 +163,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 return srcBmp;
             }
 
-            throw new NotImplementedException();
+            throw new NotSupportedException($"{nameof(TElement)} must be {nameof(Byte)} or {nameof(Single)}");
         }        
     }
 }
