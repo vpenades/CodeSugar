@@ -179,17 +179,17 @@ namespace CodeSugar
             Console.Out.WriteLine(readme_txt.FullName);
 
 
-            var text = readme_txt.ReadAllText();
+            var text = readme_txt.GetReadStreamFunction().ReadAllText();
             await Assert.That(text).IsEqualTo("hello world");
 
-            var file2 = readme_txt.Directory.GetFileInfo("readme.txt");
+            var file2 = readme_txt.Directory!.GetFileInfo("readme.txt");
 
             await Assert.That(file2.Exists).IsTrue();
             // Assert.That(readme_txt.FullNameEquals(file2)); // must fix equality handling
 
-            var rfinfo = AttachmentInfo.From("readme_2.txt").WriteObjectEx(f => f.WriteAllText("hello world 2"));
+            var rfinfo = AttachmentInfo.From("readme_2.txt").WriteObjectEx(f => f.GetWriteStreamFunction().WriteAllText("hello world 2"));
 
-            await Assert.That(rfinfo.ReadAllText()).IsEqualTo("hello world 2");
+            await Assert.That(rfinfo.GetReadStreamFunction().ReadAllText()).IsEqualTo("hello world 2");
 
             await Assert.That(System.Convert.ToHexString(readme_txt.ComputeSha256())).IsEqualTo("B94D27B9934D3E08A52E52D7DA7DABFAC484EFE37A5380EE9088F7ACE2EFCDE9");
 
@@ -207,21 +207,21 @@ namespace CodeSugar
             var tmp1 = tmp0.DefineDirectoryInfo("a", "..", ".", "b", "..");
             await Assert.That(dcomparer.Equals(tmp0, tmp1)).IsTrue();            
 
-            Assert.Throws<ArgumentException>(() => readme_txt.Directory.DefineFileInfo(" abc"));
-            Assert.Throws<ArgumentException>(() => readme_txt.Directory.DefineFileInfo("abc "));
-            Assert.Throws<ArgumentException>(() => readme_txt.Directory.DefineFileInfo("abc ", "readme.txt"));
+            Assert.Throws<ArgumentException>(() => readme_txt.Directory!.DefineFileInfo(" abc"));
+            Assert.Throws<ArgumentException>(() => readme_txt.Directory!.DefineFileInfo("abc "));
+            Assert.Throws<ArgumentException>(() => readme_txt.Directory!.DefineFileInfo("abc ", "readme.txt"));
 
-            Assert.Throws<ArgumentException>(() => readme_txt.Directory.DefineFileInfo(".."));
-            Assert.Throws<ArgumentException>(() => readme_txt.Directory.DefineFileInfo("."));
-            Assert.Throws<ArgumentNullException>(() => readme_txt.Directory.DefineFileInfo("/"));
+            Assert.Throws<ArgumentException>(() => readme_txt.Directory!.DefineFileInfo(".."));
+            Assert.Throws<ArgumentException>(() => readme_txt.Directory!.DefineFileInfo("."));
+            Assert.Throws<ArgumentNullException>(() => readme_txt.Directory!.DefineFileInfo("/"));
             
 
             if (IsWindowsPlatform)
             {
                 // Assert.Throws<ArgumentException>((Action)(() => readme_txt.Directory.DefineFileInfo(":"))); // throws DebugAssetException which is internal
-                Assert.Throws<ArgumentException>(() => readme_txt.Directory.DefineFileInfo("*"));
-                Assert.Throws<ArgumentException>(() => readme_txt.Directory.DefineFileInfo("?"));
-                Assert.Throws<ArgumentNullException>(() => readme_txt.Directory.DefineFileInfo("\\"));
+                Assert.Throws<ArgumentException>(() => readme_txt.Directory!.DefineFileInfo("*"));
+                Assert.Throws<ArgumentException>(() => readme_txt.Directory!.DefineFileInfo("?"));
+                Assert.Throws<ArgumentNullException>(() => readme_txt.Directory!.DefineFileInfo("\\"));
             }            
         }
 
@@ -243,11 +243,11 @@ namespace CodeSugar
 
             var data = new Byte[] { 1, 2, 3, 4 };
 
-            adsInfo.WriteAllBytes(data);
+            adsInfo.GetWriteStreamFunction().WriteAllBytes(data);
             await Assert.That(adsInfo.Exists).IsTrue();
 
-            await Assert.That(workFile.ReadAllText()).IsEqualTo("hello world");
-            await Assert.That(adsInfo.ReadAllBytes()).IsEquivalentTo(data, ordering: TUnit.Assertions.Enums.CollectionOrdering.Matching);
+            await Assert.That(workFile.GetReadStreamFunction().ReadAllText()).IsEqualTo("hello world");
+            await Assert.That(adsInfo.GetReadStreamFunction().ReadAllBytes()).IsEquivalentTo(data, ordering: TUnit.Assertions.Enums.CollectionOrdering.Matching);
         }
 
 
@@ -270,15 +270,15 @@ namespace CodeSugar
             var readme_txt_0 = testDir.UseFileInfo("readme.txt");
             var readme_txt_1 = testDir.UseFileInfo("README.txt");
 
-            readme_txt_0.WriteAllText("lowercase");
-            readme_txt_1.WriteAllText("uppercase");
+            readme_txt_0.GetWriteStreamFunction().WriteAllText("lowercase");
+            readme_txt_1.GetWriteStreamFunction().WriteAllText("uppercase");
 
             foreach(var readme_txt in testDir.GetFiles("*.txt"))
             {
                 Console.Out.WriteLine(readme_txt.FullName);
             }
 
-            bool isCaseSensitiveOS = readme_txt_0.ReadAllText() == "lowercase";
+            bool isCaseSensitiveOS = readme_txt_0.GetReadStreamFunction().ReadAllText() == "lowercase";
 
             Console.Out.WriteLine($"OS file system is case sensitive: {isCaseSensitiveOS}");            
 
@@ -336,7 +336,7 @@ namespace CodeSugar
 
             // test resolve file:            
 
-            url1 = AttachmentInfo.From("dir.1.url").WriteShortcut(textFile.Directory.FullName);
+            url1 = AttachmentInfo.From("dir.1.url").WriteShortcut(textFile.Directory!.FullName);
             url2 = AttachmentInfo.From("dir.2.url").WriteShortcut(url1.FullName);
 
             await Assert.That(url2.TryResolveShortcutDir(out var resolvedDir)).IsTrue();
@@ -356,16 +356,16 @@ namespace CodeSugar
 
                 using (var zip = zpath.CreateZipArchive())
                 {
-                    zip.CreateEntry("readme.txt").WriteAllText("hello world");
+                    zip.CreateEntry("readme.txt").GetWriteStreamFunction().WriteAllText("hello world");
                 }                
 
                 using (var zip = zpath.OpenReadZipArchive())
                 {
-                    var txt = zip.GetEntry("readme.txt").ReadAllText();
+                    var txt = zip.GetEntry("readme.txt").GetReadStreamFunction().ReadAllText();
                     await Assert.That(txt).IsEqualTo("hello world");
 
                     var dict = zip.ToDictionary();
-                    await Assert.That(dict).ContainsKey("readme.txt");
+                    await Assert.That(dict.ContainsKey("readme.txt")).IsTrue();
                 }
             }            
 
@@ -378,7 +378,7 @@ namespace CodeSugar
         {
             var rinfo = ResourceInfo.From("readme.txt");            
 
-            var file = await rinfo.File.Directory.Parent.FindFirstFileAsync(f => f.Name == "readme.txt", SearchOption.AllDirectories, System.Threading.CancellationToken.None, this);
+            var file = await rinfo.File.Directory!.Parent.FindFirstFileAsync(f => f.Name == "readme.txt", SearchOption.AllDirectories, System.Threading.CancellationToken.None, this);
             await Assert.That(file).IsNotNull();
             
             var files = await rinfo.File.Directory.Parent.FindAllFilesAsync(f => f.Name == "readme.txt", SearchOption.AllDirectories, System.Threading.CancellationToken.None, this);

@@ -52,7 +52,7 @@ namespace CodeSugar
             await Assert.That(root.IsDirectory).IsTrue();
 
             var rootContent = provider.GetDirectoryContents(string.Empty).ToList();
-            await Assert.That(rootContent).Count().IsEqualTo(1);
+            await Assert.That(rootContent.Count).IsEqualTo(1);
             await Assert.That(rootContent[0].IsDirectory).IsTrue();
         }
 
@@ -74,7 +74,7 @@ namespace CodeSugar
             {
                 foreach(var item in content)
                 {                    
-                    writeZip.CreateEntry(item.Key).WriteAllBytes(item.Value);
+                    writeZip.CreateEntry(item.Key).GetWriteStreamFunction().WriteAllBytes(item.Value);
                 }
             }
 
@@ -91,7 +91,7 @@ namespace CodeSugar
             await Assert.That(provider.GetFileInfo(string.Empty).IsDirectory).IsTrue();
 
             var rootContent = provider.GetDirectoryContents(string.Empty).ToList();
-            await Assert.That(rootContent).Count().IsEqualTo(4);
+            await Assert.That(rootContent.Count).IsEqualTo(4);
             await Assert.That(rootContent[0].Name).IsEqualTo("a.bin");
             await Assert.That(rootContent[1].Name).IsEqualTo("a");
             await Assert.That(rootContent[2].Name).IsEqualTo("c.bin");
@@ -106,15 +106,15 @@ namespace CodeSugar
             }
 
             rootContent = provider.GetDirectoryContents("b/").ToList();
-            await Assert.That(rootContent).Count().IsEqualTo(1);
+            await Assert.That(rootContent.Count).IsEqualTo(1);
             await Assert.That(rootContent[0].Name).EqualTo("c");
 
             rootContent = provider.GetDirectoryContents("b\\c").ToList();
-            await Assert.That(rootContent).Count().IsEqualTo(1);
+            await Assert.That(rootContent.Count).IsEqualTo(1);
             await Assert.That(rootContent[0].Name).IsEqualTo("d");
 
             rootContent = provider.GetDirectoryContents("b\\c/d").ToList();
-            await Assert.That(rootContent).Count().IsEqualTo(1);
+            await Assert.That(rootContent.Count).IsEqualTo(1);
             await Assert.That(rootContent[0].Name).IsEqualTo("c.bin");
 
             var bytes = provider.GetFileInfo("a/b.bin").GetReadStreamFunction().ReadAllBytes();

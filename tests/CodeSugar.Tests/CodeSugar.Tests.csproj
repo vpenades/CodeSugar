@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<RootNamespace>CodeSugar</RootNamespace>
-		<TargetFrameworks>net8.0;net10.0</TargetFrameworks>		
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
 		<Nullable>disable</Nullable>
     <LangVersion>latest</LangVersion>
 	</PropertyGroup>
@@ -16,9 +16,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="10.0.8" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="10.0.9" />
     <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.1" />
-    <PackageReference Include="System.CommandLine" Version="2.0.8" />
+    <PackageReference Include="System.CommandLine" Version="2.0.9" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.3.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="5.3.0" />
   </ItemGroup>
@@ -36,7 +36,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TUnit" Version="1.56.0" />
+    <PackageReference Include="TUnit" Version="1.56.35" />
     <PackageReference Include="TestAttachments.TUnit" Version="4.0.0-Preview-20260129-1218" />
   </ItemGroup>
 
@@ -45,17 +45,14 @@
     <ProjectReference Include="..\..\src\CodeSugar.ICommand\CodeSugar.ICommand.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.ImageSharp\CodeSugar.ImageSharp.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Linq.Sources\CodeSugar.Linq.csproj" />
-    <ProjectReference Include="..\..\src\CodeSugar.Numerics.Sources\CodeSugar.Numerics.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Progress.Log\CodeSugar.Progress.Log.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Srlzn.Bin.Sources\CodeSugar.Srlzn.Bin.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Sys.Sources\CodeSugar.Sys.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Sys.Text.Sources\CodeSugar.Sys.Text.csproj" />
-    <ProjectReference Include="..\..\src\CodeSugar.Tensors.Sources\CodeSugar.Tensors.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\CodeSugar.IO.SourceGenerator\CodeSugar.IO.SourceGenerator.csproj"
-                       OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\src\CodeSugar.IO.SourceGenerator\CodeSugar.IO.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
 </Project>

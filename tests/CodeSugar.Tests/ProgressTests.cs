@@ -20,19 +20,19 @@ namespace CodeSugar
         // considered horribly expensive.
         // var method = new System.Diagnostics.StackTrace(1, false).GetFrame(1).GetMethod();            
         // _DeclaringType = method.DeclaringType;
-        public void Report((TraceEventType level, object value, string callerName) value)
+        void IProgress<(TraceEventType level, object value, string callerName)>.Report((TraceEventType level, object value, string callerName) value)
         {
             var msg = $"{value.level}, {value.callerName}: {value.value}";            
             // Console.Out.WriteLine(msg);
         }
 
-        public void Report(string value)
+        void IProgress<string>.Report(string value)
         {
             value ??= string.Empty;
             // Console.Out.WriteLine(value);
         }
 
-        public void Report(int value)
+        void IProgress<int>.Report(int value)
         {
             throw new NotImplementedException();
         }

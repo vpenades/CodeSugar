@@ -46,7 +46,7 @@ namespace CodeSugar
         {
             using (var pp = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(_CreateMockup1().FullName))
             {
-                _TestMockup1(pp.GetDirectoryContents(string.Empty));                
+                await _TestMockup1(pp.GetDirectoryContents(string.Empty));                
             }
         }
 
@@ -55,7 +55,7 @@ namespace CodeSugar
         {
             var root = _CreateMockup1().ToIFileInfo().GetDirectoryContents();
 
-            _TestMockup1(root);
+            await _TestMockup1(root);
         }
 
         [Test]
@@ -66,19 +66,20 @@ namespace CodeSugar
 
             var rootDir = CreateZipFlatEntries().ToIDirectoryContents(entry => entry.Key, null, MatchCasing.CaseSensitive);
 
-            await Assert.That(rootDir).Count().IsEqualTo(2);
+            await Assert.That(rootDir.Count).IsEqualTo(2);
             await Assert.That(rootDir.Count(item => item.IsDirectory)).IsEqualTo(1);
             await Assert.That(rootDir.Select(item => item.Name)).IsEquivalentTo(new[] { "dir","abc.txt" }, StringComparer.Ordinal);
 
             var childDir = CreateZipFlatEntries().ToIDirectoryContents(entry => entry.Key, "dir\\", MatchCasing.CaseSensitive);
-            await Assert.That(childDir).Count().IsEqualTo(1);
+            await Assert.That(childDir.Count).IsEqualTo(1);
             await Assert.That(childDir.First().Name).IsEqualTo("def.txt");
 
             childDir = rootDir.FirstOrDefault(item => item.IsDirectory).GetDirectoryContents();
-            await Assert.That(childDir).Count().IsEqualTo(1);
+            await Assert.That(childDir.Count).IsEqualTo(1);
             await Assert.That(childDir.First().Name).IsEqualTo("def.txt");
 
             var provider = rootDir.ToIFileProvider(MatchCasing.CaseSensitive);
+            await Assert.That(provider).IsNotNull();
 
             var f1 = provider.GetFileInfo("abc.txt");
             await Assert.That(f1.Exists).IsTrue();
@@ -87,7 +88,7 @@ namespace CodeSugar
             await Assert.That(f2.Exists).IsTrue();
 
             var c1 = provider.GetDirectoryContents(string.Empty);
-            await Assert.That(c1).Count().IsEqualTo(2);
+            await Assert.That(c1.Count).IsEqualTo(2);
 
             var c2 = provider.GetDirectoryContents("dir");
             await Assert.That(c2.Select(item => item.Name)).IsEquivalentTo(new[] { "def.txt" }, StringComparer.Ordinal);
@@ -120,9 +121,9 @@ namespace CodeSugar
             {
                 var baseDir = new System.IO.DirectoryInfo(AppContext.BaseDirectory).DefineDirectoryInfo("FileProviders");
 
-                baseDir.DefineFileInfo("file1.txt").WriteAllText("hello");
-                baseDir.DefineFileInfo("file2.txt").WriteAllText("hello");
-                baseDir.UseDirectoryInfo("subdir1").DefineFileInfo("file3.txt").WriteAllText("hello");
+                baseDir.DefineFileInfo("file1.txt").GetWriteStreamFunction().WriteAllText("hello");
+                baseDir.DefineFileInfo("file2.txt").GetWriteStreamFunction().WriteAllText("hello");
+                baseDir.UseDirectoryInfo("subdir1").DefineFileInfo("file3.txt").GetWriteStreamFunction().WriteAllText("hello");
 
                 return baseDir;
             }
@@ -170,6 +171,7 @@ namespace CodeSugar
             public bool IsDirectory => Key.EndsWith('/');
         }        
 
+        /*
         private static async Task _TestMockup2(IDirectoryContents root)
         {
             await Assert.That(root).IsNotNull();
@@ -184,7 +186,7 @@ namespace CodeSugar
             {
                 await Assert.That(root.FindEntry("subdir1", "FILE3.txt").Exists).IsTrue();
             }
-        }
+        }*/
 
         
     }

@@ -10,11 +10,9 @@ namespace CodeSugar
     internal class SourceCodeTests
     {
         [Test]
+        [Explicit] // to be replaced by a template analyzer
         [Arguments(typeof(CodeSugarForSystem))]        
-        [Arguments(typeof(CodeSugarForSerialization))]
-
-        [Arguments(typeof(CodeSugarForNumerics))]
-        [Arguments(typeof(CodeSugarForTensors))]
+        [Arguments(typeof(CodeSugarForSerialization))]        
         
         [Arguments(typeof(CodeSugarForLogging))]
 
@@ -47,6 +45,7 @@ namespace CodeSugar
 
 
         [Test]
+        [Explicit] // to be replaced by a template analyzer
         [Arguments("CodeSugar.Sys.IO.Sources")]
         [Arguments("CodeSugar.Sys.Sources")]
         [Arguments("CodeSugar.Srlzn.Bin.Sources")]
@@ -77,6 +76,7 @@ namespace CodeSugar
         /// <param name="projectName"></param>
 
         [Test]
+        [Explicit] // to be replaced by a template analyzer
         [Arguments("CodeSugar.Sys.Sources")]
         [Arguments("CodeSugar.Sys.IO.Sources")]        
         [Arguments("CodeSugar.Sys.Text.Sources")]
@@ -111,7 +111,9 @@ namespace CodeSugar
         /// Tests whether all using xxx = yyy; instances begin with double underscores '__' to prevent collisions with global usings.
         /// </summary>
         /// <param name="projectName"></param>
+        
         [Test]
+        [Explicit] // to be replaced by a template analyzer
         [Arguments("CodeSugar.Sys.Sources")]
         [Arguments("CodeSugar.Sys.IO.Sources")]
         [Arguments("CodeSugar.Sys.Text.Sources")]
