@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 
-namespace CodeSugar.IO.SourceGenerators
+namespace CodeSugar
 {
     
     public abstract class CodeInjectorGenerator : IIncrementalGenerator

@@ -1,6 +1,4 @@
-﻿// Copyright (c) CodeSugar 2024 Vicente Penades
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
@@ -19,89 +17,45 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarExtensions
     {
-        #region diagnostics
-
-        #if !NET
-
-        /// <summary>
-        /// Checks whether a <see cref="__XINFO"/> is not null.
-        /// </summary>        
-        /// <exception cref="ArgumentNullException"></exception>
-        public static void GuardNotNull(this __XINFO info, string name = null)
-        {
-            if (info == null) throw new ArgumentNullException(name ?? nameof(info));
-        }
-
-        /// <summary>
-        /// Checks whether a <see cref="__XINFO"/> exists in the file system.
-        /// </summary>        
-        /// <exception cref="ArgumentNullException"></exception>
-        public static void GuardExists(this __XINFO info, string name = null)
-        {
-            if (info == null) throw new ArgumentNullException(name);
-            if (!info.Exists) throw new ArgumentException($"'{info.PhysicalPath ?? info.Name}' does not exist.", name ?? nameof(info));
-        }
-
-        /// <summary>
-        /// Checks whether a <see cref="__XDIRECTORY"/> is not null.
-        /// </summary>        
-        /// <exception cref="ArgumentNullException"></exception>
-        public static void GuardNotNull(this __XDIRECTORY info, string name = null)
-        {
-            if (info == null) throw new ArgumentNullException(name ?? nameof(info));
-        }
-
-        /// <summary>
-        /// Checks whether a <see cref="__XDIRECTORY"/> exists in the file system.
-        /// </summary>        
-        /// <exception cref="ArgumentNullException"></exception>
-        public static void GuardExists(this __XDIRECTORY info, string name = null)
-        {
-            if (info == null) throw new ArgumentNullException(name);
-            if (!info.Exists) throw new ArgumentException($"does not exist.", name ?? nameof(info));
-        }
-
-        #else
+        #region diagnostics        
 
 		/// <summary>
 		/// Checks whether a <see cref="__XINFO"/> is not null.
 		/// </summary>        
 		/// <exception cref="ArgumentNullException"></exception>
-		public static void GuardNotNull(this __XINFO info, [CallerArgumentExpression("info")] string name = null)
+		public static void GuardNotNull(this __XINFO info, [CallerArgumentExpression(nameof(info))] string name = null)
         {
-            if (info == null) throw new ArgumentNullException(name);            
+            if (info == null) throw new ArgumentNullException(name ?? nameof(info));            
         }
 
 		/// <summary>
 		/// Checks whether a <see cref="__XINFO"/> exists in the file system.
 		/// </summary>        
 		/// <exception cref="ArgumentNullException"></exception>
-		public static void GuardExists(this __XINFO info, [CallerArgumentExpression("info")] string name = null)
+		public static void GuardExists(this __XINFO info, [CallerArgumentExpression(nameof(info))] string name = null)
         {
             if (info == null) throw new ArgumentNullException(name);
-            if (!info.Exists) throw new ArgumentException($"'{info.PhysicalPath ?? info.Name}' does not exist.", name);
+            if (!info.Exists) throw new ArgumentException($"'{info.PhysicalPath ?? info.Name}' does not exist.", name ?? nameof(info));
         }
 
         /// <summary>
 		/// Checks whether a <see cref="__XDIRECTORY"/> is not null.
 		/// </summary>        
 		/// <exception cref="ArgumentNullException"></exception>
-		public static void GuardNotNull(this __XDIRECTORY info, [CallerArgumentExpression("info")] string name = null)
+		public static void GuardNotNull(this __XDIRECTORY info, [CallerArgumentExpression(nameof(info))] string name = null)
         {
-            if (info == null) throw new ArgumentNullException(name);            
+            if (info == null) throw new ArgumentNullException(name ?? nameof(info));            
         }
 
 		/// <summary>
 		/// Checks whether a <see cref="__XDIRECTORY"/> exists in the file system.
 		/// </summary>        
 		/// <exception cref="ArgumentNullException"></exception>
-		public static void GuardExists(this __XDIRECTORY info, [CallerArgumentExpression("info")] string name = null)
+		public static void GuardExists(this __XDIRECTORY info, [CallerArgumentExpression(nameof(info))] string name = null)
         {
             if (info == null) throw new ArgumentNullException(name);
-            if (!info.Exists) throw new ArgumentException($"does not exist.", name);
+            if (!info.Exists) throw new ArgumentException($"does not exist.", name ?? nameof(info));
         }
-
-        #endif
 
         #endregion
     }

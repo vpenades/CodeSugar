@@ -1,16 +1,13 @@
-﻿// Copyright (c) CodeSugar 2024 Vicente Penades
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.Linq;
+using System.ComponentModel;
 
 #nullable disable
 
 using __MATCHCASING = System.IO.MatchCasing;
-
-using System.Linq;
-using System.ComponentModel;
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {

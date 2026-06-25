@@ -1,6 +1,4 @@
-﻿// Copyright (c) CodeSugar 2024 Vicente Penades
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
@@ -8,10 +6,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 
 #nullable disable
-
-using __FINFO = System.IO.FileInfo;
-using __DINFO = System.IO.DirectoryInfo;
-using __SINFO = System.IO.FileSystemInfo;
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {

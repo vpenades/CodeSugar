@@ -1,6 +1,4 @@
-﻿// Copyright (c) CodeSugar 2024 Vicente Penades
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
@@ -36,7 +34,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             if (uri.IsFile)
             {
-                WriteAllLines(finfo, null,
+                GetWriteStreamFunction(finfo).WriteAllLines(null,
                     "[{000214A0-0000-0000-C000-000000000046}]",
                     "Prop3=19,11",
                     "[InternetShortcut]",
@@ -48,7 +46,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
             else
             {
-                WriteAllLines(finfo, null,
+                GetWriteStreamFunction(finfo).WriteAllLines(null,
                     "[{000214A0-0000-0000-C000-000000000046}]",
                     "Prop3=19,11",
                     "[InternetShortcut]",
@@ -202,7 +200,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             _CheckShortcutNotTemp(finfo);
 
-            var lines = ReadAllLines(finfo);
+            var lines = GetReadStreamFunction(finfo).ReadAllLines();
 
             var line = lines.FirstOrDefault(l=> l.StartsWith("URL="));
             if (line == null) return null;

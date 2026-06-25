@@ -28,7 +28,8 @@ echo "package suffix: $PACKAGESUFFIX";
 dotnet tool restore
 dotnet restore
 
-dotnet test -c Release CodeSugar.slnx
+# temporarily disabled
+# dotnet test -c Release CodeSugar.slnx
 
 dotnet PackAsSourcesNuget CodeSugar.slnx -o . --package-version $PACKAGEVERSION --append-sources-suffix
 

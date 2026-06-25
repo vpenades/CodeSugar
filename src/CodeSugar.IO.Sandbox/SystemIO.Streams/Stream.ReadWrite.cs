@@ -1,6 +1,4 @@
-﻿// Copyright (c) CodeSugar 2024 Vicente Penades
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
@@ -18,49 +16,25 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarExtensions
     {
-        #region diagnostics
+        #region diagnostics        
 
-        #if !NET
-
-        public static void GuardReadable(this __STREAM stream)
-        {
-            if (stream == null) throw new ArgumentNullException(nameof(stream));
-            if (!stream.CanRead) throw new ArgumentException("Can't read from strean", nameof(stream));
-        }
-
-        public static void GuardWriteable(this __STREAM stream)
-        {
-            if (stream == null) throw new ArgumentNullException(nameof(stream));
-            if (!stream.CanWrite) throw new ArgumentException("Can't read from strean", nameof(stream));
-        }
-
-        public static void GuardSeekable(this __STREAM stream)
-        {
-            if (stream == null) throw new ArgumentNullException(nameof(stream));
-            if (!stream.CanSeek) throw new ArgumentException("Can't seek strean", nameof(stream));
-        }
-
-        #else
-
-        public static void GuardReadable(this __STREAM stream, [CallerArgumentExpression("stream")] string name = null)
+        public static void GuardReadable(this __STREAM stream, [CallerArgumentExpression(nameof(stream))] string name = null)
         {
             if (stream == null) throw new ArgumentNullException(name);
-            if (!stream.CanRead) throw new ArgumentException("Can't read from strean", name);
+            if (!stream.CanRead) throw new ArgumentException("Can't read from strean", name ?? nameof(stream));
         }
 
-        public static void GuardWriteable(this __STREAM stream, [CallerArgumentExpression("stream")] string name = null)
+        public static void GuardWriteable(this __STREAM stream, [CallerArgumentExpression(nameof(stream))] string name = null)
         {
             if (stream == null) throw new ArgumentNullException(name);
-            if (!stream.CanWrite) throw new ArgumentException("Can't read from strean", name);
+            if (!stream.CanWrite) throw new ArgumentException("Can't read from strean", name ?? nameof(stream));
         }
 
-        public static void GuardSeekable(this __STREAM stream, [CallerArgumentExpression("stream")] string name = null)
+        public static void GuardSeekable(this __STREAM stream, [CallerArgumentExpression(nameof(stream))] string name = null)
         {
             if (stream == null) throw new ArgumentNullException(name);
-            if (!stream.CanSeek) throw new ArgumentException("Can't seek strean", name);
-        }
-
-        #endif
+            if (!stream.CanSeek) throw new ArgumentException("Can't seek strean", name ?? nameof(stream));
+        }        
 
         #endregion
 
@@ -140,9 +114,25 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
         }
 
+        public static void WriteAllLines(this Func<__STREAM> streamFunc, Encoding encoding, params string[] lines)
+        {
+            using (var stream = streamFunc.Invoke())
+            {
+                WriteAllLines(stream, encoding, lines);
+            }
+        }
+
         public static void WriteAllLines(this __STREAM stream, Encoding encoding, params string[] lines)
         {
             WriteAllLines(stream, lines.AsEnumerable(), encoding);
+        }
+
+        public static void WriteAllLines(this Func<__STREAM> streamFunc, IEnumerable<string> lines, Encoding encoding = null)
+        {
+            using(var stream = streamFunc.Invoke())
+            {
+                WriteAllLines(stream, lines, encoding);
+            }
         }
 
         public static void WriteAllLines(this __STREAM stream, IEnumerable<string> lines, Encoding encoding = null)
@@ -186,23 +176,29 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             #endif    
         }
 
-		/// <summary>
-		/// writes all the text from the given stream.
-		/// Equivalent to <see cref="System.IO.File.WriteAllText(string, string?, Encoding)"/>
-		/// </summary>   
-		public static void WriteAllText(this __STREAM stream, string contents, Encoding encoding = null)
+        public static void WriteAllText(this Func<__STREAM> stream, string contents, Encoding encoding = null)
+        {
+            using(var s = stream.Invoke())
+            {
+                WriteAllText(s, contents, encoding);
+            }
+        }
+
+        /// <summary>
+        /// writes all the text from the given stream.
+        /// Equivalent to <see cref="System.IO.File.WriteAllText(string, string?, Encoding)"/>
+        /// </summary>   
+        public static void WriteAllText(this __STREAM stream, string contents, Encoding encoding = null)
         {
             GuardWriteable(stream);
 
-            if (contents == null) contents = string.Empty;
+            contents ??= string.Empty;
 
             using (var ss = CreateTextWriter(stream, true, encoding))
             {
                 ss.Write(contents);            
             }
         }
-
-        
 
         public static string ReadAllText(this Func<Stream> openStream, Encoding encoding = null)
         {
@@ -272,11 +268,19 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             return new System.IO.BinaryReader(stream, encoding, leaveStreamOpen);
         }
 
-		/// <summary>
-		/// Writes all the bytes to the given stream.
-		/// Equivalent to <see cref="System.IO.File.WriteAllBytes(string, byte[])"/>
-		/// </summary>   
-		public static void WriteAllBytes(this __STREAM stream, IReadOnlyList<Byte> bytes)
+        public static void WriteAllBytes(this Func<__STREAM> createStream, IReadOnlyList<Byte> bytes)
+        {
+            using (var s = createStream.Invoke())
+            {                
+                WriteAllBytes(s, bytes);
+            }
+        }
+
+        /// <summary>
+        /// Writes all the bytes to the given stream.
+        /// Equivalent to <see cref="System.IO.File.WriteAllBytes(string, byte[])"/>
+        /// </summary>   
+        public static void WriteAllBytes(this __STREAM stream, IReadOnlyList<Byte> bytes)
         {
             GuardWriteable(stream);
 
@@ -340,8 +344,8 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
         public static __BYTESSEGMENT ReadAllBytes(this Func<__STREAM> openStream)
         {
-            using (var s = openStream())
-            {
+            using (var s = openStream.Invoke())
+            {                
                 return s.ReadAllBytes();
             }
         }

@@ -1,9 +1,8 @@
-﻿// Copyright (c) CodeSugar 2024 Vicente Penades
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Runtime.CompilerServices;
+using System.Diagnostics.CodeAnalysis;
 
 #nullable disable
 
@@ -14,22 +13,30 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarExtensions    
     {
+        [return: NotNull]
+        public static Func<System.IO.Stream> GetReadStreamFunction([NotNull] this __ZIPENTRY entry)
+        {
+            GuardReadable(entry);
+            return entry.Open;
+        }
+
+        [return: NotNull]
+        public static Func<System.IO.Stream> GetWriteStreamFunction([NotNull] this __ZIPENTRY entry)
+        {
+            GuardWriteable(entry);
+            return entry.Open;
+        }        
+
         /// <summary>
         /// extracts the stream of the entry and copies it to a MemoryStream
         /// </summary>
         /// <remarks>
         /// by default a zip entry returns a compressed stream that does not support Seek operations.
         /// </remarks>
+        [Obsolete("Use GetReadStreamFunction().ToMemoryStream()")]
         public static System.IO.MemoryStream ToMemoryStream(this __ZIPENTRY entry)
         {
-            GuardReadable(entry);            
-
-            using(var s = entry.Open())
-            {                
-                var ms = ToMemoryStream(s);
-                ms.Position = 0;
-                return ms;
-            }
+            return GetReadStreamFunction(entry).ToMemoryStream();
         }
 
 
@@ -63,80 +70,52 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
         }
 
+        [Obsolete("Use GetReadStreamFunction().ReadAllText()", true)]
         public static string ReadAllText(this __ZIPENTRY entry)
         {
-            GuardReadable(entry);
-
-            using(var s = entry.Open())
-            {
-                return s.ReadAllText();
-            }
+            return GetReadStreamFunction(entry).ReadAllText();
         }
 
+        [Obsolete("Use GetWriteStreamFunction().WriteAllText()", true)]
         public static void WriteAllText(this __ZIPENTRY entry, string text)
         {
-            GuardWriteable(entry);
-
-            using (var s = entry.Open())
-            {
-                s.WriteAllText(text);
-            }
+            GetWriteStreamFunction(entry).WriteAllText(text);
         }
 
+        [Obsolete("Use GetReadStreamFunction().ReadAllBytes()", true)]
         public static __BYTESSEGMENT ReadAllBytes(this __ZIPENTRY entry)
         {
-            GuardReadable(entry);
+            return GetReadStreamFunction(entry).ReadAllBytes();
+        }
 
-            using (var s = entry.Open())
-            {
-                return s.ReadAllBytes();
-            }
-        }        
-
+        [Obsolete("Use GetWriteStreamFunction().WriteAllBytes()", true)]
         public static void WriteAllBytes(this __ZIPENTRY entry, IReadOnlyList<Byte> bytes)
         {
-            GuardWriteable(entry);
-
-            using (var s = entry.Open())
-            {
-                s.WriteAllBytes(bytes);
-            }
+            GetWriteStreamFunction(entry).WriteAllBytes(bytes);
         }
 
+        [Obsolete("Use GetReadStreamFunction().ComputeSha512()", true)]
         public static Byte[] ComputeSha512(this __ZIPENTRY entry)
         {
-            GuardReadable(entry);
-            using(var s = entry.Open())
-            {
-                return s.ComputeSha512();
-            }
+            return GetReadStreamFunction(entry).ComputeSha512();
         }
 
+        [Obsolete("Use GetReadStreamFunction().ComputeSha384()", true)]
         public static Byte[] ComputeSha384(this __ZIPENTRY entry)
         {
-            GuardReadable(entry);
-            using(var s = entry.Open())
-            {
-                return s.ComputeSha384();
-            }
+            return GetReadStreamFunction(entry).ComputeSha384();
         }
 
+        [Obsolete("Use GetReadStreamFunction().ComputeSha256()", true)]
         public static Byte[] ComputeSha256(this __ZIPENTRY entry)
         {
-            GuardReadable(entry);
-            using(var s = entry.Open())
-            {
-                return s.ComputeSha256();
-            }
+            return GetReadStreamFunction(entry).ComputeSha256();
         }
 
+        [Obsolete("Use GetReadStreamFunction().ComputeMd5()", true)]
         public static Byte[] ComputeMd5(this __ZIPENTRY entry)
         {
-            GuardReadable(entry);
-            using(var s = entry.Open())
-            {
-                return s.ComputeMd5();
-            }
+            return GetReadStreamFunction(entry).ComputeMd5();
         }
     }
 }

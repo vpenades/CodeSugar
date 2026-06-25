@@ -24,16 +24,17 @@
     <Project Path="src/CodeSugar.IO.Sandbox/CodeSugar.IO.Sandbox.csproj" Id="084be84a-ee5c-4806-ab2b-4090c5131a6e" />
     <Project Path="src/CodeSugar.IO.SourceGenerator/CodeSugar.IO.SourceGenerator.csproj" />
     <Project Path="src/CodeSugar.Linq.Sources/CodeSugar.Linq.csproj" />
-    <Project Path="src/CodeSugar.Numerics.Sources/CodeSugar.Numerics.csproj" />
+    <Project Path="src/CodeSugar.Numerics.SourceGenerator/CodeSugar.Numerics.SourceGenerator.csproj" Id="a8f46879-e0f8-43f5-89fb-b51f5c73ac26" />
+    <Project Path="src/CodeSugar.Numerics.Templates/CodeSugar.Numerics.Templates.csproj" Id="efe7466c-6d55-48ef-9f2e-1e943db90830" />
     <Project Path="src/CodeSugar.Progress.Log/CodeSugar.Progress.Log.csproj" />
     <Project Path="src/CodeSugar.Srlzn.Bin.Sources/CodeSugar.Srlzn.Bin.csproj" />
     <Project Path="src/CodeSugar.Sys.Sources/CodeSugar.Sys.csproj" />
     <Project Path="src/CodeSugar.Sys.Text.Sources/CodeSugar.Sys.Text.csproj" />
-    <Project Path="src/CodeSugar.Tensors.Sources/CodeSugar.Tensors.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <File Path="tests/Directory.Build.props" />
     <Project Path="tests/CodeSugar.IO.Tests/CodeSugar.IO.Tests.csproj" />
+    <Project Path="tests/CodeSugar.Numerics.Tests/CodeSugar.Numerics.Tests.csproj" />
     <Project Path="tests/CodeSugar.Tests/CodeSugar.Tests.csproj" />
   </Folder>
 </Solution>

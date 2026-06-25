@@ -1,6 +1,4 @@
-﻿// Copyright (c) CodeSugar 2024 Vicente Penades
-
-using System;
+﻿using System;
 using System.Text;
 using System.IO;
 using System.Diagnostics;
@@ -11,7 +9,6 @@ using System.Threading;
 #nullable disable
 
 using __STREAM = System.IO.Stream;
-
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {

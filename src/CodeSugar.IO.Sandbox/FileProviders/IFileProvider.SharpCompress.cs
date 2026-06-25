@@ -1,6 +1,4 @@
-﻿// Copyright (c) CodeSugar 2024 Vicente Penades
-
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -108,7 +106,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 #if NET10_0_OR_GREATER
                 var comparer = StringComparer.Create(System.Globalization.CultureInfo.InvariantCulture, System.Globalization.CompareOptions.NumericOrdering);
                 #else
-                var comparer = StringComparer.Create(System.Globalization.CultureInfo.InvariantCulture, System.Globalization.CompareOptions.OrdinalIgnoreCase);
+                var comparer = StringComparer.Ordinal;
                 #endif
 
                 _ArchiveName = archName;

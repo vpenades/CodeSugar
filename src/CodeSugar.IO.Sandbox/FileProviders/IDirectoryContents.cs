@@ -1,6 +1,4 @@
-﻿// Copyright (c) CodeSugar 2024 Vicente Penades
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
@@ -18,13 +16,19 @@ using __XPROVIDER = Microsoft.Extensions.FileProviders.IFileProvider;
 using __XDIRECTORY = Microsoft.Extensions.FileProviders.IDirectoryContents;
 using __MATCHCASING = System.IO.MatchCasing;
 
-
-
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarExtensions
     {
         #region API
+
+        [return: NotNull]
+        public static __XDIRECTORY GetDirectoryContents(this __XINFO xfile)
+        {
+            return TryGetDirectoryContents(xfile, out var xdir)
+                ? xdir
+                : Microsoft.Extensions.FileProviders.NotFoundDirectoryContents.Singleton;
+        }
 
         /// <summary>
         /// If <paramref name="xfile"/> is a directory, it tries to return its <paramref name="xdir"/>

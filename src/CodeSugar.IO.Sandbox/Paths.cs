@@ -1,6 +1,4 @@
-﻿// Copyright (c) CodeSugar 2024 Vicente Penades
-
-using System;
+﻿using System;
 using System.Runtime.CompilerServices;
 
 #nullable disable
@@ -18,22 +16,18 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 		/// Checks whether a path is valid.
 		/// </summary>        
 		/// <exception cref="ArgumentNullException"></exception>
-		public static void GuardIsValidFileName(string fileName, bool checkForInvalidNames,
-            #if NET
-            [CallerArgumentExpression("fileName")]
-            #endif
-            string paramName = null)
+		public static void GuardIsValidFileName(string fileName, bool checkForInvalidNames, [CallerArgumentExpression(nameof(fileName))] string paramName = null)
         {
             if (string.IsNullOrWhiteSpace(fileName)) throw new ArgumentNullException(paramName);
-            if (fileName.IndexOfAny(_InvalidNameChars) >= 0) throw new ArgumentException($"'{fileName}' contains invalid chars", paramName);
+            if (fileName.IndexOfAny(_InvalidNameChars) >= 0) throw new ArgumentException($"'{fileName}' contains invalid chars", paramName ?? nameof(fileName));
 
             // files and directories with leading/trailing white spaces can be
             // effectively created, but in practice it messes with windows explorer.
-            if (Char.IsWhiteSpace(fileName[0]) || Char.IsWhiteSpace(fileName[fileName.Length - 1])) throw new ArgumentException($"'{fileName}' has leading or trailing white spaces", paramName);
+            if (Char.IsWhiteSpace(fileName[0]) || Char.IsWhiteSpace(fileName[fileName.Length - 1])) throw new ArgumentException($"'{fileName}' has leading or trailing white spaces", paramName ?? nameof(fileName));
 
             if (checkForInvalidNames)
             {
-                if (fileName == "." || fileName == "..") throw new ArgumentException($"'{fileName}' is an invalid file name", paramName);
+                if (fileName == "." || fileName == "..") throw new ArgumentException($"'{fileName}' is an invalid file name", paramName ?? nameof(fileName));
             }
         }
 

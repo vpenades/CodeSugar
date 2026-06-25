@@ -1,6 +1,4 @@
-﻿// Copyright (c) CodeSugar 2024 Vicente Penades
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
@@ -31,14 +29,14 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         #region API        
 
         [return: NotNull]
-        public static __XINFO ToIFileInfo<T>(this T xinfo) where T: System.IO.FileSystemInfo
+        public static __XINFO ToIFileInfo(this System.IO.FileSystemInfo sinfo)
         {
-            switch (xinfo)
+            switch (sinfo)
             {
                 case null: return __NULLFILE;
                 case __DINFO d: return new _BasicPhysicalDirectory(d);
                 case __FINFO f: return new _BasicPhysicalFile(f);                
-                default: throw new NotImplementedException(typeof(T).Name);
+                default: throw new NotImplementedException(sinfo.GetType().Name);
             }
         }
 
@@ -58,20 +56,17 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 : new _BasicPhysicalDirectory(dinfo);
         }
 
+        /// <summary>
+        /// Tries to get the internal <see cref="__FINFO"/> if not found but <see cref="__XINFO.PhysicalPath"/> exists, it creates one.
+        /// </summary>        
         public static bool TryGetFileInfo(this __XINFO xinfo, [NotNullWhen(true)] out __FINFO finfo)
         {
             finfo = null;
-            if (xinfo == null) return false;
-            if (xinfo.IsDirectory) return false;
+            if (xinfo == null) return false;            
 
-            switch(xinfo)
-            {
-                case _BasicPhysicalFile f: finfo = f.Info; return true;
-                case IServiceProvider s:
-                    finfo = s.GetService(typeof(__FINFO)) as __FINFO;
-                    if (finfo != null) return true;
-                    else break;
-            }
+            if (TryGetInternalFileInfo(xinfo, out finfo)) return true;
+
+            if (xinfo.IsDirectory) return false;
 
             if (string.IsNullOrWhiteSpace(xinfo.PhysicalPath)) return false;            
 
@@ -81,6 +76,27 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 return true;
             }
             catch { return false; }
+        }
+
+        /// <summary>
+        /// Tries to get the actual <see cref="__FINFO"/> contained inside <see cref="__XINFO"/>.
+        /// </summary>
+        public static bool TryGetInternalFileInfo(this __XINFO xinfo, [NotNullWhen(true)] out __FINFO finfo)
+        {
+            finfo = null;
+            if (xinfo == null) return false;
+            if (xinfo.IsDirectory) return false;
+
+            switch (xinfo)
+            {
+                case _BasicPhysicalFile f: finfo = f.Info; return true;
+                case IServiceProvider s:
+                    finfo = s.GetService(typeof(__FINFO)) as __FINFO;
+                    if (finfo != null) return true;
+                    else break;
+            }
+
+            return false;
         }
 
         public static bool TryGetDirectoryInfo(this __XINFO xinfo, [NotNullWhen(true)] out __DINFO dinfo)

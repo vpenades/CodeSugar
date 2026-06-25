@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <IsPackableAsSources>false</IsPackableAsSources>
+  </PropertyGroup>
+
+  <!--
+  <PropertyGroup>
+    <DefineConstants>$(DefineConstants);__REFERENCES_MICROSOFTIORECYCLABLEMEMORYSTREAM;__REFERENCES_SHARPCOMPRESS</DefineConstants>
+  </PropertyGroup>
+  -->
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="CodeSugar.Tests" />
+    <InternalsVisibleTo Include="CodeSugar.Nullable.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Numerics.Tensors" Version="10.0.9" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="[3.1.12]" />
+    <PackageReference Include="PhotoSauce.MagicScaler" Version="0.15.0" />
+    <PackageReference Include="SkiaSharp" Version="4.148.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Tensors\ColorTypes.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ColorTypes.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Tensors\TensorsBitmapDrawing.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>TensorsBitmapDrawing.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Tensors\ColorTypes.tt">
+      <LastGenOutput>ColorTypes.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="Tensors\TensorsBitmapDrawing.tt">
+      <LastGenOutput>TensorsBitmapDrawing.cs</LastGenOutput>
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+</Project>

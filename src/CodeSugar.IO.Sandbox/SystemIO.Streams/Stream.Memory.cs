@@ -1,6 +1,4 @@
-﻿// Copyright (c) CodeSugar 2024 Vicente Penades
-
-using System;
+﻿using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,7 +10,6 @@ using __STREAM = System.IO.Stream;
 using __MEMSTREAM = System.IO.MemoryStream;
 using __BYTESSEGMENT = System.ArraySegment<byte>;
 
-
 #if __REFERENCES_MICROSOFTIORECYCLABLEMEMORYSTREAM
 using __BIGMEMSTREAM = Microsoft.IO.RecyclableMemoryStream;
 #endif
@@ -21,10 +18,19 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarExtensions
     {
-        [return: NotNull]
-        private static System.IO.MemoryStream _ToMemoryStream(__BYTESSEGMENT segment)
+        public static __MEMSTREAM ToMemoryStream([DisallowNull] this Func<__STREAM> readerFunc)
         {
-            return new MemoryStream(segment.Array ?? Array.Empty<byte>(), segment.Offset, segment.Count, false);
+            using(var s = readerFunc.Invoke())
+            {
+                return ToMemoryStream(s);
+            }
+        }
+
+
+        [return: NotNull]
+        private static __MEMSTREAM _ToMemoryStream(__BYTESSEGMENT segment)
+        {
+            return new __MEMSTREAM(segment.Array ?? Array.Empty<byte>(), segment.Offset, segment.Count, false);
         }
 
         public static __MEMSTREAM ToMemoryStream([DisallowNull] this __STREAM stream)

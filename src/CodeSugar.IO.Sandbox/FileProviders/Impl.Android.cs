@@ -1,16 +1,16 @@
-﻿// Copyright (c) CodeSugar 2024 Vicente Penades
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Runtime.CompilerServices;
-using Microsoft.Extensions.Primitives;
 using System.Collections;
 using System.Linq;
 
+using Microsoft.Extensions.Primitives;
 
 #if ANDROID
+
+#nullable disable
 
 using _ANDROIDCONTEXT = Android.Content.ContextWrapper;
 using _ANDROIDASSETS = Android.Content.Res.AssetManager;
@@ -18,8 +18,6 @@ using _ANDROIDASSETS = Android.Content.Res.AssetManager;
 using __XINFO = Microsoft.Extensions.FileProviders.IFileInfo;
 using __XPROVIDER = Microsoft.Extensions.FileProviders.IFileProvider;
 using __XDIRECTORY = Microsoft.Extensions.FileProviders.IDirectoryContents;
-
-#nullable disable
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
@@ -184,11 +182,14 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 {
                     using (var afd = assets.OpenFd(path))
                     {
-                        // what's the difference between afd.Length && afd.DeclaredLength ?
+                        // In an Android AssetFileDescriptor,
+                        // .DeclaredLength represents the exact number of bytes requested or originally allocated for the specific asset file(or portion of a file).
+                        // .Length represents the actual total number of bytes available from the file's start offset to the end of the underlying file
+                        
                         return new _AndroidAssetFile(assets, path, afd.Length);
                     }
                 }
-                catch (Java.IO.FileNotFoundException) // this happended on an Office's Galaxy tablet
+                catch (Java.IO.FileNotFoundException) // this was found in the wild, even if OpenFD only documents throwing Java.IO.IOException
                 {
                     // [0:] Error trying to open Asset: geoid_height_map / README.md
                     // [0:] Error trying to open Asset: geoid_height_map / map -params.pb

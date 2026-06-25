@@ -6,10 +6,13 @@
     <RootNamespace>ExampleLibrary</RootNamespace> <!-- for some reason, namespace must be defined -->
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="CodeSugar.Sys.IO.Sources" Version="1.0.0-Prv-20251216" PrivateAssets="all" />
+  <ItemGroup>    
 		<PackageReference Include="CodeSugar.Srlzn.Bin.Sources" Version="1.0.0-Prv-20251216" PrivateAssets="all" />
     <PackageReference Include="ContentFilesExample" Version="1.0.2" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\CodeSugar.IO.SourceGenerator\CodeSugar.IO.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
 </Project>
