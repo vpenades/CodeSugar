@@ -16,14 +16,16 @@ namespace __CODESUGAR_ROOTNAMESPACE__
     {
         public static void GuardReadable(this __ZIPENTRY entry, [CallerArgumentExpression(nameof(entry))] string name = null)
         {
+            name ??= nameof(entry);
             if (entry == null) throw new ArgumentNullException(name);
-            if (entry.Archive.Mode != System.IO.Compression.ZipArchiveMode.Read) throw new ArgumentException("Can't read from strean", name ?? nameof(entry));
+            if (entry.Archive.Mode != System.IO.Compression.ZipArchiveMode.Read) throw new ArgumentException("Can't read from strean", name);
         }
 
         public static void GuardWriteable(this __ZIPENTRY entry, [CallerArgumentExpression(nameof(entry))] string name = null)
         {
+            name ??= nameof(entry);
             if (entry == null) throw new ArgumentNullException(name);
-            if (entry.Archive.Mode != System.IO.Compression.ZipArchiveMode.Create) throw new ArgumentException("Can't read from strean", name ?? nameof(entry));
+            if (entry.Archive.Mode == System.IO.Compression.ZipArchiveMode.Read) throw new ArgumentException("Can't read from strean", name);
         }        
 
         public static __ZIPARCHIVE CreateZipArchive(this System.IO.FileInfo finfo, System.Text.Encoding entryNameEncoding = null)

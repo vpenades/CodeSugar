@@ -446,14 +446,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             public void Preload()
             {
                 using (var tmp = CreateReadStream()) { }
-            }
-
-            internal void PreloadFrom(SharpCompress.Readers.IReader reader)
-            {
-                using var m = _Context.CreateMemoryStream(Key);
-
-                _WeakContent = new WeakReference<byte[]>(m.ToArray());
-            }
+            }            
 
             public override Stream CreateReadStream()
             {
@@ -465,16 +458,14 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 if (_WeakContent != null && _WeakContent.TryGetTarget(out var strongContent))
                 {
                     return new MemoryStream(strongContent, false);
-                }
-
-                _WeakContent = null;
+                }                
 
                 using var m = _Context.CreateMemoryStream(Key);
+                strongContent = m.ToArray();
 
-                _WeakContent = new WeakReference<byte[]>(m.ToArray());
+                _WeakContent = new WeakReference<byte[]>(strongContent);
 
-                m.Position = 0;
-                return m;
+                return new MemoryStream(strongContent, false);
             }
 
             #endregion
