@@ -12,11 +12,30 @@ namespace CodeSugar.Numerics
         protected override void InjectSources(SourceProductionContext context)
         {
             var hasTensors = this.NugetPackages.ContainsKey("System.Numerics.Tensors");
-            
-            ProcessTemplates(context,"Vectors", n => n.Contains(".Templates.Vectors."));
-            ProcessTemplates(context, "Matrices", n => n.Contains(".Templates.Matrices."));
+            var hasImageSharp = this.NugetPackages.ContainsKey("SixLabors.ImageSharp");
+            var hasMagicScaler = this.NugetPackages.ContainsKey("PhotoSauce.MagicScaler");
+            var hasSkiaSharp = this.NugetPackages.ContainsKey("PhotoSauce.MagicScaler");
 
-            if (hasTensors) ProcessTemplates(context,"Tensors", n => n.Contains(".Templates.Tensors."));            
+            ProcessTemplates(context,"Root", n => n.Contains(".Templates.Root."));
+
+            if (hasTensors)
+            {
+                ProcessTemplates(context, "Tensors", n => n.Contains(".Templates.Tensors."));
+                ProcessTemplates(context, "Intrinsics", n => n.Contains(".Templates.Intrinsics."));
+            }
+
+            if (hasImageSharp) ProcessTemplates(context, "ImageSharp", n => n.Contains(".Templates.ImageSharp."));
+            if (hasMagicScaler) ProcessTemplates(context, "MagicScaler", n => n.Contains(".Templates.MagicScaler."));
+            if (hasSkiaSharp) ProcessTemplates(context, "SkiaSharp", n => n.Contains(".Templates.SkiaSharp."));
+
+            if (hasTensors)
+            {
+                if (hasImageSharp) ProcessTemplates(context, "ImageSharpTs", n => n.Contains(".Templates.ImageSharpTensors."));
+                if (hasMagicScaler) ProcessTemplates(context, "MagicScalerTs", n => n.Contains(".Templates.MagicScalerTensors."));
+                if (hasSkiaSharp) ProcessTemplates(context, "SkiaSharpTs", n => n.Contains(".Templates.SkiaSharpTensors."));
+            }
+
+            
         }
 
         private int _TemplateIndex = 0;
@@ -56,7 +75,7 @@ namespace CodeSugar.Numerics
 
             foreach (var n in nugets)
             {
-                if (n.Key == "System.Numerics.Tensors")
+                if (n.Key == "System.Numerics.Tensors" || n.Key == "SixLabors.ImageSharp" || n.Key == "PhotoSauce.MagicScaler" || n.Key == "SkiaSharp")
                 {
                     var declaration = "#define __REFERENCES_" + n.Key.Replace(".", "").ToUpper();
                     sb.AppendLine(declaration);

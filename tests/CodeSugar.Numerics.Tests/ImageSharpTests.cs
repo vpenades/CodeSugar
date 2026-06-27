@@ -37,11 +37,7 @@ namespace CodeSugar
             target.Mutate(dc => dc.DrawImage(icon, xform));
 
             AttachmentInfo.From("affineTransform1.png").WriteObject(target.SaveAsPng);
-        }*/
-
-
-
-        
+        }*/        
 
         [Test]
         public void TestTensorsInterop()
@@ -50,32 +46,31 @@ namespace CodeSugar
 
             using var img = SixLabors.ImageSharp.Image.Load<Rgba32>(icon.FilePath);
 
-            var hwcTensor = System.Numerics.Tensors.Tensor.Create<float>(new float[img.Width * img.Height * 3], new nint[] { img.Height, img.Width, 3 });
-            var chwTensor = System.Numerics.Tensors.Tensor.Create<float>(new float[img.Width * img.Height * 3], new nint[] { 3, img.Height, img.Width });
+            var size = new System.Drawing.Size(img.Width, img.Height);
+
+            var hwcTensor = size.CreateTensorBitmapHWC<float>(3);
+            var chwTensor = size.CreateTensorBitmapCHW<float>(3);
 
             img.CopyToTensor(hwcTensor);
-            img.CopyToTensor(chwTensor);
-            
-            AttachmentInfo.From("hwcTensor.png").WriteObjectEx(f => hwcTensor.SaveToSixLaborsImage(f));
-            AttachmentInfo.From("chwTensor.png").WriteObjectEx(f => chwTensor.SaveToSixLaborsImage(f));
+            img.CopyToTensor(chwTensor);            
+
+            AttachmentInfo.From("hwcTensor.png").WriteObjectEx(f => hwcTensor.ImageSharpSaveTo(f));
+            AttachmentInfo.From("chwTensor.png").WriteObjectEx(f => chwTensor.ImageSharpSaveTo(f));
 
             hwcTensor.ApplyMultiplyAddToPixelElements(System.Numerics.Vector3.One *2, -System.Numerics.Vector3.One);
-            AttachmentInfo.From("hwcTensor_scaled.png").WriteObjectEx(f => hwcTensor.SaveToSixLaborsImage(f));
+            AttachmentInfo.From("hwcTensor_scaled.png").WriteObjectEx(f => hwcTensor.ImageSharpSaveTo(f));
 
             chwTensor.ApplyMultiplyAddToPixelElements(System.Numerics.Vector3.One *2, -System.Numerics.Vector3.One);
-            AttachmentInfo.From("chwTensor_scaled.png").WriteObjectEx(f => chwTensor.SaveToSixLaborsImage(f));
+            AttachmentInfo.From("chwTensor_scaled.png").WriteObjectEx(f => chwTensor.ImageSharpSaveTo(f));
 
         }
 
         [Test]
         public void TestTensorsAlpha()
         {
-            var hwcTensor = System.Numerics.Tensors.Tensor.Create<float>(new float[256 * 256], new nint[] { 256, 256, 1 });
+            var hwcTensor = new System.Drawing.Size(256,256).CreateTensorBitmapHWC<float>(1);
 
-            using var image = hwcTensor.ToSixLaborsImage<A8>();
-
-            
-
+            using var image = hwcTensor.ToImageSharp<A8>();
         }
 
         /*

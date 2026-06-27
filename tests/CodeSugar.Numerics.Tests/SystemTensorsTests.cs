@@ -32,7 +32,25 @@ namespace CodeSugar
             Console.Out.WriteLine($"Vector128 HwdSupport:{Vector128.IsHardwareAccelerated}");
             #endif
         }
-            
+
+        [Test]
+        public async Task TestTensorIsBitmap()
+        {
+            var tensor1 = Tensor.Create<byte>(new byte[256 * 200 * 1], new nint[] { 256, 200, 1 });
+            await Assert.That(tensor1.TryInferBitmapSize(out var w, out var h, out var c, out var isCHW)).IsTrue();
+            await Assert.That(w).IsEqualTo(200);
+            await Assert.That(h).IsEqualTo(256);
+            await Assert.That(c).IsEqualTo(1);
+            await Assert.That(isCHW).IsFalse();
+
+            var tensor2 = Tensor.Create<byte>(new byte[256 * 200 * 3], new nint[] { 256, 200, 3 });
+            await Assert.That(tensor2.TryInferBitmapSize(out w, out h, out c, out isCHW)).IsTrue();
+            await Assert.That(w).IsEqualTo(200);
+            await Assert.That(h).IsEqualTo(256);
+            await Assert.That(c).IsEqualTo(3);
+            await Assert.That(isCHW).IsFalse();
+        }
+
 
         [Test]
         public async Task TestVector4MultiplyAdd()
@@ -386,7 +404,7 @@ namespace CodeSugar
 
             dstBmp.AsTensorSpan().DrawRgbPixelsOverRgb(System.Numerics.Matrix3x2.CreateScale(2, 2) * System.Numerics.Matrix3x2.CreateRotation(0.1f), srcBmp, true);            
 
-            AttachmentInfo.From("dstBmp.png").WriteObjectEx(f => dstBmp.SaveToSixLaborsImage(f));
+            AttachmentInfo.From("dstBmp.png").WriteObjectEx(f => dstBmp.ImageSharpSaveTo(f));
 
             var h = dstBmp.AsReadOnlyTensorSpan().GetContentHashCode();
 

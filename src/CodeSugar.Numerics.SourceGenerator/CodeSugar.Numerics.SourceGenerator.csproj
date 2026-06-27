@@ -26,12 +26,9 @@
 
   <ItemGroup>
     <EmbeddedResource Include="..\CodeSugar.Numerics.Templates\*.cs" LinkBase="Templates\Vectors" />
-    <EmbeddedResource Include="..\CodeSugar.Numerics.Templates\Matrices\*.cs" LinkBase="Templates\Vectors" />
-    <EmbeddedResource Include="..\CodeSugar.Numerics.Templates\Vectors\*.cs" LinkBase="Templates\Vectors" />
-    <EmbeddedResource Include="..\CodeSugar.Numerics.Templates\Tensors\*.cs" LinkBase="Templates\Tensors" />
-    <EmbeddedResource Include="..\CodeSugar.Numerics.Templates\ImageSharpTensors\*.cs" LinkBase="Templates\ImageSharpTensors" />
-    <EmbeddedResource Include="..\CodeSugar.Numerics.Templates\MagicScalerTensors\*.cs" LinkBase="Templates\MagicScalerTensors" />
-    <EmbeddedResource Include="..\CodeSugar.Numerics.Templates\SkiaSharpTensors\*.cs" LinkBase="Templates\SkiaSharpTensors" />
+		<EmbeddedResource Include="..\CodeSugar.Numerics.Templates\Vectors\*.cs" LinkBase="Templates\Vectors" />
+    <EmbeddedResource Include="..\CodeSugar.Numerics.Templates\Matrices\*.cs" LinkBase="Templates\Matrices" />    
+    <EmbeddedResource Include="..\CodeSugar.Numerics.Templates\Tensors\*.cs" LinkBase="Templates\Tensors" />    
   </ItemGroup>
 
   <ItemGroup>

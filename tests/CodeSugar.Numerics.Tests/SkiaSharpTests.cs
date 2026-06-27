@@ -21,11 +21,11 @@ namespace CodeSugar
 
             using var srcBmp = SKBitmap.Decode(icon.FilePath);            
 
-            var tensor = new System.Drawing.Size(srcBmp.Width, srcBmp.Height).CreateCompatibleTensorHWC<float>(3);
+            var tensor = new System.Drawing.Size(srcBmp.Width, srcBmp.Height).CreateTensorBitmapHWC<float>(3);
 
             srcBmp.CopyPixelsToTensor(tensor, false);
 
-            AttachmentInfo.From("CodeSugar.ImageSharp.png").WriteObjectEx(x => tensor.SaveToSixLaborsImage(x, false));
+            AttachmentInfo.From("CodeSugar.ImageSharp.png").WriteObjectEx(x => tensor.ImageSharpSaveTo(x, false));
         }
     }
 }

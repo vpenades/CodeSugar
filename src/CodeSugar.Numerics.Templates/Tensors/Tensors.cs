@@ -14,50 +14,11 @@ using System.Threading;
 
 using __TENSORS = System.Numerics.Tensors;
 
-using System.Runtime.CompilerServices;
-
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     internal static partial class CodeSugarNumericsExtensions
     {
-        private static bool _TryInferImageSize(ReadOnlySpan<nint> lenghts, ReadOnlySpan<nint> strides, out int width, out int height, out int channels, out bool isCHW)
-        {
-            width = 0;
-            height = 0;
-            channels = 0;
-            isCHW = false;
-
-            if (lenghts.Length == 2)
-            {
-                height = (int)lenghts[0];
-                width = (int)lenghts[1];
-                channels = 1;
-                return true;
-            }
-
-            if (lenghts.Length != 3) return false;
-
-            if (lenghts[2] <= 4 && lenghts[0] > lenghts[2]) // check is HWC
-            {
-                height = (int)lenghts[0];
-                width = (int)lenghts[1];
-                channels = (int)lenghts[2];
-                return true;
-            }
-
-            if (lenghts[0] <= 4 && lenghts[1] > lenghts[0]) // check is CHW
-            {
-                channels = (int)lenghts[0];
-                height = (int)lenghts[1];
-                width = (int)lenghts[2];
-                isCHW = true;
-                return true;
-            }
-
-            return false;
-        }
-
         /// <summary>
         /// checks whether the given tensor has non default strides
         /// </summary>

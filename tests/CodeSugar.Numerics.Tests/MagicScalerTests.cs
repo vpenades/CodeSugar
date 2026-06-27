@@ -18,16 +18,11 @@ namespace CodeSugar
             var icon = ResourceInfo.From("CodeSugar.png");
 
             // magic scaler setup
-            var settings = new ProcessImageSettings { Width = 800 };            
-            using var pipeline = MagicImageProcessor.BuildPipeline(icon.FilePath, settings);
+            var settings = new ProcessImageSettings { Width = 800 };
 
-            var pixels = pipeline.PixelSource!;
+            var tensor = icon.File.GetReadStreamFunction().MagicScalerReadTensor<float>(settings, out _);            
 
-            var tensor = new System.Drawing.Size(pixels.Width, pixels.Height).CreateCompatibleTensorHWC<float>(3);
-
-            pixels.CopyPixelsToTensor(tensor);
-
-            AttachmentInfo.From("CodeSugar.ImageSharp.png").WriteObjectEx(x=> tensor.SaveToSixLaborsImage(x,false));
+            AttachmentInfo.From("CodeSugar.ImageSharp.png").WriteObjectEx(x=> tensor.ImageSharpSaveTo(x,true));
         }
     }
 }

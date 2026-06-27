@@ -21,6 +21,8 @@
     <Project Path="src/CodeSugar.AI/CodeSugar.AI.csproj" />
     <Project Path="src/CodeSugar.ICommand/CodeSugar.ICommand.csproj" />
     <Project Path="src/CodeSugar.ImageSharp/CodeSugar.ImageSharp.csproj" />
+    <Project Path="src/CodeSugar.Imaging.SourceGenerator/CodeSugar.Imaging.SourceGenerator.csproj" Id="bf19d783-f488-4e07-970c-7e9f807d2b10" />
+    <Project Path="src/CodeSugar.Imaging.Templates/CodeSugar.Imaging.Templates.csproj" Id="51b4fa85-b1f7-4072-b721-30e1a18537f7" />
     <Project Path="src/CodeSugar.IO.Sandbox/CodeSugar.IO.Sandbox.csproj" Id="084be84a-ee5c-4806-ab2b-4090c5131a6e" />
     <Project Path="src/CodeSugar.IO.SourceGenerator/CodeSugar.IO.SourceGenerator.csproj" />
     <Project Path="src/CodeSugar.Linq.Sources/CodeSugar.Linq.csproj" />
