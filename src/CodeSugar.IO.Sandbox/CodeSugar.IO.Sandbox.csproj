@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="CodeSugar.Tests" />
-    <InternalsVisibleTo Include="CodeSugar.Nullable.Tests" />
+		<InternalsVisibleTo Include="CodeSugar.IO.Tests" />    
   </ItemGroup>
 
   <ItemGroup>

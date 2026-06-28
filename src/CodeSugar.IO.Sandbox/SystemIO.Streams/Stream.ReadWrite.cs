@@ -289,16 +289,24 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             switch(bytes)
             {
                 case Byte[] array: stream.Write(array, 0, array.Length); break;
-                case __BYTESSEGMENT segment: stream.Write(segment.Array, segment.Offset, segment.Count); break;                    
+                case __BYTESSEGMENT segment: stream.Write(segment.Array, segment.Offset, segment.Count); break;
+
+                #if NET8_0_OR_GREATER
+                case List<byte> list:
+                    var span = System.Runtime.InteropServices.CollectionsMarshal.AsSpan(list);
+                    stream.Write(span);
+                    break;
+                #endif
+
                 default:                    
                     var buf = new Byte[8192];
                     var pos = 0;
-                    while(pos < buf.Length)
+                    while(pos < bytes.Count)
                     {
                         var len = Math.Min(buf.Length, bytes.Count - pos);
                         for (int i = 0; i < len; ++i) buf[i] = bytes[pos + i];
                         stream.Write(buf, 0, len);
-                        pos += buf.Length;
+                        pos += len;
                     }
                     break;
 
@@ -318,17 +326,17 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             switch(bytes)
             {
                 case Byte[] array: await stream.WriteAsync(array, 0, array.Length, ctoken).ConfigureAwait(true); break;
-                case __BYTESSEGMENT segment: await stream.WriteAsync(segment.Array, segment.Offset, segment.Count, ctoken).ConfigureAwait(true); break;
+                case __BYTESSEGMENT segment: await stream.WriteAsync(segment.Array, segment.Offset, segment.Count, ctoken).ConfigureAwait(true); break;                
 
                 default:                    
                     var buf = new Byte[8192];
                     var pos = 0;
-                    while(pos < buf.Length)
+                    while(pos < bytes.Count)
                     {
                         var len = Math.Min(buf.Length, bytes.Count - pos);
                         for (int i = 0; i < len; ++i) buf[i] = bytes[pos + i];
                         await stream.WriteAsync(buf, 0, len, ctoken).ConfigureAwait(true);
-                        pos += buf.Length;
+                        pos += len;
                     }
                     break;
             }
@@ -466,6 +474,6 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             return new __BYTESSEGMENT(bytes);
         }
 
-        #endregion        
+#endregion
     }
 }

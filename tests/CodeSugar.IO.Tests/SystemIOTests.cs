@@ -7,10 +7,10 @@ using System.Linq;
 
 using TUnit;
 
-using CODESUGARIO = CodeSugar.CodeSugarExtensions;
-
 namespace CodeSugar
 {
+    using CODESUGARIO = CodeSugarExtensions;
+
     public class SystemIOTests : IProgress<int>
     {
         public void Report(int value)

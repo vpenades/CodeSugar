@@ -57,7 +57,7 @@ namespace CodeSugar
 
             foreach(var finfo in dinfo.EnumerateFiles("*.cs", System.IO.SearchOption.TopDirectoryOnly))
             {
-                var sc = finfo.ReadAllText();
+                var sc = finfo.GetReadStreamFunction().ReadAllText();
 
                 var result1 = _RoslynExtensions.CheckUsesProperty<System.IO.FileInfo>(sc, "Exists");
                 await Assert.That(result1).IsFalse().Because($"{finfo.Name} uses System.IO.FileInfo.Exists");
@@ -99,7 +99,7 @@ namespace CodeSugar
 
             foreach (var finfo in dinfo.EnumerateFiles("*.cs", System.IO.SearchOption.TopDirectoryOnly))
             {
-                var sc = finfo.ReadAllText();
+                var sc = finfo.GetReadStreamFunction().ReadAllText();
                 // TODO: TUnit migration - Complex NUnit constraint. Manual conversion required.
 
                 await Assert.That(sc).Contains("#nullable disable").Because($"{projectName}/{finfo.Name} does not have #nullable disable");
@@ -136,7 +136,7 @@ namespace CodeSugar
 
             foreach (var finfo in dinfo.EnumerateFiles("*.cs", System.IO.SearchOption.TopDirectoryOnly))
             {
-                var sc = finfo.ReadAllText();
+                var sc = finfo.GetReadStreamFunction().ReadAllText();
 
                 foreach (var kvp in _RoslynExtensions.EnumerateUsingAliasDirectives(sc).Distinct())
                 {

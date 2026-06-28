@@ -33,13 +33,13 @@
     <ProjectReference Include="..\..\src\CodeSugar.Imaging.Templates\CodeSugar.Imaging.Templates.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Numerics.Templates\CodeSugar.Numerics.Templates.csproj" />
   </ItemGroup>
-	-->
+	-->	
 
-	<!-- source generation for release testing -->
+	<!-- source generation for release testing -->	
   <ItemGroup>    
     <ProjectReference Include="..\..\src\CodeSugar.Numerics.SourceGenerator\CodeSugar.Numerics.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 		<ProjectReference Include="..\..\src\CodeSugar.Imaging.SourceGenerator\CodeSugar.Imaging.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-	</ItemGroup>
+	</ItemGroup>	
 	
 
 	<ItemGroup>

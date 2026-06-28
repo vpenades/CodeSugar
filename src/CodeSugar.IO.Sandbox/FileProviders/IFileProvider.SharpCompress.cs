@@ -323,15 +323,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                         var entry = arch.Entries.FirstOrDefault(item => item.Key == key);
                         if (entry == null) return null;
 
-                        var m = new MemoryStream();
-
-                        using (var s = entry.OpenEntryStream())
-                        {
-                            s.CopyTo(m);
-                        }                        
-
-                        m.Position = 0;
-                        return m;
+                        return entry.GetReadStreamFunction().ToMemoryStream();
                     }
                 }
             }
@@ -340,15 +332,12 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             {
                 var arch = SharpCompress.Archives.ArchiveFactory.OpenArchive(_Archive.FullName, _Options);
                 
-                var entry = arch.Entries.FirstOrDefault(item => item.Key == key);
-                var stream = entry?.OpenEntryStream();
-                if (stream == null)
-                {
-                    arch.Dispose();
-                    return null;
-                }
+                var entry = arch.Entries.FirstOrDefault(item => item.Key == key);                
 
-                return stream.WithDisposeObserver(() => arch.Dispose());
+                var stream = entry?.OpenEntryStream();
+                if (stream == null) { arch.Dispose(); return null; }
+
+                return stream.WithDisposeObserver(arch.Dispose);
             }
 
             #endregion
@@ -429,7 +418,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             public bool Equals(_SharpCompressRandomEntry other)
             {
                 if (other == null) return false;
-                if (string.Equals(this.Key, other.Key, StringComparison.Ordinal)) return false;
+                if (!string.Equals(this.Key, other.Key, StringComparison.Ordinal)) return false;
                 if (this._Context != other._Context) return false;
                 return true;
             }

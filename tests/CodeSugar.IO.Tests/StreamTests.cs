@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,36 +15,52 @@ namespace CodeSugar
         [Test]
         public async Task TestStreamsAsync()
         {
-            await _TestReadWriteBytesAsync(() => new System.IO.MemoryStream());
-
-            void _write(System.IO.FileInfo path)
-            {
-                Task.Run(() => _TestReadWriteBytesAsync(() => path.Open(FileMode.Create, FileAccess.ReadWrite)));
-            }
-
-            AttachmentInfo.From("tmp.bin").WriteObjectEx(_write);
-        }
-
-        private static async Task _TestReadWriteBytesAsync(Func<System.IO.Stream> streamFactory)
-        {
             var rnd = new byte[1000000];
             new Random().NextBytes(rnd);
 
+            IReadOnlyList<byte>? sample = null;
+
+            for(int i=0; i < 4; ++i)
+            {
+                switch(i)
+                {
+                    case 0: sample = rnd;break;
+                    case 1: sample = new ArraySegment<byte>(rnd);break;
+                    case 2: sample = rnd.ToList();break;
+                    case 3: sample = rnd.ToImmutableList();break;
+                }
+
+                await _TestReadWriteBytesAsync(() => new System.IO.MemoryStream(), sample);
+
+                void _write(System.IO.FileInfo path)
+                {
+                    Task.Run(() => _TestReadWriteBytesAsync(() => path.Open(FileMode.Create, FileAccess.ReadWrite), sample));
+                }
+
+                AttachmentInfo.From($"tmp{i}.bin").WriteObjectEx(_write);
+            }            
+
+            
+        }
+
+        private static async Task _TestReadWriteBytesAsync(Func<System.IO.Stream> streamFactory, IReadOnlyList<byte> sample)
+        {  
+
             using (var m = streamFactory())
             {
-                m.WriteAllBytes(rnd);
-                await Assert.That(m.Length).IsEqualTo(rnd.Length);
+                m.WriteAllBytes(sample);
+                await Assert.That(m.Length).IsEqualTo(sample.Count);
                 m.Position = 0;
-                await Assert.That(m.ReadAllBytes()).IsSequenceEqualTo(rnd);
+                await Assert.That(m.ReadAllBytes()).IsSequenceEqualTo(sample);
             }
 
             using (var m = streamFactory())
             {
-                await m.WriteAllBytesAsync(rnd, System.Threading.CancellationToken.None);
-                await Assert.That(m.Length).IsEqualTo(rnd.Length);
+                await m.WriteAllBytesAsync(sample, System.Threading.CancellationToken.None);
+                await Assert.That(m.Length).IsEqualTo(sample.Count);
                 m.Position = 0;
                 var r = await m.ReadAllBytesAsync(System.Threading.CancellationToken.None);
-                await Assert.That(r).IsSequenceEqualTo(rnd);
+                await Assert.That(r).IsSequenceEqualTo(sample);
             }
         }
 

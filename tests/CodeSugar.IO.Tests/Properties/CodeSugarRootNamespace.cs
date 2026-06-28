@@ -1,0 +1,7 @@
+﻿
+global using __CODESUGAR_ROOTNAMESPACE__;
+
+namespace __CODESUGAR_ROOTNAMESPACE__
+{
+
+}
