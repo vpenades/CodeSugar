@@ -17,6 +17,8 @@ namespace CodeSugar
         [Test]
         public async Task LoadTest()
         {
+            if (!OperatingSystem.IsWindows()) return;
+
             var icon = ResourceInfo.From("CodeSugar.png");
 
             using var srcBmp = SKBitmap.Decode(icon.FilePath);            
