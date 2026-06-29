@@ -31,12 +31,10 @@ dotnet restore
 
 # generate decoupled solutions for src and tests to avoid SourceGenerator build issues
 
+dotnet slngen tests/*/*.csproj -o tests/.tests.sln --launch false
+dotnet test tests/
+
 dotnet slngen src/*/*.csproj -o src/.src.sln --launch false
-
-dotnet build src/.src.sln
-
-dotnet test CodeSugar.slnx
-
-dotnet pack -c Release src/.src.sln -o . --version $PACKAGEVERSION
+dotnet pack -c Release src/ -o . --version $PACKAGEVERSION
 
 # read -p "Press [ENTER] to continue..."

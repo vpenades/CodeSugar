@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <RootNamespace>CodeSugar</RootNamespace>
-    <TargetFramework>net10.0</TargetFramework>
+    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <Choose>
-    <When Condition=" false ">
+    <When Condition="false">
       <ItemGroup>
         <ProjectReference Include="..\..\src\CodeSugar.IO.Sandbox\CodeSugar.IO.Templates.csproj" />
         <ProjectReference Include="..\..\src\CodeSugar.Imaging.Templates\CodeSugar.Imaging.Templates.csproj" />
@@ -41,9 +41,5 @@
       </ItemGroup>
     </Otherwise>
   </Choose>
-  
-  <Target Name="PrintBuildInfo" BeforeTargets="Build">
-    <Message Importance="high" Text="TargetFramework: $(TargetFramework)" />
-  </Target>
 
 </Project>

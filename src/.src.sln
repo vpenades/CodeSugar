@@ -1,5 +1,5 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeSugar.Imaging.Templates", "CodeSugar.Imaging.Templates\CodeSugar.Imaging.Templates.csproj", "{F4B82EA7-809D-46D2-B01F-9EEE8E4E068D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeSugar.IO.Templates", "CodeSugar.IO.Sandbox\CodeSugar.IO.Templates.csproj", "{D7C405FC-332E-4D62-AB0B-76264E2E73E0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeSugar.AI", "CodeSugar.AI\CodeSugar.AI.csproj", "{5AF7C622-0573-4113-8902-953FEE5A6C0C}"
 EndProject
@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeSugar.ImageSharp", "Cod
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeSugar.Imaging.SourceGenerator", "CodeSugar.Imaging.SourceGenerator\CodeSugar.Imaging.SourceGenerator.csproj", "{C417CBB1-7604-413B-B0AE-82F4B59D0A03}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeSugar.IO.Templates", "CodeSugar.IO.Sandbox\CodeSugar.IO.Templates.csproj", "{D7C405FC-332E-4D62-AB0B-76264E2E73E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeSugar.Imaging.Templates", "CodeSugar.Imaging.Templates\CodeSugar.Imaging.Templates.csproj", "{F4B82EA7-809D-46D2-B01F-9EEE8E4E068D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeSugar.IO.SourceGenerator", "CodeSugar.IO.SourceGenerator\CodeSugar.IO.SourceGenerator.csproj", "{811E2AFE-8AFA-44B8-9AD7-D72979E0C443}"
 EndProject
@@ -33,10 +33,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F4B82EA7-809D-46D2-B01F-9EEE8E4E068D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F4B82EA7-809D-46D2-B01F-9EEE8E4E068D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F4B82EA7-809D-46D2-B01F-9EEE8E4E068D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F4B82EA7-809D-46D2-B01F-9EEE8E4E068D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7C405FC-332E-4D62-AB0B-76264E2E73E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7C405FC-332E-4D62-AB0B-76264E2E73E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7C405FC-332E-4D62-AB0B-76264E2E73E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7C405FC-332E-4D62-AB0B-76264E2E73E0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5AF7C622-0573-4113-8902-953FEE5A6C0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5AF7C622-0573-4113-8902-953FEE5A6C0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AF7C622-0573-4113-8902-953FEE5A6C0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -53,10 +53,10 @@ Global
 		{C417CBB1-7604-413B-B0AE-82F4B59D0A03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C417CBB1-7604-413B-B0AE-82F4B59D0A03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C417CBB1-7604-413B-B0AE-82F4B59D0A03}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D7C405FC-332E-4D62-AB0B-76264E2E73E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D7C405FC-332E-4D62-AB0B-76264E2E73E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D7C405FC-332E-4D62-AB0B-76264E2E73E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D7C405FC-332E-4D62-AB0B-76264E2E73E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4B82EA7-809D-46D2-B01F-9EEE8E4E068D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4B82EA7-809D-46D2-B01F-9EEE8E4E068D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4B82EA7-809D-46D2-B01F-9EEE8E4E068D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4B82EA7-809D-46D2-B01F-9EEE8E4E068D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{811E2AFE-8AFA-44B8-9AD7-D72979E0C443}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{811E2AFE-8AFA-44B8-9AD7-D72979E0C443}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{811E2AFE-8AFA-44B8-9AD7-D72979E0C443}.Release|Any CPU.ActiveCfg = Release|Any CPU

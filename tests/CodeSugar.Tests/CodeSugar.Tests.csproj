@@ -52,7 +52,7 @@
   </ItemGroup>
 
   <Choose>
-    <When Condition=" 1 == 1 ">
+    <When Condition="false">
       <ItemGroup>
         <ProjectReference Include="..\..\src\CodeSugar.IO.Sandbox\CodeSugar.IO.Templates.csproj" />
       </ItemGroup>
