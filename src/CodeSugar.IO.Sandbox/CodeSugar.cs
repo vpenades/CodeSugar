@@ -5,8 +5,6 @@ using System.IO;
 
 #nullable disable
 
-using __RTINTEROPSVCS = System.Runtime.InteropServices;
-
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
@@ -21,8 +19,19 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
         private static readonly char[] _InvalidNameChars = System.IO.Path.GetInvalidFileNameChars();    
 
-        private static readonly char[] _InvalidPathChars = System.IO.Path.GetInvalidPathChars();        
-        
+        private static readonly char[] _InvalidPathChars = System.IO.Path.GetInvalidPathChars();
+
+        private static char[] _GetDirectorySeparators()
+        {
+            // this would be valid only when working with actual file system paths, otherwise it's
+            // dangerous because at some point an OS with '/' as main separator may process paths
+            // that come from windows using '\'
+
+            return System.IO.Path.DirectorySeparatorChar == System.IO.Path.AltDirectorySeparatorChar
+                ? new char[] { System.IO.Path.DirectorySeparatorChar }
+                : new char[] { System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar };
+        }
+
         #if NETSTANDARD
         private static string _processPath;
         #endif
@@ -55,20 +64,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         /// <remarks>
         /// This directory is suited to retrieve application assets.
         /// </remarks>
-        public static System.IO.DirectoryInfo ApplicationDirectory => new System.IO.DirectoryInfo(System.AppContext.BaseDirectory);
-
-        public static bool FileSystemIsCaseSensitive { get; } = _CheckFileSystemCaseSensitive();
-
-        public static StringComparison FileSystemStringComparison => FileSystemIsCaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
-
-        public static StringComparer FileSystemStringComparer => FileSystemIsCaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase;
-
-        private static char[] _GetDirectorySeparators()
-        {
-            return System.IO.Path.DirectorySeparatorChar == System.IO.Path.AltDirectorySeparatorChar
-                ? new char[] { System.IO.Path.DirectorySeparatorChar }
-                : new char[] { System.IO.Path.DirectorySeparatorChar , System.IO.Path.AltDirectorySeparatorChar };
-        }
+        public static System.IO.DirectoryInfo ApplicationDirectory => new System.IO.DirectoryInfo(System.AppContext.BaseDirectory);        
 
         #endregion
 
@@ -98,29 +94,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             #endif
         }
 
-        private static bool _CheckFileSystemCaseSensitive()
-        {
-            // credits: https://stackoverflow.com/a/56773947
-
-            if (__RTINTEROPSVCS.RuntimeInformation.IsOSPlatform(__RTINTEROPSVCS.OSPlatform.Windows) ||
-                __RTINTEROPSVCS.RuntimeInformation.IsOSPlatform(__RTINTEROPSVCS.OSPlatform.OSX))  // HFS+ (the Mac file-system) is usually configured to be case insensitive.
-            {
-                return false;
-            }
-            else if (__RTINTEROPSVCS.RuntimeInformation.IsOSPlatform(__RTINTEROPSVCS.OSPlatform.Linux))
-            {
-                return true;
-            }
-            else if (System.Environment.OSVersion.Platform == System.PlatformID.Unix)
-            {
-                return true;
-            }
-            else
-            {
-                // A default.
-                return false;
-            }
-        }        
+          
 
         #endregion
     }

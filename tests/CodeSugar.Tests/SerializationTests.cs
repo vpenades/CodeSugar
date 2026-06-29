@@ -62,7 +62,7 @@ namespace CodeSugar
         }
 
         [Test]
-        public void TestSerializationStream()
+        public async Task TestSerializationStream()
         {
             using System.IO.Stream m = new System.IO.MemoryStream();
 
@@ -76,11 +76,11 @@ namespace CodeSugar
             o = new _SerializableObject();
             o.ReadFrom(m);
 
-            o.Check();
+            await o.Check();
         }
 
         [Test]
-        public void TestSerializationArray()
+        public async Task TestSerializationArray()
         {
             ArraySegment<Byte> array = new Byte[1000];            
 
@@ -92,7 +92,7 @@ namespace CodeSugar
             o = new _SerializableObject();
             o.ReadFrom(array);
 
-            o.Check();
+            await o.Check();
         }
 
 

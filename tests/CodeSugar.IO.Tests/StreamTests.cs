@@ -28,6 +28,7 @@ namespace CodeSugar
                     case 1: sample = new ArraySegment<byte>(rnd);break;
                     case 2: sample = rnd.ToList();break;
                     case 3: sample = rnd.ToImmutableList();break;
+                    default: throw new NotImplementedException();
                 }
 
                 await _TestReadWriteBytesAsync(() => new System.IO.MemoryStream(), sample);

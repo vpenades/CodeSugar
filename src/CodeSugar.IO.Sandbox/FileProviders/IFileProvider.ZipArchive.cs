@@ -24,13 +24,11 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         [return: NotNull]
         public static __XINFO ToIFileInfo([DisallowNull] this System.IO.Compression.ZipArchiveEntry entry)
         {
-            return entry == null
-                ? __NULLFILE
-                : new _ZipArchiveFile(entry);
+            return _ZipArchiveFile.CreateIFileInfo(entry);
         }
 
         /// <summary>
-        /// Wraps the <see cref=".IO.Compression.ZipArchive"/> as a <see cref="__XPROVIDER"/>
+        /// Wraps the <see cref="System.IO.Compression.ZipArchive"/> as a <see cref="__XPROVIDER"/>
         /// </summary>
         /// <param name="zip">The archive to wrap</param>
         /// <returns>A <see cref="__XPROVIDER"/> which is valid as long as the underlaying archive is not disposed.</returns>
@@ -40,9 +38,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         [return: NotNull]
         public static __XPROVIDER ToIFileProvider([DisallowNull] this System.IO.Compression.ZipArchive zip)
         {
-            return zip == null
-                ? __NULLPROVIDER
-                : new _ZipArchive(zip);
+            return _ZipArchive.CreateProvider(zip);
         }
 
         #endregion
@@ -55,7 +51,15 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             , IEquatable<_ZipArchive>
         {
             #region lifecycle
-            public _ZipArchive(System.IO.Compression.ZipArchive archive)
+
+            public static __XPROVIDER CreateProvider(System.IO.Compression.ZipArchive archive)
+            {
+                return archive == null
+                    ? __NULLPROVIDER
+                    : new _ZipArchive(archive);
+            }
+
+            private _ZipArchive(System.IO.Compression.ZipArchive archive)
             {
                 _Archive = archive;
             }
@@ -142,7 +146,8 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             #endregion
 
-            #region lifecycle
+            #region lifecycle            
+
             public _ZipArchiveDirectory(_ZipArchive zip, string path)
             {
                 path = _SanitizedPath(path);
@@ -272,6 +277,13 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         private readonly struct _ZipArchiveFile : __XINFO, IServiceProvider, IEquatable<_ZipArchiveFile>
         {
             #region lifecycle
+
+            public static __XINFO CreateIFileInfo(System.IO.Compression.ZipArchiveEntry entry)
+            {
+                return entry == null
+                    ? __NULLFILE
+                    : new _ZipArchiveFile(entry);
+            }
 
             public _ZipArchiveFile(System.IO.Compression.ZipArchiveEntry entry)
             {

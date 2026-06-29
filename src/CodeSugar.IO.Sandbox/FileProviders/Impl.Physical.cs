@@ -20,12 +20,6 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarExtensions
     {
-        #region constants
-
-        private static readonly StringComparison FileSystemPathComparison = GetStringComparison(__MATCHCASING.PlatformDefault);
-
-        #endregion
-
         #region API        
 
         [return: NotNull]
@@ -163,7 +157,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             public override int GetHashCode()
             {
-                return Info.FullName.GetHashCode(FileSystemPathComparison);
+                return Info.FullName.GetHashCode(FileSystemStringComparison);
             }
 
             public override bool Equals(object obj)
@@ -189,7 +183,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             {
                 if (serviceType == typeof(__FINFO)) return Info;
                 if (serviceType == typeof(__MATCHCASING)) return __MATCHCASING.PlatformDefault;
-                if (serviceType == typeof(StringComparison)) return FileSystemPathComparison;
+                if (serviceType == typeof(StringComparison)) return FileSystemStringComparison;
 
                 if (serviceType == typeof(Action<ArraySegment<Byte>>)) return (Action<ArraySegment<Byte>>) _WriteBytes;
 
@@ -246,7 +240,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             public override int GetHashCode()
             {
-                return Info.FullName.GetHashCode(FileSystemPathComparison);
+                return Info.FullName.GetHashCode(FileSystemStringComparison);
             }
 
             public override bool Equals(object obj)
@@ -279,7 +273,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             public object GetService(Type serviceType)
             {
                 if (serviceType == typeof(__MATCHCASING)) return __MATCHCASING.PlatformDefault;
-                if (serviceType == typeof(StringComparison)) return FileSystemPathComparison;
+                if (serviceType == typeof(StringComparison)) return FileSystemStringComparison;
                 if (serviceType == typeof(__DINFO)) return Info;
 
                 return null;

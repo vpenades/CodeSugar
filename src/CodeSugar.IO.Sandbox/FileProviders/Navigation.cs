@@ -69,7 +69,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             // when path is empty, return a best effort to get an self xfile
             if (path.Length == 0 || (path.Length == 1 && string.IsNullOrEmpty(path[0])))
             {
-                return xdir.ToIFileInfo("🗀");
+                return ToIFileInfo(xdir, "🗀");
             }
 
             for (int i = 0; i < path.Length; ++i)
