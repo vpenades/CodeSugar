@@ -18,7 +18,7 @@ namespace CodeSugar
             var icon = ResourceInfo.From("CodeSugar.png");
 
             // magic scaler setup
-            var settings = new ProcessImageSettings { Width = 800 };
+            var settings = new ProcessImageSettings { Width = 800 };            
 
             var tensor = icon.File.GetReadStreamFunction().MagicScalerReadTensor<float>(settings, out _);            
 
