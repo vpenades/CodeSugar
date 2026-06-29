@@ -15,6 +15,8 @@ namespace CodeSugar
         [Test]
         public async Task LoadTest()
         {
+            if (!OperatingSystem.IsWindows()) return; // needs codecs configuration
+
             var icon = ResourceInfo.From("CodeSugar.png");
 
             // magic scaler setup
