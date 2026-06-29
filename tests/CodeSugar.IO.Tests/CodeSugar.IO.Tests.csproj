@@ -23,16 +23,17 @@
     <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.1" />
   </ItemGroup>
 
-	<!-- direct referencing for improved debugging experience -->
-	<ItemGroup>
-		<ProjectReference Include="..\..\src\CodeSugar.IO.Sandbox\CodeSugar.IO.Sandbox.csproj" />
-	</ItemGroup>
-
-	<!-- source generation for release testing -->
-	<!--
-	<ItemGroup>
-    <ProjectReference Include="..\..\src\CodeSugar.IO.SourceGenerator\CodeSugar.IO.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />    
-  </ItemGroup>  
-	-->
+  <Choose>
+    <When Condition=" 1 == 1 ">
+      <ItemGroup>
+        <ProjectReference Include="..\..\src\CodeSugar.IO.Sandbox\CodeSugar.IO.Sandbox.csproj" />
+      </ItemGroup>      
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <ProjectReference Include="..\..\src\CodeSugar.IO.SourceGenerator\CodeSugar.IO.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+      </ItemGroup>
+    </Otherwise>    
+  </Choose>
 
 </Project>

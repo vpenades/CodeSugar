@@ -34,8 +34,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 		/// <exception cref="ArgumentNullException"></exception>
 		public static void GuardExists(this __XINFO info, [CallerArgumentExpression(nameof(info))] string name = null)
         {
+            name ??= nameof(info);
             if (info == null) throw new ArgumentNullException(name);
-            if (!info.Exists) throw new ArgumentException($"'{info.PhysicalPath ?? info.Name}' does not exist.", name ?? nameof(info));
+            if (!info.Exists) throw new ArgumentException($"'{info.PhysicalPath ?? info.Name}' does not exist.", name);
         }
 
         /// <summary>
@@ -53,8 +54,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 		/// <exception cref="ArgumentNullException"></exception>
 		public static void GuardExists(this __XDIRECTORY info, [CallerArgumentExpression(nameof(info))] string name = null)
         {
+            name ??= nameof(info);
             if (info == null) throw new ArgumentNullException(name);
-            if (!info.Exists) throw new ArgumentException($"does not exist.", name ?? nameof(info));
+            if (!info.Exists) throw new ArgumentException($"does not exist.", name);
         }
 
         #endregion

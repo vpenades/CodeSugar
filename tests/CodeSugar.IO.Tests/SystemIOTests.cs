@@ -85,9 +85,9 @@ namespace CodeSugar
         {
             await Assert.That(System.IO.MatchCasing.PlatformDefault.IsTempPath(System.IO.Path.GetTempPath())).IsTrue();
 
-            await Assert.That(CODESUGARIO.SplitPath("/abc/d/e")).IsEquivalentTo(new string[] { "abc", "d", "e" }, ordering: TUnit.Assertions.Enums.CollectionOrdering.Matching);
+            await Assert.That(CODESUGARIO.SplitPath("/abc/d/e")).IsSequenceEqualTo(new string[] { "abc", "d", "e" });
 
-            await Assert.That(CODESUGARIO.SplitPath("//network/abc/d/e")).IsEquivalentTo(new string[] { "//network", "abc", "d", "e" }, ordering: TUnit.Assertions.Enums.CollectionOrdering.Matching);
+            await Assert.That(CODESUGARIO.SplitPath("//network/abc/d/e")).IsSequenceEqualTo(new string[] { "//network", "abc", "d", "e" });
 
             await Assert.That(CODESUGARIO.SplitDirectoryAndName("/abc/d/e")).IsEqualTo(("abc/d", "e"));
 
@@ -107,7 +107,7 @@ namespace CodeSugar
 
             if (IsWindowsPlatform)
             {
-                await Assert.That(CODESUGARIO.SplitPath("\\abc/d\\e")).IsEquivalentTo(new string[] { "abc", "d", "e" }, ordering: TUnit.Assertions.Enums.CollectionOrdering.Matching);
+                await Assert.That(CODESUGARIO.SplitPath("\\abc/d\\e")).IsSequenceEqualTo(new string[] { "abc", "d", "e" });
                 await Assert.That(MatchCasing.PlatformDefault.ArePathsEqual("C:\\AbC/", "c:/aBc\\")).IsTrue();
             }
         }
@@ -247,7 +247,7 @@ namespace CodeSugar
             await Assert.That(adsInfo.Exists).IsTrue();
 
             await Assert.That(workFile.GetReadStreamFunction().ReadAllText()).IsEqualTo("hello world");
-            await Assert.That(adsInfo.GetReadStreamFunction().ReadAllBytes()).IsEquivalentTo(data, ordering: TUnit.Assertions.Enums.CollectionOrdering.Matching);
+            await Assert.That(adsInfo.GetReadStreamFunction().ReadAllBytes()).IsSequenceEqualTo(data);
         }
 
 

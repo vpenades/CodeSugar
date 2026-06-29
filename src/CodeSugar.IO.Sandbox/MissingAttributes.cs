@@ -15,7 +15,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         #if !NET6_0_OR_GREATER
 
         [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
-        public sealed class CallerArgumentExpressionAttribute : Attribute
+        sealed class CallerArgumentExpressionAttribute : Attribute
         {
             public CallerArgumentExpressionAttribute(string parameterName)
             {

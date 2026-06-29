@@ -47,9 +47,13 @@
 
 	<PropertyGroup>
 		<Description>
-			Source generator that emits useful extension methods for:			
-			- System.Numerics.Tensors
-		</Description>
+      Source generator that emits useful extension methods for:
+      - System.Numerics.Tensors
+      - SkiaSharp
+      - SkiaSharp
+      - SixLabors.ImageSharp
+      - PhotoSauce.MagicScaler
+    </Description>
 	</PropertyGroup>
 
 </Project>

@@ -20,7 +20,7 @@ namespace CodeSugar
 
             // lazy access
 
-            await _TestZipContents(zipFactory.ToIfileProvider());
+            await _TestZipContents(zipFactory.ToIFileProvider());
 
             // access while open
 
@@ -118,7 +118,7 @@ namespace CodeSugar
             await Assert.That(rootContent[0].Name).IsEqualTo("c.bin");
 
             var bytes = provider.GetFileInfo("a/b.bin").GetReadStreamFunction().ReadAllBytes();
-            await Assert.That(bytes).IsEquivalentTo(new byte[] { 1, 2, 3, 4, 5 }, ordering: TUnit.Assertions.Enums.CollectionOrdering.Matching);
+            await Assert.That(bytes).IsSequenceEqualTo(new byte[] { 1, 2, 3, 4, 5 });
         }
     }
 }
