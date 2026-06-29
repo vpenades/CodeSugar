@@ -14,28 +14,28 @@ namespace CodeSugar.Numerics
             var hasTensors = this.NugetPackages.ContainsKey("System.Numerics.Tensors");
             var hasImageSharp = this.NugetPackages.ContainsKey("SixLabors.ImageSharp");
             var hasMagicScaler = this.NugetPackages.ContainsKey("PhotoSauce.MagicScaler");
-            var hasSkiaSharp = this.NugetPackages.ContainsKey("PhotoSauce.MagicScaler");
+            var hasSkiaSharp = this.NugetPackages.ContainsKey("SkiaSharp");
 
-            ProcessTemplates(context,"Root", n => n.Contains(".Templates.Root."));
+            ProcessTemplates(context,"Core", n => n.Contains(".Templates.Core."));
 
-            if (hasTensors)
-            {
-                ProcessTemplates(context, "Tensors", n => n.Contains(".Templates.Tensors."));
-                ProcessTemplates(context, "Intrinsics", n => n.Contains(".Templates.Intrinsics."));
-            }
+            // imaging
 
             if (hasImageSharp) ProcessTemplates(context, "ImageSharp", n => n.Contains(".Templates.ImageSharp."));
             if (hasMagicScaler) ProcessTemplates(context, "MagicScaler", n => n.Contains(".Templates.MagicScaler."));
             if (hasSkiaSharp) ProcessTemplates(context, "SkiaSharp", n => n.Contains(".Templates.SkiaSharp."));
 
-            if (hasTensors)
+            if (hasTensors) // tensors
             {
-                if (hasImageSharp) ProcessTemplates(context, "ImageSharpTs", n => n.Contains(".Templates.ImageSharpTensors."));
-                if (hasMagicScaler) ProcessTemplates(context, "MagicScalerTs", n => n.Contains(".Templates.MagicScalerTensors."));
-                if (hasSkiaSharp) ProcessTemplates(context, "SkiaSharpTs", n => n.Contains(".Templates.SkiaSharpTensors."));
-            }
+                ProcessTemplates(context, "Tensors", n => n.Contains(".Templates.Tensors."));
+                ProcessTemplates(context, "Intrinsics", n => n.Contains(".Templates.Intrinsics."));
+            }            
 
-            
+            if (hasTensors) // imaging interop with tensors
+            {
+                if (hasImageSharp) ProcessTemplates(context, "ImageSharpTensors", n => n.Contains(".Templates.ImageSharpTensors."));
+                if (hasMagicScaler) ProcessTemplates(context, "MagicScalerTensors", n => n.Contains(".Templates.MagicScalerTensors."));
+                if (hasSkiaSharp) ProcessTemplates(context, "SkiaSharpTensors", n => n.Contains(".Templates.SkiaSharpTensors."));
+            }            
         }
 
         private int _TemplateIndex = 0;

@@ -1,4 +1,4 @@
 ﻿using System;
 
-[assembly: TUnit.ResourcePathFormat("{SolutionDirectory}/tests/Resources")]
+[assembly: TUnit.ResourcePathFormat("{RepositoryRoot}/tests/Resources")]
 [assembly: TUnit.AttachmentPathFormat("*/?")]

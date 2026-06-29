@@ -4,9 +4,11 @@
   "tools": {
     "SourceNugetPackageBuilder.Tool": {
       "version": "1.0.0-pre-20251216-211057",
-      "commands": [
-        "PackAsSourcesNuget"
-      ]
-    }
+      "commands": [ "PackAsSourcesNuget" ]
+    },    
+    "Microsoft.VisualStudio.SlnGen.Tool": {
+      "version": "12.0.32",
+      "commands": [ "slngen" ]
+    }    
   }
 }

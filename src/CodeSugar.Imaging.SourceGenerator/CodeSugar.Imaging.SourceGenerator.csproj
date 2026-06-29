@@ -8,6 +8,10 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
+  <PropertyGroup>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+  </PropertyGroup>
+
 	<!-- https://www.devleader.ca/2026/03/23/how-to-create-your-first-c-source-generator-stepbystep -->
 
 	<PropertyGroup>
@@ -17,7 +21,7 @@
 		<EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
 		<IncludeBuildOutput>false</IncludeBuildOutput>
 		<SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
-	</PropertyGroup>
+	</PropertyGroup>  
 
 	<!-- Package the generator as an analyzer -->
 	<ItemGroup>
@@ -25,7 +29,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<EmbeddedResource Include="..\CodeSugar.Imaging.Templates\*.cs" LinkBase="Templates\Root" />
+		<EmbeddedResource Include="..\CodeSugar.Imaging.Templates\*.cs" LinkBase="Templates\Core" />
 		<EmbeddedResource Include="..\CodeSugar.Imaging.Templates\Tensors\*.cs" LinkBase="Templates\Tensors" />
 		<EmbeddedResource Include="..\CodeSugar.Imaging.Templates\Intrinsics\*.cs" LinkBase="Templates\Intrinsics" />
 		<EmbeddedResource Include="..\CodeSugar.Imaging.Templates\ImageSharp\*.cs" LinkBase="Templates\ImageSharp" />

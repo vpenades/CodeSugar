@@ -23,15 +23,20 @@ PACKAGESUFFIX="${PACKAGEVERSION#*-}"
 echo "package version: $PACKAGEVERSION";
 echo "package suffix: $PACKAGESUFFIX";
 
-# build
+# restore
 
+dotnet clean
 dotnet tool restore
 dotnet restore
 
-# temporarily disabled
-# dotnet test -c Release CodeSugar.slnx
+# generate decoupled solutions for src and tests to avoid SourceGenerator build issues
 
-dotnet pack -c Release CodeSugar.slnx -o . --version $PACKAGEVERSION
-dotnet PackAsSourcesNuget CodeSugar.slnx -o . --package-version $PACKAGEVERSION --append-sources-suffix
+dotnet slngen src/*/*.csproj -o src/.src.sln --launch false
+
+dotnet build src/.src.sln
+
+dotnet test CodeSugar.slnx
+
+dotnet pack -c Release src/.src.sln -o . --version $PACKAGEVERSION
 
 # read -p "Press [ENTER] to continue..."

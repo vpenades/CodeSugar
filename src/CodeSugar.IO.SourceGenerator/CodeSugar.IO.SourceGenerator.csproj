@@ -7,6 +7,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>    
   </PropertyGroup>
+
+  <PropertyGroup>
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+  </PropertyGroup>
   
   <!-- https://www.devleader.ca/2026/03/23/how-to-create-your-first-c-source-generator-stepbystep -->
 
@@ -17,7 +21,7 @@
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
-  </PropertyGroup>
+  </PropertyGroup>  
 
   <!-- Package the generator as an analyzer -->
   <ItemGroup>

@@ -54,8 +54,8 @@ jobs:
 
     - name: Build Source Generators
       run: |
-        chmod +x ./CodeSugar.Gen.Build.sh
-        ./CodeSugar.Gen.Build.sh $GHENV_PACKAGEVERSION
+        chmod +x ./CodeSugar.Build.sh
+        ./CodeSugar.Build.sh $GHENV_PACKAGEVERSION
 
     # ------------------------------------------ Push packages
 
