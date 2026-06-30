@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 using System.Collections;
 
@@ -257,7 +257,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
             private readonly _PathSlicer _Path;
 
-            private Dictionary<T, __XINFO> _DirectoryCache;
+            private ConcurrentDictionary<T, __XINFO> _DirectoryCache;
 
             #endregion
 
@@ -282,19 +282,17 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             {
                 if (!xentry.IsDirectory || xentry is __XDIRECTORY) return xentry;
 
-                // in case we find a directory entry, but it does not implement __XDIRECTORY we wrap it with it.
+                // in case we find an entry representing a directory, but it does not implement __XDIRECTORY we wrap it with it.                
 
-                _DirectoryCache ??= new Dictionary<T, __XINFO>();
+                __XINFO createFrom(T entry)
+                {
+                    var selector = _FullPathFunc(xentry);
+                    return new _WrappedDirectoryCollectionSlice<T>(xentry, _Entries, _FullPathFunc, selector, _Path.Casing);
+                }
 
-                if (_DirectoryCache.TryGetValue(xentry, out var xdir)) return xdir;
+                _DirectoryCache ??= new ConcurrentDictionary<T, __XINFO>();
 
-                var selector = _FullPathFunc(xentry);
-
-                xdir = new _WrappedDirectoryCollectionSlice<T>(xentry, _Entries, _FullPathFunc, selector, _Path.Casing);
-
-                _DirectoryCache[xentry] = xdir;
-
-                return xdir;
+                return _DirectoryCache.GetOrAdd(xentry, createFrom);                
             }            
 
             public long Length => 0;

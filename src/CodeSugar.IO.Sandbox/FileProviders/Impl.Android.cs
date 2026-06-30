@@ -94,7 +94,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
                 if (string.IsNullOrEmpty(subpath)) return _Root as __XINFO;
 
-                var parts = subpath.Split('/');
+                var parts = subpath.Trim('/').Split('/');
 
                 var entry = __FindEntry(_Root, StringComparison.Ordinal, parts);
                 if (entry is null) return new Microsoft.Extensions.FileProviders.NotFoundFileInfo(subpath);
@@ -103,7 +103,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             public IChangeToken Watch(string filter)
             {
-                throw new NotImplementedException();
+                return NullChangeToken.Singleton;
             }           
 
             #endregion

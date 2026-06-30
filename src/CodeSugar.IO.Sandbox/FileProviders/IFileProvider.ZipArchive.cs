@@ -124,7 +124,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             public IChangeToken Watch(string filter)
             {
-                throw new NotImplementedException();
+                return NullChangeToken.Singleton;
             }            
 
             #endregion

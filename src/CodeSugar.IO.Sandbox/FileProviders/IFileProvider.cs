@@ -81,20 +81,20 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             public __XINFO GetFileInfo(string subpath)
             {
-                var parts = subpath.Replace('\\','/').Split('/');
-
-                return FindEntry(_Dir, _Casing, parts);
+                return FindEntry(_Dir, _Casing, _GetPathParts(subpath));
             }
 
             public __XDIRECTORY GetDirectoryContents(string subpath)
             {
-                subpath ??= string.Empty;
-
-                var parts = subpath.Replace('\\', '/').Split('/');                
-
-                return FindEntry(_Dir, _Casing, subpath) is __XDIRECTORY xdir
+                return FindEntry(_Dir, _Casing, _GetPathParts(subpath)) is __XDIRECTORY xdir
                     ? xdir
                     : Microsoft.Extensions.FileProviders.NotFoundDirectoryContents.Singleton;
+            }
+
+            private static string[] _GetPathParts(string subpath)
+            {
+                subpath ??= string.Empty;
+                return subpath.Replace('\\', '/').Trim('/').Split('/');
             }
 
             public IChangeToken Watch(string filter)
