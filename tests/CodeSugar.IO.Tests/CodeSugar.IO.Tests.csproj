@@ -9,6 +9,7 @@
 
   <PropertyGroup>
     <PublishAot>true</PublishAot>
+    <EnableMicrosoftTestingPlatformExtension>true</EnableMicrosoftTestingPlatformExtension>
   </PropertyGroup>
 
   <ItemGroup>    
