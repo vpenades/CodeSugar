@@ -103,7 +103,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             public IChangeToken Watch(string filter)
             {
-                return NullChangeToken.Singleton;
+                return Microsoft.Extensions.FileProviders.NullChangeToken.Singleton;
             }           
 
             #endregion
