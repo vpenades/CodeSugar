@@ -4,7 +4,7 @@ using System.Text;
 
 using Microsoft.CodeAnalysis;
 
-namespace CodeSugar.Numerics
+namespace CodeSugar
 {
     [Generator]
     public sealed class InjectTemplateExtensions : CodeInjectorGenerator
