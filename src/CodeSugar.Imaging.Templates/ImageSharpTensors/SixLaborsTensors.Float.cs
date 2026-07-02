@@ -20,50 +20,25 @@ using __XYZW = System.Numerics.Vector4;
 using __TENSORSPAN = System.Numerics.Tensors.TensorSpan<float>;
 using __READONLYTENSORSPAN = System.Numerics.Tensors.ReadOnlyTensorSpan<float>;
 
-using System.Security.Cryptography;
+
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarImagingExtensions
     {
-        public static void CopyToTensor(this Image src, __TENSORSPAN dst, bool dstIsBGR = false)
+        public static Tensor<float> ToFloatTensor<TPixel>(this Image<TPixel> img)
+            where TPixel : unmanaged, __SIXLABORSPIXFMT.IPixel<TPixel>
         {
-            switch (src)
-            {
-                case null: throw new ArgumentNullException(nameof(src));
-                case Image<__SIXLABORSPIXFMT.A8> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.Abgr32> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.Argb32> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.Bgr24> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.Bgr565> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.Bgra32> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.Bgra4444> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.Bgra5551> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.Byte4> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.HalfSingle> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.HalfVector2> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.HalfVector4> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.L16> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.L8> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.La16> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.La32> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.NormalizedByte2> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.NormalizedByte4> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.NormalizedShort2> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.NormalizedShort4> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.Rg32> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.Rgb24> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.Rgb48> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.Rgba1010102> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.Rgba32> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.Rgba64> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.RgbaVector> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.Short2> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;
-                case Image<__SIXLABORSPIXFMT.Short4> srcFmt: CopyToTensor(srcFmt, dst, dstIsBGR); break;                
+            var size = new System.Drawing.Size(img.Width, img.Height);
+            var chns = GetChannelsCount<TPixel>();
+            var isBgr = GetIsBGR<TPixel>();
 
-                default: throw new NotImplementedException(src.GetType().Name);
-            }
+            var srcBmp = size.CreateTensorBitmapHWC<float>(chns);
+            img.CopyToTensor(srcBmp.AsTensorSpan(), isBgr);
+            return srcBmp;
         }
+
+        
 
         public static void CopyToTensor(this Image src, System.Numerics.Matrix3x2 srcXform, __TENSORSPAN dst, bool dstIsBGR = false)
         {
@@ -104,43 +79,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
         }        
 
-        public static void CopyToTensor<TPixel>(this Image<TPixel> src, __TENSORSPAN dst, bool dstIsBGR = false)
-            where TPixel: unmanaged, __SIXLABORSPIXFMT.IPixel<TPixel>
-        {
-            GuardNotNullOrEmpty(src);
-
-            dst = dst.SqueezeIfRequired();
-            if (!TryInferBitmapSize(dst, out var dstWidth, out var dstHeight, out var dstChannels, out var dstIsCHW))
-            {
-                GuardIsBitmap(dst, false);
-            }
-
-            var srcBmp = new _ImageSharpInteropBitmap<TPixel>(src);            
-
-            if (dstIsCHW)
-            {
-                var numRows = Math.Min(srcBmp.Height, dstHeight);                
-
-                for (int y = 0; y < numRows; y++)
-                {
-                    var srcRow = srcBmp.GetReadOnlyRowSpan(y);
-
-                    GetBitmapPlaneRows(dst, y, dstIsBGR, out var dstRowR, out var dstRowG, out var dstRowB);
-                    
-                    CopyRowToPlanes<TPixel>(srcRow, dstRowR, dstRowG, dstRowB);
-                }
-
-                return;
-            }
-            
-            switch (dstChannels)
-            {
-                case 1: _TensorSpanBitmap<float, float>.Create(dst).CopyFrom(srcBmp, _LuminanceOrAlphaToScalar); return;
-                case 3: _TensorSpanBitmap<float, __XYZ>.Create(dst).CopyFrom(srcBmp, dstIsBGR ? ToScaledBGR : ToScaledRGB); return;
-                case 4: _TensorSpanBitmap<float, __XYZW>.Create(dst).CopyFrom(srcBmp, dstIsBGR ? ToScaledBGRA : ToScaledRGBA); return;
-                default: throw new ArgumentException("invalid lengths[2] range", nameof(dst));
-            }
-        }
+        
 
         public static Image<TPixel> ToImageSharp<TPixel>(this __TENSORSPAN tensor, bool tensorIsBGR = false)
             where TPixel : unmanaged, __SIXLABORSPIXFMT.IPixel<TPixel>

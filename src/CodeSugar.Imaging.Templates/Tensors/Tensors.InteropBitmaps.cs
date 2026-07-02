@@ -1,16 +1,18 @@
 ﻿using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Numerics.Tensors;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Buffers;
 using System.Reflection;
-using System.Transactions;
-using System.Threading;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Security;
+using System.Text;
+using System.Threading;
+using System.Transactions;
+
+using SixLabors.ImageSharp.PixelFormats;
 
 #nullable disable
 
@@ -226,23 +228,32 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         {
             #region lifecycle
 
-            public static bool TryCreatePlanes(System.Numerics.Tensors.TensorSpan<TElement> tensor, out _TensorSpanBitmap<TElement, TElement> x, out _TensorSpanBitmap<TElement, TElement> y, out _TensorSpanBitmap<TElement, TElement> z)
+            public static bool TryCreatePlanes(System.Numerics.Tensors.TensorSpan<TElement> tensor, out _TensorSpanBitmap<TElement, TElement> x, out _TensorSpanBitmap<TElement, TElement> y, out _TensorSpanBitmap<TElement, TElement> z)            
             {
                 x = y = z = default;
 
                 if (tensor.IsEmpty) return false;
                 tensor = tensor.SqueezeIfRequired();
 
-                if (!TryInferBitmapSize(tensor, out _, out _, out var channels, out var isCHW) || !isCHW || channels != 3) return false;
+                if (!TryInferBitmapSize(tensor, out var w, out var h, out var channels, out var isCHW) || !isCHW || channels != 3) return false;
 
                 var typeElements = Unsafe.SizeOf<TPixel>() / Unsafe.SizeOf<TElement>();
                 if (typeElements != 3) return false;
 
                 var xyz = tensor.GetDimensionSpan(0);
+                var tx = xyz[0];
+                var ty = xyz[0];
+                var tz = xyz[0];
 
-                x = new _TensorSpanBitmap<TElement, TElement>(xyz[0]);
-                y = new _TensorSpanBitmap<TElement, TElement>(xyz[1]);
-                z = new _TensorSpanBitmap<TElement, TElement>(xyz[2]);
+                #if DEBUG
+                System.Diagnostics.Debug.Assert(TryInferBitmapSize(tx, out var tw, out var th, out var tc, out _) && tw == w && th == h && tc == 1);
+                System.Diagnostics.Debug.Assert(TryInferBitmapSize(ty, out tw, out th, out tc, out _) && tw == w && th == h && tc == 1);
+                System.Diagnostics.Debug.Assert(TryInferBitmapSize(tz, out tw, out th, out tc, out _) && tw == w && th == h && tc == 1);
+                #endif
+
+                x = new _TensorSpanBitmap<TElement, TElement>(tx);
+                y = new _TensorSpanBitmap<TElement, TElement>(ty);
+                z = new _TensorSpanBitmap<TElement, TElement>(tz);
                 return true;
             }
 

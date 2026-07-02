@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<RootNamespace>CodeSugar</RootNamespace>
+		<TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<LangVersion>latest</LangVersion>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<PublishAot>true</PublishAot>
+	</PropertyGroup>	
+
+	<ItemGroup>
+		<PackageReference Include="TUnit" Version="1.57.0" />
+		<PackageReference Include="TestAttachments.TUnit" Version="4.0.0-Preview-20260129-1218" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="System.Numerics.Tensors" Version="10.0.9" />
+		<PackageReference Include="SixLabors.ImageSharp" Version="[3.1.12]" />
+		<PackageReference Include="SixLabors.ImageSharp.Drawing" Version="[2.1.7]" />
+		<PackageReference Include="PhotoSauce.MagicScaler" Version="0.15.0" />
+		<PackageReference Include="SkiaSharp" Version="4.148.0" />
+	</ItemGroup>
+
+	<Choose>
+		<When Condition="false">
+			<ItemGroup>
+				<ProjectReference Include="..\..\src\CodeSugar.IO.Sandbox\CodeSugar.IO.Templates.csproj" />
+				<ProjectReference Include="..\..\src\CodeSugar.Imaging.Templates\CodeSugar.Imaging.Templates.csproj" />
+				<ProjectReference Include="..\..\src\CodeSugar.Numerics.Templates\CodeSugar.Numerics.Templates.csproj" />
+			</ItemGroup>
+		</When>
+		<Otherwise>
+			<ItemGroup>
+				<ProjectReference Include="..\..\src\CodeSugar.IO.SourceGenerator\CodeSugar.IO.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+				<ProjectReference Include="..\..\src\CodeSugar.Imaging.SourceGenerator\CodeSugar.Imaging.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+				<ProjectReference Include="..\..\src\CodeSugar.Numerics.SourceGenerator\CodeSugar.Numerics.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+			</ItemGroup>
+		</Otherwise>
+	</Choose>
+
+</Project>

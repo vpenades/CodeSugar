@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Advanced;
 using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Formats;
 
 #nullable disable
 
@@ -18,11 +19,125 @@ using __XYZW = System.Numerics.Vector4;
 using __SIXLABORS = SixLabors.ImageSharp;
 using __SIXLABORSPIXFMT = SixLabors.ImageSharp.PixelFormats;
 
-
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarImagingExtensions
     {
+        public static UInt32 ToImageSharpPackedValue<TPixel>(this TPixel src) where TPixel : unmanaged, IPixel<TPixel>
+        {
+            Unsafe.SkipInit<Rgba32>(out var dst);
+            src.ToRgba32(ref dst);
+            return dst.PackedValue;
+        }
+
+        public static Rgb24 ToImageSharpRgb24<TPixel>(this TPixel src) where TPixel : unmanaged, IPixel<TPixel>
+        {
+            Unsafe.SkipInit<Rgba32>(out var dst);
+            src.ToRgba32(ref dst);
+            return dst.Rgb;
+        }
+
+        public static Rgba32 ToImageSharpRgba32<TPixel>(this TPixel src) where TPixel : unmanaged, IPixel<TPixel>
+        {
+            Unsafe.SkipInit<Rgba32>(out var dst);
+            src.ToRgba32(ref dst);
+            return dst;
+        }
+
+        public static Bgr24 ToImageSharpBgr24<TPixel>(this TPixel src) where TPixel : unmanaged, IPixel<TPixel>
+        {
+            Unsafe.SkipInit<Rgba32>(out var dst);
+            src.ToRgba32(ref dst);
+            return dst.Bgr;
+        }
+
+        public static Bgra32 ToImageSharpBgra32<TPixel>(this TPixel src) where TPixel : unmanaged, IPixel<TPixel>
+        {
+            Unsafe.SkipInit<Rgba32>(out var tmp);
+            src.ToRgba32(ref tmp);
+            Unsafe.SkipInit<Bgra32>(out var dst);
+            dst.FromRgba32(tmp);
+            return dst;
+        }
+
+        public static L8 ToImageSharpL8<TPixel>(this TPixel src) where TPixel : unmanaged, IPixel<TPixel>
+        {
+            Unsafe.SkipInit<Rgba32>(out var tmp);
+            src.ToRgba32(ref tmp);
+            Unsafe.SkipInit<L8>(out var dst);
+            dst.FromRgba32(tmp);
+            return dst;
+        }        
+
+        internal static int GetChannelsCount<TPixel>() where TPixel : unmanaged, IPixel<TPixel>
+        {
+            // PixelTypeInfo.Create<TPixel>(); // this API should be public
+
+            var t = typeof(TPixel);
+
+            if (t == typeof(A8)) return 1;
+
+            if (t == typeof(L8)) return 1;
+            if (t == typeof(L16)) return 1;
+
+            if (t == typeof(La16)) return 2;
+            if (t == typeof(La32)) return 2;
+
+            if (t == typeof(Rgb24)) return 3;
+            if (t == typeof(Rgb48)) return 3;
+            
+            if (t == typeof(Bgr24)) return 3;
+            if (t == typeof(Bgr565)) return 3;
+
+            if (t == typeof(Rgba32)) return 4;
+            if (t == typeof(Rgba64)) return 4;
+            if (t == typeof(Rgba1010102)) return 4;
+            if (t == typeof(RgbaVector)) return 4;
+
+            if (t == typeof(Bgra32)) return 4;
+            if (t == typeof(Bgra4444)) return 4;
+            if (t == typeof(Bgra5551)) return 4;
+
+            if (t == typeof(Argb32)) return 4;
+            if (t == typeof(Abgr32)) return 4;
+
+            throw new NotImplementedException(t.Name);
+
+        }
+
+        internal static bool GetIsBGR<TPixel>() where TPixel : unmanaged, IPixel<TPixel>
+        {
+            var t = typeof(TPixel);            
+
+            if (t == typeof(A8)) return false;
+
+            if (t == typeof(L8)) return false;
+            if (t == typeof(L16)) return false;
+
+            if (t == typeof(La16)) return false;
+            if (t == typeof(La32)) return false;
+
+            if (t == typeof(Rgb24)) return false;
+            if (t == typeof(Rgb48)) return false;
+
+            if (t == typeof(Bgr24)) return true;
+            if (t == typeof(Bgr565)) return true;
+
+            if (t == typeof(Rgba32)) return false;
+            if (t == typeof(Rgba64)) return false;
+            if (t == typeof(Rgba1010102)) return false;
+            if (t == typeof(RgbaVector)) return false;
+
+            if (t == typeof(Bgra32)) return true;
+            if (t == typeof(Bgra4444)) return true;
+            if (t == typeof(Bgra5551)) return true;
+
+            if (t == typeof(Argb32)) return false;
+            if (t == typeof(Abgr32)) return false;
+
+            throw new NotImplementedException(t.Name);
+        }
+
         public static __XYZ ToScaledBGR<TPixel>(this TPixel pixel) where TPixel: unmanaged, IPixel<TPixel>
         {
             var rgba = pixel.ToScaledVector4();

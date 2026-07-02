@@ -16,6 +16,7 @@ namespace CodeSugar
 {
     internal class ImageSharpTests
     {
+
         /*
         [Test]
         public void TestDrawAffineTransform()
@@ -37,7 +38,18 @@ namespace CodeSugar
             target.Mutate(dc => dc.DrawImage(icon, xform));
 
             AttachmentInfo.From("affineTransform1.png").WriteObject(target.SaveAsPng);
-        }*/        
+        }*/
+
+        [Test]
+        public async Task TestTensorsAlpha()
+        {
+            var hwcTensor = new System.Drawing.Size(256, 256).CreateTensorBitmapHWC<float>(1);
+
+            using var image = hwcTensor.ToImageSharp<A8>();
+            await Assert.That(image.Width).IsEqualTo(256);
+            await Assert.That(image.Height).IsEqualTo(256);
+
+        }
 
         [Test]
         public void TestTensorsInterop()
@@ -51,8 +63,8 @@ namespace CodeSugar
             var hwcTensor = size.CreateTensorBitmapHWC<float>(3);
             var chwTensor = size.CreateTensorBitmapCHW<float>(3);
 
-            img.CopyToTensor(hwcTensor);
-            img.CopyToTensor(chwTensor);            
+            img.CopyToTensor<Rgba32, float>(hwcTensor);
+            img.CopyToTensor<Rgba32, float>(chwTensor);            
 
             AttachmentInfo.From("hwcTensor.png").WriteObjectEx(f => hwcTensor.ImageSharpSaveTo(f));
             AttachmentInfo.From("chwTensor.png").WriteObjectEx(f => chwTensor.ImageSharpSaveTo(f));
@@ -62,37 +74,6 @@ namespace CodeSugar
 
             chwTensor.ApplyMultiplyAddToPixelElements(System.Numerics.Vector3.One *2, -System.Numerics.Vector3.One);
             AttachmentInfo.From("chwTensor_scaled.png").WriteObjectEx(f => chwTensor.ImageSharpSaveTo(f));
-
-        }
-
-        [Test]
-        public void TestTensorsAlpha()
-        {
-            var hwcTensor = new System.Drawing.Size(256,256).CreateTensorBitmapHWC<float>(1);
-
-            using var image = hwcTensor.ToImageSharp<A8>();
-        }
-
-        /*
-        [Test]
-        public void TestTensorsAffineTransformInterop()
-        {
-            var icon = ResourceInfo.From("CodeSugar.png");
-
-            using var img = SixLabors.ImageSharp.Image.Load<Rgba32>(icon.FilePath);
-
-            int dstw = 64;
-            int dsth = 128;
-            var hwcTensor = System.Numerics.Tensors.Tensor.Create<float>(new float[dstw * dsth * 3], new nint[] { dsth, dstw, 3 });
-            var chwTensor = System.Numerics.Tensors.Tensor.Create<float>(new float[dstw * dsth * 3], new nint[] { 3, dsth, dstw });
-
-            var xform = Matrix3x2.CreateScale((float)dstw / img.Width, (float)dsth / img.Height);
-
-            img.CopyToTensor(xform, hwcTensor);
-            img.CopyToTensor(xform, chwTensor);
-
-            AttachmentInfo.From("hwcTensor.png").WriteObjectEx(f => hwcTensor.SaveToSixLaborsImage(f));
-            AttachmentInfo.From("chwTensor.png").WriteObjectEx(f => chwTensor.SaveToSixLaborsImage(f));
-        }*/       
+        }        
     }
 }

@@ -33,6 +33,25 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
         }
 
+        private static void CopyRowToPlanes<TPixel>(ReadOnlySpan<TPixel> src, Span<byte> dstR, Span<byte> dstG, Span<byte> dstB)
+            where TPixel : unmanaged, IPixel<TPixel>
+        {
+            System.Diagnostics.Debug.Assert(dstR.Length == dstG.Length, "plane lengths mismatch");
+            System.Diagnostics.Debug.Assert(dstR.Length == dstB.Length, "plane lengths mismatch");
+
+            var w = Math.Min(src.Length, dstR.Length);
+
+            Rgba32 pix = default;
+
+            for (int i = 0; i < src.Length; ++i)
+            {
+                src[i].ToRgba32(ref pix);
+                dstR[i] = pix.R;
+                dstG[i] = pix.G;
+                dstB[i] = pix.B;
+            }
+        }
+
 
         private readonly struct _ImageSharpInteropBitmap<TPixel> : __IInteropBitmap<TPixel>
             where TPixel : unmanaged, IPixel<TPixel>

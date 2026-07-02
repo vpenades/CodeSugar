@@ -4,10 +4,6 @@ using System;
 using System.Runtime.CompilerServices;
 
 using __SIXLABORS = SixLabors.ImageSharp;
-using __SIXLABORSPIXFMT = SixLabors.ImageSharp.PixelFormats;
-using __XYZ = System.Numerics.Vector3;
-using __XYZW = System.Numerics.Vector4;
-
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
