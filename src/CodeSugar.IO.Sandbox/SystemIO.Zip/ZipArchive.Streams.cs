@@ -29,11 +29,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         public static void CopyToFile(this __ZIPENTRY entry, System.IO.FileInfo dst)
         {
             GuardReadable(entry);
-            GuardNotNull(dst);
+            GuardNotNull(dst);            
 
-            dst.Directory.Create();
-
-            using(var dstS = dst.Create())
+            using(var dstS = dst.GetWriteStreamFunction().Invoke())
             {
                 using(var srcS = entry.Open())
                 {

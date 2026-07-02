@@ -66,22 +66,22 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         private static readonly Encoding UTF8NoBOM = new UTF8Encoding(false);
         #endif
 
-        public static async Task<IReadOnlyList<string>> ReadAllLinesAsync(this Func<Task<__STREAM>> openStream, CancellationToken ctoken, Encoding encoding = null)
+        public static async Task<IReadOnlyList<string>> ReadAllLinesAsync(this Task<__STREAM> streamTask, CancellationToken ctoken = default, Encoding encoding = null)
         {
-            using (var s = await openStream().ConfigureAwait(true))
+            using (var s = await streamTask.ConfigureAwait(false))
             {
-                return await ReadAllLinesAsync(s, ctoken, encoding).ConfigureAwait(true);
+                return await ReadAllLinesAsync(s, ctoken, encoding).ConfigureAwait(false);
             }
         }
 
-        public static async Task<IReadOnlyList<string>> ReadAllLinesAsync(this __STREAM stream, CancellationToken ctoken, Encoding encoding = null)
+        public static async Task<IReadOnlyList<string>> ReadAllLinesAsync(this __STREAM stream, CancellationToken ctoken = default, Encoding encoding = null)
         {
             using (var sr = CreateTextReader(stream, true, encoding))
             {
                 string line;
                 var lines = new List<string>();
 
-                while ((line = await sr.ReadLineAsync().ConfigureAwait(true)) != null)
+                while ((line = await sr.ReadLineAsync().ConfigureAwait(false)) != null)
                 {
                     lines.Add(line);
                 }
@@ -222,11 +222,11 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
         }
 
-        public static async Task<string> ReadAllTextAsync(this Func<Task<__STREAM>> openStream, CancellationToken ctoken, Encoding encoding = null)
+        public static async Task<string> ReadAllTextAsync(this Task<__STREAM> streamTask, CancellationToken ctoken, Encoding encoding = null)
         {
-            using (var s = await openStream().ConfigureAwait(true))
+            using (var s = await streamTask.ConfigureAwait(false))
             {
-                return await ReadAllTextAsync(s, ctoken, encoding).ConfigureAwait(true);
+                return await ReadAllTextAsync(s, ctoken, encoding).ConfigureAwait(false);
             }
         }
 
@@ -236,7 +236,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             using (var sr = CreateTextReader(stream, true, encoding))
             {
-                return await sr.ReadToEndAsync().ConfigureAwait(true);
+                return await sr.ReadToEndAsync().ConfigureAwait(false);
             }
         }
 
@@ -268,19 +268,21 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             return new System.IO.BinaryReader(stream, encoding, leaveStreamOpen);
         }
 
-        public static void WriteAllBytes(this Func<__STREAM> createStream, IReadOnlyList<Byte> bytes)
+        public static void WriteAllBytes<TCollection>(this Func<__STREAM> createStream, TCollection bytes)
+            where TCollection: IReadOnlyList<Byte>
         {
             using (var s = createStream.Invoke())
             {                
                 WriteAllBytes(s, bytes);
             }
-        }
+        }        
 
         /// <summary>
         /// Writes all the bytes to the given stream.
         /// Equivalent to <see cref="System.IO.File.WriteAllBytes(string, byte[])"/>
         /// </summary>   
-        public static void WriteAllBytes(this __STREAM stream, IReadOnlyList<Byte> bytes)
+        public static void WriteAllBytes<TCollection>(this __STREAM stream, TCollection bytes)
+            where TCollection: IReadOnlyList<Byte>
         {
             GuardWriteable(stream);
 
@@ -292,10 +294,21 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 case __BYTESSEGMENT segment: stream.Write(segment.Array, segment.Offset, segment.Count); break;
 
                 #if NET8_0_OR_GREATER
+
                 case List<byte> list:
-                    var span = System.Runtime.InteropServices.CollectionsMarshal.AsSpan(list);
-                    stream.Write(span);
-                    break;
+                    {
+                        var span = System.Runtime.InteropServices.CollectionsMarshal.AsSpan(list);
+                        stream.Write(span);
+                        break;
+                    }
+
+                case System.Collections.Immutable.ImmutableArray<byte> rolist:
+                    {
+                        var span = rolist.AsSpan();
+                        stream.Write(span);
+                        break;
+                    }
+
                 #endif
 
                 default:                    
@@ -313,11 +326,34 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
         }
 
-		/// <summary>
+        public static async Task WriteAllBytesAsync<TCollection>(this Task<__STREAM> streamTask, TCollection bytes, CancellationToken ctoken = default)
+            where TCollection : IReadOnlyList<Byte>
+        {
+            using (var s = await streamTask)
+            {
+                await WriteAllBytesAsync(s, bytes, ctoken);
+            }
+        }
+
+        /// <summary>
 		/// Writes all the bytes to the given stream.
 		/// Equivalent to <see cref="System.IO.File.WriteAllBytesAsync(string, byte[], CancellationToken)"/>
 		/// </summary>  
-		public static async Task WriteAllBytesAsync(this __STREAM stream, IReadOnlyList<Byte> bytes, CancellationToken ctoken)
+		public static async Task WriteAllBytesAsync<TCollection>(this Func<__STREAM> createStream, TCollection bytes, CancellationToken ctoken = default)
+            where TCollection : IReadOnlyList<Byte>
+        {
+            using (var s = createStream.Invoke())
+            {
+                await WriteAllBytesAsync(s, bytes, ctoken);
+            }
+        }
+
+        /// <summary>
+        /// Writes all the bytes to the given stream.
+        /// Equivalent to <see cref="System.IO.File.WriteAllBytesAsync(string, byte[], CancellationToken)"/>
+        /// </summary>  
+        public static async Task WriteAllBytesAsync<TCollection>(this __STREAM stream, TCollection bytes, CancellationToken ctoken)
+            where TCollection : IReadOnlyList<Byte>
         {
             GuardWriteable(stream);
 
@@ -325,8 +361,8 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             switch(bytes)
             {
-                case Byte[] array: await stream.WriteAsync(array, 0, array.Length, ctoken).ConfigureAwait(true); break;
-                case __BYTESSEGMENT segment: await stream.WriteAsync(segment.Array, segment.Offset, segment.Count, ctoken).ConfigureAwait(true); break;                
+                case Byte[] array: await stream.WriteAsync(array, 0, array.Length, ctoken).ConfigureAwait(false); break;
+                case __BYTESSEGMENT segment: await stream.WriteAsync(segment.Array, segment.Offset, segment.Count, ctoken).ConfigureAwait(false); break;                
 
                 default:                    
                     var buf = new Byte[8192];
@@ -335,7 +371,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                     {
                         var len = Math.Min(buf.Length, bytes.Count - pos);
                         for (int i = 0; i < len; ++i) buf[i] = bytes[pos + i];
-                        await stream.WriteAsync(buf, 0, len, ctoken).ConfigureAwait(true);
+                        await stream.WriteAsync(buf, 0, len, ctoken).ConfigureAwait(false);
                         pos += len;
                     }
                     break;
@@ -344,9 +380,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
         public static async Task<__BYTESSEGMENT> ReadAllBytesAsync(this Func<Task<__STREAM>> openStream, CancellationToken ctoken)
         {
-            using (var s = await openStream().ConfigureAwait(true))
+            using (var s = await openStream().ConfigureAwait(false))
             {
-                return await s.ReadAllBytesAsync(ctoken).ConfigureAwait(true);
+                return await s.ReadAllBytesAsync(ctoken).ConfigureAwait(false);
             }
         }
 
@@ -415,11 +451,27 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             return new __BYTESSEGMENT(bytes);
         }
 
-		/// <summary>
-		/// Reads all the bytes from the given stream.
-		/// Equivalent to <see cref="System.IO.File.ReadAllBytesAsync(string, CancellationToken)"/>
-		/// </summary>
-		public static async Task<__BYTESSEGMENT> ReadAllBytesAsync(this __STREAM stream, CancellationToken ctoken)
+        public static async Task<__BYTESSEGMENT> ReadAllBytesAsync(this Func<__STREAM> openStream, CancellationToken ctoken = default)
+        {
+            using (var s = openStream.Invoke())
+            {
+                return await ReadAllBytesAsync(s, ctoken).ConfigureAwait(false);
+            }
+        }
+
+        public static async Task<__BYTESSEGMENT> ReadAllBytesAsync(this Task<__STREAM> openStream, CancellationToken ctoken = default)
+        {
+            using (var s = await openStream.ConfigureAwait(false))
+            {
+                return await ReadAllBytesAsync(s, ctoken).ConfigureAwait(false);
+            }
+        }
+
+        /// <summary>
+        /// Reads all the bytes from the given stream.
+        /// Equivalent to <see cref="System.IO.File.ReadAllBytesAsync(string, CancellationToken)"/>
+        /// </summary>
+        public static async Task<__BYTESSEGMENT> ReadAllBytesAsync(this __STREAM stream, CancellationToken ctoken = default)
         {
             GuardReadable(stream);
 
@@ -451,7 +503,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
                 using (var m = new System.IO.MemoryStream())
                 {
-                    await stream.CopyToAsync(m, ctoken).ConfigureAwait(true);
+                    await stream.CopyToAsync(m, ctoken).ConfigureAwait(false);
                     return m.TryGetBuffer(out var buffer)
                         ? buffer
                         : m.ToArray();
@@ -465,7 +517,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             {
                 var memory = new Memory<Byte>(bytes, index, count);
 
-                int n = await stream.ReadAsync(memory, ctoken).ConfigureAwait(true);
+                int n = await stream.ReadAsync(memory, ctoken).ConfigureAwait(false);
                 if (n == 0) throw new System.IO.EndOfStreamException();
 
                 index += n;
@@ -474,6 +526,6 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             return new __BYTESSEGMENT(bytes);
         }
 
-#endregion
+        #endregion
     }
 }
