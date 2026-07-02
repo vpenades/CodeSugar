@@ -1,0 +1,93 @@
+﻿
+
+        #region specialised - Numerics
+
+        [return: NotNull]
+        public static __WRITEABLEBLOCK WriteLeVector2([NotNull] this __WRITEABLEBLOCK target, System.Numerics.Vector2 value)
+        {
+            return target.WriteLeF32(value.X).WriteLeF32(value.Y);
+        }
+
+        [return: NotNull]
+        public static __READABLEBLOCK ReadLeVector2([NotNull] this __READABLEBLOCK source, out System.Numerics.Vector2 value)
+        {
+            return source.ReadLeF32(out value.X).ReadLeF32(out value.Y);
+        }
+
+        [return: NotNull]
+        public static __WRITEABLEBLOCK WriteLeVector3([NotNull] this __WRITEABLEBLOCK target, System.Numerics.Vector3 value)
+        {
+            return target.WriteLeF32(value.X).WriteLeF32(value.Y).WriteLeF32(value.Z);
+        }
+
+        [return: NotNull]
+        public static __READABLEBLOCK ReadLeVector3([NotNull] this __READABLEBLOCK source, out System.Numerics.Vector3 value)
+        {
+            return source.ReadLeF32(out value.X).ReadLeF32(out value.Y).ReadLeF32(out value.Z);
+        }
+
+        [return: NotNull]
+        public static __WRITEABLEBLOCK WriteLeVector4([NotNull] this __WRITEABLEBLOCK target, System.Numerics.Vector4 value)
+        {
+            return target.WriteLeF32(value.X).WriteLeF32(value.Y).WriteLeF32(value.Z).WriteLeF32(value.W);
+        }
+
+        [return: NotNull]
+        public static __READABLEBLOCK ReadLeVector4([NotNull] this __READABLEBLOCK source, out System.Numerics.Vector4 value)
+        {
+            return source.ReadLeF32(out value.X).ReadLeF32(out value.Y).ReadLeF32(out value.Z).ReadLeF32(out value.W);
+        }
+
+        [return: NotNull]
+        public static __WRITEABLEBLOCK WriteLeQuaternion([NotNull] this __WRITEABLEBLOCK target, System.Numerics.Quaternion value)
+        {
+            return target.WriteLeF32(value.X).WriteLeF32(value.Y).WriteLeF32(value.Z).WriteLeF32(value.W);
+        }
+
+        [return: NotNull]
+        public static __READABLEBLOCK ReadLeQuaternion([NotNull] this __READABLEBLOCK source, out System.Numerics.Quaternion value)
+        {
+            return source.ReadLeF32(out value.X).ReadLeF32(out value.Y).ReadLeF32(out value.Z).ReadLeF32(out value.W);
+        }        
+
+        [return: NotNull]
+        public static __WRITEABLEBLOCK WriteLeMatrix3x2([NotNull] this __WRITEABLEBLOCK target, System.Numerics.Matrix3x2 value)
+        {
+            return target
+                .WriteLeF32(value.M11).WriteLeF32(value.M12)
+                .WriteLeF32(value.M21).WriteLeF32(value.M22)
+                .WriteLeF32(value.M31).WriteLeF32(value.M32);
+                
+        }
+
+        [return: NotNull]
+        public static __READABLEBLOCK ReadLeMatrix3x2([NotNull] this __READABLEBLOCK source, out System.Numerics.Matrix3x2 value)
+        {
+            return source
+                .ReadLeF32(out value.M11).ReadLeF32(out value.M12)
+                .ReadLeF32(out value.M21).ReadLeF32(out value.M22)
+                .ReadLeF32(out value.M31).ReadLeF32(out value.M32);
+        }
+
+        [return: NotNull]
+        public static __WRITEABLEBLOCK WriteLeMatrix4x4([NotNull] this __WRITEABLEBLOCK target, System.Numerics.Matrix4x4 value)
+        {
+            return target
+                .WriteLeF32(value.M11).WriteLeF32(value.M12).WriteLeF32(value.M13).WriteLeF32(value.M14)
+                .WriteLeF32(value.M21).WriteLeF32(value.M22).WriteLeF32(value.M23).WriteLeF32(value.M24)
+                .WriteLeF32(value.M31).WriteLeF32(value.M32).WriteLeF32(value.M33).WriteLeF32(value.M34)
+                .WriteLeF32(value.M41).WriteLeF32(value.M42).WriteLeF32(value.M43).WriteLeF32(value.M44);
+                
+        }
+
+        [return: NotNull]
+        public static __READABLEBLOCK ReadLeMatrix4x4([NotNull] this __READABLEBLOCK source, out System.Numerics.Matrix4x4 value)
+        {
+            return source
+                .ReadLeF32(out value.M11).ReadLeF32(out value.M12).ReadLeF32(out value.M13).ReadLeF32(out value.M14)
+                .ReadLeF32(out value.M21).ReadLeF32(out value.M22).ReadLeF32(out value.M23).ReadLeF32(out value.M24)
+                .ReadLeF32(out value.M31).ReadLeF32(out value.M32).ReadLeF32(out value.M33).ReadLeF32(out value.M34)
+                .ReadLeF32(out value.M41).ReadLeF32(out value.M42).ReadLeF32(out value.M43).ReadLeF32(out value.M44);
+        }   
+
+        #endregion
