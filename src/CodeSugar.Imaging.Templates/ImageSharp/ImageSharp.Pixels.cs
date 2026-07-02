@@ -19,6 +19,8 @@ using __XYZW = System.Numerics.Vector4;
 using __SIXLABORS = SixLabors.ImageSharp;
 using __SIXLABORSPIXFMT = SixLabors.ImageSharp.PixelFormats;
 
+using System.Numerics;
+
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarImagingExtensions
@@ -136,6 +138,76 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             if (t == typeof(Abgr32)) return false;
 
             throw new NotImplementedException(t.Name);
+        }
+
+        private static bool _HasAlphaChannel<T>()
+            where T : unmanaged, IPixel<T>
+        {
+            var t = typeof(T);
+            if (t == typeof(__SIXLABORSPIXFMT.A8)) return true;
+            if (t == typeof(__SIXLABORSPIXFMT.Abgr32)) return true;
+            if (t == typeof(__SIXLABORSPIXFMT.Argb32)) return true;
+            if (t == typeof(__SIXLABORSPIXFMT.Bgra32)) return true;
+            if (t == typeof(__SIXLABORSPIXFMT.Bgra4444)) return true;
+            if (t == typeof(__SIXLABORSPIXFMT.Bgra5551)) return true;
+            if (t == typeof(__SIXLABORSPIXFMT.La16)) return true;
+            if (t == typeof(__SIXLABORSPIXFMT.La32)) return true;
+            if (t == typeof(__SIXLABORSPIXFMT.Rgba1010102)) return true;
+            if (t == typeof(__SIXLABORSPIXFMT.Rgba32)) return true;
+            if (t == typeof(__SIXLABORSPIXFMT.Rgba64)) return true;
+            if (t == typeof(__SIXLABORSPIXFMT.RgbaVector)) return true;
+
+            return false;
+        }
+
+        public static Vector4 ToPremultipliedVector4<TPixel>(this TPixel pixel)
+            where TPixel : unmanaged, IPixel<TPixel>
+        {
+            var value = pixel.ToScaledVector4();
+            value.X *= value.W;
+            value.Y *= value.W;
+            value.Z *= value.W;
+            return value;
+        }
+
+        private static __XYZW _ImageSharpUnpremultiply(this __XYZW value)
+        {
+            if (value.W == 0) return value;
+            value.X /= value.W;
+            value.Y /= value.W;
+            value.Z /= value.W;
+            return value;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static __XYZW _ImageSharpComposeScaledVectorNormal(this __XYZW backPixel, __XYZW forePixel)
+        {
+            // premultiply
+            forePixel.X *= forePixel.W;
+            forePixel.Y *= forePixel.W;
+            forePixel.Z *= forePixel.W;
+
+            // premultiply
+            backPixel.X *= backPixel.W;
+            backPixel.Y *= backPixel.W;
+            backPixel.Z *= backPixel.W;
+
+            // alpha composition:            
+            var ia = 1f - forePixel.W;
+            backPixel.X = forePixel.X + backPixel.X * ia;
+            backPixel.Y = forePixel.Y + backPixel.Y * ia;
+            backPixel.Z = forePixel.Z + backPixel.Z * ia;
+            backPixel.W = forePixel.W + backPixel.W * ia;
+
+            // unpremultiply
+            if (backPixel.W > 0)
+            {
+                backPixel.X /= backPixel.W;
+                backPixel.Y /= backPixel.W;
+                backPixel.Z /= backPixel.W;
+            }
+
+            return backPixel;
         }
 
         public static __XYZ ToScaledBGR<TPixel>(this TPixel pixel) where TPixel: unmanaged, IPixel<TPixel>

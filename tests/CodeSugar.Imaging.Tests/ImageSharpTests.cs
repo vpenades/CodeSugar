@@ -16,8 +16,7 @@ namespace CodeSugar
 {
     internal class ImageSharpTests
     {
-
-        /*
+        
         [Test]
         public void TestDrawAffineTransform()
         {
@@ -38,7 +37,7 @@ namespace CodeSugar
             target.Mutate(dc => dc.DrawImage(icon, xform));
 
             AttachmentInfo.From("affineTransform1.png").WriteObject(target.SaveAsPng);
-        }*/
+        }
 
         [Test]
         public async Task TestTensorsAlpha()
