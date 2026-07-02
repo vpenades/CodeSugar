@@ -30,9 +30,10 @@
     <Project Path="src/CodeSugar.IO.SourceGenerator/CodeSugar.IO.SourceGenerator.csproj" />
     <Project Path="src/CodeSugar.Linq.SourceGenerator/CodeSugar.Linq.SourceGenerator.csproj" Id="03babc13-0057-4ddd-af5b-356f0f5a14d7" />
     <Project Path="src/CodeSugar.Linq.Templates/CodeSugar.Linq.Templates.csproj" Id="01acea74-52b4-44dc-a57e-5cd050204e31" />
+    <Project Path="src/CodeSugar.Logging.SourceGenerator/CodeSugar.Logging.SourceGenerator.csproj" Id="f91ae45c-0722-4db4-bfb4-3e429cca25b6" />
+    <Project Path="src/CodeSugar.Logging.Templates/CodeSugar.Logging.Templates.csproj" Id="2369afa5-837f-49ce-a5c5-490a258ed107" />
     <Project Path="src/CodeSugar.Numerics.SourceGenerator/CodeSugar.Numerics.SourceGenerator.csproj" Id="a8f46879-e0f8-43f5-89fb-b51f5c73ac26" />
     <Project Path="src/CodeSugar.Numerics.Templates/CodeSugar.Numerics.Templates.csproj" Id="efe7466c-6d55-48ef-9f2e-1e943db90830" />
-    <Project Path="src/CodeSugar.Progress.Log/CodeSugar.Progress.Log.csproj" />
     <Project Path="src/CodeSugar.Srlzn.Bin.Sources/CodeSugar.Srlzn.Bin.csproj" />
     <Project Path="src/CodeSugar.Sys.Sources/CodeSugar.Sys.csproj" />
     <Project Path="src/CodeSugar.Sys.Text.Sources/CodeSugar.Sys.Text.csproj" />

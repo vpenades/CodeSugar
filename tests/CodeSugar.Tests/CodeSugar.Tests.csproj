@@ -43,8 +43,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\CodeSugar.AI\CodeSugar.AI.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.ICommand\CodeSugar.ICommand.csproj" />
-    <ProjectReference Include="..\..\src\CodeSugar.ImageSharp\CodeSugar.ImageSharp.csproj" />    
-    <ProjectReference Include="..\..\src\CodeSugar.Progress.Log\CodeSugar.Progress.Log.csproj" />
+    <ProjectReference Include="..\..\src\CodeSugar.ImageSharp\CodeSugar.ImageSharp.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Srlzn.Bin.Sources\CodeSugar.Srlzn.Bin.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Sys.Sources\CodeSugar.Sys.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Sys.Text.Sources\CodeSugar.Sys.Text.csproj" />
@@ -55,12 +54,14 @@
       <ItemGroup>
         <ProjectReference Include="..\..\src\CodeSugar.IO.Sandbox\CodeSugar.IO.Templates.csproj" />
 				<ProjectReference Include="..\..\src\CodeSugar.Linq.Templates\CodeSugar.Linq.Templates.csproj" />
+				<ProjectReference Include="..\..\src\CodeSugar.Logging.Templates\CodeSugar.Logging.Templates.csproj" />
       </ItemGroup>
     </When>
     <Otherwise>
       <ItemGroup>
         <ProjectReference Include="..\..\src\CodeSugar.IO.SourceGenerator\CodeSugar.IO.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 				<ProjectReference Include="..\..\src\CodeSugar.Linq.SourceGenerator\CodeSugar.Linq.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+				<ProjectReference Include="..\..\src\CodeSugar.Logging.SourceGenerator\CodeSugar.Logging.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
       </ItemGroup>
     </Otherwise>
   </Choose>
