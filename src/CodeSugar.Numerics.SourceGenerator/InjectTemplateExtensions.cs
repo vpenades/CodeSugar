@@ -12,11 +12,13 @@ namespace CodeSugar.Numerics
         protected override void InjectSources(SourceProductionContext context)
         {
             var hasTensors = this.NugetPackages.ContainsKey("System.Numerics.Tensors");
-            
+            var hasNCalc6 = this.NugetPackages.ContainsKey("NCalc"); // check version is 6 or higher
+
             ProcessTemplates(context,"Vectors", n => n.Contains(".Templates.Vectors."));
             ProcessTemplates(context, "Matrices", n => n.Contains(".Templates.Matrices."));
 
-            if (hasTensors) ProcessTemplates(context,"Tensors", n => n.Contains(".Templates.Tensors."));            
+            if (hasTensors) ProcessTemplates(context,"Tensors", n => n.Contains(".Templates.Tensors."));
+            if (hasNCalc6) ProcessTemplates(context, "NCalc", n => n.Contains(".Templates.NCalc."));
         }
 
         private int _TemplateIndex = 0;
@@ -56,7 +58,7 @@ namespace CodeSugar.Numerics
 
             foreach (var n in nugets)
             {
-                if (n.Key == "System.Numerics.Tensors")
+                if (n.Key == "System.Numerics.Tensors" || n.Key == "NCalc")
                 {
                     var declaration = "#define __REFERENCES_" + n.Key.Replace(".", "").ToUpper();
                     sb.AppendLine(declaration);

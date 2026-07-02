@@ -10,6 +10,83 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarNumericsExtensions
     {
+        [DebuggerStepThrough]
+        public static UInt32 GetChecksum(this in Vector2 v)
+        {
+            var crc = _Crc32Checksum.InitState();
+            crc = _Crc32Checksum.Append(crc, v.X);
+            crc = _Crc32Checksum.Append(crc, v.Y);
+            return _Crc32Checksum.GetChecksum(crc);
+        }
+
+        [DebuggerStepThrough]
+        public static UInt32 GetChecksum(this in Vector3 v)
+        {
+            var crc = _Crc32Checksum.InitState();
+            crc = _Crc32Checksum.Append(crc, v.X);
+            crc = _Crc32Checksum.Append(crc, v.Y);
+            crc = _Crc32Checksum.Append(crc, v.Z);
+            return _Crc32Checksum.GetChecksum(crc);
+        }
+
+        [DebuggerStepThrough]
+        public static UInt32 GetChecksum(this in Vector4 v)
+        {
+            var crc = _Crc32Checksum.InitState();
+            crc = _Crc32Checksum.Append(crc, v.X);
+            crc = _Crc32Checksum.Append(crc, v.Y);
+            crc = _Crc32Checksum.Append(crc, v.Z);
+            crc = _Crc32Checksum.Append(crc, v.W);
+            return _Crc32Checksum.GetChecksum(crc);
+        }
+
+        [DebuggerStepThrough]
+        public static UInt32 GetChecksum(this in Quaternion v)
+        {
+            var crc = _Crc32Checksum.InitState();
+            crc = _Crc32Checksum.Append(crc, v.X);
+            crc = _Crc32Checksum.Append(crc, v.Y);
+            crc = _Crc32Checksum.Append(crc, v.Z);
+            crc = _Crc32Checksum.Append(crc, v.W);
+            return _Crc32Checksum.GetChecksum(crc);
+        }
+
+        [DebuggerStepThrough]
+        public static UInt32 GetChecksum(this in Matrix3x2 v)
+        {
+            var crc = _Crc32Checksum.InitState();
+            crc = _Crc32Checksum.Append(crc, v.M11);
+            crc = _Crc32Checksum.Append(crc, v.M12);
+            crc = _Crc32Checksum.Append(crc, v.M21);
+            crc = _Crc32Checksum.Append(crc, v.M22);
+            crc = _Crc32Checksum.Append(crc, v.M31);
+            crc = _Crc32Checksum.Append(crc, v.M32);
+            return _Crc32Checksum.GetChecksum(crc);
+        }
+
+        [DebuggerStepThrough]
+        public static UInt32 GetChecksum(this in Matrix4x4 v)
+        {
+            var crc = _Crc32Checksum.InitState();
+            crc = _Crc32Checksum.Append(crc, v.M11);
+            crc = _Crc32Checksum.Append(crc, v.M12);
+            crc = _Crc32Checksum.Append(crc, v.M13);
+            crc = _Crc32Checksum.Append(crc, v.M14);
+            crc = _Crc32Checksum.Append(crc, v.M21);
+            crc = _Crc32Checksum.Append(crc, v.M22);
+            crc = _Crc32Checksum.Append(crc, v.M23);
+            crc = _Crc32Checksum.Append(crc, v.M24);
+            crc = _Crc32Checksum.Append(crc, v.M31);
+            crc = _Crc32Checksum.Append(crc, v.M32);
+            crc = _Crc32Checksum.Append(crc, v.M33);
+            crc = _Crc32Checksum.Append(crc, v.M34);
+            crc = _Crc32Checksum.Append(crc, v.M41);
+            crc = _Crc32Checksum.Append(crc, v.M42);
+            crc = _Crc32Checksum.Append(crc, v.M43);
+            crc = _Crc32Checksum.Append(crc, v.M44);
+            return _Crc32Checksum.GetChecksum(crc);
+        }
+
         [Conditional("DEBUG")]
         private static void _AssertFinite(in Vector2 v)
         {

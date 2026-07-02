@@ -388,9 +388,20 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         public static int GetContentHashCode<T>(this __TENSORS.ReadOnlyTensorSpan<T> tensor) where T:unmanaged
         {
             int h = 0;
-            tensor.FindIndex(item => { h ^= item.GetHashCode(); h *= 17; return false; });            
-
+            tensor.FindIndex(item => { h ^= item.GetHashCode(); h *= 17; return false; });
             return h;
+        }
+
+        public static uint GetContentCrc32Checksum<T>(this __TENSORS.Tensor<T> tensor) where T : unmanaged
+        {
+            return tensor.AsReadOnlyTensorSpan().GetContentCrc32Checksum();
+        }
+
+        public static uint GetContentCrc32Checksum<T>(this __TENSORS.ReadOnlyTensorSpan<T> tensor) where T : unmanaged
+        {
+            var state = _Crc32Checksum.InitState();            
+            tensor.FindIndex(item => { state = _Crc32Checksum.Append(state, item); return false; });
+            return _Crc32Checksum.GetChecksum(state);
         }
 
         public static nint[] FindIndex<T>(this __TENSORS.ReadOnlyTensorSpan<T> span, Predicate<T> predicate) where T : unmanaged
