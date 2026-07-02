@@ -11,9 +11,7 @@ namespace CodeSugar
     {
         [Test]
         [Explicit] // to be replaced by a template analyzer
-        [Arguments(typeof(CodeSugarForSystem))]
-        [Arguments(typeof(CodeSugarForSerialization))]
-        [Arguments(typeof(CodeSugarForImageSharp))]        
+        [Arguments(typeof(CodeSugarForSystem))]                
         public void ListApiMethods(Type t)
         {
             var methods = ApiInfo.ListMethods(t.Assembly).ToList();

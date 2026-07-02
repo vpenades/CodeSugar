@@ -21,19 +21,7 @@
     <PackageReference Include="System.CommandLine" Version="2.0.9" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.3.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="5.3.0" />
-  </ItemGroup>
-
-  <PropertyGroup>
-    <!--
-    1. Include TUnit ant properties below without removing NUnit
-    2. run in terminal: "dotnet format analyzers -_severity info -_diagnostics TUNU0001"
-    3. remove these lines and nunit
-    -->
-    <!--
-    <TUnitImplicitUsings>false</TUnitImplicitUsings>
-    <TUnitAssertionsImplicitUsings>false</TUnitAssertionsImplicitUsings>
-    -->
-  </PropertyGroup>
+  </ItemGroup>  
 
   <ItemGroup>
     <PackageReference Include="TUnit" Version="1.57.0" />
@@ -41,10 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\CodeSugar.AI\CodeSugar.AI.csproj" />
-    <ProjectReference Include="..\..\src\CodeSugar.ICommand\CodeSugar.ICommand.csproj" />
-    <ProjectReference Include="..\..\src\CodeSugar.ImageSharp\CodeSugar.ImageSharp.csproj" />
-    <ProjectReference Include="..\..\src\CodeSugar.Srlzn.Bin.Sources\CodeSugar.Srlzn.Bin.csproj" />
+    <ProjectReference Include="..\..\src\CodeSugar.ICommand\CodeSugar.ICommand.csproj" />    
     <ProjectReference Include="..\..\src\CodeSugar.Sys.Sources\CodeSugar.Sys.csproj" />
     <ProjectReference Include="..\..\src\CodeSugar.Sys.Text.Sources\CodeSugar.Sys.Text.csproj" />
   </ItemGroup>
@@ -55,6 +40,7 @@
         <ProjectReference Include="..\..\src\CodeSugar.IO.Sandbox\CodeSugar.IO.Templates.csproj" />
 				<ProjectReference Include="..\..\src\CodeSugar.Linq.Templates\CodeSugar.Linq.Templates.csproj" />
 				<ProjectReference Include="..\..\src\CodeSugar.Logging.Templates\CodeSugar.Logging.Templates.csproj" />
+				<ProjectReference Include="..\..\src\CodeSugar.Serialization.Templates\CodeSugar.Serialization.Templates.csproj" />
       </ItemGroup>
     </When>
     <Otherwise>
@@ -62,6 +48,7 @@
         <ProjectReference Include="..\..\src\CodeSugar.IO.SourceGenerator\CodeSugar.IO.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 				<ProjectReference Include="..\..\src\CodeSugar.Linq.SourceGenerator\CodeSugar.Linq.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 				<ProjectReference Include="..\..\src\CodeSugar.Logging.SourceGenerator\CodeSugar.Logging.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+				<ProjectReference Include="..\..\src\CodeSugar.Serialization.SourceGenerator\CodeSugar.Serialization.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
       </ItemGroup>
     </Otherwise>
   </Choose>

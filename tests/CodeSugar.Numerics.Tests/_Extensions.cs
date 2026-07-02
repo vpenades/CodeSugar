@@ -17,6 +17,10 @@ namespace CodeSugar
 
     internal static class _Extensions
     {
+        public static string ToText<T>(this IEnumerable<T> collection)
+        {
+            return collection.Aggregate(string.Empty, (a, b) => a + b + ", ");
+        }
         public static ReadOnlySpan<T> AsReadOnlySpan<T>(this ArraySegment<T> segment) where T : unmanaged { return segment; }
         public static ReadOnlySpan<T> AsReadOnlySpan<T>(this T[] array) where T : unmanaged { return array; }
         public static ReadOnlySpan<T> AsReadOnlySpan<T>(this Span<T> span) where T:unmanaged { return span; }
