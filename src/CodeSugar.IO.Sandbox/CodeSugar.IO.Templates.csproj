@@ -22,6 +22,7 @@
   <ItemGroup>
     <InternalsVisibleTo Include="CodeSugar.Tests" />
 		<InternalsVisibleTo Include="CodeSugar.IO.Tests" />
+		<InternalsVisibleTo Include="CodeSugar.Imaging.Tests" />
     <InternalsVisibleTo Include="CodeSugar.Numerics.Tests" />
   </ItemGroup>
 
