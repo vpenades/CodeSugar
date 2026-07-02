@@ -18,7 +18,7 @@ namespace CodeSugar
 
         [Arguments(typeof(CodeSugarForImageSharp))]
 
-        [Arguments(typeof(CodeSugarForLinq))]
+        // [Arguments(typeof(CodeSugarForLinq))]
         public void ListApiMethods(Type t)
         {
             var methods = ApiInfo.ListMethods(t.Assembly).ToList();

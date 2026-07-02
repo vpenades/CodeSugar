@@ -1,0 +1,105 @@
+﻿using System;
+using System.Numerics;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Collections.Generic;
+using System.Linq;
+
+
+#nullable disable
+
+#if !NETSTANDARD
+using __UNSAFE = System.Runtime.CompilerServices.Unsafe;
+#endif
+
+using __METHODOPTIONS = System.Runtime.CompilerServices.MethodImplOptions;
+
+namespace __CODESUGAR_ROOTNAMESPACE__
+{
+    internal static partial class CodeSugarLinqExtensions
+    {
+        #if NETSTANDARD1_6_OR_GREATER
+        private const __METHODOPTIONS AGRESSIVE = __METHODOPTIONS.AggressiveInlining;
+        #else
+        private const __METHODOPTIONS AGRESSIVE = __METHODOPTIONS.AggressiveInlining | __METHODOPTIONS.AggressiveOptimization;
+        #endif
+
+        /// <summary>
+        /// NetStandard2 equivalent to <see cref="__UNSAFE.As{TFrom, TTo}(ref TFrom)"/>
+        /// </summary>
+        /// <typeparam name="TSrc"></typeparam>
+        /// <typeparam name="TDst"></typeparam>
+        /// <param name="valIn"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        [DebuggerStepThrough]
+        [MethodImpl(AGRESSIVE)]
+        private static TDst _UnsafeAs<TSrc,TDst>(ref TSrc valIn)
+            where TSrc: unmanaged
+            where TDst: unmanaged
+        {
+            #if !NETSTANDARD
+            // notice that we can still use UNSAFE in NetStandard2.1
+            // by referencing System.Runtime.CompilerServices.Unsafe package 
+            // but it is not guaranteed we have that dependency.
+            return __UNSAFE.As<TSrc, TDst>(ref valIn);
+            #else
+
+            // netstandard 2.1 fallback
+            var span = System.Runtime.InteropServices.MemoryMarshal.CreateSpan(ref valIn, 1);
+            var cast = System.Runtime.InteropServices.MemoryMarshal.Cast<TSrc, TDst>(span);
+            if (cast.Length != 1) throw new InvalidOperationException("Size mismatch");
+            return cast[0];
+
+            #endif
+        }
+
+        /// <summary>
+        /// sometimes you just need to force an enumeration to happen
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        public static void Yield<T>(this IEnumerable<T> collection)
+        {
+            using (var ptr = collection.GetEnumerator())
+            {
+                while (ptr.MoveNext()) { }
+            }
+        }
+
+        /// <summary>
+        /// sometimes you just need to force an enumeration to happen
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="action"></param>
+        public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
+        {
+            using (var ptr = collection.GetEnumerator())
+            {
+                while (ptr.MoveNext())
+                {
+                    action(ptr.Current);
+                }
+            }
+        }
+
+        /// <summary>
+        /// returns the same items in the source collection, ensuring that the collection is cached to prevent 
+        /// </summary>
+        /// <remarks>
+        /// this is a solution for CA1851: "Possible multiple enumerations of IEnumerable collection"
+        /// </remarks>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> AsCachedEnumerable<T>(this IEnumerable<T> collection)
+        {
+            if (collection is IReadOnlyCollection<T>) return collection;
+            if (collection is ICollection<T>) return collection;
+
+            return collection.ToList();
+        }
+
+    }
+}
