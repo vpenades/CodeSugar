@@ -24,7 +24,7 @@
 	</ItemGroup>
 
   <Choose>
-    <When Condition="true">
+    <When Condition="false">
       <ItemGroup>        
         <ProjectReference Include="..\..\src\CodeSugar.Numerics.Templates\CodeSugar.Numerics.Templates.csproj" />
       </ItemGroup>
