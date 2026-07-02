@@ -17,9 +17,7 @@
   <Folder Name="/src/">
     <File Path="src/Directory.Build.props" />
     <File Path="src/SourcesPackage.props" />
-    <Project Path="src/CodeSugar.AI/CodeSugar.AI.csproj" />
     <Project Path="src/CodeSugar.ICommand/CodeSugar.ICommand.csproj" />
-    <Project Path="src/CodeSugar.ImageSharp/CodeSugar.ImageSharp.csproj" />
     <Project Path="src/CodeSugar.Imaging.SourceGenerator/CodeSugar.Imaging.SourceGenerator.csproj" Id="bf19d783-f488-4e07-970c-7e9f807d2b10">
       <Build Solution="Debug|*" Project="false" />
     </Project>
@@ -34,7 +32,8 @@
     <Project Path="src/CodeSugar.Logging.Templates/CodeSugar.Logging.Templates.csproj" Id="2369afa5-837f-49ce-a5c5-490a258ed107" />
     <Project Path="src/CodeSugar.Numerics.SourceGenerator/CodeSugar.Numerics.SourceGenerator.csproj" Id="a8f46879-e0f8-43f5-89fb-b51f5c73ac26" />
     <Project Path="src/CodeSugar.Numerics.Templates/CodeSugar.Numerics.Templates.csproj" Id="efe7466c-6d55-48ef-9f2e-1e943db90830" />
-    <Project Path="src/CodeSugar.Srlzn.Bin.Sources/CodeSugar.Srlzn.Bin.csproj" />
+    <Project Path="src/CodeSugar.Serialization.SourceGenerator/CodeSugar.Serialization.SourceGenerator.csproj" Id="ce4ba21d-3c63-4cc2-a9dc-cd5c47cc3d67" />
+    <Project Path="src/CodeSugar.Serialization.Templates/CodeSugar.Serialization.Templates.csproj" Id="306a4775-cee0-4b3b-8da4-d1d4d1995314" />
     <Project Path="src/CodeSugar.Sys.Sources/CodeSugar.Sys.csproj" />
     <Project Path="src/CodeSugar.Sys.Text.Sources/CodeSugar.Sys.Text.csproj" />
   </Folder>

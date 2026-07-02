@@ -72,36 +72,7 @@ namespace $rootnamespace$
 
         #endif
 
-        private static float DistanceTo(this IReadOnlyList<float> a, IReadOnlyList<float> b)
-        {
-            switch (a, b)
-            {
-                case (float[] aa , float[] bb): return System.Numerics.Tensors.TensorPrimitives.Distance(aa.AsSpan(), bb.AsSpan());
-                case (ArraySegment<float> aa, float[] bb): return System.Numerics.Tensors.TensorPrimitives.Distance(aa.AsSpan(), bb.AsSpan());
-                case (float[] aa, ArraySegment<float> bb): return System.Numerics.Tensors.TensorPrimitives.Distance(aa.AsSpan(), bb.AsSpan());
-                case (ArraySegment<float> aa, ArraySegment<float> bb): return System.Numerics.Tensors.TensorPrimitives.Distance(aa.AsSpan(), bb.AsSpan());
-                #if NET8_0_OR_GREATER
-                case (List<float> aa, List<float> bb):
-                    {
-                        var aaa = System.Runtime.InteropServices.CollectionsMarshal.AsSpan(aa);
-                        var bbb = System.Runtime.InteropServices.CollectionsMarshal.AsSpan(bb);
-                        return System.Numerics.Tensors.TensorPrimitives.Distance(aaa, bbb);
-                    }
-                #endif
-
-                default:
-                    if (a.Count != b.Count) throw new ArgumentException(nameof(b));
-                    float result = 0;
-                    for (int i = 0; i < a.Count; i++)
-                    {
-                        var x = a[i] - b[i];                        
-                        result += x * x;
-                    }
-
-                    return MathF.Sqrt(result);
-            }
-
-        }
+        
 
 
 

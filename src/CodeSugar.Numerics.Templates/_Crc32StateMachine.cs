@@ -14,6 +14,12 @@ using System.Threading;
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
+    /// <example>    
+    /// var crc = _Crc32Checksum.InitState();
+    /// crc = _Crc32Checksum.Append(crc, 6);
+    /// crc = _Crc32Checksum.Append(crc, 9);
+    /// var checksum = _Crc32Checksum.GetChecksum(crc);
+    /// </example>
     internal static partial class CodeSugarNumericsExtensions
     {
         static class _Crc32Checksum
