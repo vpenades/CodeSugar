@@ -80,6 +80,14 @@ namespace $rootnamespace$
                 case (ArraySegment<float> aa, float[] bb): return System.Numerics.Tensors.TensorPrimitives.Distance(aa.AsSpan(), bb.AsSpan());
                 case (float[] aa, ArraySegment<float> bb): return System.Numerics.Tensors.TensorPrimitives.Distance(aa.AsSpan(), bb.AsSpan());
                 case (ArraySegment<float> aa, ArraySegment<float> bb): return System.Numerics.Tensors.TensorPrimitives.Distance(aa.AsSpan(), bb.AsSpan());
+                #if NET8_0_OR_GREATER
+                case (List<float> aa, List<float> bb):
+                    {
+                        var aaa = System.Runtime.InteropServices.CollectionsMarshal.AsSpan(aa);
+                        var bbb = System.Runtime.InteropServices.CollectionsMarshal.AsSpan(bb);
+                        return System.Numerics.Tensors.TensorPrimitives.Distance(aaa, bbb);
+                    }
+                #endif
 
                 default:
                     if (a.Count != b.Count) throw new ArgumentException(nameof(b));
