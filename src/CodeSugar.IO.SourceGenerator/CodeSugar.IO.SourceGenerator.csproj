@@ -1,32 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   
-  <PropertyGroup>
-    <RootNamespace>CodeSugar</RootNamespace>
-    <TargetFramework>netstandard2.0</TargetFramework>        
-    <LangVersion>latest</LangVersion>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>    
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
-  </PropertyGroup>
-  
-  <!-- https://www.devleader.ca/2026/03/23/how-to-create-your-first-c-source-generator-stepbystep -->
-
-  <PropertyGroup>    
-    <IsPackable>true</IsPackable>
-    <IsRoslynComponent>true</IsRoslynComponent>
-		<NoPackageAnalysis>true</NoPackageAnalysis>
-    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
-    <IncludeBuildOutput>false</IncludeBuildOutput>
-    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
-  </PropertyGroup>  
-
-  <!-- Package the generator as an analyzer -->
-  <ItemGroup>
-    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-  </ItemGroup>
+  <Import Project="..\Generator.props"/>
 
   <ItemGroup>
     <EmbeddedResource Include="..\CodeSugar.IO.Sandbox\*.cs" LinkBase="Templates\SystemIO" />
@@ -35,11 +9,6 @@
     <EmbeddedResource Include="..\CodeSugar.IO.Sandbox\SystemIO.Zip\*.cs" LinkBase="Templates\SystemIO" />
     <EmbeddedResource Include="..\CodeSugar.IO.Sandbox\FileProviders\*.cs" LinkBase="Templates\FileProviders" />
     <EmbeddedResource Include="..\CodeSugar.IO.Sandbox\SharpCompress\*.cs" LinkBase="Templates\SharpCompress" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="5.3.0" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="5.3.0" PrivateAssets="all" />
   </ItemGroup>
 
   <PropertyGroup>

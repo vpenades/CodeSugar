@@ -13,6 +13,7 @@
     <File Path="CodeSugar.Build.sh" />
     <File Path="CodeSugar.Src.Build.sh" />
     <File Path="README.md" />
+    <File Path="src/Generator.props" />
   </Folder>
   <Folder Name="/src/">
     <File Path="src/Directory.Build.props" />
