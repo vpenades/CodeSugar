@@ -17,7 +17,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {
     internal static partial class CodeSugarNumericsExtensions
     {
-        public static T Evaluate<T>(this NCalc.Expression expression)
+        public static T EvaluateEx<T>(this NCalc.Expression expression)
         {
             return _CastNCalcValue<T>(expression.Evaluate());
         }

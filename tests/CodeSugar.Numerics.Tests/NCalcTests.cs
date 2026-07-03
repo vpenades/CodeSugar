@@ -16,9 +16,9 @@ namespace CodeSugar
             await Assert.That(result).IsEqualTo(12);
 
             var arr = new NCalc.Expression("(1,2)");
-            await Assert.That(arr.Evaluate<(int, int)>).IsEqualTo((1,2));
-            await Assert.That(arr.Evaluate<(float, float)>).IsEqualTo((1f, 2f));
-            await Assert.That(arr.Evaluate<System.Numerics.Vector2>).IsEqualTo(new System.Numerics.Vector2(1f, 2f));
+            await Assert.That(arr.EvaluateEx<(int, int)>).IsEqualTo((1,2));
+            await Assert.That(arr.EvaluateEx<(float, float)>).IsEqualTo((1f, 2f));
+            await Assert.That(arr.EvaluateEx<System.Numerics.Vector2>).IsEqualTo(new System.Numerics.Vector2(1f, 2f));
         }
     }
 }
