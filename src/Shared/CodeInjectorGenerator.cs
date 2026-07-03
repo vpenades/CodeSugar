@@ -116,4 +116,63 @@ namespace CodeSugar
     }
 
 
+    record SemanticVersion : IComparable<SemanticVersion>
+    {
+        public static bool TryParse(string fullVersion, out SemanticVersion sv)
+        {
+            if (string.IsNullOrEmpty(fullVersion))
+            {
+                sv = Default100;
+                return false;
+            }
+
+            var suffix = string.Empty;
+
+            var sidx = fullVersion.IndexOf('-');
+            if (sidx >= 0)
+            {
+                suffix = fullVersion.Substring(sidx + 1);
+                fullVersion = fullVersion.Substring(0, sidx);
+            }
+
+            if (!Version.TryParse(fullVersion, out var version))
+            {
+                sv = Default100;
+                return false;
+            }
+
+            sv = new SemanticVersion(version, suffix);
+            return true;
+        }
+
+        private static readonly SemanticVersion Default100 = new SemanticVersion(new Version(1, 0, 0), string.Empty);
+
+        private SemanticVersion(Version version, string suffix)
+        {
+            Version = version;
+            Suffix = suffix;
+        }
+
+        public Version Version { get; } = new Version(1, 0, 0);
+
+        public string Suffix { get; } = string.Empty;
+
+        public int CompareTo(SemanticVersion other)
+        {
+            var r = this.Version.CompareTo(other.Version);
+            if (r != 0) return r;
+
+            var thisHasPrefix = !string.IsNullOrEmpty(this.Suffix);
+            var otherHasPrefix = !string.IsNullOrEmpty(other.Suffix);
+            if (!thisHasPrefix && !otherHasPrefix) return 0;
+
+            r = thisHasPrefix.CompareTo(otherHasPrefix);
+            if (r != 0) return r;
+
+            // suffix rule comparison are tricky, but generally we're going to work with full versions
+
+            return this.Suffix.CompareTo(other.Suffix, StringComparison.OrdinalIgnoreCase);
+        }
+    }
+
 }
