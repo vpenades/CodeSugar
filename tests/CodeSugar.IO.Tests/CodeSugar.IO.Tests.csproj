@@ -27,7 +27,7 @@
   <Choose>
     <When Condition="false">
       <ItemGroup>
-        <ProjectReference Include="..\..\src\CodeSugar.IO.Sandbox\CodeSugar.IO.Templates.csproj" />
+        <ProjectReference Include="..\..\src\CodeSugar.IO.Templates\CodeSugar.IO.Templates.csproj" />
       </ItemGroup>      
     </When>
     <Otherwise>

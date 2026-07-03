@@ -37,7 +37,7 @@
   <Choose>
     <When Condition="false">
       <ItemGroup>
-        <ProjectReference Include="..\..\src\CodeSugar.IO.Sandbox\CodeSugar.IO.Templates.csproj" />
+        <ProjectReference Include="..\..\src\CodeSugar.IO.Templates\CodeSugar.IO.Templates.csproj" />
 				<ProjectReference Include="..\..\src\CodeSugar.Linq.Templates\CodeSugar.Linq.Templates.csproj" />
 				<ProjectReference Include="..\..\src\CodeSugar.Logging.Templates\CodeSugar.Logging.Templates.csproj" />
 				<ProjectReference Include="..\..\src\CodeSugar.Serialization.Templates\CodeSugar.Serialization.Templates.csproj" />

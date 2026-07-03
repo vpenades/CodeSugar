@@ -1,4 +1,4 @@
-# CodeSugar
+ CodeSugar
 
 This repository contain projects that add extensions for system classes, like System.IO.
 

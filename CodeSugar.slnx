@@ -13,11 +13,12 @@
     <File Path="CodeSugar.Build.sh" />
     <File Path="CodeSugar.Src.Build.sh" />
     <File Path="README.md" />
-    <File Path="src/Generator.props" />
   </Folder>
   <Folder Name="/src/">
     <File Path="src/Directory.Build.props" />
+    <File Path="src/Generator.props" />
     <File Path="src/SourcesPackage.props" />
+    <File Path="src/Template.props" />
     <Project Path="src/CodeSugar.ICommand/CodeSugar.ICommand.csproj" />
     <Project Path="src/CodeSugar.Imaging.SourceGenerator/CodeSugar.Imaging.SourceGenerator.csproj" Id="bf19d783-f488-4e07-970c-7e9f807d2b10">
       <Build Solution="Debug|*" Project="false" />
@@ -25,8 +26,8 @@
     <Project Path="src/CodeSugar.Imaging.Templates/CodeSugar.Imaging.Templates.csproj" Id="51b4fa85-b1f7-4072-b721-30e1a18537f7">
       <Build Solution="Debug|*" Project="false" />
     </Project>
-    <Project Path="src/CodeSugar.IO.Sandbox/CodeSugar.IO.Templates.csproj" Id="084be84a-ee5c-4806-ab2b-4090c5131a6e" />
     <Project Path="src/CodeSugar.IO.SourceGenerator/CodeSugar.IO.SourceGenerator.csproj" />
+    <Project Path="src/CodeSugar.IO.Templates/CodeSugar.IO.Templates.csproj" Id="084be84a-ee5c-4806-ab2b-4090c5131a6e" />
     <Project Path="src/CodeSugar.Linq.SourceGenerator/CodeSugar.Linq.SourceGenerator.csproj" Id="03babc13-0057-4ddd-af5b-356f0f5a14d7" />
     <Project Path="src/CodeSugar.Linq.Templates/CodeSugar.Linq.Templates.csproj" Id="01acea74-52b4-44dc-a57e-5cd050204e31" />
     <Project Path="src/CodeSugar.Logging.SourceGenerator/CodeSugar.Logging.SourceGenerator.csproj" Id="f91ae45c-0722-4db4-bfb4-3e429cca25b6" />

@@ -1,32 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<RootNamespace>__CODESUGAR_ROOTNAMESPACE__</RootNamespace>
-		<VersionPrefix>1.0.0</VersionPrefix>
+	<PropertyGroup>		
 		<TargetFrameworks>net8.0;net10.0</TargetFrameworks>
 	</PropertyGroup>
 
-  <PropertyGroup>
-    <IsAotCompatible>true</IsAotCompatible>
-  </PropertyGroup>
-
-	<PropertyGroup>
-		<IsPackable>false</IsPackable>
-		<IsPackableAsSources>false</IsPackableAsSources>
-	</PropertyGroup>  
+  <Import Project="..\Template.props"/>
 	
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);__REFERENCES_SYSTEMNUMERICSTENSORS</DefineConstants>
 		<DefineConstants>$(DefineConstants);__REFERENCES_SIXLABORSIMAGESHARP</DefineConstants>
 		<DefineConstants>$(DefineConstants);__REFERENCES_SKIASHARP</DefineConstants>
-  </PropertyGroup>  
-
-	<ItemGroup>
-		<InternalsVisibleTo Include="CodeSugar.Tests" />
-		<InternalsVisibleTo Include="CodeSugar.IO.Tests" />
-		<InternalsVisibleTo Include="CodeSugar.Imaging.Tests" />
-		<InternalsVisibleTo Include="CodeSugar.Numerics.Tests" />
-	</ItemGroup>
+  </PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="System.Numerics.Tensors" Version="10.0.9" />

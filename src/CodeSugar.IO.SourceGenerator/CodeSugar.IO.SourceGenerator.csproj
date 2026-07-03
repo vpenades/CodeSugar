@@ -3,12 +3,12 @@
   <Import Project="..\Generator.props"/>
 
   <ItemGroup>
-    <EmbeddedResource Include="..\CodeSugar.IO.Sandbox\*.cs" LinkBase="Templates\SystemIO" />
-    <EmbeddedResource Include="..\CodeSugar.IO.Sandbox\SystemIO.FileSystem\*.cs" LinkBase="Templates\SystemIO" />
-    <EmbeddedResource Include="..\CodeSugar.IO.Sandbox\SystemIO.Streams\*.cs" LinkBase="Templates\SystemIO" />
-    <EmbeddedResource Include="..\CodeSugar.IO.Sandbox\SystemIO.Zip\*.cs" LinkBase="Templates\SystemIO" />
-    <EmbeddedResource Include="..\CodeSugar.IO.Sandbox\FileProviders\*.cs" LinkBase="Templates\FileProviders" />
-    <EmbeddedResource Include="..\CodeSugar.IO.Sandbox\SharpCompress\*.cs" LinkBase="Templates\SharpCompress" />
+    <EmbeddedResource Include="..\CodeSugar.IO.Templates\*.cs" LinkBase="Templates\SystemIO" />
+    <EmbeddedResource Include="..\CodeSugar.IO.Templates\SystemIO.FileSystem\*.cs" LinkBase="Templates\SystemIO" />
+    <EmbeddedResource Include="..\CodeSugar.IO.Templates\SystemIO.Streams\*.cs" LinkBase="Templates\SystemIO" />
+    <EmbeddedResource Include="..\CodeSugar.IO.Templates\SystemIO.Zip\*.cs" LinkBase="Templates\SystemIO" />
+    <EmbeddedResource Include="..\CodeSugar.IO.Templates\FileProviders\*.cs" LinkBase="Templates\FileProviders" />
+    <EmbeddedResource Include="..\CodeSugar.IO.Templates\SharpCompress\*.cs" LinkBase="Templates\SharpCompress" />
   </ItemGroup>
 
   <PropertyGroup>
