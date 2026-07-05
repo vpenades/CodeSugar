@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using XY = System.Numerics.Vector2;
+using XYZ = System.Numerics.Vector3;
 
 namespace CodeSugar
 {
@@ -139,6 +140,15 @@ namespace CodeSugar
 
             c1.InPlaceTransformBy(System.Numerics.Matrix3x2.Identity);
             c2.InPlaceTransformBy(System.Numerics.Matrix3x2.Identity);            
+        }
+
+        [Test]
+        public async Task TestFallbacks()
+        {
+            var y = new XYZ(1, 2, 3).GetElement(1);
+
+            await Assert.That(y).IsEqualTo(2f);
+            
         }
 
         [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]

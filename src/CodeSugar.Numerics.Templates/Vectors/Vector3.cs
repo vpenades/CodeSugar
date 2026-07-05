@@ -129,7 +129,20 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             for (int i = 0; i < collection.Count; i++)
             {
                 collection[i] = __VECTOR3.TransformNormal(collection[i], matrix);
+            }     
+        }
+
+        #if !NET10_0_OR_GREATER
+        public static float GetElement(this __VECTOR3 v, int idx)
+        {
+            switch (idx)
+            {
+                case 0: return v.X;
+                case 1: return v.Y;
+                case 2: return v.Z;
+                default: throw new ArgumentOutOfRangeException(nameof(idx));
             }
         }
+        #endif
     }
 }

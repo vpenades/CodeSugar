@@ -138,5 +138,18 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 collection[i] = Vector2.TransformNormal(collection[i], matrix);
             }
         }
+
+
+        #if !NET10_0_OR_GREATER
+        public static float GetElement(this Vector2 v, int idx)
+        {
+            switch (idx)
+            {
+                case 0: return v.X;
+                case 1: return v.Y;                
+                default: throw new ArgumentOutOfRangeException(nameof(idx));
+            }
+        }
+        #endif
     }
 }
