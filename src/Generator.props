@@ -30,7 +30,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)\Shared\CodeInjectorGenerator.cs" Link="CodeInjectorGenerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)\Shared\CodeInjectorGenerator.cs" Link="Shared\CodeInjectorGenerator.cs" />
+		<Compile Include="$(MSBuildThisFileDirectory)\Shared\EmbeddedTemplates.cs" Link="Shared\EmbeddedTemplates.cs" />
+		<Compile Include="$(MSBuildThisFileDirectory)\Shared\TemplateCodeProcessor.cs" Link="Shared\TemplateCodeProcessor.cs" />
   </ItemGroup>
 
   <ItemGroup>

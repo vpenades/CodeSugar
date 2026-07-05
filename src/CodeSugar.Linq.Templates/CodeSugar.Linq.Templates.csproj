@@ -4,6 +4,6 @@
 		<TargetFrameworks>netstandard2.1;net8.0;net10.0</TargetFrameworks>
 	</PropertyGroup>
 
-  <Import Project="..\Template.props"/>
+  <Import Project="..\Template.props" />
 
 </Project>

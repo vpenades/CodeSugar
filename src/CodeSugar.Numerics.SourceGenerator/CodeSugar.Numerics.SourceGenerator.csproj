@@ -7,6 +7,7 @@
 		<EmbeddedResource Include="..\CodeSugar.Numerics.Templates\Vectors\*.cs" LinkBase="Templates\Vectors" />
     <EmbeddedResource Include="..\CodeSugar.Numerics.Templates\Matrices\*.cs" LinkBase="Templates\Matrices" />    
     <EmbeddedResource Include="..\CodeSugar.Numerics.Templates\Tensors\*.cs" LinkBase="Templates\Tensors" />
+		<EmbeddedResource Include="..\CodeSugar.Numerics.Templates\OnnxRuntime\*.cs" LinkBase="Templates\OnnxRuntime" />
 		<EmbeddedResource Include="..\CodeSugar.Numerics.Templates\NCalc\*.cs" LinkBase="Templates\NCalc" />
 	</ItemGroup>  
 
