@@ -15,6 +15,7 @@ namespace CodeSugar
             var hasImageSharp = this.NugetPackages.ContainsKey("SixLabors.ImageSharp");
             var hasMagicScaler = this.NugetPackages.ContainsKey("PhotoSauce.MagicScaler");
             var hasSkiaSharp = this.NugetPackages.ContainsKey("SkiaSharp");
+            var hasAvalonia = this.NugetPackages.ContainsKey("Avalonia");
 
             ProcessTemplates(context,"Core", n => n.Contains(".Templates.Core."));
 
@@ -23,6 +24,7 @@ namespace CodeSugar
             if (hasImageSharp) ProcessTemplates(context, "ImageSharp", n => n.Contains(".Templates.ImageSharp."));
             if (hasMagicScaler) ProcessTemplates(context, "MagicScaler", n => n.Contains(".Templates.MagicScaler."));
             if (hasSkiaSharp) ProcessTemplates(context, "SkiaSharp", n => n.Contains(".Templates.SkiaSharp."));
+            if (hasAvalonia) ProcessTemplates(context, "Avalonia", n => n.Contains(".Templates.Avalonia."));
 
             if (hasTensors) // tensors
             {

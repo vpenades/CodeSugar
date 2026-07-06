@@ -132,7 +132,33 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }     
         }
 
+        #region fallbacks to existing APIs
+
         #if !NET10_0_OR_GREATER
+
+        [DebuggerStepThrough]
+        [MethodImpl(AGRESSIVE)]
+        public static Vector2 AsVector2(this __VECTOR3 v)
+        {
+            return new Vector2(v.X, v.Y);
+        }
+
+        [DebuggerStepThrough]
+        [MethodImpl(AGRESSIVE)]
+        public static Vector4 AsVector4(this __VECTOR3 v)
+        {
+            return new Vector4(v,0);
+        }
+
+        [DebuggerStepThrough]
+        [MethodImpl(AGRESSIVE)]
+        public static Vector4 AsVector4Unsafe(this __VECTOR3 v)
+        {
+            return new Vector4(v, 0);
+        }
+        [DebuggerStepThrough]
+
+        [MethodImpl(AGRESSIVE)]
         public static float GetElement(this __VECTOR3 v, int idx)
         {
             switch (idx)
@@ -144,5 +170,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
         }
         #endif
+
+        #endregion
     }
 }

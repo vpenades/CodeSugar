@@ -113,6 +113,18 @@ namespace CodeSugar
         protected abstract void InjectSources(SourceProductionContext context);
 
         #endregion
+
+        #region diagnostics
+
+        protected static readonly DiagnosticDescriptor LogInfo1 = new DiagnosticDescriptor(
+            id: "LOG001",
+            title: "Generator Log",
+            messageFormat: "Log del generador: {0}",
+            category: "SourceGenerator",
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true);
+
+        #endregion
     }
 
 

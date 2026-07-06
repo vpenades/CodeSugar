@@ -22,12 +22,6 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarImagingExtensions
     {
-        
-
-
-        
-
-
         public static Tensor<byte> ToByteTensor<TPixel>(this Image<TPixel> img)
             where TPixel : unmanaged, __SIXLABORSPIXFMT.IPixel<TPixel>
         {

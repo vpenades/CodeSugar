@@ -1,20 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>		
-    <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.1;net8.0;net10.0</TargetFrameworks>
   </PropertyGroup>
 
   <Import Project="..\Template.props" />  
 
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);__REFERENCES_SYSTEMNUMERICSTENSORS</DefineConstants>
-  </PropertyGroup>  
+    <DefineConstants>$(DefineConstants);__REFERENCES_MICROSOFTMLONNXRUNTIME</DefineConstants>
+    <DefineConstants>$(DefineConstants);__REFERENCES_MATHNETNUMERICS</DefineConstants>
+    <DefineConstants>$(DefineConstants);__REFERENCES_NCALC</DefineConstants>    
+  </PropertyGroup>
 
-  <ItemGroup>
+
+
+  <ItemGroup>    
     <PackageReference Include="System.Numerics.Tensors" Version="10.0.9" />
 		<PackageReference Include="Microsoft.ML.OnnxRuntime.Managed" Version="1.27.0" />
     <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
-    <PackageReference Include="NCalc" Version="6.3.3" />		
+    <PackageReference Include="NCalc" Version="6.4.0" />		
 	</ItemGroup>
   
 </Project>

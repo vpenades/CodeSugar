@@ -7,6 +7,10 @@ using System.Linq;
 
 #nullable disable
 
+using __VECTOR2 = System.Numerics.Vector2;
+using __VECTOR3 = System.Numerics.Vector3;
+using __VECTOR4 = System.Numerics.Vector4;
+
 using __VECTOR2ENUMERATION = System.Collections.Generic.IEnumerable<System.Numerics.Vector2>;
 
 namespace __CODESUGAR_ROOTNAMESPACE__
@@ -15,31 +19,31 @@ namespace __CODESUGAR_ROOTNAMESPACE__
     {
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static float Angle(this in Vector2 v)
+        public static float Angle(this in __VECTOR2 v)
         {
             return MathF.Atan2(v.Y, v.X);
         }
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static float Angle(this Vector2 a, Vector2 b)
+        public static float Angle(this __VECTOR2 a, __VECTOR2 b)
         {
             _AssertFinite(a);
             _AssertFinite(b);
 
-            if (a == Vector2.Zero || b == Vector2.Zero) return 0;
+            if (a == __VECTOR2.Zero || b == __VECTOR2.Zero) return 0;
 
-            a = Vector2.Normalize(a);
-            b = Vector2.Normalize(b);
+            a = __VECTOR2.Normalize(a);
+            b = __VECTOR2.Normalize(b);
 
-            float dot = Vector2.Dot(a, b);
+            float dot = __VECTOR2.Dot(a, b);
             dot = Math.Clamp(dot,-1,1);
             return MathF.Acos(dot);
         }
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static float Cross(this Vector2 a, Vector2 b)
+        public static float Cross(this __VECTOR2 a, __VECTOR2 b)
         {
             _AssertFinite(a);
             _AssertFinite(b);
@@ -48,9 +52,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         }
 
         [DebuggerStepThrough]        
-        public static Vector2 Centroid(this __VECTOR2ENUMERATION points)
+        public static __VECTOR2 Centroid(this __VECTOR2ENUMERATION points)
         {
-            if (points == null) return Vector2.Zero;
+            if (points == null) return __VECTOR2.Zero;
 
             double c = 0;
             double x = 0;
@@ -66,82 +70,115 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 c += 1;
             }
 
-            if (c == 0) return Vector2.Zero;
+            if (c == 0) return __VECTOR2.Zero;
 
             x /= c;
             y /= c;            
 
-            return new Vector2((float)x, (float)y);
+            return new __VECTOR2((float)x, (float)y);
         }
 
         [DebuggerStepThrough]
-        public static Vector2 Min(this __VECTOR2ENUMERATION points)
+        public static __VECTOR2 Min(this __VECTOR2ENUMERATION points)
         {            
-            return points.Aggregate(new Vector2(float.MaxValue), (seed, value) => Vector2.Min(seed, value));
+            return points.Aggregate(new __VECTOR2(float.MaxValue), (seed, value) => __VECTOR2.Min(seed, value));
         }
 
         [DebuggerStepThrough]
-        public static Vector2 Max(this __VECTOR2ENUMERATION points)
+        public static __VECTOR2 Max(this __VECTOR2ENUMERATION points)
         {
-            return points.Aggregate(new Vector2(float.MinValue), (seed, value) => Vector2.Max(seed, value));
+            return points.Aggregate(new __VECTOR2(float.MinValue), (seed, value) => __VECTOR2.Max(seed, value));
         }
 
         [DebuggerStepThrough]
-        public static (Vector2 Min, Vector2 Max) MinMax(this __VECTOR2ENUMERATION points)
+        public static (__VECTOR2 Min, __VECTOR2 Max) MinMax(this __VECTOR2ENUMERATION points)
         {
-            return points.Aggregate((new Vector2(float.MaxValue), new Vector2(float.MinValue)), (seed, value) => (Vector2.Min(seed.Item1,value), Vector2.Max(seed.Item2, value)) );
+            return points.Aggregate((new __VECTOR2(float.MaxValue), new __VECTOR2(float.MinValue)), (seed, value) => (__VECTOR2.Min(seed.Item1,value), __VECTOR2.Max(seed.Item2, value)) );
         }
 
         [DebuggerStepThrough]
-        public static void InPlaceTransformBy(this Span<Vector2> collection, System.Numerics.Matrix3x2 matrix)            
+        public static void InPlaceTransformBy(this Span<__VECTOR2> collection, System.Numerics.Matrix3x2 matrix)            
         {
             if (collection.IsEmpty) return;
 
             for (int i = 0; i < collection.Length; i++)
             {
-                collection[i] = Vector2.Transform(collection[i], matrix);
+                collection[i] = __VECTOR2.Transform(collection[i], matrix);
             }
         }
 
         [DebuggerStepThrough]
-        public static void InPlaceTransformNormalBy(this Span<Vector2> collection, System.Numerics.Matrix3x2 matrix)            
+        public static void InPlaceTransformNormalBy(this Span<__VECTOR2> collection, System.Numerics.Matrix3x2 matrix)            
         {
             if (collection.IsEmpty) return;
 
             for (int i = 0; i < collection.Length; i++)
             {
-                collection[i] = Vector2.TransformNormal(collection[i], matrix);
+                collection[i] = __VECTOR2.TransformNormal(collection[i], matrix);
             }
         }
 
 
         [DebuggerStepThrough]
         public static void InPlaceTransformBy<TCollection>(this TCollection collection, System.Numerics.Matrix3x2 matrix)
-            where TCollection: IList<Vector2>
+            where TCollection: IList<__VECTOR2>
         {
             if (collection == null) return;
 
             for(int i=0; i<collection.Count; i++)
             {
-                collection[i] = Vector2.Transform(collection[i], matrix);
+                collection[i] = __VECTOR2.Transform(collection[i], matrix);
             }
         }
 
         [DebuggerStepThrough]
         public static void InPlaceTransformNormalBy<TCollection>(this TCollection collection, System.Numerics.Matrix3x2 matrix)
-            where TCollection : IList<Vector2>
+            where TCollection : IList<__VECTOR2>
         {
             if (collection == null) return;
 
             for (int i = 0; i < collection.Count; i++)
             {
-                collection[i] = Vector2.TransformNormal(collection[i], matrix);
+                collection[i] = __VECTOR2.TransformNormal(collection[i], matrix);
             }
         }
 
+        #region fallbacks to existing APIs
+
 
         #if !NET10_0_OR_GREATER
-        public static float GetElement(this Vector2 v, int idx)
+
+        [DebuggerStepThrough]
+        [MethodImpl(AGRESSIVE)]
+        public static __VECTOR3 AsVector3(this __VECTOR2 v)
+        {
+            return new __VECTOR3(v.X, v.Y, 0);
+        }
+
+        [DebuggerStepThrough]
+        [MethodImpl(AGRESSIVE)]
+        public static __VECTOR3 AsVector3Unsafe(this __VECTOR2 v)
+        {
+            return new __VECTOR3(v.X, v.Y, 0);
+        }
+
+        [DebuggerStepThrough]
+        [MethodImpl(AGRESSIVE)]
+        public static __VECTOR4 AsVector4(this __VECTOR2 v)
+        {
+            return new __VECTOR4(v, 0, 0);
+        }
+
+        [DebuggerStepThrough]
+        [MethodImpl(AGRESSIVE)]
+        public static __VECTOR4 AsVector4Unsafe(this __VECTOR2 v)
+        {
+            return new __VECTOR4(v, 0, 0);
+        }
+
+        [DebuggerStepThrough]
+        [MethodImpl(AGRESSIVE)]
+        public static float GetElement(this __VECTOR2 v, int idx)
         {
             switch (idx)
             {
@@ -151,5 +188,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
         }
         #endif
+
+        #endregion
     }
 }

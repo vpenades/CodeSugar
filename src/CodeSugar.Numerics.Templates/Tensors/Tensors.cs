@@ -19,6 +19,8 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {
     internal static partial class CodeSugarNumericsExtensions
     {
+        #if NET8_0_OR_GREATER
+
         /// <summary>
         /// checks whether the given tensor has non default strides
         /// </summary>
@@ -429,5 +431,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             return indexes;
         }
+
+        #endif
     }
 }
+
+

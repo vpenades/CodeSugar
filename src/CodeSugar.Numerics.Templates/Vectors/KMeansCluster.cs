@@ -13,12 +13,6 @@ using System.Collections.Immutable;
 
 using __KMEANSPUBLICKEY = System.Collections.Generic.IReadOnlyList<float>;
 
-#if NET
-using __KMEANSPRIVATEKEY = System.Collections.Immutable.ImmutableArray<float>;
-#else
-using __KMEANSPRIVATEKEY = System.Collections.Generic.IReadOnlyList<float>;
-#endif
-
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     internal static partial class CodeSugarNumericsExtensions
@@ -35,12 +29,12 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         /// <param name="k">number of groups to create</param>
         /// <param name="vfunc">Embedded vector evaluator function</param>
         /// <param name="progress">progress reporting</param>
-        /// <returns>A collection of <see cref="KMeansCluster{T}"/> where the key is the item representing the group.</returns>
+        /// <returns>A collection of <see cref="_KMeansCluster{T}"/> where the key is the item representing the group.</returns>
         public static IGrouping<__KMEANSPUBLICKEY, TValue>[] GroupByRandomKMeans<TValue>(this IReadOnlyList<TValue> srcData, int k, Func<TValue, __KMEANSPUBLICKEY> vfunc, IProgress<int> progress = null)
         {
             progress ??= new Progress<int>(x => { });
 
-            return KMeansCluster < TValue > .ClusterBuilder.GroupByRandomKMeans(srcData, k, item => vfunc(item).ToImmutableArray(), progress);
+            return _KMeansCluster<TValue>.ClusterBuilder.GroupByRandomKMeans(srcData, k, item => new _KMeansKey(vfunc(item)), progress);
         }
 
         /// <summary>
@@ -50,19 +44,77 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         /// <param name="k">number of groups to create</param>
         /// <param name="vfunc">Embedded vector evaluator function</param>
         /// <param name="progress">progress reporting</param>
-        /// <returns>A collection of <see cref="KMeansCluster{T}"/> where the key is the item representing the group.</returns>
+        /// <returns>A collection of <see cref="_KMeansCluster{T}"/> where the key is the item representing the group.</returns>
         public static IGrouping<__KMEANSPUBLICKEY, T>[] GroupByFarthestKMeans<T>(this IReadOnlyList<T> srcData, int k, Func<T, __KMEANSPUBLICKEY> vfunc, IProgress<int> progress = null)
         {
             progress ??= new Progress<int>(x => { });
 
-            return KMeansCluster < T > .ClusterBuilder.GroupByFarthestKMeans(srcData, k, item => vfunc(item).ToImmutableArray(), progress);
+            return _KMeansCluster < T > .ClusterBuilder.GroupByFarthestKMeans(srcData, k, item => new _KMeansKey(vfunc(item)), progress);
         }        
 
-        private class KMeansCluster<TValue> : IGrouping<__KMEANSPUBLICKEY, TValue>
+        
+
+        private readonly struct _KMeansKey : IEquatable<_KMeansKey>
+        {
+            public static _KMeansKey Mean(IEnumerable<_KMeansKey> items)
+            {
+                float[] accum = null;
+                int count = 0;
+
+                foreach(var item in items)
+                {
+                    if (item.IsEmpty) continue;
+                    accum ??= new float[item.PublicKey.Count];
+
+                    item.AddTo(accum);
+                    ++count;
+                }
+
+                System.Numerics.Tensors.TensorPrimitives.Divide(accum, count, accum);
+
+                return new _KMeansKey(accum);
+            }
+
+            public _KMeansKey(__KMEANSPUBLICKEY key)
+            {            
+                _Key = key.ToArray();
+            }
+           
+            private readonly float[] _Key;
+            public bool IsEmpty => _Key == null || _Key.Length == 0;
+            public __KMEANSPUBLICKEY PublicKey => _Key;           
+
+            public override int GetHashCode()
+            {
+                if (IsEmpty) return 0;
+                return _Key.Aggregate(0, (accum, value) => accum * 17 + value.GetHashCode());
+            }
+
+            public bool Equals(_KMeansKey other)
+            {
+                if (this.IsEmpty && other.IsEmpty) return true;
+                if (this.IsEmpty) return false;
+                if (other.IsEmpty) return false;
+
+                return _Key.AsSpan().SequenceEqual(other._Key.AsSpan());
+            }
+
+            public float DistanceTo(_KMeansKey other)
+            {
+                return _Key.EuclideanDistanceTo(other._Key);
+            }
+
+            public void AddTo(Span<float> dst)
+            {
+                System.Numerics.Tensors.TensorPrimitives.Add(dst, _Key.AsSpan(), dst);
+            }            
+        }
+
+        private class _KMeansCluster<TValue> : IGrouping<__KMEANSPUBLICKEY, TValue>
         {
             #region lifecycle            
 
-            private KMeansCluster(__KMEANSPRIVATEKEY key, IReadOnlyList<TValue> values)
+            private _KMeansCluster(_KMeansKey key, IReadOnlyList<TValue> values)
             {
                 _Key = key;
                 _Values = values;
@@ -72,14 +124,14 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             #region data
 
-            private __KMEANSPRIVATEKEY _Key;
+            private _KMeansKey _Key;
             private readonly IReadOnlyList<TValue> _Values;
 
             #endregion
 
             #region API
 
-            public __KMEANSPUBLICKEY Key => _Key;
+            public __KMEANSPUBLICKEY Key => _Key.PublicKey;
             
             public IEnumerator<TValue> GetEnumerator() { return _Values.AsEnumerable().GetEnumerator(); }
             IEnumerator IEnumerable.GetEnumerator() { return _Values.GetEnumerator(); }
@@ -93,7 +145,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             {
                 #region lifecycle
 
-                public static KMeansCluster<TValue>[] GroupByRandomKMeans(IReadOnlyList<TValue> srcData, int k, Func<TValue, __KMEANSPRIVATEKEY> vfunc, IProgress<int> progress)
+                public static _KMeansCluster<TValue>[] GroupByRandomKMeans(IReadOnlyList<TValue> srcData, int k, Func<TValue, _KMeansKey> vfunc, IProgress<int> progress)
                 {
                     k = Math.Min(srcData.Count, k);
 
@@ -114,7 +166,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                         .ToArray();
                 }
 
-                public static KMeansCluster<TValue>[] GroupByFarthestKMeans(IReadOnlyList<TValue> srcData, int k, Func<TValue, __KMEANSPRIVATEKEY> vfunc, IProgress<int> progress)
+                public static _KMeansCluster<TValue>[] GroupByFarthestKMeans(IReadOnlyList<TValue> srcData, int k, Func<TValue, _KMeansKey> vfunc, IProgress<int> progress)
                 {
                     k = Math.Min(srcData.Count, k);
 
@@ -132,7 +184,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 }
 
 
-                private static TValue[] _FindFarthest(IReadOnlyList<TValue> items, int k, Func<TValue, __KMEANSPRIVATEKEY> vfunc)
+                private static TValue[] _FindFarthest(IReadOnlyList<TValue> items, int k, Func<TValue, _KMeansKey> vfunc)
                 {
                     var remaining = items.ToList();
                     var result = new List<TValue>();
@@ -149,7 +201,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                         foreach (var r in result)
                         {
                             var rV = vfunc(r);
-                            var d = itemV.EuclideanDistanceTo(rV);
+                            var d = itemV.DistanceTo(rV);
                             minDist = Math.Min(d, minDist);
                         }
                         return minDist;
@@ -215,9 +267,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                     return clusters;
                 }
 
-                private ClusterBuilder(TValue value, Func<TValue, __KMEANSPRIVATEKEY> vfunc)
+                private ClusterBuilder(TValue value, Func<TValue, _KMeansKey> vfunc)
                 {
-                    _Key = vfunc(value).ToImmutableArray();
+                    _Key = vfunc(value);
                     _EmbeddedVectorEval = vfunc;
                 }
 
@@ -226,59 +278,29 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 #region data
 
                 private readonly List<TValue> _Values = new List<TValue>();
-                private readonly Func<TValue, __KMEANSPRIVATEKEY> _EmbeddedVectorEval;
+                private readonly Func<TValue, _KMeansKey> _EmbeddedVectorEval;
 
-                private __KMEANSPRIVATEKEY _OldKey;
-                private __KMEANSPRIVATEKEY _Key;
+                private _KMeansKey _OldKey;
+                private _KMeansKey _Key;
 
                 #endregion
 
                 #region API
 
-                public __KMEANSPRIVATEKEY Key
+                public _KMeansKey Key
                 {
                     get
                     {
                         lock (_Values)
                         {
 
-                            if (!_IsDefaultOrEmpty<__KMEANSPRIVATEKEY,float>(_Key)) return _Key;
+                            if (!_Key.IsEmpty) return _Key;
                             if (_Values.Count == 0) return _OldKey;
 
-                            // calculate key, which is the mean of the values
-
-                            var value0vector = _EmbeddedVectorEval(_Values[0]);
-
-                            #if NETSTANDARD
-                            var mean = new float[value0vector.Count];
-                            #else
-                            var mean = new float[value0vector.Length];
-                            #endif
-
-                            foreach (var v in _Values)
-                            {
-                                var vvv = _EmbeddedVectorEval(v);
-
-                                System.Numerics.Tensors.TensorPrimitives.Add(mean, vvv.AsSpan(), mean);
-                            }
-
-                            System.Numerics.Tensors.TensorPrimitives.Divide(mean, _Values.Count, mean);
-
-                            _Key = mean.ToImmutableArray();
+                            _Key = _KMeansKey.Mean(_Values.Select(_EmbeddedVectorEval));
 
                             return _Key;
                         }
-                    }
-                }
-
-                private bool IsFinished
-                {
-                    get
-                    {
-                        if (_IsDefaultOrEmpty<__KMEANSPRIVATEKEY, float>(_OldKey)) return false;
-                        if (_IsDefaultOrEmpty<__KMEANSPRIVATEKEY, float>(Key)) return false;
-                        // System.Diagnostics.Debug.Assert(Key.Length == _OldKey.Length);
-                        return Key.SequenceEqual(_OldKey);
                     }
                 }
 
@@ -295,17 +317,27 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                     {
                         _Values.Add(value);
                     }
+                }                
+
+                private bool IsFinished
+                {
+                    get
+                    {
+                        if (_OldKey.IsEmpty) return false;
+                        if (Key.IsEmpty) return false;
+                        return Key.Equals(_OldKey);
+                    }
                 }
 
                 private float GetDistanceTo(TValue value)
                 {
                     var vvv = _EmbeddedVectorEval(value);
-                    return EuclideanDistanceTo(Key, vvv);
+                    return Key.DistanceTo(vvv);
                 }
 
-                public KMeansCluster<TValue> ToCluster()
+                public _KMeansCluster<TValue> ToCluster()
                 {
-                    return new KMeansCluster<TValue>(Key, _Values);
+                    return new _KMeansCluster<TValue>(Key, _Values);
                 }
 
                 #endregion

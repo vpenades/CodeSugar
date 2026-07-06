@@ -46,7 +46,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 case __ONNXTENSORS.Tensor<Int64> typedTensor: return typedTensor.Dimensions;
                 case __ONNXTENSORS.Tensor<UInt64> typedTensor: return typedTensor.Dimensions;
 
+                #if NET5_0_OR_GREATER
                 case __ONNXTENSORS.Tensor<Half> typedTensor: return typedTensor.Dimensions;
+                #endif
                 case __ONNXTENSORS.Tensor<Single> typedTensor: return typedTensor.Dimensions;
                 case __ONNXTENSORS.Tensor<Double> typedTensor: return typedTensor.Dimensions;
 
@@ -104,7 +106,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 case __ONNXTENSORS.Tensor<Int64> typedTensor: return __NAMEDVALUE.CreateFromTensor(name, typedTensor);
                 case __ONNXTENSORS.Tensor<UInt64> typedTensor: return __NAMEDVALUE.CreateFromTensor(name, typedTensor);
 
+                #if NET5_0_OR_GREATER
                 case __ONNXTENSORS.Tensor<Half> typedTensor: return __NAMEDVALUE.CreateFromTensor(name, typedTensor);
+                #endif
                 case __ONNXTENSORS.Tensor<Single> typedTensor: return __NAMEDVALUE.CreateFromTensor(name, typedTensor);
                 case __ONNXTENSORS.Tensor<Double> typedTensor: return __NAMEDVALUE.CreateFromTensor(name, typedTensor);
 
@@ -155,7 +159,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 case __ONNXTENSORS.DenseTensor<Int64> t: return t.GetSubTensor(idx);
                 case __ONNXTENSORS.DenseTensor<UInt64> t: return t.GetSubTensor(idx);
 
+                #if NET5_0_OR_GREATER
                 case __ONNXTENSORS.DenseTensor<Half> t: return t.GetSubTensor(idx);
+                #endif
                 case __ONNXTENSORS.DenseTensor<Single> t: return t.GetSubTensor(idx);
                 case __ONNXTENSORS.DenseTensor<Double> t: return t.GetSubTensor(idx);
             }

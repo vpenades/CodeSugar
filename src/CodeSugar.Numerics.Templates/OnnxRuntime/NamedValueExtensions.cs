@@ -41,13 +41,16 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             if (metadata.ElementType == typeof(Int64)) return __NAMEDVALUE.CreateFromTensor(name, new __ONNXTENSORS.DenseTensor<Int64>(dims));
             if (metadata.ElementType == typeof(UInt64)) return __NAMEDVALUE.CreateFromTensor(name, new __ONNXTENSORS.DenseTensor<UInt64>(dims));
 
+            #if NET5_0_OR_GREATER
             if (metadata.ElementType == typeof(Half)) return __NAMEDVALUE.CreateFromTensor(name, new __ONNXTENSORS.DenseTensor<Half>(dims));
+            #endif
             if (metadata.ElementType == typeof(Single)) return __NAMEDVALUE.CreateFromTensor(name, new __ONNXTENSORS.DenseTensor<Single>(dims));
             if (metadata.ElementType == typeof(Double)) return __NAMEDVALUE.CreateFromTensor(name, new __ONNXTENSORS.DenseTensor<Double>(dims));
 
             throw new NotImplementedException(metadata.ElementType.ToString());
         }
 
+        #if NET8_0_OR_GREATER
         public static System.Numerics.Tensors.ITensor CreateITensor(this __NODEMETADATA metadata, ReadOnlySpan<int> dimensions)
         {
             Span<nint> dims = stackalloc nint[metadata.Dimensions.Length];
@@ -76,29 +79,13 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             if (metadata.ElementType == typeof(Int64)) return System.Numerics.Tensors.Tensor.Create(new Int64[(int)flen], dims);
             if (metadata.ElementType == typeof(UInt64)) return System.Numerics.Tensors.Tensor.Create(new UInt64[(int)flen], dims);
 
+            #if NET5_0_OR_GREATER
             if (metadata.ElementType == typeof(Half)) return System.Numerics.Tensors.Tensor.Create(new Half[(int)flen], dims);
+            #endif
             if (metadata.ElementType == typeof(Single)) return System.Numerics.Tensors.Tensor.Create(new Single[(int)flen], dims);
             if (metadata.ElementType == typeof(Double)) return System.Numerics.Tensors.Tensor.Create(new Double[(int)flen], dims);
 
             throw new NotImplementedException(metadata.ElementType.ToString());
-        }
-
-        /// <summary>
-        /// Fills <paramref name="instanceDimensions"/> with valid, non negative dimensions
-        /// </summary>
-        public static void InstantiateDimensions(this __NODEMETADATA metadata, ReadOnlySpan<int> fallbackDimensions, Span<int> instanceDimensions)
-        {
-            if (metadata == null) throw new ArgumentNullException(nameof(metadata));
-
-            var metaDims = metadata.Dimensions;
-            if (instanceDimensions.Length != metaDims.Length) throw new ArgumentException($"must have a length of {metaDims.Length}", nameof(instanceDimensions));
-
-            for(int i=0; i < instanceDimensions.Length; ++i)
-            {
-                var d = metaDims[i];
-                if (d <= 0) d = fallbackDimensions.Length <= i ? 1 : fallbackDimensions[i];
-                instanceDimensions[i] = d;
-            }
         }
 
         /// <summary>
@@ -118,6 +105,27 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 instanceDimensions[i] = d;
             }
         }
+        #endif
+
+        /// <summary>
+        /// Fills <paramref name="instanceDimensions"/> with valid, non negative dimensions
+        /// </summary>
+        public static void InstantiateDimensions(this __NODEMETADATA metadata, ReadOnlySpan<int> fallbackDimensions, Span<int> instanceDimensions)
+        {
+            if (metadata == null) throw new ArgumentNullException(nameof(metadata));
+
+            var metaDims = metadata.Dimensions;
+            if (instanceDimensions.Length != metaDims.Length) throw new ArgumentException($"must have a length of {metaDims.Length}", nameof(instanceDimensions));
+
+            for(int i=0; i < instanceDimensions.Length; ++i)
+            {
+                var d = metaDims[i];
+                if (d <= 0) d = fallbackDimensions.Length <= i ? 1 : fallbackDimensions[i];
+                instanceDimensions[i] = d;
+            }
+        }
+
+        
     }
 
 }

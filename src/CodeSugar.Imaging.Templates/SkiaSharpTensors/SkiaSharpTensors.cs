@@ -21,6 +21,18 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarImagingExtensions
     {
+        public static Tensor<byte> ToRgbTensor(this SKBitmap srcBitmap)
+        {
+            var span = srcBitmap.DangerousGetPixelsAsTensorSpan().AsReadOnlyTensorSpan();
+
+            if (!srcBitmap.ColorType.IsBGRFormat() && srcBitmap.BytesPerPixel == 3)
+            {
+                return ToTensor(span);
+            }
+
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Gets the pixels of the bitmap as a byte tensor
         /// </summary>        

@@ -13,7 +13,7 @@
 	</PropertyGroup>	
 
 	<ItemGroup>
-		<PackageReference Include="TUnit" Version="1.57.0" />
+		<PackageReference Include="TUnit" Version="1.58.0" />
 		<PackageReference Include="TestAttachments.TUnit" Version="4.0.0-Preview-20260129-1218" />
 	</ItemGroup>
 
@@ -23,6 +23,7 @@
 		<PackageReference Include="SixLabors.ImageSharp.Drawing" Version="[2.1.7]" />
 		<PackageReference Include="PhotoSauce.MagicScaler" Version="0.15.0" />
 		<PackageReference Include="SkiaSharp" Version="4.148.0" />
+    <PackageReference Include="Avalonia" Version="12.0.5" />
 	</ItemGroup>
 
 	<Choose>

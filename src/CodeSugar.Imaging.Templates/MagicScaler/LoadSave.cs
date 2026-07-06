@@ -80,14 +80,19 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         {
             using (var s = streamFunc.Invoke())
             {
-                using var pipeline = MagicImageProcessor.BuildPipeline(s, settings);
-
-                var ps = pipeline.PixelSource!;
-
-                pixelFormat = ps.Format;
-
-                return ConvertToTensor<TElement>(ps);                
+                return MagicScalerReadTensor<TElement>(s, settings, out pixelFormat);
             }
+        }
+
+        public static System.Numerics.Tensors.Tensor<TElement> MagicScalerReadTensor<TElement>(this System.IO.Stream s, ProcessImageSettings settings, out Guid pixelFormat) where TElement : unmanaged
+        {
+            using var pipeline = MagicImageProcessor.BuildPipeline(s, settings);
+
+            var ps = pipeline.PixelSource!;
+
+            pixelFormat = ps.Format;
+
+            return ConvertToTensor<TElement>(ps);
         }
 
         public static System.Numerics.Tensors.Tensor<TElement> ConvertToTensor<TElement>(this PhotoSauce.MagicScaler.IPixelSource srcImg)

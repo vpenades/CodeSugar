@@ -16,8 +16,8 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             where TVector1: IReadOnlyList<float>
             where TVector2: IReadOnlyList<float>
         {
-            ArgumentNullException.ThrowIfNull(a);
-            ArgumentNullException.ThrowIfNull(b);
+            if (a == null) throw new ArgumentNullException(nameof(a));
+            if (b == null) throw new ArgumentNullException(nameof(b));
 
             System.Diagnostics.Debug.Assert(a.Count == b.Count, "Both vectors must have the same size");
 

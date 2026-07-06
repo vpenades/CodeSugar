@@ -145,10 +145,22 @@ namespace CodeSugar
         [Test]
         public async Task TestFallbacks()
         {
-            var y = new XYZ(1, 2, 3).GetElement(1);
+            var v3 = new XYZ(1, 2, 3);            
+            await Assert.That(v3.GetElement(1)).IsEqualTo(2f);
 
-            await Assert.That(y).IsEqualTo(2f);
-            
+            var v2 = v3.AsVector2();
+            await Assert.That(v2.GetElement(1)).IsEqualTo(2f);
+
+            var v4 = v3.AsVector4();
+            await Assert.That(v4.GetElement(1)).IsEqualTo(2f);
+
+            v2.AsVector3();
+            v2.AsVector4();
+
+            v4.AsVector2();
+            v4.AsVector3();
+
+            await Assert.That(v4.W).IsEqualTo(0f);
         }
 
         [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]

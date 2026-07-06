@@ -10,6 +10,8 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarNumericsExtensions
     {
+#if NET
+
         [DebuggerStepThrough]
         public static string ToBase64String(this Vector2 v)
         {
@@ -86,5 +88,8 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             System.Buffers.Binary.BinaryPrimitives.WriteSingleLittleEndian(buff.Slice(60), m.M44);
             return System.Convert.ToBase64String(buff);
         }        
+
+        #endif
+
     }
 }

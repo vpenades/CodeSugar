@@ -95,7 +95,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 case __TENSORTYPECODE.Int64: return typeof(Int64);
                 case __TENSORTYPECODE.UInt64: return typeof(UInt64);
 
+                #if NET5_0_OR_GREATER
                 case __TENSORTYPECODE.Float16: return typeof(Half);
+                #endif
                 case __TENSORTYPECODE.Float: return typeof(Single);
                 case __TENSORTYPECODE.Double: return typeof(Double);
 

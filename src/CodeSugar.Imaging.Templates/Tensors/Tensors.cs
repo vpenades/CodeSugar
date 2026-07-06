@@ -23,6 +23,20 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {
     internal static partial class CodeSugarImagingExtensions
     {
+        public static Tensor<T> ToTensor<T>(this TensorSpan<T> source)
+        {
+            return ToTensor(source.AsReadOnlyTensorSpan());
+        }
+
+        public static Tensor<T> ToTensor<T>(this ReadOnlyTensorSpan<T> source)
+        {            
+            var destination = Tensor.CreateFromShape<T>(source.Lengths);
+            
+            source.CopyTo(destination.AsTensorSpan());
+
+            return destination;
+        }
+
         public static Tensor<T> SqueezeIfRequired<T>(this Tensor<T> tensor)
         {
             if (tensor == null) return tensor;

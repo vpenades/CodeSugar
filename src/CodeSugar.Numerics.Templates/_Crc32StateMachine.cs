@@ -132,27 +132,36 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                             return Append(crc, buff);
                         }
 
-
+                    #if NET5_0_OR_GREATER
                     case Half number:
                         {
                             Span<byte> buff = stackalloc byte[2];
                             System.Buffers.Binary.BinaryPrimitives.WriteHalfLittleEndian(buff, number);
                             return Append(crc, buff);
                         }
+                    #endif                    
 
                     case Single number:
                         {
                             Span<byte> buff = stackalloc byte[4];
+                            #if NET
                             System.Buffers.Binary.BinaryPrimitives.WriteSingleLittleEndian(buff, number);
+                            #else                            
+                            System.Buffers.Binary.BinaryPrimitives.WriteInt32LittleEndian(buff, BitConverter.SingleToInt32Bits(number));
+                            #endif
                             return Append(crc, buff);                         
                         }
 
                     case Double number:
                         {
                             Span<byte> buff = stackalloc byte[8];
+                            #if NET
                             System.Buffers.Binary.BinaryPrimitives.WriteDoubleLittleEndian(buff, number);
+                            #else
+                            System.Buffers.Binary.BinaryPrimitives.WriteInt64LittleEndian(buff, BitConverter.DoubleToInt64Bits(number));
+                            #endif
                             return Append(crc, buff);                            
-                        }
+                        }                    
 
                     default: throw new NotImplementedException(typeof(T).Name);
                 }
@@ -173,7 +182,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 return (uint)((crc >> 8) ^ _Table[index]);
             }            
 
-            #endregion
+#endregion
         }
     }
 }
