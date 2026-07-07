@@ -12,8 +12,6 @@ using System.Text;
 using System.Threading;
 using System.Transactions;
 
-using SixLabors.ImageSharp.PixelFormats;
-
 #nullable disable
 
 namespace __CODESUGAR_ROOTNAMESPACE__
@@ -149,7 +147,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         /// Wraps a <see cref="System.Numerics.Tensors.Tensor<TElement>"/> and exposes it as a bitmap
         /// </summary>
         [System.Diagnostics.DebuggerDisplay("_TensorBitmapHWC {Width}x{Height}x{typeof(TPixel).Name,nq}")]
-        private readonly struct _TensorBitmap<TElement, TPixel> : __IInteropBitmap<TPixel>
+        private readonly struct _TensorBitmap<TElement, TPixel> : __IInternalBitmap<TPixel>
             where TElement : unmanaged
             where TPixel : unmanaged
         {
@@ -328,7 +326,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 return System.Runtime.InteropServices.MemoryMarshal.Cast<TElement, TPixel>(row);
             }
 
-            public void CopyFrom<TPixelIn>(__IReadOnlyInteropBitmap<TPixelIn> src, Func<TPixelIn, TPixel> pixelConverter)
+            public void CopyFrom<TPixelIn>(__IReadOnlyInternalBitmap<TPixelIn> src, Func<TPixelIn, TPixel> pixelConverter)
             {
                 var rowsCount = Math.Min(src.Height, Height);
 
@@ -414,7 +412,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 return System.Runtime.InteropServices.MemoryMarshal.Cast<TElement, TPixel>(row);
             }
 
-            public void CopyTo<TPixelOut>(__IInteropBitmap<TPixelOut> dst, Func<TPixel, TPixelOut> pixelConverter)
+            public void CopyTo<TPixelOut>(__IInternalBitmap<TPixelOut> dst, Func<TPixel, TPixelOut> pixelConverter)
             {
                 var rowsCount = Math.Min(dst.Height, Height);
 

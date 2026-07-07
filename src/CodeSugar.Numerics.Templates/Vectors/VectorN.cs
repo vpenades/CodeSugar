@@ -10,6 +10,41 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarNumericsExtensions
     {
+        public static void DivideSpanBy(this Span<float> dividend, float divisor)
+        {
+            #if __REFERENCES_SYSTEMNUMERICSTENSORS
+            System.Numerics.Tensors.TensorPrimitives.Divide(dividend, divisor, dividend);
+            #else
+            for(int i=0; i < dividend.Length; ++i)
+            {
+                dividend[i] /= divisor;
+            }
+            #endif
+        }
+
+        public static void MultiplySpanBy(this Span<float> dst, float scalar)
+        {
+            #if __REFERENCES_SYSTEMNUMERICSTENSORS
+            System.Numerics.Tensors.TensorPrimitives.Multiply(dst, scalar, dst);
+            #else
+            for(int i=0; i < dst.Length; ++i)
+            {
+                dst[i] *= scalar;
+            }
+            #endif
+        }
+
+        public static void AddSpanTo(this ReadOnlySpan<float> src, Span<float> dst)
+        {
+            #if __REFERENCES_SYSTEMNUMERICSTENSORS
+            System.Numerics.Tensors.TensorPrimitives.Add(src, dst, dst);
+            #else
+            for(int i=0; i < dst.Length; ++i)
+            {
+                dst[i] += src[i];
+            }
+            #endif
+        }
         
 
         public static float EuclideanDistanceTo<TVector1,TVector2>(this TVector1 a, TVector2 b)

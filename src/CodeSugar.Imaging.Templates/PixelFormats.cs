@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Numerics.Tensors;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Text;
 
 #if __REFERENCES_SIXLABORSIMAGESHARP
 using IMAGESHARPFMTS = SixLabors.ImageSharp.PixelFormats;

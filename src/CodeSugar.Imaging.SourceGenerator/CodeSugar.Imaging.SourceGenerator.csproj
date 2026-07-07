@@ -13,6 +13,7 @@
 		<EmbeddedResource Include="..\CodeSugar.Imaging.Templates\SkiaSharp\*.cs" LinkBase="Templates\SkiaSharp" />
 		<EmbeddedResource Include="..\CodeSugar.Imaging.Templates\SkiaSharpTensors\*.cs" LinkBase="Templates\SkiaSharpTensors" />
     <EmbeddedResource Include="..\CodeSugar.Imaging.Templates\Avalonia\*.cs" LinkBase="Templates\Avalonia" />
+		<EmbeddedResource Include="..\CodeSugar.Imaging.Templates\InteropTensorBitmaps\*.cs" LinkBase="Templates\InteropTensorBitmaps" />
 	</ItemGroup>	
 
 	<PropertyGroup>

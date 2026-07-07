@@ -16,6 +16,7 @@ namespace CodeSugar
             var hasMagicScaler = this.NugetPackages.ContainsKey("PhotoSauce.MagicScaler");
             var hasSkiaSharp = this.NugetPackages.ContainsKey("SkiaSharp");
             var hasAvalonia = this.NugetPackages.ContainsKey("Avalonia");
+            var hasTensorBitmaps = this.NugetPackages.ContainsKey("InteropTypes.TensorBitmaps.Core");
 
             ProcessTemplates(context,"Core", n => n.Contains(".Templates.Core."));
 
@@ -24,7 +25,7 @@ namespace CodeSugar
             if (hasImageSharp) ProcessTemplates(context, "ImageSharp", n => n.Contains(".Templates.ImageSharp."));
             if (hasMagicScaler) ProcessTemplates(context, "MagicScaler", n => n.Contains(".Templates.MagicScaler."));
             if (hasSkiaSharp) ProcessTemplates(context, "SkiaSharp", n => n.Contains(".Templates.SkiaSharp."));
-            if (hasAvalonia) ProcessTemplates(context, "Avalonia", n => n.Contains(".Templates.Avalonia."));
+            if (hasAvalonia) ProcessTemplates(context, "Avalonia", n => n.Contains(".Templates.Avalonia."));            
 
             if (hasTensors) // tensors
             {
@@ -37,6 +38,7 @@ namespace CodeSugar
                 if (hasImageSharp) ProcessTemplates(context, "ImageSharpTensors", n => n.Contains(".Templates.ImageSharpTensors."));
                 if (hasMagicScaler) ProcessTemplates(context, "MagicScalerTensors", n => n.Contains(".Templates.MagicScalerTensors."));
                 if (hasSkiaSharp) ProcessTemplates(context, "SkiaSharpTensors", n => n.Contains(".Templates.SkiaSharpTensors."));
+                if (hasTensorBitmaps) ProcessTemplates(context, "InteropTensorBitmaps", n => n.Contains(".Templates.InteropTensorBitmaps."));
             }            
         }
 
@@ -52,6 +54,7 @@ namespace CodeSugar
             processor.UsesNuget("PhotoSauce.MagicScaler");
             processor.UsesNuget("SkiaSharp");
             processor.UsesNuget("Avalonia");
+            processor.UsesNuget("InteropTypes.TensorBitmaps.Core");
 
             foreach (var code in EmbeddedTemplates.GetEmbeddedTemplates(name, nameChecker))
             {

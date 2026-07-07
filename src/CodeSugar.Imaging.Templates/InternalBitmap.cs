@@ -9,17 +9,17 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {
     internal static partial class CodeSugarImagingExtensions
     {
-        private interface __IReadOnlyInteropBitmap
+        private interface __IReadOnlyInternalBitmap
         {
             public int Width { get; }
             public int Height { get; }
         }
 
-        private interface __IReadOnlyInteropBitmap<TPixel> : __IReadOnlyInteropBitmap
+        private interface __IReadOnlyInternalBitmap<TPixel> : __IReadOnlyInternalBitmap
         {
             public ReadOnlySpan<TPixel> GetReadOnlyRowSpan(int y);
 
-            public void CopyTo<TPixelOut>(__IInteropBitmap<TPixelOut> dst, Func<TPixel, TPixelOut> pixelConverter)
+            public void CopyTo<TPixelOut>(__IInternalBitmap<TPixelOut> dst, Func<TPixel, TPixelOut> pixelConverter)
             {
                 var rowsCount = Math.Min(dst.Height, Height);
 
@@ -37,11 +37,11 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
         }
 
-        private interface __IInteropBitmap<TPixel> : __IReadOnlyInteropBitmap<TPixel>
+        private interface __IInternalBitmap<TPixel> : __IReadOnlyInternalBitmap<TPixel>
         {
             public Span<TPixel> GetRowSpan(int y);           
 
-            public void CopyFrom<TPixelIn>(__IReadOnlyInteropBitmap<TPixelIn> src, Func<TPixelIn, TPixel> pixelConverter)
+            public void CopyFrom<TPixelIn>(__IReadOnlyInternalBitmap<TPixelIn> src, Func<TPixelIn, TPixel> pixelConverter)
             {
                 var rowsCount = Math.Min(src.Height, Height);
 

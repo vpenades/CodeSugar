@@ -66,11 +66,11 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                     if (item.IsEmpty) continue;
                     accum ??= new float[item.PublicKey.Count];
 
-                    item.AddTo(accum);
+                    item.Add(accum);
                     ++count;
                 }
 
-                System.Numerics.Tensors.TensorPrimitives.Divide(accum, count, accum);
+                DivideSpanBy(accum, count);
 
                 return new _KMeansKey(accum);
             }
@@ -104,9 +104,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 return _Key.EuclideanDistanceTo(other._Key);
             }
 
-            public void AddTo(Span<float> dst)
+            public void Add(Span<float> dst)
             {
-                System.Numerics.Tensors.TensorPrimitives.Add(dst, _Key.AsSpan(), dst);
+                AddSpanTo(_Key.AsSpan(), dst);
             }            
         }
 

@@ -53,7 +53,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         }
 
 
-        private readonly struct _ImageSharpInteropBitmap<TPixel> : __IInteropBitmap<TPixel>
+        private readonly struct _ImageSharpInteropBitmap<TPixel> : __IInternalBitmap<TPixel>
             where TPixel : unmanaged, IPixel<TPixel>
         {
             public _ImageSharpInteropBitmap(Image<TPixel> image)

@@ -8,18 +8,16 @@ using System.Threading.Tasks;
 
 using SkiaSharp;
 
-
-
 #nullable disable
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarImagingExtensions
     {
-        private readonly struct _SkiaSharpInteropBitmap<TPixel> : __IInteropBitmap<TPixel>
+        private readonly struct _SkiaSharpInternalBitmap<TPixel> : __IInternalBitmap<TPixel>
             where TPixel : unmanaged
         {
-            public _SkiaSharpInteropBitmap(SKBitmap image)
+            public _SkiaSharpInternalBitmap(SKBitmap image)
             {
                 if (image == null) throw new ArgumentNullException(nameof(image));
 

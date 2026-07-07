@@ -1,17 +1,19 @@
 <Solution>
+  <Folder Name="/Build/">
+    <File Path=".github/actions/PushGithubTag/action.yml" />
+    <File Path=".github/workflows/FormatSemver.sh" />
+    <File Path=".github/workflows/PublishToGithub.yml" />
+    <File Path=".github/workflows/PublishToNuget.yml" />
+    <File Path="CodeSugar.Build.sh" />
+    <File Path="CodeSugar.Src.Build.sh" />
+  </Folder>
   <Folder Name="/examples/">
     <File Path="examples/Directory.Build.props" />
     <Project Path="examples/ExampleLibrary/ExampleLibrary.csproj" />
     <Project Path="examples/ExampleWpfApp/ExampleWpfApp.csproj" />
   </Folder>
   <Folder Name="/Solution Items/">
-    <File Path=".github/actions/PushGithubTag/action.yml" />
-    <File Path=".github/workflows/FormatSemver.sh" />
-    <File Path=".github/workflows/PublishToGithub.yml" />
-    <File Path=".github/workflows/PublishToNuget.yml" />
     <File Path=".github/workflows/test.yml" />
-    <File Path="CodeSugar.Build.sh" />
-    <File Path="CodeSugar.Src.Build.sh" />
     <File Path="README.md" />
   </Folder>
   <Folder Name="/src/">
@@ -43,6 +45,7 @@
     <File Path="tests/Directory.Build.props" />
     <Project Path="tests/CodeSugar.Imaging.Tests/CodeSugar.Imaging.Tests.csproj" Id="212a48f6-b527-49b2-82f4-9066d97694e3" />
     <Project Path="tests/CodeSugar.IO.Tests/CodeSugar.IO.Tests.csproj" />
+    <Project Path="tests/CodeSugar.MinimalRefs.Tests/CodeSugar.MinimalRefs.Tests.csproj" Id="ccc10fe5-281d-4f9d-a0e5-b2aa8d4b107b" />
     <Project Path="tests/CodeSugar.Numerics.Tests/CodeSugar.Numerics.Tests.csproj" />
     <Project Path="tests/CodeSugar.Tests/CodeSugar.Tests.csproj" />
   </Folder>

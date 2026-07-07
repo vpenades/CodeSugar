@@ -10,21 +10,20 @@
 
 	<PropertyGroup>
 		<PublishAot>true</PublishAot>
-	</PropertyGroup>	
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Include="..\CodeSugar.Numerics.Tests\KMeansClusterTests.cs" Link="KMeansClusterTests.cs" />
+	  <Compile Include="..\CodeSugar.Numerics.Tests\_Extensions.cs" Link="_Extensions.cs" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="TUnit" Version="1.58.0" />
 		<PackageReference Include="TestAttachments.TUnit" Version="4.0.0-Preview-20260129-1218" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="System.Numerics.Tensors" Version="10.0.9" />
-		<PackageReference Include="SixLabors.ImageSharp" Version="[3.1.12]" />
-		<PackageReference Include="SixLabors.ImageSharp.Drawing" Version="[2.1.7]" />
-		<PackageReference Include="PhotoSauce.MagicScaler" Version="0.15.0" />
-		<PackageReference Include="SkiaSharp" Version="4.148.0" />
-    <PackageReference Include="Avalonia" Version="12.0.5" />
-		<PackageReference Include="InteropTypes.TensorBitmaps.Core" Version="0.0.0-ci-78e431b" />
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net10.0' ">
+		<PackageReference Include="System.Numerics.Tensors" Version="10.0.9" />		
 	</ItemGroup>
 
 	<Choose>

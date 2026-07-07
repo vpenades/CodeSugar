@@ -24,7 +24,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {
     internal static partial class CodeSugarImagingExtensions
     {
-        private static void _CopyTensorPlanesToBitmap<TPixelOut>(__ROTENSORSPANF src, bool srcIsBGR, __IInteropBitmap<TPixelOut> dst, Func<__XYZ, TPixelOut> pixConverter)
+        private static void _CopyTensorPlanesToBitmap<TPixelOut>(__ROTENSORSPANF src, bool srcIsBGR, __IInternalBitmap<TPixelOut> dst, Func<__XYZ, TPixelOut> pixConverter)
         {
             if (!TryInferBitmapSize(src, out var srcWidth, out var srcHeight, out var srcChannels, out var srcIsCHW))
             {

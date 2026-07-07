@@ -10,12 +10,9 @@ using SkiaSharp;
 
 #nullable disable
 
-using __RWTENSOR = System.Numerics.Tensors.ITensor;
-using __ROTENSOR = System.Numerics.Tensors.IReadOnlyTensor;
+
 using __RWTENSORSPANB = System.Numerics.Tensors.TensorSpan<byte>;
-using __ROTENSORSPANB = System.Numerics.Tensors.ReadOnlyTensorSpan<byte>;
 using __RWTENSORSPANF = System.Numerics.Tensors.TensorSpan<float>;
-using __ROTENSORSPANF = System.Numerics.Tensors.ReadOnlyTensorSpan<float>;
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
@@ -44,15 +41,14 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         /// </remarks>
         public static __RWTENSORSPANB DangerousGetPixelsAsTensorSpan(this SKBitmap srcBitmap)
         {
-            if (srcBitmap == null) throw new ArgumentNullException(nameof(srcBitmap));
-            if (srcBitmap.AlphaType == SKAlphaType.Premul) throw new NotImplementedException("Premul alpha type is not supported");                        
+            if (srcBitmap == null) throw new ArgumentNullException(nameof(srcBitmap));            
 
             var srcBuffer = srcBitmap.GetPixelSpan();            
 
             var lengths = new nint[3];
             lengths[0] = srcBitmap.Height;
             lengths[1] = srcBitmap.Width;
-            lengths[2] = srcBitmap.BytesPerPixel; // pixel elements count; could be 3 or 4 actually
+            lengths[2] = srcBitmap.BytesPerPixel; // pixel elements count; could be 4 or 3 actually (but isDense would fail)
 
             var strides = new nint[3];
             strides[0] = srcBitmap.RowBytes;
@@ -90,12 +86,12 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
                     if (srcBitmap.AlphaType == SKAlphaType.Premul)
                     {
-                        var srcBmp = new _SkiaSharpInteropBitmap<_SkiaSharpPremulPixel>(srcBitmap);
+                        var srcBmp = new _SkiaSharpInternalBitmap<_SkiaSharpPremulPixel>(srcBitmap);
                         dstBitmap.CopyFrom(srcBmp, p=> _SkiaSharpPremulPixel.ToScaledVector3(p));
                     }
                     else
                     {
-                        var srcBmp = new _SkiaSharpInteropBitmap<_RGBA>(srcBitmap);
+                        var srcBmp = new _SkiaSharpInternalBitmap<_RGBA>(srcBitmap);
                         dstBitmap.CopyFrom(srcBmp, p => p.ToScaledVector3());
                         
                     }
