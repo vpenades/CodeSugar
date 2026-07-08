@@ -4,8 +4,9 @@ using System.Runtime.CompilerServices;
 
 using InteropTypes.TensorBitmaps;
 
+#if __REFERENCES_SKIASHARP
 using SkiaSharp;
-
+#endif
 
 #nullable disable
 
@@ -22,11 +23,11 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {
     internal static partial class CodeSugarImagingExtensions
     {
-        public static InteropTypes.TensorBitmaps.TensorBitmap<TElement, TPixel> ToResizedTensorBitmap<TElement, TPixel>(this SkiaSharp.SKBitmap srcImage, int newWidth, int newHeight, SKSamplingOptions? options = null, __TBPIXELFORMAT? dstFmt = null)
+        public static InteropTypes.TensorBitmaps.TensorBitmap<TElement, TPixel> ToResizedTensorBitmap<TElement, TPixel>(this SkiaSharp.SKBitmap srcImage, int newWidth, int newHeight, SkiaSharp.SKSamplingOptions? options = null, __TBPIXELFORMAT? dstFmt = null)
             where TElement : unmanaged
             where TPixel : unmanaged
         {
-            options ??= SKSamplingOptions.Default;
+            options ??= SkiaSharp.SKSamplingOptions.Default;
 
             var s = new SkiaSharp.SKSizeI(newWidth, newHeight);            
 
@@ -61,16 +62,51 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 return dstBitmap;
             }
 
-            throw new NotImplementedException();            
+            throw new NotImplementedException();
+        }
+
+
+        public static SkiaSharp.SKBitmap ToSkiaSharp<TElement, TPixel>(this TensorBitmap<TElement, TPixel> srcBitmap)
+            where TElement : unmanaged
+            where TPixel : unmanaged
+        {
+            return ToSkiaSharp(srcBitmap.AsReadOnlyTensorSpanBitmap());
+        }
+
+        public static SkiaSharp.SKBitmap ToSkiaSharp<TElement, TPixel>(this TensorSpanBitmap<TElement, TPixel> srcBitmap)
+            where TElement : unmanaged
+            where TPixel : unmanaged
+        {
+            return ToSkiaSharp(srcBitmap.AsReadOnlyTensorSpanBitmap());
+        }
+
+        public static SkiaSharp.SKBitmap ToSkiaSharp<TElement, TPixel>(this ReadOnlyTensorSpanBitmap<TElement,TPixel> srcBitmap)
+            where TElement : unmanaged
+            where TPixel : unmanaged
+        {
+            var dstImage = new SkiaSharp.SKBitmap(srcBitmap.Width, srcBitmap.Height, true); // todo: check srcBitmap.Format for alpha
+
+            if (TryCastToTensorBitmap<byte>(dstImage, out var dstTensor1))
+            {
+                srcBitmap.CopyPixelsTo(dstTensor1);
+                return dstImage;
+            }
+
+            if (TryCastToTensorBitmap<int>(dstImage, out var dstTensor2))
+            {
+                srcBitmap.CopyPixelsTo(dstTensor2);
+                return dstImage;
+            }
+
+            throw new NotImplementedException();
         }
 
         public static bool TryCastToTensorBitmap<TPixel>(this SkiaSharp.SKBitmap srcImage, out TensorSpanBitmap<byte, TPixel> tensorBitmap)
             where TPixel : unmanaged
         {
-            var srcTensor = DangerousGetPixelsAsTensorSpan(srcImage);
-
             if (Unsafe.SizeOf<TPixel>() == 1 && srcImage.BytesPerPixel == 1)
             {
+                var srcTensor = DangerousGetPixelsAsTensorSpan(srcImage);
                 var srcFmt = _SkiaSharpToTensorPixelFormat(srcImage.ColorType, srcImage.AlphaType);
                 tensorBitmap = new TensorSpanBitmap<byte, byte>(srcTensor, srcFmt).Cast<TPixel>();
                 return true;
@@ -78,6 +114,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             if (Unsafe.SizeOf<TPixel>() == 4 && srcImage.BytesPerPixel == 4)
             {
+                var srcTensor = DangerousGetPixelsAsTensorSpan(srcImage);
                 var srcFmt = _SkiaSharpToTensorPixelFormat(srcImage.ColorType, srcImage.AlphaType);
                 tensorBitmap = new TensorSpanBitmap<byte, int>(srcTensor, srcFmt).Cast<TPixel>();
                 return true;
