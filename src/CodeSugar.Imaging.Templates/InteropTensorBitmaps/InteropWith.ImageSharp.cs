@@ -17,13 +17,13 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {    
     internal static partial class CodeSugarImagingExtensions
     {
-        public static SixLabors.ImageSharp.Image<TPixel> ToImageSharp<TElement, TPixel>(this TensorBitmap<TElement, TPixel> srcBitmap)
+        public static Image<TPixel> ToImageSharp<TElement, TPixel>(this TensorBitmap<TElement, TPixel> srcBitmap)
             where TElement : unmanaged, INumber<TElement>
             where TPixel : unmanaged, SixLabors.ImageSharp.PixelFormats.IPixel<TPixel>
         {
-            var dstImage = new SixLabors.ImageSharp.Image<TPixel>(srcBitmap.Width, srcBitmap.Height);
+            var dstImage = new Image<TPixel>(srcBitmap.Width, srcBitmap.Height);
 
-            void _processPixels(SixLabors.ImageSharp.PixelAccessor<TPixel> pixelAccessor)
+            void _processPixels(PixelAccessor<TPixel> pixelAccessor)
             {
                 for (int y = 0; y < dstImage.Height; ++y)
                 {
@@ -38,11 +38,11 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             return dstImage;
         }
 
-        public static SixLabors.ImageSharp.Image<TPixel> ToImageSharp<TElement, TPixel>(this ReadOnlyTensorSpanBitmap<TElement, TPixel> srcBitmap)
+        public static Image<TPixel> ToImageSharp<TElement, TPixel>(this ReadOnlyTensorSpanBitmap<TElement, TPixel> srcBitmap)
             where TElement : unmanaged, INumber<TElement>
             where TPixel : unmanaged, SixLabors.ImageSharp.PixelFormats.IPixel<TPixel>
         {
-            var dstImage = new SixLabors.ImageSharp.Image<TPixel>(srcBitmap.Width, srcBitmap.Height);
+            var dstImage = new Image<TPixel>(srcBitmap.Width, srcBitmap.Height);
 
             for(int y=0; y < dstImage.Height; ++y)
             {
@@ -54,7 +54,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             return dstImage;
         }
 
-        public static InteropTypes.TensorBitmaps.TensorBitmap<TElement, TPixel> ToResizedTensorBitmap<TElement, TPixel>(this SixLabors.ImageSharp.Image<TPixel> srcImage, int newWidth, int newHeight)
+        public static TensorBitmap<TElement, TPixel> ToResizedTensorBitmap<TElement, TPixel>(this Image<TPixel> srcImage, int newWidth, int newHeight)
             where TElement : unmanaged, INumber<TElement>
             where TPixel : unmanaged, SixLabors.ImageSharp.PixelFormats.IPixel<TPixel>
         {
@@ -64,14 +64,14 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }            
         }
 
-        public static InteropTypes.TensorBitmaps.TensorBitmap<TElement, TPixel> ToTensorBitmap<TElement,TPixel>(this SixLabors.ImageSharp.Image<TPixel> srcImage)
+        public static TensorBitmap<TElement, TPixel> ToTensorBitmap<TElement,TPixel>(this Image<TPixel> srcImage)
             where TElement: unmanaged, INumber<TElement>
             where TPixel:unmanaged, SixLabors.ImageSharp.PixelFormats.IPixel<TPixel>
         {
             if (!TryInferTensorBitmapPixelFormat((typeof(TPixel), Unsafe.SizeOf<TPixel>()), out var dstFmt)) throw new InvalidOperationException("Incompatible pixel type");
-            var dstBitmap = InteropTypes.TensorBitmaps.TensorBitmap<TElement, TPixel>.Create(srcImage.Width, srcImage.Height, dstFmt);
+            var dstBitmap = TensorBitmap<TElement, TPixel>.Create(srcImage.Width, srcImage.Height, dstFmt);
 
-            void _processPixels(SixLabors.ImageSharp.PixelAccessor<TPixel> pixelAccessor)
+            void _processPixels(PixelAccessor<TPixel> pixelAccessor)
             {
                 for (int y = 0; y < dstBitmap.Height; ++y)
                 {

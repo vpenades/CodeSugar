@@ -113,29 +113,53 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         {
             #if __REFERENCES_SIXLABORSIMAGESHARP
 
-            if (bitmap.Format == InteropTypes.TensorBitmaps.TensorPixelFormat.Rgb24)
+            if (bitmap.Format == InteropTypes.TensorBitmaps.KnownPixelFormats.Alpha8)
+            {
+                var typedBitmap = bitmap.Cast<SixLabors.ImageSharp.PixelFormats.A8>();
+                WriteToImageSharpStream(typedBitmap, stream);
+            }
+
+            if (bitmap.Format == InteropTypes.TensorBitmaps.KnownPixelFormats.Luminance8)
+            {
+                var typedBitmap = bitmap.Cast<SixLabors.ImageSharp.PixelFormats.L8>();
+                WriteToImageSharpStream(typedBitmap, stream);
+            }
+
+            if (bitmap.Format == InteropTypes.TensorBitmaps.KnownPixelFormats.Rgb888)
             {
                 var typedBitmap = bitmap.Cast<SixLabors.ImageSharp.PixelFormats.Rgb24>();
                 WriteToImageSharpStream(typedBitmap, stream);
             }
 
-            if (bitmap.Format == InteropTypes.TensorBitmaps.TensorPixelFormat.Rgba32)
-            {
-                var typedBitmap = bitmap.Cast<SixLabors.ImageSharp.PixelFormats.Rgba32>();
-                WriteToImageSharpStream(typedBitmap, stream);
-            }
-
-            if (bitmap.Format == InteropTypes.TensorBitmaps.TensorPixelFormat.Bgr24)
+            if (bitmap.Format == InteropTypes.TensorBitmaps.KnownPixelFormats.Bgr888)
             {
                 var typedBitmap = bitmap.Cast<SixLabors.ImageSharp.PixelFormats.Bgr24>();
                 WriteToImageSharpStream(typedBitmap, stream);
             }
 
-            if (bitmap.Format == InteropTypes.TensorBitmaps.TensorPixelFormat.Rgba128f)
+            if (bitmap.Format == InteropTypes.TensorBitmaps.KnownPixelFormats.Rgba8888)
+            {
+                var typedBitmap = bitmap.Cast<SixLabors.ImageSharp.PixelFormats.Rgba32>();
+                WriteToImageSharpStream(typedBitmap, stream);
+            }
+
+            if (bitmap.Format == InteropTypes.TensorBitmaps.KnownPixelFormats.Bgra8888)
+            {
+                var typedBitmap = bitmap.Cast<SixLabors.ImageSharp.PixelFormats.Bgra32>();
+                WriteToImageSharpStream(typedBitmap, stream);
+            }
+
+            if (bitmap.Format == InteropTypes.TensorBitmaps.KnownPixelFormats.Argb8888)
+            {
+                var typedBitmap = bitmap.Cast<SixLabors.ImageSharp.PixelFormats.Argb32>();
+                WriteToImageSharpStream(typedBitmap, stream);
+            }
+
+            if (bitmap.Format == InteropTypes.TensorBitmaps.KnownPixelFormats.RgbaF32)
             {
                 var typedBitmap = bitmap.Cast<SixLabors.ImageSharp.PixelFormats.RgbaVector>();
                 WriteToImageSharpStream(typedBitmap, stream);
-            }
+            }            
 
             #endif
         }

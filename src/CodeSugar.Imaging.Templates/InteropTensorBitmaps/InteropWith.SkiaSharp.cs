@@ -13,9 +13,7 @@ using SkiaSharp;
 
 #if __REFERENCES_SKIASHARP
 
-using __TBPIXELFORMAT = InteropTypes.TensorBitmaps.TensorPixelFormat;
-using __TBCOMPONENT = InteropTypes.TensorBitmaps.TensorPixelComponent;
-using __TBBYTECOMPONENT = InteropTypes.TensorBitmaps.TensorPixelComponent<byte>;
+using __TBKFORMATS = InteropTypes.TensorBitmaps.KnownPixelFormats;
 
 using __SKIACOLOR = SkiaSharp.SKColorType;
 using __SKIAALPHA = SkiaSharp.SKAlphaType;
@@ -24,7 +22,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {
     internal static partial class CodeSugarImagingExtensions
     {
-        public static InteropTypes.TensorBitmaps.TensorBitmap<TElement, TPixel> ToResizedTensorBitmap<TElement, TPixel>(this SkiaSharp.SKBitmap srcImage, int newWidth, int newHeight, SkiaSharp.SKSamplingOptions? options = null, __TBPIXELFORMAT? dstFmt = null)
+        public static TensorBitmap<TElement, TPixel> ToResizedTensorBitmap<TElement, TPixel>(this SkiaSharp.SKBitmap srcImage, int newWidth, int newHeight, TensorPixelFormat? dstFmt = null, SKSamplingOptions? options = null)
             where TElement : unmanaged, INumber<TElement>
             where TPixel : unmanaged
         {
@@ -38,7 +36,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
         }
 
-        public static InteropTypes.TensorBitmaps.TensorBitmap<TElement, TPixel> ToTensorBitmap<TElement, TPixel>(this SkiaSharp.SKBitmap srcImage, __TBPIXELFORMAT? dstFmt = null)
+        public static TensorBitmap<TElement, TPixel> ToTensorBitmap<TElement, TPixel>(this SkiaSharp.SKBitmap srcImage, TensorPixelFormat? dstFmt = null)
             where TElement : unmanaged, INumber<TElement>
             where TPixel : unmanaged
         {
@@ -67,25 +65,25 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         }
 
 
-        public static SkiaSharp.SKBitmap ToSkiaSharp<TElement, TPixel>(this TensorBitmap<TElement, TPixel> srcBitmap)
+        public static SKBitmap ToSkiaSharp<TElement, TPixel>(this TensorBitmap<TElement, TPixel> srcBitmap)
             where TElement : unmanaged, INumber<TElement>
             where TPixel : unmanaged
         {
             return ToSkiaSharp(srcBitmap.AsReadOnlyTensorSpanBitmap());
         }
 
-        public static SkiaSharp.SKBitmap ToSkiaSharp<TElement, TPixel>(this TensorSpanBitmap<TElement, TPixel> srcBitmap)
+        public static SKBitmap ToSkiaSharp<TElement, TPixel>(this TensorSpanBitmap<TElement, TPixel> srcBitmap)
             where TElement : unmanaged, INumber<TElement>
             where TPixel : unmanaged
         {
             return ToSkiaSharp(srcBitmap.AsReadOnlyTensorSpanBitmap());
         }
 
-        public static SkiaSharp.SKBitmap ToSkiaSharp<TElement, TPixel>(this ReadOnlyTensorSpanBitmap<TElement,TPixel> srcBitmap)
+        public static SKBitmap ToSkiaSharp<TElement, TPixel>(this ReadOnlyTensorSpanBitmap<TElement,TPixel> srcBitmap)
             where TElement : unmanaged, INumber<TElement>
             where TPixel : unmanaged
         {
-            var dstImage = new SkiaSharp.SKBitmap(srcBitmap.Width, srcBitmap.Height, true); // todo: check srcBitmap.Format for alpha
+            var dstImage = new SKBitmap(srcBitmap.Width, srcBitmap.Height, true); // todo: check srcBitmap.Format for alpha
 
             if (TryCastToTensorBitmap<byte>(dstImage, out var dstTensor1))
             {
@@ -102,7 +100,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             throw new NotImplementedException();
         }
 
-        public static bool TryCastToTensorBitmap<TPixel>(this SkiaSharp.SKBitmap srcImage, out TensorSpanBitmap<byte, TPixel> tensorBitmap)
+        public static bool TryCastToTensorBitmap<TPixel>(this SKBitmap srcImage, out TensorSpanBitmap<byte, TPixel> tensorBitmap)
             where TPixel : unmanaged
         {
             if (Unsafe.SizeOf<TPixel>() == 1 && srcImage.BytesPerPixel == 1)
@@ -125,25 +123,19 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             return false;
         }
 
-        private static __TBPIXELFORMAT _SkiaSharpToTensorPixelFormat(__SKIACOLOR ct, __SKIAALPHA at)
+        private static TensorPixelFormat _SkiaSharpToTensorPixelFormat(__SKIACOLOR ct, __SKIAALPHA at)
         {
             switch(ct)
             {
-                case __SKIACOLOR.Alpha8: return new __TBPIXELFORMAT(__TBCOMPONENT.Alpha255);
-                case __SKIACOLOR.Gray8: return new __TBPIXELFORMAT(__TBCOMPONENT.Luminance255);
-                case __SKIACOLOR.Rgb888x: return new __TBPIXELFORMAT(__TBCOMPONENT.Red255, __TBCOMPONENT.Green255, __TBCOMPONENT.Blue255, new __TBBYTECOMPONENT("Undefined",0,255));
-
-                case __SKIACOLOR.Rgba8888 when at == __SKIAALPHA.Unpremul: return __TBPIXELFORMAT.Rgba32;
-                case __SKIACOLOR.Rgba8888 when at == __SKIAALPHA.Premul:
-                    return new __TBPIXELFORMAT(__TBCOMPONENT.Red255, __TBCOMPONENT.Green255, __TBCOMPONENT.Blue255, __TBCOMPONENT.Premul255);
-                case __SKIACOLOR.Rgba8888:
-                    return new __TBPIXELFORMAT(__TBCOMPONENT.Red255, __TBCOMPONENT.Green255, __TBCOMPONENT.Blue255, new __TBBYTECOMPONENT("Undefined", 0, 255));
-
-                case __SKIACOLOR.Bgra8888 when at == __SKIAALPHA.Unpremul: return __TBPIXELFORMAT.Bgra32;
-                case __SKIACOLOR.Bgra8888 when at == __SKIAALPHA.Premul:
-                    return new __TBPIXELFORMAT(__TBCOMPONENT.Blue255, __TBCOMPONENT.Green255, __TBCOMPONENT.Red255, __TBCOMPONENT.Premul255);
-                case __SKIACOLOR.Bgra8888:
-                    return new __TBPIXELFORMAT(__TBCOMPONENT.Blue255, __TBCOMPONENT.Green255, __TBCOMPONENT.Red255, new __TBBYTECOMPONENT("Undefined", 0, 255));
+                case __SKIACOLOR.Alpha8: return __TBKFORMATS.Alpha8;
+                case __SKIACOLOR.Gray8: return __TBKFORMATS.Luminance8;
+                case __SKIACOLOR.Rgb888x: return __TBKFORMATS.Rgbx8888;
+                
+                case __SKIACOLOR.Rgba8888 when at == __SKIAALPHA.Premul: return __TBKFORMATS.Rgbp8888;
+                case __SKIACOLOR.Rgba8888: return __TBKFORMATS.Rgba8888;
+                
+                case __SKIACOLOR.Bgra8888 when at == __SKIAALPHA.Premul: return __TBKFORMATS.Bgrp8888;
+                case __SKIACOLOR.Bgra8888: return __TBKFORMATS.Bgra8888;                
 
                 default: throw new NotImplementedException($"{ct} {at}");
             }
