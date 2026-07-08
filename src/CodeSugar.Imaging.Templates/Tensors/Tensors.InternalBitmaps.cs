@@ -221,7 +221,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         /// </summary>
         [System.Diagnostics.DebuggerDisplay("_TensorSpanBitmapHWC {Width}x{Height}x{typeof(TPixel).Name,nq}")]
         private readonly ref struct _TensorSpanBitmap<TElement, TPixel>
-            where TElement: unmanaged
+            where TElement: unmanaged, INumber<TElement>
             where TPixel : unmanaged
         {
             #region lifecycle

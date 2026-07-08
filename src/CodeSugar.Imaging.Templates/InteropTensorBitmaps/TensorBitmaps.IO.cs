@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 
 #if __REFERENCES_SIXLABORSIMAGESHARP
@@ -24,7 +25,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         }
 
         public static void WritePngToStream<TElement, TPixel>(this InteropTypes.TensorBitmaps.ReadOnlyTensorSpanBitmap<TElement, TPixel> bitmap, Func<System.IO.Stream> stream)
-            where TElement : unmanaged
+            where TElement : unmanaged, INumber<TElement>
             where TPixel : unmanaged
         {
             using (var s = stream.Invoke()) { WritePngToStream(bitmap, s); }
@@ -107,7 +108,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         }
 
         public static void WritePngToStream<TElement, TPixel>(this InteropTypes.TensorBitmaps.ReadOnlyTensorSpanBitmap<TElement, TPixel> bitmap, System.IO.Stream stream)
-            where TElement : unmanaged
+            where TElement : unmanaged, INumber<TElement>
             where TPixel : unmanaged
         {
             #if __REFERENCES_SIXLABORSIMAGESHARP
@@ -141,7 +142,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
         #if __REFERENCES_SIXLABORSIMAGESHARP
         public static void WriteToImageSharpStream<TElement,TPixel>(this InteropTypes.TensorBitmaps.ReadOnlyTensorSpanBitmap<TElement,TPixel> bitmap, System.IO.Stream stream, SixLabors.ImageSharp.Formats.IImageEncoder encoder = null)
-            where TElement: unmanaged
+            where TElement: unmanaged, INumber<TElement>
             where TPixel: unmanaged, SixLabors.ImageSharp.PixelFormats.IPixel<TPixel>
         {
             using var image = bitmap.ToImageSharp();

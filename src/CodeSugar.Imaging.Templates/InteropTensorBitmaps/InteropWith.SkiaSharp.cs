@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 using System.Numerics.Tensors;
 using System.Runtime.CompilerServices;
 
@@ -24,7 +25,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
     internal static partial class CodeSugarImagingExtensions
     {
         public static InteropTypes.TensorBitmaps.TensorBitmap<TElement, TPixel> ToResizedTensorBitmap<TElement, TPixel>(this SkiaSharp.SKBitmap srcImage, int newWidth, int newHeight, SkiaSharp.SKSamplingOptions? options = null, __TBPIXELFORMAT? dstFmt = null)
-            where TElement : unmanaged
+            where TElement : unmanaged, INumber<TElement>
             where TPixel : unmanaged
         {
             options ??= SkiaSharp.SKSamplingOptions.Default;
@@ -38,7 +39,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         }
 
         public static InteropTypes.TensorBitmaps.TensorBitmap<TElement, TPixel> ToTensorBitmap<TElement, TPixel>(this SkiaSharp.SKBitmap srcImage, __TBPIXELFORMAT? dstFmt = null)
-            where TElement : unmanaged
+            where TElement : unmanaged, INumber<TElement>
             where TPixel : unmanaged
         {
             if (dstFmt == null && TryInferTensorBitmapPixelFormat((typeof(TPixel), Unsafe.SizeOf<TPixel>()), out var fmt))
@@ -67,21 +68,21 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
 
         public static SkiaSharp.SKBitmap ToSkiaSharp<TElement, TPixel>(this TensorBitmap<TElement, TPixel> srcBitmap)
-            where TElement : unmanaged
+            where TElement : unmanaged, INumber<TElement>
             where TPixel : unmanaged
         {
             return ToSkiaSharp(srcBitmap.AsReadOnlyTensorSpanBitmap());
         }
 
         public static SkiaSharp.SKBitmap ToSkiaSharp<TElement, TPixel>(this TensorSpanBitmap<TElement, TPixel> srcBitmap)
-            where TElement : unmanaged
+            where TElement : unmanaged, INumber<TElement>
             where TPixel : unmanaged
         {
             return ToSkiaSharp(srcBitmap.AsReadOnlyTensorSpanBitmap());
         }
 
         public static SkiaSharp.SKBitmap ToSkiaSharp<TElement, TPixel>(this ReadOnlyTensorSpanBitmap<TElement,TPixel> srcBitmap)
-            where TElement : unmanaged
+            where TElement : unmanaged, INumber<TElement>
             where TPixel : unmanaged
         {
             var dstImage = new SkiaSharp.SKBitmap(srcBitmap.Width, srcBitmap.Height, true); // todo: check srcBitmap.Format for alpha

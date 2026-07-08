@@ -10,14 +10,12 @@ using __RGB = System.Numerics.Vector3;
 using __RGBA = System.Numerics.Vector4;
 using __RGBP = System.Numerics.Vector4;
 
-using __METHODOPTIONS = System.Runtime.CompilerServices.MethodImplOptions;
-
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     internal static partial class CodeSugarImagingExtensions
     {
         private readonly ref struct _StepSampler<TElement, TPixel>
-            where TElement: unmanaged
+            where TElement: unmanaged, INumber<TElement>
             where TPixel : unmanaged, _IPixelSample
         {
             #region lifecycle
@@ -85,7 +83,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         }
 
         private readonly ref struct _BilinearSampler<TElement, TPixel>
-            where TElement : unmanaged
+            where TElement : unmanaged, INumber<TElement>
             where TPixel : unmanaged, _IPixelSample
         {
             #region lifecycle

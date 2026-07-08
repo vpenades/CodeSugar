@@ -20,7 +20,8 @@ using __XYZ = System.Numerics.Vector3;
 using __XYZW = System.Numerics.Vector4;
 
 using SixLabors.ImageSharp.PixelFormats;
-using PhotoSauce.MagicScaler;
+
+using System.Numerics;
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
@@ -152,7 +153,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
         public static Tensor<TElement> ToTensor<TPixel, TElement>(this Image<TPixel> img, int numChannels, bool dstIsBgr)
             where TPixel : unmanaged, __SIXLABORSPIXFMT.IPixel<TPixel>
-            where TElement : unmanaged
+            where TElement : unmanaged, INumber<TElement>
         {
             if (numChannels < 1 || numChannels > 4) throw new ArgumentOutOfRangeException("must be a value between 1 and 4", nameof(numChannels));
 
@@ -165,7 +166,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
         public static void CopyToTensor<TPixel, TElement>(this Image<TPixel> src, TensorSpan<TElement> dst, bool dstIsBGR = false)
             where TPixel : unmanaged, __SIXLABORSPIXFMT.IPixel<TPixel>
-            where TElement : unmanaged
+            where TElement : unmanaged, INumber<TElement>
         {
             if (typeof(TElement) == typeof(byte)) { _CopyToByteTensor(src, ref dst, dstIsBGR); return; }
             if (typeof(TElement) == typeof(float)) { _CopyToFloatTensor(src, ref dst, dstIsBGR); return; }
@@ -175,7 +176,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
         private static void _CopyToFloatTensor<TPixel, TElement>(Image<TPixel> src, ref TensorSpan<TElement> dst, bool dstIsBGR)
             where TPixel : unmanaged, IPixel<TPixel>
-            where TElement : unmanaged
+            where TElement : unmanaged, INumber<TElement>
         {
             if (typeof(TElement) != typeof(float)) throw new InvalidOperationException();
 
@@ -225,7 +226,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
         private static void _CopyToByteTensor<TPixel, TElement>(Image<TPixel> src, ref TensorSpan<TElement> dst, bool dstIsBGR)
             where TPixel : unmanaged, IPixel<TPixel>
-            where TElement : unmanaged
+            where TElement : unmanaged, INumber<TElement>
         {
             if (typeof(TElement) != typeof(byte)) throw new InvalidOperationException();
 

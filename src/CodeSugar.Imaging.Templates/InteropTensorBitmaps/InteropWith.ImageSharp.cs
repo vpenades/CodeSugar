@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 
 using InteropTypes.TensorBitmaps;
@@ -17,7 +18,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
     internal static partial class CodeSugarImagingExtensions
     {
         public static SixLabors.ImageSharp.Image<TPixel> ToImageSharp<TElement, TPixel>(this TensorBitmap<TElement, TPixel> srcBitmap)
-            where TElement : unmanaged
+            where TElement : unmanaged, INumber<TElement>
             where TPixel : unmanaged, SixLabors.ImageSharp.PixelFormats.IPixel<TPixel>
         {
             var dstImage = new SixLabors.ImageSharp.Image<TPixel>(srcBitmap.Width, srcBitmap.Height);
@@ -38,7 +39,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         }
 
         public static SixLabors.ImageSharp.Image<TPixel> ToImageSharp<TElement, TPixel>(this ReadOnlyTensorSpanBitmap<TElement, TPixel> srcBitmap)
-            where TElement : unmanaged
+            where TElement : unmanaged, INumber<TElement>
             where TPixel : unmanaged, SixLabors.ImageSharp.PixelFormats.IPixel<TPixel>
         {
             var dstImage = new SixLabors.ImageSharp.Image<TPixel>(srcBitmap.Width, srcBitmap.Height);
@@ -54,7 +55,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         }
 
         public static InteropTypes.TensorBitmaps.TensorBitmap<TElement, TPixel> ToResizedTensorBitmap<TElement, TPixel>(this SixLabors.ImageSharp.Image<TPixel> srcImage, int newWidth, int newHeight)
-            where TElement : unmanaged
+            where TElement : unmanaged, INumber<TElement>
             where TPixel : unmanaged, SixLabors.ImageSharp.PixelFormats.IPixel<TPixel>
         {
             using(var resized = srcImage.Clone(dc => dc.Resize(newWidth, newHeight)))
@@ -64,7 +65,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         }
 
         public static InteropTypes.TensorBitmaps.TensorBitmap<TElement, TPixel> ToTensorBitmap<TElement,TPixel>(this SixLabors.ImageSharp.Image<TPixel> srcImage)
-            where TElement: unmanaged
+            where TElement: unmanaged, INumber<TElement>
             where TPixel:unmanaged, SixLabors.ImageSharp.PixelFormats.IPixel<TPixel>
         {
             if (!TryInferTensorBitmapPixelFormat((typeof(TPixel), Unsafe.SizeOf<TPixel>()), out var dstFmt)) throw new InvalidOperationException("Incompatible pixel type");
@@ -87,7 +88,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
         /*
         public static InteropTypes.TensorBitmaps.TensorBitmap<TElement, TDstPixel> ToTensorBitmap<TSrcPixel, TElement, TDstPixel>(this SixLabors.ImageSharp.Image<TSrcPixel> srcImage)
-            where TElement : unmanaged
+            where TElement : unmanaged, INumber<TElement>
             where TDstPixel : unmanaged
             where TSrcPixel : unmanaged, SixLabors.ImageSharp.PixelFormats.IPixel<TSrcPixel>
         {
