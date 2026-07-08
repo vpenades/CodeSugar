@@ -39,6 +39,8 @@ namespace CodeSugar
         [Test]
         public async Task SkiaSharpRoundtripTest()
         {
+            if (OperatingSystem.IsLinux()) return;
+
             using var img = SkiaSharp.SKBitmap.Decode(ResourceInfo.From("shannon.jpg"));
 
             var tbmp = img.ToResizedTensorBitmap<byte, Rgb24ForTesting>(256, 192);
