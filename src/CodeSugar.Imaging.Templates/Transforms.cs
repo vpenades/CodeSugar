@@ -11,6 +11,26 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {
     internal static partial class CodeSugarImagingExtensions
     {
+        /// <summary>
+        /// Calculates the new size of src to fit into dst while keeping the aspect ratio
+        /// </summary>
+        /// <param name="src">the size of the source</param>
+        /// <param name="dst">the size of the destination</param>
+        /// <param name="overflowAmount">how much can the source overflow the destination, between 0 and 1</param>
+        /// <returns>the new size of the source</returns>
+        public static System.Drawing.SizeF CalculateFittingSize(this System.Drawing.SizeF src, System.Drawing.SizeF dst, float overflowAmount)
+        {
+            var sw = dst.Width / src.Width;
+            var sh = dst.Height / src.Height;
+
+            var minScale = Math.Min(sw,sh);
+            var maxScale = Math.Max(sw, sh);
+
+            var scale = minScale * (1f - overflowAmount) + maxScale * overflowAmount;
+
+            return new System.Drawing.SizeF(src.Width * scale, src.Height * scale);
+        }
+
         private readonly struct _PixelSamplerTransform
         {
             #region lifecycle

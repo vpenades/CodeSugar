@@ -50,6 +50,14 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             public Byte P;
         }
 
+        [System.Runtime.InteropServices.StructLayout(LayoutKind.Sequential, Pack = 1)]
+        readonly struct __XYZPixel<T>
+        {
+            public readonly T X;
+            public readonly T Y;
+            public readonly T Z;
+        }
+
 
                     
     }

@@ -4,7 +4,10 @@ using System.Runtime.CompilerServices;
 
 #if __REFERENCES_SIXLABORSIMAGESHARP
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 #endif
+
+using __KNOWNFMTS = InteropTypes.Numerics.KnownPixelFormats;
 
 #nullable disable
 
@@ -34,33 +37,30 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         public static InteropTypes.TensorBitmaps.TensorBitmap<byte, TPixel> ReadByteTensorBitmapFrom<TPixel>(this System.IO.Stream stream)
             where TPixel:unmanaged
         {
-            var pixelSize = Unsafe.SizeOf<TPixel>();
+            if (!(typeof(TPixel),Unsafe.SizeOf<TPixel>()).TryInferTensorBitmapPixelFormat(out var fmt))
+            {
+                throw new InvalidOperationException("could not infer format from pixel");
+            }
 
             #if __REFERENCES_SIXLABORSIMAGESHARP
 
-            if (pixelSize == 1) // as Luminance
+            static InteropTypes.TensorBitmaps.TensorBitmap<byte, TPixel> _LoadImageSharp<TPixelIn>(System.IO.Stream stream, InteropTypes.Numerics.PixelFormat dstFmt)
+                where TPixelIn:unmanaged, IPixel<TPixelIn>
             {
-                using (var imageSharpImage = SixLabors.ImageSharp.Image.Load<SixLabors.ImageSharp.PixelFormats.L8>(stream))
+                using (var imageSharpImage = Image.Load<TPixelIn>(stream))
                 {
-                    return imageSharpImage.ToTensorBitmap<byte, SixLabors.ImageSharp.PixelFormats.L8>().Cast<TPixel>();
+                    return imageSharpImage.ToTensorBitmap<TPixelIn, byte, TPixel>(dstFmt);
                 }
             }
 
-            if (pixelSize == 3) // as RGB
-            {
-                using (var imageSharpImage = SixLabors.ImageSharp.Image.Load<SixLabors.ImageSharp.PixelFormats.Rgb24>(stream))
-                {
-                    var bitmap = imageSharpImage.ToTensorBitmap<byte, SixLabors.ImageSharp.PixelFormats.Rgb24>().Cast<TPixel>();
-                }
-            }
-
-            if (pixelSize == 4) // as RGBA
-            {
-                using (var imageSharpImage = SixLabors.ImageSharp.Image.Load<SixLabors.ImageSharp.PixelFormats.Rgba32>(stream))
-                {
-                    var bitmap = imageSharpImage.ToTensorBitmap<byte, SixLabors.ImageSharp.PixelFormats.Rgba32>().Cast<TPixel>();
-                }
-            }
+            if (fmt == __KNOWNFMTS.Luminance8) return _LoadImageSharp<L8>(stream, __KNOWNFMTS.Luminance8);
+            if (fmt == __KNOWNFMTS.Alpha8) return _LoadImageSharp<A8>(stream, __KNOWNFMTS.Alpha8);
+            if (fmt == __KNOWNFMTS.Rgb8) return _LoadImageSharp<Rgb24>(stream, __KNOWNFMTS.Rgb8);
+            if (fmt == __KNOWNFMTS.Bgr8) return _LoadImageSharp<Bgr24>(stream, __KNOWNFMTS.Bgr8);
+            if (fmt == __KNOWNFMTS.Rgba8) return _LoadImageSharp<Rgba32>(stream, __KNOWNFMTS.Rgba8);
+            if (fmt == __KNOWNFMTS.Bgra8) return _LoadImageSharp<Bgra32>(stream, __KNOWNFMTS.Bgra8);
+            if (fmt == __KNOWNFMTS.Argb8) return _LoadImageSharp<Argb32>(stream, __KNOWNFMTS.Bgra8);
+            if (fmt == __KNOWNFMTS.Abgr8) return _LoadImageSharp<Abgr32>(stream, __KNOWNFMTS.Abgr8);            
 
             #endif
 
@@ -79,19 +79,24 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         public static InteropTypes.TensorBitmaps.TensorBitmap<float, TPixel> ReadFloatTensorBitmapFrom<TPixel>(this System.IO.Stream stream)
             where TPixel:unmanaged
         {
-            var pixelSize = Unsafe.SizeOf<TPixel>();
-
-            #if __REFERENCES_SIXLABORSIMAGESHARP            
-
-            if (pixelSize == 16) // as RGBA
+            if (!(typeof(TPixel), Unsafe.SizeOf<TPixel>()).TryInferTensorBitmapPixelFormat(out var fmt))
             {
-                using (var imageSharpImage = SixLabors.ImageSharp.Image.Load<SixLabors.ImageSharp.PixelFormats.RgbaVector>(stream))
-                {
-                    var bitmap = imageSharpImage.ToTensorBitmap<float, SixLabors.ImageSharp.PixelFormats.RgbaVector>();
+                throw new InvalidOperationException("could not infer format from pixel");
+            }
 
-                    return bitmap.Cast<TPixel>();
+            #if __REFERENCES_SIXLABORSIMAGESHARP
+
+            static InteropTypes.TensorBitmaps.TensorBitmap<float, TPixel> _LoadImageSharp<TPixelIn>(System.IO.Stream stream, InteropTypes.Numerics.PixelFormat dstFmt)
+                where TPixelIn : unmanaged, IPixel<TPixelIn>
+            {
+                using (var imageSharpImage = Image.Load<TPixelIn>(stream))
+                {
+                    return imageSharpImage.ToTensorBitmap<TPixelIn, float, TPixel>(dstFmt);
                 }
             }            
+
+            if (fmt == __KNOWNFMTS.RgbF32) return _LoadImageSharp<Rgb24>(stream, __KNOWNFMTS.RgbF32);
+            if (fmt == __KNOWNFMTS.RgbaF32) return _LoadImageSharp<Rgba32>(stream, __KNOWNFMTS.RgbaF32);
 
             #endif
 
@@ -113,55 +118,72 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         {
             #if __REFERENCES_SIXLABORSIMAGESHARP
 
-            if (bitmap.Format == InteropTypes.TensorBitmaps.KnownPixelFormats.Alpha8)
+            if (bitmap.Format == __KNOWNFMTS.Alpha8)
             {
                 var typedBitmap = bitmap.Cast<SixLabors.ImageSharp.PixelFormats.A8>();
                 WriteToImageSharpStream(typedBitmap, stream);
+                return;
             }
 
-            if (bitmap.Format == InteropTypes.TensorBitmaps.KnownPixelFormats.Luminance8)
+            if (bitmap.Format == __KNOWNFMTS.Luminance8)
             {
                 var typedBitmap = bitmap.Cast<SixLabors.ImageSharp.PixelFormats.L8>();
                 WriteToImageSharpStream(typedBitmap, stream);
+                return;
             }
 
-            if (bitmap.Format == InteropTypes.TensorBitmaps.KnownPixelFormats.Rgb888)
+            if (bitmap.Format == __KNOWNFMTS.Rgb8)
             {
                 var typedBitmap = bitmap.Cast<SixLabors.ImageSharp.PixelFormats.Rgb24>();
                 WriteToImageSharpStream(typedBitmap, stream);
+                return;
             }
 
-            if (bitmap.Format == InteropTypes.TensorBitmaps.KnownPixelFormats.Bgr888)
+            if (bitmap.Format == __KNOWNFMTS.Bgr8)
             {
                 var typedBitmap = bitmap.Cast<SixLabors.ImageSharp.PixelFormats.Bgr24>();
                 WriteToImageSharpStream(typedBitmap, stream);
+                return;
             }
 
-            if (bitmap.Format == InteropTypes.TensorBitmaps.KnownPixelFormats.Rgba8888)
+            if (bitmap.Format == __KNOWNFMTS.Rgba8)
             {
                 var typedBitmap = bitmap.Cast<SixLabors.ImageSharp.PixelFormats.Rgba32>();
                 WriteToImageSharpStream(typedBitmap, stream);
+                return;
             }
 
-            if (bitmap.Format == InteropTypes.TensorBitmaps.KnownPixelFormats.Bgra8888)
+            if (bitmap.Format == __KNOWNFMTS.Bgra8)
             {
                 var typedBitmap = bitmap.Cast<SixLabors.ImageSharp.PixelFormats.Bgra32>();
                 WriteToImageSharpStream(typedBitmap, stream);
+                return;
             }
 
-            if (bitmap.Format == InteropTypes.TensorBitmaps.KnownPixelFormats.Argb8888)
+            if (bitmap.Format == __KNOWNFMTS.Argb8)
             {
                 var typedBitmap = bitmap.Cast<SixLabors.ImageSharp.PixelFormats.Argb32>();
                 WriteToImageSharpStream(typedBitmap, stream);
+                return;
             }
 
-            if (bitmap.Format == InteropTypes.TensorBitmaps.KnownPixelFormats.RgbaF32)
+            if (bitmap.Format == __KNOWNFMTS.RgbaF32)
             {
                 var typedBitmap = bitmap.Cast<SixLabors.ImageSharp.PixelFormats.RgbaVector>();
                 WriteToImageSharpStream(typedBitmap, stream);
-            }            
+                return;
+            }
+
+            if (bitmap.Format == __KNOWNFMTS.RgbF32 || bitmap.Format == __KNOWNFMTS.BgrF32)
+            {
+                var typedBitmap = bitmap.ConvertTo<TElement,TPixel,byte,Rgb24>(__KNOWNFMTS.Rgb8);
+                WriteToImageSharpStream(typedBitmap.AsReadOnlyTensorSpanBitmap(), stream);
+                return;
+            }
 
             #endif
+
+            throw new NotImplementedException("unsupported format");
         }
 
         #if __REFERENCES_SIXLABORSIMAGESHARP

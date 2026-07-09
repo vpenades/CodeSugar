@@ -23,8 +23,8 @@
 		<PackageReference Include="SixLabors.ImageSharp.Drawing" Version="[2.1.7]" />
 		<PackageReference Include="PhotoSauce.MagicScaler" Version="0.15.0" />
 		<PackageReference Include="SkiaSharp" Version="4.148.0" />
-    <PackageReference Include="Avalonia" Version="12.0.5" />
-		<PackageReference Include="InteropTypes.TensorBitmaps.Core" Version="1.0.0-prv-20260708-204223" />
+    <PackageReference Include="Avalonia" Version="12.1.0" />
+		<PackageReference Include="InteropTypes.TensorBitmaps.Core" Version="1.0.0-prv-20260709-140121" />
 	</ItemGroup>
 
 	<Choose>

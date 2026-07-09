@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Numerics;
 using System.Numerics.Tensors;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,8 +19,6 @@ using __XYZW = System.Numerics.Vector4;
 
 using __SIXLABORS = SixLabors.ImageSharp;
 using __SIXLABORSPIXFMT = SixLabors.ImageSharp.PixelFormats;
-
-using System.Numerics;
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
@@ -107,6 +106,39 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
         }
 
+        internal static Type GetComponentType<TPixel>() where TPixel : unmanaged, IPixel<TPixel>
+        {
+            // PixelTypeInfo.Create<TPixel>(); // this API should be public
+
+            var t = typeof(TPixel);
+
+            if (t == typeof(A8)) return typeof(byte);
+
+            if (t == typeof(L8)) return typeof(byte);
+            if (t == typeof(L16)) return typeof(byte);
+
+            if (t == typeof(La16)) return typeof(byte);
+            if (t == typeof(La32)) return typeof(ushort);
+
+            if (t == typeof(Rgb24)) return typeof(byte);
+            if (t == typeof(Rgb48)) return typeof(byte);
+
+            if (t == typeof(Bgr24)) return typeof(byte);            
+
+            if (t == typeof(Rgba32)) return typeof(byte);
+            if (t == typeof(Rgba64)) return typeof(ushort);
+
+            if (t == typeof(RgbaVector)) return typeof(float);
+
+            if (t == typeof(Bgra32)) return typeof(byte);
+
+            if (t == typeof(Argb32)) return typeof(byte);
+            if (t == typeof(Abgr32)) return typeof(byte);            
+
+            throw new NotImplementedException(t.Name);
+
+        }
+
         internal static bool GetIsBGR<TPixel>() where TPixel : unmanaged, IPixel<TPixel>
         {
             var t = typeof(TPixel);            
@@ -160,7 +192,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             return false;
         }
 
-        public static Vector4 ToPremultipliedVector4<TPixel>(this TPixel pixel)
+        public static __XYZW ToPremultipliedVector4<TPixel>(this TPixel pixel)
             where TPixel : unmanaged, IPixel<TPixel>
         {
             var value = pixel.ToScaledVector4();

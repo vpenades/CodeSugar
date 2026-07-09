@@ -3,7 +3,9 @@ using System.Numerics;
 using System.Numerics.Tensors;
 using System.Runtime.CompilerServices;
 
+using InteropTypes.Numerics;
 using InteropTypes.TensorBitmaps;
+
 
 #if __REFERENCES_SKIASHARP
 using SkiaSharp;
@@ -13,7 +15,7 @@ using SkiaSharp;
 
 #if __REFERENCES_SKIASHARP
 
-using __TBKFORMATS = InteropTypes.TensorBitmaps.KnownPixelFormats;
+using __TBKFORMATS = InteropTypes.Numerics.KnownPixelFormats;
 
 using __SKIACOLOR = SkiaSharp.SKColorType;
 using __SKIAALPHA = SkiaSharp.SKAlphaType;
@@ -22,7 +24,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {
     internal static partial class CodeSugarImagingExtensions
     {
-        public static TensorBitmap<TElement, TPixel> ToResizedTensorBitmap<TElement, TPixel>(this SkiaSharp.SKBitmap srcImage, int newWidth, int newHeight, TensorPixelFormat? dstFmt = null, SKSamplingOptions? options = null)
+        public static TensorBitmap<TElement, TPixel> ToResizedTensorBitmap<TElement, TPixel>(this SkiaSharp.SKBitmap srcImage, int newWidth, int newHeight, PixelFormat? dstFmt = null, SKSamplingOptions? options = null)
             where TElement : unmanaged, INumber<TElement>
             where TPixel : unmanaged
         {
@@ -36,7 +38,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
         }
 
-        public static TensorBitmap<TElement, TPixel> ToTensorBitmap<TElement, TPixel>(this SkiaSharp.SKBitmap srcImage, TensorPixelFormat? dstFmt = null)
+        public static TensorBitmap<TElement, TPixel> ToTensorBitmap<TElement, TPixel>(this SkiaSharp.SKBitmap srcImage, PixelFormat? dstFmt = null)
             where TElement : unmanaged, INumber<TElement>
             where TPixel : unmanaged
         {
@@ -123,19 +125,27 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             return false;
         }
 
-        private static TensorPixelFormat _SkiaSharpToTensorPixelFormat(__SKIACOLOR ct, __SKIAALPHA at)
+        private static PixelFormat _SkiaSharpToTensorPixelFormat(__SKIACOLOR ct, __SKIAALPHA at)
         {
             switch(ct)
             {
-                case __SKIACOLOR.Alpha8: return __TBKFORMATS.Alpha8;
                 case __SKIACOLOR.Gray8: return __TBKFORMATS.Luminance8;
-                case __SKIACOLOR.Rgb888x: return __TBKFORMATS.Rgbx8888;
+
+                case __SKIACOLOR.Alpha8: return __TBKFORMATS.Alpha8;
+                case __SKIACOLOR.Alpha16: return __TBKFORMATS.Alpha16;
+                case __SKIACOLOR.AlphaF16: return __TBKFORMATS.AlphaF16;
+
+                case __SKIACOLOR.Rgb888x: return __TBKFORMATS.Rgbx8;                    
+                    
+                case __SKIACOLOR.Rgba8888 when at == __SKIAALPHA.Premul: return __TBKFORMATS.RgbPremul8;
+                case __SKIACOLOR.Rgba8888: return __TBKFORMATS.Rgba8;
                 
-                case __SKIACOLOR.Rgba8888 when at == __SKIAALPHA.Premul: return __TBKFORMATS.Rgbp8888;
-                case __SKIACOLOR.Rgba8888: return __TBKFORMATS.Rgba8888;
-                
-                case __SKIACOLOR.Bgra8888 when at == __SKIAALPHA.Premul: return __TBKFORMATS.Bgrp8888;
-                case __SKIACOLOR.Bgra8888: return __TBKFORMATS.Bgra8888;                
+                case __SKIACOLOR.Bgra8888 when at == __SKIAALPHA.Premul: return __TBKFORMATS.BgrPremul8;
+                case __SKIACOLOR.Bgra8888: return __TBKFORMATS.Bgra8;
+
+                case __SKIACOLOR.RgbaF32 when at == __SKIAALPHA.Premul: return __TBKFORMATS.RgbPremulF32;
+                case __SKIACOLOR.RgbaF32: return __TBKFORMATS.RgbaF32;
+
 
                 default: throw new NotImplementedException($"{ct} {at}");
             }
