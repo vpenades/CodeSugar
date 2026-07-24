@@ -27,11 +27,12 @@ namespace CodeSugar
             var processor = new TemplateCodeProcessor();
             processor.RootNameSpace = this.RootNameSpace;
             processor.AllNugets = this.NugetPackages;
+            processor.UsesNuget("System.Text.Json");
             processor.UsesNuget("Microsoft.Extensions.FileProviders.Abstractions");
             processor.UsesNuget("Microsoft.Extensions.FileProviders.Physical");
             processor.UsesNuget("Microsoft.Extensions.FileProviders.Embedded");
             processor.UsesNuget("Microsoft.Extensions.FileProviders.Composite");
-            processor.UsesNuget("RecyclableMemoryStream");
+            processor.UsesNuget("Microsoft.IO.RecyclableMemoryStream");
             processor.UsesNuget("SharpCompress");
 
             foreach (var code in EmbeddedTemplates.GetEmbeddedTemplates(name, nameChecker))
