@@ -58,6 +58,20 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             return false;
         }
 
+        public static bool TryGetFileInfo(this __STREAM stream, out System.IO.FileInfo finfo)
+        {
+            switch(stream)
+            {
+                case System.IO.FileStream fs when !string.IsNullOrWhiteSpace(fs.Name):
+                    finfo = new System.IO.FileInfo(fs.Name);
+                    return true;
+
+                default:
+                    finfo = null;
+                    return false;
+            }
+        }
+
         #endregion
 
         #region binary extensions
