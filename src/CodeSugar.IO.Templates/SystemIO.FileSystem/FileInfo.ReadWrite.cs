@@ -11,41 +11,40 @@ using System.Threading;
 #nullable disable
 
 using __FINFO = System.IO.FileInfo;
-using __STREAM = System.IO.Stream;
-using __STREAMTASK = System.Threading.Tasks.Task<System.IO.Stream>;
-
+using __READSTREAM = System.IO.Stream;
+using __WRITESTREAM = System.IO.Stream;
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarExtensions    
     {
         [return: NotNull]
-        public static Func<__STREAM> GetReadStreamFunction([NotNull] this __FINFO finfo)
+        public static Func<__READSTREAM> GetReadStreamFunction([NotNull] this __FINFO finfo)
         {
             GuardExists(finfo);
             return finfo.OpenRead;
         }        
 
         [return: NotNull]
-        public static Func<__STREAM> GetWriteStreamFunction([NotNull] this __FINFO finfo, bool syncFile = true)
+        public static Func<__WRITESTREAM> GetWriteStreamFunction([NotNull] this __FINFO finfo, bool syncFile = true)
         {
             GuardNotNull(finfo);
 
-            __STREAM openWriteBlind()
+            __WRITESTREAM openWriteBlind()
             {
                 EnsureDirectoryExists(finfo.Directory);
                 return finfo.Create();
             }
 
-            __STREAM openWriteRefresh()
+            __WRITESTREAM openWriteRefresh()
             {
                 EnsureDirectoryExists(finfo.Directory);
                 return finfo.Create().WithDisposeObserver(finfo.Refresh);
             }
 
             return syncFile
-                ? (Func<__STREAM>)openWriteRefresh
-                : (Func<__STREAM>)openWriteBlind;
+                ? (Func<__WRITESTREAM>)openWriteRefresh
+                : (Func<__WRITESTREAM>)openWriteBlind;
         }
     }
 }
