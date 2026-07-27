@@ -112,7 +112,7 @@ namespace CodeSugar
 
             RootNameSpace = ns!;
             NugetPackages = nupkgs;
-            LangVersion = lang;            
+            LangVersion = lang.MapSpecifiedToEffectiveVersion();            
 
             InjectSources(context);
         }

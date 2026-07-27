@@ -25,10 +25,8 @@ namespace CodeSugar
 
         private void ProcessTemplates(SourceProductionContext context, string name, Predicate<string> nameChecker)
         {
-            var processor = new TemplateCodeProcessor();
-            processor.RootNameSpace = this.RootNameSpace;
-            processor.LangVersion = this.LangVersion.MapSpecifiedToEffectiveVersion();
-            processor.AllNugets = this.NugetPackages;
+            var processor = new TemplateCodeProcessor(this.RootNameSpace, this.LangVersion, this.NugetPackages);
+
             processor.UsesNuget("System.Text.Json");
             processor.UsesNuget("Microsoft.Extensions.FileProviders.Abstractions");
             processor.UsesNuget("Microsoft.Extensions.FileProviders.Physical");

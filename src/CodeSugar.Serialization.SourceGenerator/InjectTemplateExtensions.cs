@@ -18,9 +18,7 @@ namespace CodeSugar
 
         private void ProcessTemplates(SourceProductionContext context, string name, Predicate<string> nameChecker)
         {
-            var processor = new TemplateCodeProcessor();
-            processor.AllNugets = this.NugetPackages;
-            processor.RootNameSpace = this.RootNameSpace;
+            var processor = new TemplateCodeProcessor(this.RootNameSpace, this.LangVersion, this.NugetPackages);
 
             foreach (var code in EmbeddedTemplates.GetEmbeddedTemplates(name, nameChecker))
             {

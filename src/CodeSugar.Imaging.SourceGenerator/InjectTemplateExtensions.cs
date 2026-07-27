@@ -46,9 +46,8 @@ namespace CodeSugar
 
         private void ProcessTemplates(SourceProductionContext context, string name, Predicate<string> nameChecker)
         {
-            var processor = new TemplateCodeProcessor();
-            processor.RootNameSpace = this.RootNameSpace;
-            processor.AllNugets = this.NugetPackages;
+            var processor = new TemplateCodeProcessor(this.RootNameSpace, this.LangVersion, this.NugetPackages);            
+            
             processor.UsesNuget("System.Numerics.Tensors");
             processor.UsesNuget("SixLabors.ImageSharp");
             processor.UsesNuget("PhotoSauce.MagicScaler");
