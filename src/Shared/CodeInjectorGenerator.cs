@@ -29,7 +29,7 @@ namespace CodeSugar
                 .Combine(withNugetPackages);
 
             // executed on any triggers signal
-            context.RegisterSourceOutput(provider, (ctx, args) => _TryInjectSources(ctx, args.Left.Left, args.Left.Right, args.Right) );
+            context.RegisterSourceOutput(provider, (ctx, args) => _TryInjectSources(ctx, args.Left.Left!, args.Left.Right, args.Right) );
         }
 
         private static LanguageVersion TryGetLanguageFeatures(ParseOptions options, CancellationToken token)

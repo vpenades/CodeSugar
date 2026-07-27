@@ -4,9 +4,6 @@ using System.Text;
 using System.Numerics.Tensors;
 
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Processing;
-using SixLabors.ImageSharp.Advanced;
-using SixLabors.ImageSharp.PixelFormats;
 
 #nullable disable
 
@@ -19,8 +16,6 @@ using __XYZW = System.Numerics.Vector4;
 
 using __TENSORSPAN = System.Numerics.Tensors.TensorSpan<float>;
 using __READONLYTENSORSPAN = System.Numerics.Tensors.ReadOnlyTensorSpan<float>;
-
-
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {

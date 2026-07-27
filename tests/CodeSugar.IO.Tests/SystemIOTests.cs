@@ -11,14 +11,14 @@ namespace CodeSugar
 {
     using CODESUGARIO = CodeSugarExtensions;
 
-    public class SystemIOTests : IProgress<int>
+    public class SystemIOTests : IProgress<int>, IProgress<string>
     {
-        public void Report(int value)
+        void IProgress<int>.Report(int value)
         {
             Console.Out.WriteLine($"{value}%");
         }
 
-        public void Report(string value)
+        void IProgress<string>.Report(string value)
         {
             Console.Out.WriteLine(value);
         }

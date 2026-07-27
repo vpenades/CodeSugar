@@ -129,7 +129,7 @@ namespace CodeSugar
 
             var imm = m.InvertedFast();
 
-            _TestEquality(im.Translation, imm.Translation, 0.0001f);
+            await _TestEquality(im.Translation, imm.Translation, 0.0001f);
         }
 
         [Test]

@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Numerics.Tensors;
-
-using SixLabors.ImageSharp;
+using System.Numerics;
 
 #nullable disable
 
@@ -19,15 +18,11 @@ using __XY = System.Numerics.Vector2;
 using __XYZ = System.Numerics.Vector3;
 using __XYZW = System.Numerics.Vector4;
 
-using SixLabors.ImageSharp.PixelFormats;
-
-using System.Numerics;
-
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarImagingExtensions
     {
-        public static void ImageSharpAction(this __ROTENSOR tensor, Action<Image> imageAction, bool tensorIsBGR = false)
+        public static void ImageSharpAction(this __ROTENSOR tensor, Action<__SIXLABORS.Image> imageAction, bool tensorIsBGR = false)
         {
             GuardIsBitmap(tensor, false);
 
@@ -38,29 +33,29 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
         }
 
-        public static void ImageSharpAction(this __RWTENSORSPANF tensor, Action<Image> imageAction, bool tensorIsBGR = false)
+        public static void ImageSharpAction(this __RWTENSORSPANF tensor, Action<__SIXLABORS.Image> imageAction, bool tensorIsBGR = false)
         {
             GuardIsBitmap(tensor, false);
 
             tensor.AsReadOnlyTensorSpan().ImageSharpAction(imageAction, tensorIsBGR);
         }
 
-        public static void ImageSharpAction(this __ROTENSORSPANF tensor, Action<Image> imageAction, bool tensorIsBGR = false)
+        public static void ImageSharpAction(this __ROTENSORSPANF tensor, Action<__SIXLABORS.Image> imageAction, bool tensorIsBGR = false)
         {
             tensor = tensor.SqueezeIfRequired();
             if (!TryInferBitmapSize(tensor, out _, out _, out var channels, out _)) GuardIsBitmap(tensor, false);
 
             switch (channels)
             {
-                case 1: _ImageSharpAction<L16>(tensor, imageAction, tensorIsBGR); break;
-                case 3: _ImageSharpAction<Rgb24>(tensor, imageAction, tensorIsBGR); break;
-                case 4: _ImageSharpAction<Rgba32>(tensor, imageAction, tensorIsBGR); break;
+                case 1: _ImageSharpAction<__SIXLABORSPIXFMT.L16>(tensor, imageAction, tensorIsBGR); break;
+                case 3: _ImageSharpAction<__SIXLABORSPIXFMT.Rgb24>(tensor, imageAction, tensorIsBGR); break;
+                case 4: _ImageSharpAction<__SIXLABORSPIXFMT.Rgba32>(tensor, imageAction, tensorIsBGR); break;
                 default: throw new NotSupportedException("number of channels");
             }
         }
 
-        private static void _ImageSharpAction<TPixel>(__ROTENSORSPANF tensor, Action<Image> imageAction, bool tensorIsBGR)
-            where TPixel : unmanaged, IPixel<TPixel>
+        private static void _ImageSharpAction<TPixel>(__ROTENSORSPANF tensor, Action<__SIXLABORS.Image> imageAction, bool tensorIsBGR)
+            where TPixel : unmanaged, __SIXLABORSPIXFMT.IPixel<TPixel>
         {
             using (var img = tensor.ToImageSharp<TPixel>(tensorIsBGR))
             {
@@ -68,7 +63,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
         }
 
-        public static Image<TPixel> ToImageSharp<TPixel>(this __ROTENSOR tensor, bool tensorIsBGR = false)
+        public static __SIXLABORS.Image<TPixel> ToImageSharp<TPixel>(this __ROTENSOR tensor, bool tensorIsBGR = false)
             where TPixel : unmanaged, __SIXLABORSPIXFMT.IPixel<TPixel>
         {
             GuardIsBitmap(tensor, false);
@@ -81,7 +76,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             throw new ArgumentException($"{tensor.GetType().Name} not implemented", nameof(tensor));
         }
 
-        public static void CopyToImageSharp(this __RWTENSOR src, Image dst, bool srcIsBGR = false)
+        public static void CopyToImageSharp(this __RWTENSOR src, __SIXLABORS.Image dst, bool srcIsBGR = false)
         {
             GuardIsBitmap(src);
 
@@ -151,7 +146,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         }*/       
 
 
-        public static Tensor<TElement> ToTensor<TPixel, TElement>(this Image<TPixel> img, int numChannels, bool dstIsBgr)
+        public static Tensor<TElement> ToTensor<TPixel, TElement>(this __SIXLABORS.Image<TPixel> img, int numChannels, bool dstIsBgr)
             where TPixel : unmanaged, __SIXLABORSPIXFMT.IPixel<TPixel>
             where TElement : unmanaged, INumber<TElement>
         {
@@ -164,7 +159,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             return dstBmp;
         }
 
-        public static void CopyToTensor<TPixel, TElement>(this Image<TPixel> src, TensorSpan<TElement> dst, bool dstIsBGR = false)
+        public static void CopyToTensor<TPixel, TElement>(this __SIXLABORS.Image<TPixel> src, TensorSpan<TElement> dst, bool dstIsBGR = false)
             where TPixel : unmanaged, __SIXLABORSPIXFMT.IPixel<TPixel>
             where TElement : unmanaged, INumber<TElement>
         {
@@ -174,8 +169,8 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             throw new NotImplementedException(typeof(TElement).Name);
         }
 
-        private static void _CopyToFloatTensor<TPixel, TElement>(Image<TPixel> src, ref TensorSpan<TElement> dst, bool dstIsBGR)
-            where TPixel : unmanaged, IPixel<TPixel>
+        private static void _CopyToFloatTensor<TPixel, TElement>(__SIXLABORS.Image<TPixel> src, ref TensorSpan<TElement> dst, bool dstIsBGR)
+            where TPixel : unmanaged, __SIXLABORSPIXFMT.IPixel<TPixel>
             where TElement : unmanaged, INumber<TElement>
         {
             if (typeof(TElement) != typeof(float)) throw new InvalidOperationException();
@@ -224,8 +219,8 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
         }
 
-        private static void _CopyToByteTensor<TPixel, TElement>(Image<TPixel> src, ref TensorSpan<TElement> dst, bool dstIsBGR)
-            where TPixel : unmanaged, IPixel<TPixel>
+        private static void _CopyToByteTensor<TPixel, TElement>(__SIXLABORS.Image<TPixel> src, ref TensorSpan<TElement> dst, bool dstIsBGR)
+            where TPixel : unmanaged, __SIXLABORSPIXFMT.IPixel<TPixel>
             where TElement : unmanaged, INumber<TElement>
         {
             if (typeof(TElement) != typeof(byte)) throw new InvalidOperationException();
@@ -243,7 +238,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             if (dstIsCHW)
             {
-                if (_TensorSpanBitmap<TElement, Rgb24>.TryCreatePlanes(dst, out var dstX, out var dstY, out var dstZ))
+                if (_TensorSpanBitmap<TElement, __SIXLABORSPIXFMT.Rgb24>.TryCreatePlanes(dst, out var dstX, out var dstY, out var dstZ))
                 {
                     if (swapRGB) { var tmp = dstX; dstX = dstZ; dstZ = tmp; }
 
@@ -267,17 +262,17 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             switch (dstChannels)
             {
-                case 1: _TensorSpanBitmap<TElement, L8>.Create(dst).CopyFrom(srcBmp, ToImageSharpL8); return;
-                case 3 when dstIsBGR: _TensorSpanBitmap<TElement, Bgr24>.Create(dst).CopyFrom(srcBmp, ToImageSharpBgr24); return;
-                case 3 when !dstIsBGR: _TensorSpanBitmap<TElement, Rgb24>.Create(dst).CopyFrom(srcBmp, ToImageSharpRgb24); return;
-                case 4 when dstIsBGR: _TensorSpanBitmap<TElement, Bgra32>.Create(dst).CopyFrom(srcBmp, ToImageSharpBgra32); return;
-                case 4 when !dstIsBGR: _TensorSpanBitmap<TElement, Rgba32>.Create(dst).CopyFrom(srcBmp, ToImageSharpRgba32); return;
+                case 1: _TensorSpanBitmap<TElement, __SIXLABORSPIXFMT.L8>.Create(dst).CopyFrom(srcBmp, ToImageSharpL8); return;
+                case 3 when dstIsBGR: _TensorSpanBitmap<TElement, __SIXLABORSPIXFMT.Bgr24>.Create(dst).CopyFrom(srcBmp, ToImageSharpBgr24); return;
+                case 3 when !dstIsBGR: _TensorSpanBitmap<TElement, __SIXLABORSPIXFMT.Rgb24>.Create(dst).CopyFrom(srcBmp, ToImageSharpRgb24); return;
+                case 4 when dstIsBGR: _TensorSpanBitmap<TElement, __SIXLABORSPIXFMT.Bgra32>.Create(dst).CopyFrom(srcBmp, ToImageSharpBgra32); return;
+                case 4 when !dstIsBGR: _TensorSpanBitmap<TElement, __SIXLABORSPIXFMT.Rgba32>.Create(dst).CopyFrom(srcBmp, ToImageSharpRgba32); return;
                 default: throw new ArgumentException($"invalid channels count {dstChannels}", nameof(dst));
             }
         }
 
 
-        public static void CopyToTensor(this Image src, System.Numerics.Matrix3x2 srcXform, __RWTENSOR dst, bool dstIsBGR = false)
+        public static void CopyToTensor(this __SIXLABORS.Image src, System.Numerics.Matrix3x2 srcXform, __RWTENSOR dst, bool dstIsBGR = false)
         {
             GuardIsBitmap(dst);
 

@@ -16,8 +16,6 @@ using __SIXLABORSPIXFMT = SixLabors.ImageSharp.PixelFormats;
 using __RWTENSORSPANB = System.Numerics.Tensors.TensorSpan<byte>;
 using __ROTENSORSPANB = System.Numerics.Tensors.ReadOnlyTensorSpan<byte>;
 
-using System.Threading.Channels;
-
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarImagingExtensions
