@@ -110,18 +110,12 @@ namespace CodeSugar
 
             if (nupkgs == null) return;
 
-            RootNameSpace = ns!;
-            NugetPackages = nupkgs;
-            LangVersion = lang.MapSpecifiedToEffectiveVersion();            
+            var cgc = new CodeGenerationContext(ns!, lang, nupkgs);
 
-            InjectSources(context);
-        }
+            InjectSources(context, cgc);
+        }        
 
-        protected LanguageVersion LangVersion { get; private set; }
-        protected string RootNameSpace { get; private set; } = string.Empty;
-        protected IReadOnlyDictionary<string,string> NugetPackages { get; private set; } = new Dictionary<string,string>();
-
-        protected abstract void InjectSources(SourceProductionContext context);
+        protected abstract void InjectSources(SourceProductionContext context, CodeGenerationContext cgc);
 
         #endregion
 
@@ -138,6 +132,22 @@ namespace CodeSugar
         #endregion
     }
 
+    public record CodeGenerationContext
+    {
+        public CodeGenerationContext(string? rootNameSpace, LanguageVersion langVersion, IReadOnlyDictionary<string, string> nugetPackages)
+        {
+            RootNameSpace = rootNameSpace?.Trim() ?? "CodeSugar";
+            LangVersion = langVersion.MapSpecifiedToEffectiveVersion();            
+            NugetPackages = nugetPackages;
+        }
+
+        public string RootNameSpace { get; }
+        public LanguageVersion LangVersion { get; }        
+        public IReadOnlyDictionary<string, string> NugetPackages { get; }
+
+        public bool LangSupportsNullable => LangVersion >= LanguageVersion.CSharp8;
+        public bool LangSupportsGenericAttrs => LangVersion >= LanguageVersion.CSharp11;
+    }
 
     record SemanticVersion : IComparable<SemanticVersion>
     {

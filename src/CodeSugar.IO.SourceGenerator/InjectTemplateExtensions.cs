@@ -10,24 +10,26 @@ namespace CodeSugar
     [Generator]
     public sealed class InjectTemplateExtensions : CodeInjectorGenerator
     {
-        protected override void InjectSources(SourceProductionContext context)
+        protected override void InjectSources(SourceProductionContext context, CodeGenerationContext cgc)
         {
-            var hasAbstractions = this.NugetPackages.ContainsKey("Microsoft.Extensions.FileProviders.Abstractions");                        
-            var hasSharpCompress = this.NugetPackages.ContainsKey("SharpCompress");            
+            var hasAbstractions = cgc.NugetPackages.ContainsKey("Microsoft.Extensions.FileProviders.Abstractions");                        
+            var hasSharpCompress = cgc.NugetPackages.ContainsKey("SharpCompress");
+            var hasMonoAndroid = cgc.NugetPackages.ContainsKey("MonoAndroid");
 
-            ProcessTemplates(context,"SystemIO", n => n.Contains(".Templates.SystemIO."));
+            ProcessTemplates(context, cgc, "SystemIO", n => n.Contains(".Templates.SystemIO."));
 
-            if (hasAbstractions) ProcessTemplates(context,"FileProviders", n => n.Contains(".Templates.FileProviders."));
-            if (hasSharpCompress) ProcessTemplates(context, "SharpCompress", n => n.Contains(".Templates.SharpCompress."));
+            if (hasAbstractions) ProcessTemplates(context, cgc, "FileProviders", n => n.Contains(".Templates.FileProviders."));
+            if (hasSharpCompress) ProcessTemplates(context, cgc,"SharpCompress", n => n.Contains(".Templates.SharpCompress."));
         }
 
         private int _TemplateIndex = 0;
 
-        private void ProcessTemplates(SourceProductionContext context, string name, Predicate<string> nameChecker)
+        private void ProcessTemplates(SourceProductionContext context, CodeGenerationContext cgc, string name, Predicate<string> nameChecker)
         {
-            var processor = new TemplateCodeProcessor(this.RootNameSpace, this.LangVersion, this.NugetPackages);
+            var processor = new TemplateCodeProcessor(cgc);
 
             processor.UsesNuget("System.Text.Json");
+            processor.UsesNuget("Mono.Android");
             processor.UsesNuget("Microsoft.Extensions.FileProviders.Abstractions");
             processor.UsesNuget("Microsoft.Extensions.FileProviders.Physical");
             processor.UsesNuget("Microsoft.Extensions.FileProviders.Embedded");

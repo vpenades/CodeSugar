@@ -4,37 +4,26 @@ using System.Data.SqlTypes;
 using System.Text;
 using System.Xml.Linq;
 
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace CodeSugar
 {
     class TemplateCodeProcessor
     {
-        public TemplateCodeProcessor(string rootNameSpace, LanguageVersion langVersion, IReadOnlyDictionary<string, string> allNugets)
+        public TemplateCodeProcessor(CodeGenerationContext context)
         {
-            this.RootNameSpace = rootNameSpace;
-            this.LangVersion = langVersion.MapSpecifiedToEffectiveVersion();
-            this.AllNugets = allNugets;
+            Context = context;
         }
 
-        public string RootNameSpace { get; private set; } = "CodeSugar";
-        public LanguageVersion LangVersion { get; private set; }
-        protected bool LangSupportsNullable => LangVersion >= LanguageVersion.CSharp8;
-        protected bool LangSupportsGenericAttrs => LangVersion >= LanguageVersion.CSharp11;
+        public CodeGenerationContext Context { get; }        
 
-        public IReadOnlyDictionary<string, string> AllNugets { get; private set; } = new Dictionary<string, string>();
-
-        private readonly HashSet<string> _RelevantNugets = new HashSet<string>();
-
-        
+        private readonly HashSet<string> _RelevantNugets = new HashSet<string>();        
 
         public void UsesNuget(string id) { _RelevantNugets.Add(id); }
 
         public string ProcessTemplate(string templateCode)
         {
-            if (!LangSupportsNullable) templateCode = templateCode.Replace("#nullable disable", $"// {LangVersion}");
+            if (!Context.LangSupportsNullable) templateCode = templateCode.Replace("#nullable disable", string.Empty);
 
             var sb = new StringBuilder();
 
@@ -42,12 +31,24 @@ namespace CodeSugar
             sb.AppendLine();
             sb.AppendLine($"// Copyright (c) CodeSugar {DateTime.Today.Year} Vicente Penades");
             sb.AppendLine();
-            sb.AppendLine($"// LangVersion: {LangVersion}");
+
+            sb.AppendLine($"// LangVersion: {Context.LangVersion}");
             sb.AppendLine();
+
+            foreach(var lv in Enum.GetValues(typeof(LanguageVersion)).OfType<LanguageVersion>())
+            {
+                if (lv == LanguageVersion.Default) continue;
+                if (lv == LanguageVersion.LatestMajor) break;
+
+                var name = Enum.GetName(typeof(LanguageVersion), lv).ToUpper();
+                sb.AppendLine($"#define __LANGVERSION_{name}_OR_GREATER");
+
+                if (lv == Context.LangVersion) break;
+            }
 
             foreach (var k in _RelevantNugets)
             {
-                if (!AllNugets.ContainsKey(k)) continue;
+                if (!Context.NugetPackages.ContainsKey(k)) continue;
 
                 var declaration = "#define __REFERENCES_" + k.Replace(".", "").ToUpper();
                 sb.AppendLine(declaration);
@@ -56,8 +57,8 @@ namespace CodeSugar
             sb.AppendLine();
 
             templateCode = templateCode
-                .Replace("$rootnamespace$", RootNameSpace)
-                .Replace("__CODESUGAR_ROOTNAMESPACE__", RootNameSpace);
+                .Replace("$rootnamespace$", Context.RootNameSpace)
+                .Replace("__CODESUGAR_ROOTNAMESPACE__", Context.RootNameSpace);
 
             sb.AppendLine(templateCode);
 
