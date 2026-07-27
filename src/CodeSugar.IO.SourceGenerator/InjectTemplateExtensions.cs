@@ -26,6 +26,7 @@ namespace CodeSugar
         {
             var processor = new TemplateCodeProcessor();
             processor.RootNameSpace = this.RootNameSpace;
+            processor.LangVersion = this.LangVersion;
             processor.AllNugets = this.NugetPackages;
             processor.UsesNuget("System.Text.Json");
             processor.UsesNuget("Microsoft.Extensions.FileProviders.Abstractions");

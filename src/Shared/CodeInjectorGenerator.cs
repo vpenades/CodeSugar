@@ -19,13 +19,13 @@ namespace CodeSugar
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
             // triggers | todo: get frameworks  
-            var languageDataProvider = context.ParseOptionsProvider.Select(TryGetLanguageFeatures);    // trigger when language changes
+            var withLanguageDataProvider = context.ParseOptionsProvider.Select(TryGetLanguageFeatures);    // trigger when language changes
             var withRootNamespace = context.AnalyzerConfigOptionsProvider.Select(TryGetRootNamespace); // trigger when RootNamespace changes
             var withNugetPackages = context.CompilationProvider.Select(TryGetNugetPackages);           // trigger when package references changes            
 
             // combined triggers
             var provider = withRootNamespace
-                .Combine(languageDataProvider)
+                .Combine(withLanguageDataProvider)
                 .Combine(withNugetPackages);
 
             // executed on any triggers signal
@@ -77,6 +77,18 @@ namespace CodeSugar
             return dict;
         }
 
+        private static Dictionary<string, bool>? TryGetSpecificTypes(Compilation compilation, CancellationToken token, params string[] typeFullNames)
+        {
+            var dict = new Dictionary<string, bool>();
+
+            foreach(var tfn in typeFullNames)
+            {
+                dict[tfn] = compilation.GetTypeByMetadataName(tfn) != null;
+            }
+
+            return dict;
+        }
+
         #endregion
 
         #region API
@@ -96,18 +108,13 @@ namespace CodeSugar
 
             RootNameSpace = ns!;
             NugetPackages = nupkgs;
-            LangVersion = lang;
+            LangVersion = lang;            
 
             InjectSources(context);
         }
 
         protected LanguageVersion LangVersion { get; private set; }
-
-        protected bool LangSupportsNullable => LangVersion >= LanguageVersion.CSharp8;
-        protected bool LangSupportsGenericAttrs => LangVersion >= LanguageVersion.CSharp11;        
-
         protected string RootNameSpace { get; private set; } = string.Empty;
-
         protected IReadOnlyDictionary<string,string> NugetPackages { get; private set; } = new Dictionary<string,string>();
 
         protected abstract void InjectSources(SourceProductionContext context);
