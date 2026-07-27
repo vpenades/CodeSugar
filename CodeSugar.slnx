@@ -21,37 +21,43 @@
     <File Path="src/Generator.props" />
     <File Path="src/SourcesPackage.props" />
     <File Path="src/Template.props" />
+
     <Project Path="src/CodeSugar.ICommand/CodeSugar.ICommand.csproj" />
+
+    <Project Path="src/CodeSugar.Imaging.Templates/CodeSugar.Imaging.Templates.csproj" Id="51b4fa85-b1f7-4072-b721-30e1a18537f7" />
     <Project Path="src/CodeSugar.Imaging.SourceGenerator/CodeSugar.Imaging.SourceGenerator.csproj" Id="bf19d783-f488-4e07-970c-7e9f807d2b10">
       <BuildDependency Project="src/CodeSugar.Imaging.Templates/CodeSugar.Imaging.Templates.csproj" />
-      <Build Solution="Debug|*" Project="false" />
     </Project>
-    <Project Path="src/CodeSugar.Imaging.Templates/CodeSugar.Imaging.Templates.csproj" Id="51b4fa85-b1f7-4072-b721-30e1a18537f7">
-      <Build Solution="Debug|*" Project="false" />
-    </Project>
+
+    <Project Path="src/CodeSugar.IO.Templates/CodeSugar.IO.Templates.csproj" Id="084be84a-ee5c-4806-ab2b-4090c5131a6e" />
     <Project Path="src/CodeSugar.IO.SourceGenerator/CodeSugar.IO.SourceGenerator.csproj">
       <BuildDependency Project="src/CodeSugar.IO.Templates/CodeSugar.IO.Templates.csproj" />
     </Project>
-    <Project Path="src/CodeSugar.IO.Templates/CodeSugar.IO.Templates.csproj" Id="084be84a-ee5c-4806-ab2b-4090c5131a6e" />
+
+    <Project Path="src/CodeSugar.Linq.Templates/CodeSugar.Linq.Templates.csproj" Id="01acea74-52b4-44dc-a57e-5cd050204e31" />
     <Project Path="src/CodeSugar.Linq.SourceGenerator/CodeSugar.Linq.SourceGenerator.csproj" Id="03babc13-0057-4ddd-af5b-356f0f5a14d7">
       <BuildDependency Project="src/CodeSugar.Linq.Templates/CodeSugar.Linq.Templates.csproj" />
     </Project>
-    <Project Path="src/CodeSugar.Linq.Templates/CodeSugar.Linq.Templates.csproj" Id="01acea74-52b4-44dc-a57e-5cd050204e31" />
+
+    <Project Path="src/CodeSugar.Logging.Templates/CodeSugar.Logging.Templates.csproj" Id="2369afa5-837f-49ce-a5c5-490a258ed107" />
     <Project Path="src/CodeSugar.Logging.SourceGenerator/CodeSugar.Logging.SourceGenerator.csproj" Id="f91ae45c-0722-4db4-bfb4-3e429cca25b6">
       <BuildDependency Project="src/CodeSugar.Logging.Templates/CodeSugar.Logging.Templates.csproj" />
     </Project>
-    <Project Path="src/CodeSugar.Logging.Templates/CodeSugar.Logging.Templates.csproj" Id="2369afa5-837f-49ce-a5c5-490a258ed107" />
+
+    <Project Path="src/CodeSugar.Numerics.Templates/CodeSugar.Numerics.Templates.csproj" Id="efe7466c-6d55-48ef-9f2e-1e943db90830" />
     <Project Path="src/CodeSugar.Numerics.SourceGenerator/CodeSugar.Numerics.SourceGenerator.csproj" Id="a8f46879-e0f8-43f5-89fb-b51f5c73ac26">
       <BuildDependency Project="src/CodeSugar.Numerics.Templates/CodeSugar.Numerics.Templates.csproj" />
     </Project>
-    <Project Path="src/CodeSugar.Numerics.Templates/CodeSugar.Numerics.Templates.csproj" Id="efe7466c-6d55-48ef-9f2e-1e943db90830" />
+
+    <Project Path="src/CodeSugar.Serialization.Templates/CodeSugar.Serialization.Templates.csproj" Id="306a4775-cee0-4b3b-8da4-d1d4d1995314" />
     <Project Path="src/CodeSugar.Serialization.SourceGenerator/CodeSugar.Serialization.SourceGenerator.csproj" Id="ce4ba21d-3c63-4cc2-a9dc-cd5c47cc3d67">
       <BuildDependency Project="src/CodeSugar.Serialization.Templates/CodeSugar.Serialization.Templates.csproj" />
     </Project>
-    <Project Path="src/CodeSugar.Serialization.Templates/CodeSugar.Serialization.Templates.csproj" Id="306a4775-cee0-4b3b-8da4-d1d4d1995314" />
+
     <Project Path="src/CodeSugar.Sys.Sources/CodeSugar.Sys.csproj" />
     <Project Path="src/CodeSugar.Sys.Text.Sources/CodeSugar.Sys.Text.csproj" />
   </Folder>
+
   <Folder Name="/tests/">
     <File Path="tests/Directory.Build.props" />
     <Project Path="tests/CodeSugar.Imaging.Tests/CodeSugar.Imaging.Tests.csproj" Id="212a48f6-b527-49b2-82f4-9066d97694e3" />

@@ -37,9 +37,13 @@ namespace CodeSugar
             if (options is not CSharpParseOptions csParseOptions)
             {
                 throw new NotSupportedException($"Only {LanguageNames.CSharp} is supported.");
-            }            
+            }
 
-            return csParseOptions.LanguageVersion;
+            var langVersion = csParseOptions.LanguageVersion.MapSpecifiedToEffectiveVersion();
+
+            if (langVersion == LanguageVersion.Default) throw new InvalidOperationException("invalid language version");
+
+            return langVersion;
         }
 
         private static string? TryGetRootNamespace(AnalyzerConfigOptionsProvider options, CancellationToken token)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace CodeSugar
 {
@@ -26,7 +27,7 @@ namespace CodeSugar
         {
             var processor = new TemplateCodeProcessor();
             processor.RootNameSpace = this.RootNameSpace;
-            processor.LangVersion = this.LangVersion;
+            processor.LangVersion = this.LangVersion.MapSpecifiedToEffectiveVersion();
             processor.AllNugets = this.NugetPackages;
             processor.UsesNuget("System.Text.Json");
             processor.UsesNuget("Microsoft.Extensions.FileProviders.Abstractions");

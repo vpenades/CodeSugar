@@ -25,7 +25,7 @@ namespace CodeSugar
 
         public string ProcessTemplate(string templateCode)
         {
-            if (!LangSupportsNullable) templateCode = templateCode.Replace("#nullable disable", "");
+            // if (!LangSupportsNullable) templateCode = templateCode.Replace("#nullable disable", $"// {LangVersion}");
 
             var sb = new StringBuilder();
 
