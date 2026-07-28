@@ -174,6 +174,8 @@ namespace CodeSugar
                 chars = chars.Slice(idx + 1);
             }
 
+            // check nuget package requirements
+
             const string genr = "// GENERATOR_REQUIRES: ";
 
             foreach(var line in commentLines)
