@@ -10,7 +10,12 @@
 
 	<PropertyGroup>
 		<PublishAot>true</PublishAot>
-	</PropertyGroup>	
+	</PropertyGroup>
+
+  <PropertyGroup>
+    <EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
+    <CompilerGeneratedFilesOutputPath>$(BaseIntermediateOutputPath)$(Configuration)\$(TargetFramework)\gencode</CompilerGeneratedFilesOutputPath>
+  </PropertyGroup>
 
 	<ItemGroup>
 		<PackageReference Include="TUnit" Version="1.61.38" />
