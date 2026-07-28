@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Numerics;
-using System.Numerics.Tensors;
-using System.Text;
-using System.Threading.Tasks;
+﻿// GENERATOR_REQUIRES: SixLabors.ImageSharp
 
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Advanced;
+using System;
+using System.Runtime.CompilerServices;
+
 using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Formats;
 
 #nullable disable
 

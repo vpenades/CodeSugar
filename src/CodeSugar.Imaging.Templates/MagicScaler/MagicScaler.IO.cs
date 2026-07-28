@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Numerics.Tensors;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Channels;
-using System.Threading.Tasks;
+﻿// GENERATOR_REQUIRES: PhotoSauce.MagicScaler
+
+using System;
 
 using PhotoSauce.MagicScaler;
 
 #nullable disable
 
 using __SIZE = System.Drawing.Size;
-
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {

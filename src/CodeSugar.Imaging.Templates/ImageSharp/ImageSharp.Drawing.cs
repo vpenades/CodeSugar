@@ -1,4 +1,6 @@
-﻿using System;
+﻿// GENERATOR_REQUIRES: SixLabors.ImageSharp
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Numerics;

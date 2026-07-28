@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics.Tensors;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Collections;
-using System.Reflection.Metadata;
-using System.Runtime.InteropServices;
+﻿// GENERATOR_REQUIRES: Avalonia
 
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
+using System;
+using System.Runtime.InteropServices;
 
 #nullable disable
 

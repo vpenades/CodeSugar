@@ -1,4 +1,6 @@
-﻿using System;
+﻿// GENERATOR_REQUIRES: SixLabors.ImageSharp System.Numerics.Tensors
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Numerics.Tensors;
@@ -31,9 +33,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             var srcBmp = size.CreateTensorBitmapHWC<float>(chns);
             img.CopyToTensor(srcBmp.AsTensorSpan(), isBgr);
             return srcBmp;
-        }
-
-        
+        }        
 
         public static void CopyToTensor(this Image src, System.Numerics.Matrix3x2 srcXform, __TENSORSPAN dst, bool dstIsBGR = false)
         {
@@ -73,8 +73,6 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 default: throw new NotImplementedException(src.GetType().Name);
             }
         }        
-
-        
 
         public static Image<TPixel> ToImageSharp<TPixel>(this __TENSORSPAN tensor, bool tensorIsBGR = false)
             where TPixel : unmanaged, __SIXLABORSPIXFMT.IPixel<TPixel>

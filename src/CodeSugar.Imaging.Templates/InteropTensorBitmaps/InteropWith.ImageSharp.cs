@@ -3,7 +3,6 @@
 using System;
 using System.Numerics;
 using System.Runtime.CompilerServices;
-using System.Runtime.Serialization;
 
 using InteropTypes.TensorBitmaps;
 
@@ -105,7 +104,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             return target;
         }
 
-        public static TensorBitmap<TElement, TDstPixel> ToResizedTensorBitmap<TSrcPixel, TElement, TDstPixel>(this Image<TSrcPixel> srcImage, int newWidth, int newHeight, InteropTypes.Numerics.PixelFormat? dstFmt = default)
+        public static TensorBitmap<TElement, TDstPixel> ToResizedTensorBitmap<TSrcPixel, TElement, TDstPixel>(this Image<TSrcPixel> srcImage, int newWidth, int newHeight, InteropTypes.Numerics.PixelFormat dstFmt = default)
             where TSrcPixel : unmanaged, SixLabors.ImageSharp.PixelFormats.IPixel<TSrcPixel>
             where TElement : unmanaged, INumber<TElement>
             where TDstPixel : unmanaged
@@ -116,7 +115,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }            
         }
 
-        public static TensorBitmap<TElement, TDstPixel> ToTensorBitmap<TSrcPixel,TElement,TDstPixel>(this Image<TSrcPixel> srcImage, InteropTypes.Numerics.PixelFormat? dstFmt = default)
+        public static TensorBitmap<TElement, TDstPixel> ToTensorBitmap<TSrcPixel,TElement,TDstPixel>(this Image<TSrcPixel> srcImage, InteropTypes.Numerics.PixelFormat dstFmt = default)
             where TSrcPixel : unmanaged, SixLabors.ImageSharp.PixelFormats.IPixel<TSrcPixel>
             where TElement: unmanaged, INumber<TElement>
             where TDstPixel : unmanaged

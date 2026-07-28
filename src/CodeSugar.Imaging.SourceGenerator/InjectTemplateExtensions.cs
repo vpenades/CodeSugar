@@ -11,35 +11,23 @@ namespace CodeSugar
     {
         protected override void InjectSources(SourceProductionContext context, CodeGenerationContext cgc)
         {
-            var hasTensors = cgc.NugetPackages.ContainsKey("System.Numerics.Tensors");
-            var hasImageSharp = cgc.NugetPackages.ContainsKey("SixLabors.ImageSharp");
-            var hasMagicScaler = cgc.NugetPackages.ContainsKey("PhotoSauce.MagicScaler");
-            var hasSkiaSharp = cgc.NugetPackages.ContainsKey("SkiaSharp");
-            var hasAvalonia = cgc.NugetPackages.ContainsKey("Avalonia");
-            var hasTensorBitmaps = cgc.NugetPackages.ContainsKey("InteropTypes.TensorBitmaps.Core");            
+            var hasTensors = cgc.NugetPackages.ContainsKey("System.Numerics.Tensors");            
 
-            ProcessTemplates(context,cgc, "Core", n => n.Contains(".Templates.Core."));
-
-            // imaging
-
-            if (hasImageSharp) ProcessTemplates(context, cgc,"ImageSharp", n => n.Contains(".Templates.ImageSharp."));
-            if (hasMagicScaler) ProcessTemplates(context, cgc, "MagicScaler", n => n.Contains(".Templates.MagicScaler."));
-            if (hasSkiaSharp) ProcessTemplates(context, cgc, "SkiaSharp", n => n.Contains(".Templates.SkiaSharp."));
-            if (hasAvalonia) ProcessTemplates(context, cgc, "Avalonia", n => n.Contains(".Templates.Avalonia."));            
+            ProcessTemplates(context,cgc, "Core", n => n.Contains(".Templates.Core."));            
 
             if (hasTensors) // tensors
             {
                 ProcessTemplates(context, cgc, "Tensors", n => n.Contains(".Templates.Tensors."));
                 ProcessTemplates(context, cgc, "Intrinsics", n => n.Contains(".Templates.Intrinsics."));
-            }            
+            }
 
-            if (hasTensors) // imaging interop with tensors
-            {
-                if (hasImageSharp) ProcessTemplates(context, cgc, "ImageSharpTensors", n => n.Contains(".Templates.ImageSharpTensors."));
-                if (hasMagicScaler) ProcessTemplates(context, cgc, "MagicScalerTensors", n => n.Contains(".Templates.MagicScalerTensors."));
-                if (hasSkiaSharp) ProcessTemplates(context, cgc, "SkiaSharpTensors", n => n.Contains(".Templates.SkiaSharpTensors."));
-                if (hasTensorBitmaps) ProcessTemplates(context, cgc, "InteropTensorBitmaps", n => n.Contains(".Templates.InteropTensorBitmaps."));
-            }            
+            // imaging
+
+            ProcessTemplates(context, cgc, "ImageSharp", n => n.Contains(".Templates.ImageSharp."));
+            ProcessTemplates(context, cgc, "MagicScaler", n => n.Contains(".Templates.MagicScaler."));
+            ProcessTemplates(context, cgc, "SkiaSharp", n => n.Contains(".Templates.SkiaSharp."));
+            ProcessTemplates(context, cgc, "Avalonia", n => n.Contains(".Templates.Avalonia."));
+            ProcessTemplates(context, cgc, "InteropTensorBitmaps", n => n.Contains(".Templates.InteropTensorBitmaps."));                     
         }
 
         private int _TemplateIndex = 0;

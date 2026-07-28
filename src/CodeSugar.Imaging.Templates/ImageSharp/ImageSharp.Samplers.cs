@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
+﻿// GENERATOR_REQUIRES: SixLabors.ImageSharp
+
+using System;
 using System.Numerics;
-using System.Text;
-using System.Threading;
 
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Advanced;
 using SixLabors.ImageSharp.PixelFormats;
-using SixLabors.ImageSharp.Processing;
-
-using __XY = System.Numerics.Vector2;
 
 #nullable disable
+
+using __XY = System.Numerics.Vector2;
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {

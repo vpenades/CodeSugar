@@ -6,12 +6,9 @@
 		<EmbeddedResource Include="..\CodeSugar.Imaging.Templates\*.cs" LinkBase="Templates\Core" />
 		<EmbeddedResource Include="..\CodeSugar.Imaging.Templates\Tensors\*.cs" LinkBase="Templates\Tensors" />
 		<EmbeddedResource Include="..\CodeSugar.Imaging.Templates\Intrinsics\*.cs" LinkBase="Templates\Intrinsics" />
-		<EmbeddedResource Include="..\CodeSugar.Imaging.Templates\ImageSharp\*.cs" LinkBase="Templates\ImageSharp" />
-		<EmbeddedResource Include="..\CodeSugar.Imaging.Templates\ImageSharpTensors\*.cs" LinkBase="Templates\ImageSharpTensors" />
-		<EmbeddedResource Include="..\CodeSugar.Imaging.Templates\MagicScaler\*.cs" LinkBase="Templates\MagicScaler" />
-		<EmbeddedResource Include="..\CodeSugar.Imaging.Templates\MagicScalerTensors\*.cs" LinkBase="Templates\MagicScalerTensors" />
-		<EmbeddedResource Include="..\CodeSugar.Imaging.Templates\SkiaSharp\*.cs" LinkBase="Templates\SkiaSharp" />
-		<EmbeddedResource Include="..\CodeSugar.Imaging.Templates\SkiaSharpTensors\*.cs" LinkBase="Templates\SkiaSharpTensors" />
+		<EmbeddedResource Include="..\CodeSugar.Imaging.Templates\ImageSharp\*.cs" LinkBase="Templates\ImageSharp" />		
+		<EmbeddedResource Include="..\CodeSugar.Imaging.Templates\MagicScaler\*.cs" LinkBase="Templates\MagicScaler" />		
+		<EmbeddedResource Include="..\CodeSugar.Imaging.Templates\SkiaSharp\*.cs" LinkBase="Templates\SkiaSharp" />		
     <EmbeddedResource Include="..\CodeSugar.Imaging.Templates\Avalonia\*.cs" LinkBase="Templates\Avalonia" />
 		<EmbeddedResource Include="..\CodeSugar.Imaging.Templates\InteropTensorBitmaps\*.cs" LinkBase="Templates\InteropTensorBitmaps" />
 	</ItemGroup>	

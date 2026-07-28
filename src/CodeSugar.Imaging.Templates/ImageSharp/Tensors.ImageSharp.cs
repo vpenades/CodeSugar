@@ -1,4 +1,6 @@
-﻿using System;
+﻿// GENERATOR_REQUIRES: SixLabors.ImageSharp System.Numerics.Tensors
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Numerics.Tensors;

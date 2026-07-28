@@ -157,11 +157,20 @@ namespace CodeSugar
 
             while(chars.Length > 0)
             {
+                if (char.IsWhiteSpace(chars[0]))
+                {
+                    chars = chars.Slice(1);
+                    continue;
+                }
+
                 if (!chars.StartsWith("//")) break;
 
-                var idx = chars.IndexOf('\r');
+                var idx = chars.IndexOf('\n');
+                if (idx < 0) break;
+
                 var line = chars.Slice(0, idx).Trim();
                 commentLines.Add(line.ToString());
+
                 chars = chars.Slice(idx + 1);
             }
 

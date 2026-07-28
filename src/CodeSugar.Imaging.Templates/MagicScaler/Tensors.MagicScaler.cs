@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Numerics.Tensors;
+﻿// GENERATOR_REQUIRES: PhotoSauce.MagicScaler System.Numerics.Tensors
+
+using System;
 
 #nullable disable
 

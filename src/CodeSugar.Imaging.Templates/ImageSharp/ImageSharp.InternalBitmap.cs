@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Numerics.Tensors;
-using System.Text;
-using System.Threading.Tasks;
+﻿// GENERATOR_REQUIRES: SixLabors.ImageSharp
+
+using System;
 
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Advanced;

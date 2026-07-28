@@ -1,7 +1,9 @@
-﻿#nullable disable
+﻿// GENERATOR_REQUIRES: SixLabors.ImageSharp
 
 using System;
 using System.Runtime.CompilerServices;
+
+#nullable disable
 
 using __SIXLABORS = SixLabors.ImageSharp;
 

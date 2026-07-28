@@ -21,7 +21,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {
     internal static partial class CodeSugarImagingExtensions
     {
-        public static TensorBitmap<TElement, TPixel> ToResizedTensorBitmap<TElement, TPixel>(this SkiaSharp.SKBitmap srcImage, int newWidth, int newHeight, PixelFormat? dstFmt = null, SKSamplingOptions? options = null)
+        public static TensorBitmap<TElement, TPixel> ToResizedTensorBitmap<TElement, TPixel>(this SkiaSharp.SKBitmap srcImage, int newWidth, int newHeight, PixelFormat dstFmt = null, SKSamplingOptions? options = null)
             where TElement : unmanaged, INumber<TElement>
             where TPixel : unmanaged
         {
@@ -35,7 +35,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
         }
 
-        public static TensorBitmap<TElement, TPixel> ToTensorBitmap<TElement, TPixel>(this SkiaSharp.SKBitmap srcImage, PixelFormat? dstFmt = null)
+        public static TensorBitmap<TElement, TPixel> ToTensorBitmap<TElement, TPixel>(this SkiaSharp.SKBitmap srcImage, PixelFormat dstFmt = null)
             where TElement : unmanaged, INumber<TElement>
             where TPixel : unmanaged
         {
@@ -44,7 +44,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 dstFmt = fmt;
             }
 
-            if (dstFmt == null) throw new ArgumentNullException($"Could not infer pixel format from {nameof(TPixel)}:{typeof(TPixel).Name}", nameof(dstFmt));
+            if (dstFmt == null) throw new ArgumentNullException(nameof(dstFmt), $"Could not infer pixel format from {nameof(TPixel)}:{typeof(TPixel).Name}");
 
             if (TryCastToTensorBitmap<byte>(srcImage, out var srcTensor1))
             {

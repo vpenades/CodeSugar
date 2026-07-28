@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// GENERATOR_REQUIRES: SkiaSharp System.Numerics.Tensors
+
+using System;
 using System.Numerics.Tensors;
 using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Buffers;
 
 using SkiaSharp;
 

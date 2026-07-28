@@ -24,6 +24,15 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             {                
                 case uint value: return value;
 
+                case System.Drawing.Color color:
+                    {
+                        uint packed = color.A;
+                        packed <<= 8; packed |= color.B;
+                        packed <<= 8; packed |= color.G;
+                        packed <<= 8; packed |= color.R;
+                        return packed;
+                    }
+
                 #if __REFERENCES_SIXLABORSIMAGESHARP
 
                 case IMAGESHARPFMTS.Rgba32 rgba: return rgba.PackedValue;
@@ -55,12 +64,14 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 #if __REFERENCES_SKIASHARP
 
                 case SkiaSharp.SKColor src:
-                    // SKColor seems to be BGRA | ARGB
-                    uint packed = src.Alpha;
-                    packed <<= 8; packed |= src.Blue;
-                    packed <<= 8; packed |= src.Green;
-                    packed <<= 8; packed |= src.Red;
-                    return packed;
+                    {
+                        // SKColor seems to be BGRA | ARGB
+                        uint packed = src.Alpha;
+                        packed <<= 8; packed |= src.Blue;
+                        packed <<= 8; packed |= src.Green;
+                        packed <<= 8; packed |= src.Red;
+                        return packed;
+                    }
 
                 #endif
 
