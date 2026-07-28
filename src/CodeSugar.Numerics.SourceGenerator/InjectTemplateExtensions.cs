@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis;
 namespace CodeSugar
 {
     [Generator]
-    public sealed class CodeSugarNumericsGenerator : CodeInjectorGenerator
+    public sealed class NumericsGenerator : CodeInjectorGenerator
     {
         
 

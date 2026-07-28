@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CSharp;
 namespace CodeSugar
 {
     [Generator]
-    public sealed class CodeSugarFileIOGenerator : CodeInjectorGenerator
+    public sealed class FileIOGenerator : CodeInjectorGenerator
     {
         protected override void InjectSources(SourceProductionContext context, CodeGenerationContext cgc)
         {

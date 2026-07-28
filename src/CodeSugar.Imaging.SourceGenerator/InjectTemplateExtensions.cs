@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis;
 namespace CodeSugar
 {
     [Generator]
-    public sealed class CodeSugarImagingGenerator : CodeInjectorGenerator
+    public sealed class ImagingGenerator : CodeInjectorGenerator
     {
         protected override void InjectSources(SourceProductionContext context, CodeGenerationContext cgc)
         {

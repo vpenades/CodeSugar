@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis;
 namespace CodeSugar
 {
     [Generator]
-    public sealed class CodeSugarSerializationGenerator : CodeInjectorGenerator
+    public sealed class SerializationGenerator : CodeInjectorGenerator
     {
         protected override void InjectSources(SourceProductionContext context, CodeGenerationContext cgc)
         {
