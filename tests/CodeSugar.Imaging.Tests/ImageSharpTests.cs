@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
 
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Drawing.Processing;
@@ -18,7 +14,7 @@ namespace CodeSugar
     {
         
         [Test]
-        public void TestDrawAffineTransform()
+        public async Task TestDrawAffineTransform()
         {
             var iconPath = ResourceInfo.From("CodeSugar.png");
             using var icon = SixLabors.ImageSharp.Image.Load<Rgba32>(iconPath.FilePath);
@@ -51,7 +47,7 @@ namespace CodeSugar
         }
 
         [Test]
-        public void TestTensorsInterop()
+        public async Task TestTensorsInterop()
         {
             var icon = ResourceInfo.From("CodeSugar.png");
 
