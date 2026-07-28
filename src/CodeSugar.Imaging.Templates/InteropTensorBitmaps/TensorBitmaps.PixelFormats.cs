@@ -1,4 +1,6 @@
-﻿using System;
+﻿// GENERATOR_REQUIRES: InteropTypes.TensorBitmaps.Core
+
+using System;
 using System.Runtime.CompilerServices;
 using System.Numerics;
 
@@ -7,8 +9,6 @@ using System.Numerics;
 using __TBKFORMATS = InteropTypes.Numerics.KnownPixelFormats;
 using __TBKCMPS = InteropTypes.Numerics.KnownComponentFormats;
 using __TBPIXFMT = InteropTypes.Numerics.PixelFormat;
-
-using InteropTypes.TensorBitmaps;
 
 #if __REFERENCES_SIXLABORSIMAGESHARP
 using __IMAGESHARPPIXFMT = SixLabors.ImageSharp.PixelFormats;

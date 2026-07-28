@@ -1,4 +1,6 @@
-﻿using System;
+﻿// GENERATOR_REQUIRES: InteropTypes.TensorBitmaps.Core SkiaSharp
+
+using System;
 using System.Numerics;
 using System.Numerics.Tensors;
 using System.Runtime.CompilerServices;
@@ -6,14 +8,9 @@ using System.Runtime.CompilerServices;
 using InteropTypes.Numerics;
 using InteropTypes.TensorBitmaps;
 
-
-#if __REFERENCES_SKIASHARP
 using SkiaSharp;
-#endif
 
 #nullable disable
-
-#if __REFERENCES_SKIASHARP
 
 using __TBKFORMATS = InteropTypes.Numerics.KnownPixelFormats;
 
@@ -152,5 +149,3 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         }
     }
 }
-
-#endif

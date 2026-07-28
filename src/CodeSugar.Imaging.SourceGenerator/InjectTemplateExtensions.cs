@@ -16,7 +16,7 @@ namespace CodeSugar
             var hasMagicScaler = cgc.NugetPackages.ContainsKey("PhotoSauce.MagicScaler");
             var hasSkiaSharp = cgc.NugetPackages.ContainsKey("SkiaSharp");
             var hasAvalonia = cgc.NugetPackages.ContainsKey("Avalonia");
-            var hasTensorBitmaps = cgc.NugetPackages.ContainsKey("InteropTypes.TensorBitmaps.Core");
+            var hasTensorBitmaps = cgc.NugetPackages.ContainsKey("InteropTypes.TensorBitmaps.Core");            
 
             ProcessTemplates(context,cgc, "Core", n => n.Contains(".Templates.Core."));
 
@@ -57,6 +57,8 @@ namespace CodeSugar
 
             foreach (var code in EmbeddedTemplates.GetEmbeddedTemplates(name, nameChecker))
             {
+                if (!cgc.CheckCodeRequirements(code)) continue;
+
                 var xcode = processor.ProcessTemplate(code);
 
                 context.AddSource($"CodeSugar.{name}{_TemplateIndex}.g.cs", xcode);

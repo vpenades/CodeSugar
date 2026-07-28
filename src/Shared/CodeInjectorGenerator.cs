@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlTypes;
 using System.Text;
 using System.Xml.Linq;
@@ -56,7 +57,7 @@ namespace CodeSugar
 
         private static Dictionary<string,string>? TryGetNugetPackages(Compilation compilation, CancellationToken token)
         {
-            var dict = new Dictionary<string, string>();            
+            var dict = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);            
 
             foreach (var reference in compilation.References)
             {
@@ -147,6 +148,44 @@ namespace CodeSugar
 
         public bool LangSupportsNullable => LangVersion >= LanguageVersion.CSharp8;
         public bool LangSupportsGenericAttrs => LangVersion >= LanguageVersion.CSharp11;
+
+        public bool CheckCodeRequirements(string sourceCode)
+        {
+            var commentLines = new List<string>();
+
+            ReadOnlySpan<char> chars = sourceCode;
+
+            while(chars.Length > 0)
+            {
+                if (!chars.StartsWith("//")) break;
+
+                var idx = chars.IndexOf('\r');
+                var line = chars.Slice(0, idx).Trim();
+                commentLines.Add(line.ToString());
+                chars = chars.Slice(idx + 1);
+            }
+
+            const string genr = "// GENERATOR_REQUIRES: ";
+
+            foreach(var line in commentLines)
+            {
+                if (line.StartsWith(genr))
+                {
+                    var requiredPackages = line
+                        .Substring(genr.Length)
+                        .Split(null)
+                        .Where(item => !string.IsNullOrWhiteSpace(item))
+                        .ToList();
+
+                    foreach(var rp in requiredPackages)
+                    {
+                        if (!NugetPackages.ContainsKey(rp)) return false;
+                    }
+                }
+            }
+
+            return true;
+        }
     }
 
     record SemanticVersion : IComparable<SemanticVersion>

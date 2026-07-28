@@ -5,6 +5,8 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
+#if NET10_0_OR_GREATER
+
 using InteropTypes.Numerics;
 using InteropTypes.TensorBitmaps;
 
@@ -108,3 +110,5 @@ namespace CodeSugar
         }
     }
 }
+
+#endif

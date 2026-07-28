@@ -1,4 +1,6 @@
-﻿using System;
+﻿// GENERATOR_REQUIRES: InteropTypes.TensorBitmaps.Core
+
+using System;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 

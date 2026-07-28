@@ -1,21 +1,19 @@
-﻿using System;
+﻿// GENERATOR_REQUIRES: InteropTypes.TensorBitmaps.Core SixLabors.ImageSharp
+
+using System;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
 using InteropTypes.TensorBitmaps;
 
-#if __REFERENCES_SIXLABORSIMAGESHARP
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
-#endif
 
 using __KPIXFMTS = InteropTypes.Numerics.KnownPixelFormats;
 
 #nullable disable
-
-#if __REFERENCES_SIXLABORSIMAGESHARP
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {    
@@ -182,5 +180,3 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         }*/
     }
 }
-
-#endif

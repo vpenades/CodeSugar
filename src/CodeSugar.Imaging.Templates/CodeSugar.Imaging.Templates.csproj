@@ -20,9 +20,17 @@
 		<PackageReference Include="SixLabors.ImageSharp" Version="[3.1.12]" />
 		<PackageReference Include="PhotoSauce.MagicScaler" Version="0.15.0" />
 		<PackageReference Include="SkiaSharp" Version="4.150.1" />
-    <PackageReference Include="Avalonia" Version="12.1.0" />
-		<PackageReference Include="InteropTypes.TensorBitmaps.Core" Version="1.0.0-prv-20260709-140121" />		
+    <PackageReference Include="Avalonia" Version="12.1.0" />		
 	</ItemGroup>
+
+  <ItemGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net10.0'))">
+    <PackageReference Include="InteropTypes.TensorBitmaps.Core" Version="1.0.0-prv-20260709-140121" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net10.0')) != 'true'">
+    <Compile Remove="InteropTensorBitmaps\**\*" />
+    <None Include="InteropTensorBitmaps\**\*" />
+  </ItemGroup>
 
 	<ItemGroup>
 		<Compile Update="Tensors\ColorTypes.cs">
