@@ -1,0 +1,47 @@
+﻿using System;
+
+#nullable disable
+
+namespace __CODESUGAR_ROOTNAMESPACE__
+{    
+    partial class CodeSugarForSystem
+    {
+        /// <summary>
+        /// Gets the given service object from a <see cref="IServiceProvider"/>, or <paramref name="defval"/> if the service does not exist.
+        /// </summary>
+        public static T GetServiceOrDefault<T>(this IServiceProvider serviceProvider, T defval = default)
+        {
+            return TryGetService<T>(serviceProvider, out var service)
+                ? service
+                : defval;
+        }
+
+        /// <summary>
+        /// Tries to get a service object from a <see cref="IServiceProvider"/>
+        /// </summary>
+        public static bool TryGetService<T>(this IServiceProvider serviceProvider, out T service)
+        {
+            service = default;
+
+            if (serviceProvider == null) return false;
+
+            #if !DEBUG
+            try {
+            #endif
+
+                var result = serviceProvider.GetService(typeof(T));
+
+                if (result is T value)
+                {
+                    service = value;
+                    return true;
+                }
+
+            #if !DEBUG
+            } catch { }
+            #endif
+            
+            return false;
+        }
+    }
+}

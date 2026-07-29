@@ -39,19 +39,19 @@ namespace CodeSugar
         {
             Func<char, char> blocks = (char c) => c == '{' ? '}' : default;
 
-            var split = CodeSugarForText.Tokenize("  abc { a b c } 123 ", null, blocks).ToArray();
+            var split = "  abc { a b c } 123 ".Tokenize(null, blocks).ToArray();
             await Assert.That(split).IsSequenceEqualTo(new[] { "abc", " a b c ", "123" });
 
-            split = CodeSugarForText.Tokenize("{abc } {} { abc}", null, blocks).ToArray();
+            split = "{abc } {} { abc}".Tokenize(null, blocks).ToArray();
             await Assert.That(split).IsSequenceEqualTo(new[] { "abc ", string.Empty, " abc" });
 
-            await Assert.That(CodeSugarForText.Tokenize("abc 123")).IsSequenceEqualTo(new[] { "abc", "123" });
+            await Assert.That("abc 123".Tokenize()).IsSequenceEqualTo(new[] { "abc", "123" });
 
-            await Assert.That(CodeSugarForText.Tokenize("    abc     123    ")).IsSequenceEqualTo(new[] { "abc", "123" });
+            await Assert.That("    abc     123    ".Tokenize()).IsSequenceEqualTo(new[] { "abc", "123" });
 
-            await Assert.That(CodeSugarForText.Tokenize("abc")).IsSequenceEqualTo(new[] { "abc" });
+            await Assert.That("abc".Tokenize()).IsSequenceEqualTo(new[] { "abc" });
 
-            await Assert.That(CodeSugarForText.Tokenize("-a --b -c:hello -d:{hello world} -e",null, blocks)).IsSequenceEqualTo(new[] { "-a","--b","-c:hello","-d:hello world","-e" });
+            await Assert.That("-a --b -c:hello -d:{hello world} -e".Tokenize(null, blocks)).IsSequenceEqualTo(new[] { "-a","--b","-c:hello","-d:hello world","-e" });
         }
 
         #if NET8_0_OR_GREATER

@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\Generator.props"/>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\CodeSugar.System.Templates\**\*.cs" LinkBase="Templates\System" />
+    <EmbeddedResource Remove="..\CodeSugar.System.Templates\obj\**" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <Description>
+      Source generator that emits useful extension methods for:
+      - System
+      - System.Text
+    </Description>
+  </PropertyGroup>
+
+</Project>

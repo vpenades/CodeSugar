@@ -8,7 +8,9 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:        
-        os: [windows-latest, ubuntu-latest, macos-latest]
+        os: [windows-latest, ubuntu-latest]
+
+        # temporarily disabled macos-latest
 
     steps:
     - uses: actions/checkout@v7

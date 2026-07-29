@@ -66,7 +66,7 @@ namespace CodeSugar
                 // Alias name
                 var alias = usingDirective.Alias.Name.Identifier.Text;
                 // The fully-qualified name/expression
-                var name = usingDirective.Name.ToString();
+                var name = usingDirective?.Name?.ToString() ?? string.Empty;
 
                 yield return new KeyValuePair<string, string>(alias, name);
             }

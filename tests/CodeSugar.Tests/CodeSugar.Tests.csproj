@@ -32,9 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\CodeSugar.ICommand\CodeSugar.ICommand.csproj" />    
-    <ProjectReference Include="..\..\src\CodeSugar.Sys.Sources\CodeSugar.Sys.csproj" />
-    <ProjectReference Include="..\..\src\CodeSugar.Sys.Text.Sources\CodeSugar.Sys.Text.csproj" />
+    <ProjectReference Include="..\..\src\CodeSugar.ICommand\CodeSugar.ICommand.csproj" />
   </ItemGroup>
 
   <Choose>
@@ -42,6 +40,7 @@
       <ItemGroup>
         <ProjectReference Include="..\..\src\CodeSugar.IO.Templates\CodeSugar.IO.Templates.csproj" />
 				<ProjectReference Include="..\..\src\CodeSugar.Linq.Templates\CodeSugar.Linq.Templates.csproj" />
+        <ProjectReference Include="..\..\src\CodeSugar.System.Templates\CodeSugar.System.Templates.csproj" />
 				<ProjectReference Include="..\..\src\CodeSugar.Logging.Templates\CodeSugar.Logging.Templates.csproj" />
 				<ProjectReference Include="..\..\src\CodeSugar.Serialization.Templates\CodeSugar.Serialization.Templates.csproj" />
       </ItemGroup>
@@ -50,6 +49,7 @@
       <ItemGroup>
         <ProjectReference Include="..\..\src\CodeSugar.IO.SourceGenerator\CodeSugar.IO.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 				<ProjectReference Include="..\..\src\CodeSugar.Linq.SourceGenerator\CodeSugar.Linq.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\..\src\CodeSugar.System.SourceGenerator\CodeSugar.System.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 				<ProjectReference Include="..\..\src\CodeSugar.Logging.SourceGenerator\CodeSugar.Logging.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 				<ProjectReference Include="..\..\src\CodeSugar.Serialization.SourceGenerator\CodeSugar.Serialization.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
       </ItemGroup>

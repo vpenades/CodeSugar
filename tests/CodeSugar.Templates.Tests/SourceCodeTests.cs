@@ -9,6 +9,7 @@ namespace CodeSugar
 {
     internal class SourceCodeTests
     {
+        /*
         [Test]
         [Explicit] // to be replaced by a template analyzer
         [Arguments(typeof(CodeSugarForSystem))]                
@@ -34,15 +35,21 @@ namespace CodeSugar
 
                 Console.Out.WriteLine(string.Empty);
             }
-        }
+        }*/
 
-
+        /// <summary>
+        /// tests whether File.Exists and Directory.Exists are explicitly used,
+        /// because the value is cached and can produce false positives.
+        /// </summary>
+        /// <param name="projectName"></param>        
         [Test]
-        [Explicit] // to be replaced by a template analyzer
-        [Arguments("CodeSugar.Sys.IO.Sources")]
-        [Arguments("CodeSugar.Sys.Sources")]
-        [Arguments("CodeSugar.Srlzn.Bin.Sources")]
-        [Arguments("CodeSugar.FileProviders.Sources")]        
+        [Arguments("CodeSugar.IO.Templates")]
+        [Arguments("CodeSugar.Linq.Templates")]
+        [Arguments("CodeSugar.System.Templates")]
+        [Arguments("CodeSugar.Numerics.Templates")]
+        [Arguments("CodeSugar.Imaging.Templates")]
+        [Arguments("CodeSugar.Logging.Templates")]
+        [Arguments("CodeSugar.Serialization.Templates")]        
         public async Task TestUsingExistsProperty(string projectName)
         {
             var dinfo = new System.IO.DirectoryInfo(AppContext.BaseDirectory).FindDirectoryTree("src", projectName);
@@ -50,7 +57,7 @@ namespace CodeSugar
 
             foreach(var finfo in dinfo.EnumerateFiles("*.cs", System.IO.SearchOption.TopDirectoryOnly))
             {
-                var sc = finfo.GetReadStreamFunction().ReadAllText();
+                var sc = finfo.ReadAllText();
 
                 var result1 = _RoslynExtensions.CheckUsesProperty<System.IO.FileInfo>(sc, "Exists");
                 await Assert.That(result1).IsFalse().Because($"{finfo.Name} uses System.IO.FileInfo.Exists");
@@ -66,25 +73,14 @@ namespace CodeSugar
         /// <summary>
         /// tests that all files have #nullable disable
         /// </summary>
-        /// <param name="projectName"></param>
-
         [Test]
-        [Explicit] // to be replaced by a template analyzer
-        [Arguments("CodeSugar.Sys.Sources")]
-        [Arguments("CodeSugar.Sys.IO.Sources")]        
-        [Arguments("CodeSugar.Sys.Text.Sources")]
-        [Arguments("CodeSugar.Srlzn.Bin.Sources")]
-        [Arguments("CodeSugar.FileProviders.Sources")]
-        
-
-        [Arguments("CodeSugar.Linq.Sources")]
-        [Arguments("CodeSugar.Numerics.Sources")]
-        [Arguments("CodeSugar.Tensors.Sources")]
-
-        [Arguments("CodeSugar.Progress.Log")]
-        [Arguments("CodeSugar.AI")]
-        [Arguments("CodeSugar.ImageSharp")]
-
+        [Arguments("CodeSugar.IO.Templates")]
+        [Arguments("CodeSugar.Linq.Templates")]
+        [Arguments("CodeSugar.System.Templates")]
+        [Arguments("CodeSugar.Numerics.Templates")]
+        [Arguments("CodeSugar.Imaging.Templates")]
+        [Arguments("CodeSugar.Logging.Templates")]
+        [Arguments("CodeSugar.Serialization.Templates")]        
         public async Task TestNullableDisabled(string projectName)
         {
             var dinfo = new System.IO.DirectoryInfo(AppContext.BaseDirectory).FindDirectoryTree("src", projectName);
@@ -92,7 +88,7 @@ namespace CodeSugar
 
             foreach (var finfo in dinfo.EnumerateFiles("*.cs", System.IO.SearchOption.TopDirectoryOnly))
             {
-                var sc = finfo.GetReadStreamFunction().ReadAllText();
+                var sc = finfo.ReadAllText();
                 // TODO: TUnit migration - Complex NUnit constraint. Manual conversion required.
 
                 await Assert.That(sc).Contains("#nullable disable").Because($"{projectName}/{finfo.Name} does not have #nullable disable");
@@ -102,24 +98,15 @@ namespace CodeSugar
 
         /// <summary>
         /// Tests whether all using xxx = yyy; instances begin with double underscores '__' to prevent collisions with global usings.
-        /// </summary>
-        /// <param name="projectName"></param>
-        
+        /// </summary>        
         [Test]
-        [Explicit] // to be replaced by a template analyzer
-        [Arguments("CodeSugar.Sys.Sources")]
-        [Arguments("CodeSugar.Sys.IO.Sources")]
-        [Arguments("CodeSugar.Sys.Text.Sources")]
-        [Arguments("CodeSugar.Srlzn.Bin.Sources")]
-        [Arguments("CodeSugar.FileProviders.Sources")]        
-
-        [Arguments("CodeSugar.Linq.Sources")]
-        [Arguments("CodeSugar.Numerics.Sources")]
-        [Arguments("CodeSugar.Tensors.Sources")]        
-
-        [Arguments("CodeSugar.Progress.Log")]
-        [Arguments("CodeSugar.AI")]
-        [Arguments("CodeSugar.ImageSharp")]        
+        [Arguments("CodeSugar.IO.Templates")]
+        [Arguments("CodeSugar.Linq.Templates")]
+        [Arguments("CodeSugar.System.Templates")]
+        [Arguments("CodeSugar.Numerics.Templates")]
+        [Arguments("CodeSugar.Imaging.Templates")]
+        [Arguments("CodeSugar.Logging.Templates")]
+        [Arguments("CodeSugar.Serialization.Templates")]
         public async Task TestUsingAlias(string projectName)
         {
             var dinfo = new System.IO.DirectoryInfo(AppContext.BaseDirectory).FindDirectoryTree("src", projectName);
@@ -129,14 +116,16 @@ namespace CodeSugar
 
             foreach (var finfo in dinfo.EnumerateFiles("*.cs", System.IO.SearchOption.TopDirectoryOnly))
             {
-                var sc = finfo.GetReadStreamFunction().ReadAllText();
+                var sc = finfo.ReadAllText();
 
                 foreach (var kvp in _RoslynExtensions.EnumerateUsingAliasDirectives(sc).Distinct())
                 {
-                    var alias = kvp.Key;
-                    // TODO: TUnit migration - Complex NUnit constraint. Manual conversion required.
+                    var alias = kvp.Key;                    
 
-                    await Assert.That(alias).StartsWith("__").Because($"using {alias} in file {finfo.FullName} must begin with '__' to prevent collisions with global using");
+                    await Assert
+                        .That(alias)
+                        .StartsWith("__")
+                        .Because($"using {alias} in file {finfo.FullName} must begin with '__' to prevent collisions with global using");
                 }
             }
         }
