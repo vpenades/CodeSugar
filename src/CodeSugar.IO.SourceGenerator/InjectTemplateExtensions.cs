@@ -29,6 +29,7 @@ namespace CodeSugar
             var processor = new TemplateCodeProcessor(cgc);
 
             processor.UsesNuget("System.Text.Json");
+            processor.UsesNuget("System.IO.Hashing");
             processor.UsesNuget("Mono.Android");
             processor.UsesNuget("Microsoft.Extensions.FileProviders.Abstractions");
             processor.UsesNuget("Microsoft.Extensions.FileProviders.Physical");
