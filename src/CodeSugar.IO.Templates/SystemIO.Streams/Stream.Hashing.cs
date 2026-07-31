@@ -117,13 +117,10 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         {
             GuardReadable(stream);
 
-            if (stream is __MEMSTREAM memStream)
-            {
-                if (memStream.TryGetBuffer(out var buff))
-                {
-                    buff = buff.Slice((int)memStream.Position);
-                    return engine.ComputeHash(buff.Array, buff.Offset, buff.Count);
-                }
+            if (TryGetMemoryBuffer(stream, out var buff))
+            {                
+                buff = buff.Slice((int)stream.Position);
+                return engine.ComputeHash(buff.Array, buff.Offset, buff.Count);                
             }
 
             var position = stream.CanSeek ? stream.Position : -1;
@@ -135,5 +132,50 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             return value;
         }
+
+        #if __REFERENCES_SYSTEMIOHASHING        
+
+        public static Byte[] ComputeCrc32(this Func<__STREAM> streamFunc)
+        {
+            using (var s = streamFunc()) { return ComputeCrc32(s); }
+        }
+
+        public static Byte[] ComputeCrc32(this __STREAM stream)
+        {            
+            return _ComputeHash(stream, new System.IO.Hashing.Crc32());
+        }
+
+        public static Byte[] ComputeCrc64(this Func<__STREAM> streamFunc)
+        {
+            using (var s = streamFunc()) { return ComputeCrc64(s); }
+        }
+
+        public static Byte[] ComputeCrc64(this __STREAM stream)
+        {
+            return _ComputeHash(stream, new System.IO.Hashing.Crc64());
+        }
+
+        private static Byte[] _ComputeHash(__STREAM stream, System.IO.Hashing.NonCryptographicHashAlgorithm engine)
+        {
+            GuardReadable(stream);
+
+            if (TryGetMemoryBuffer(stream, out var buff))
+            {                
+                buff = buff.Slice((int)stream.Position);
+                engine.Append(buff);
+                return engine.GetCurrentHash();                
+            }
+
+            var position = stream.CanSeek ? stream.Position : -1;
+
+            engine.Append(stream);
+
+            // try restore stream's position
+            try { if (position >= 0) stream.Position = position; } catch { }
+
+            return engine.GetCurrentHash();
+        }
+
+        #endif
     }
 }

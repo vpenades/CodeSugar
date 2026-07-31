@@ -10,9 +10,11 @@
     <DefineConstants>$(DefineConstants);__REFERENCES_SYSTEMTEXTJSON</DefineConstants>
 		<DefineConstants>$(DefineConstants);__REFERENCES_MICROSOFTIORECYCLABLEMEMORYSTREAM</DefineConstants>
 		<DefineConstants>$(DefineConstants);__REFERENCES_SHARPCOMPRESS</DefineConstants>
+    <DefineConstants>$(DefineConstants);__REFERENCES_SYSTEMIOHASHING</DefineConstants>
   </PropertyGroup>  
 
   <ItemGroup>
+    <PackageReference Include="System.IO.Hashing" Version="10.0.10" />
     <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.1" />
     <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="10.0.10" />
     <PackageReference Include="SharpCompress" Version="0.50.1" />

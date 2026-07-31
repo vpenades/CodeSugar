@@ -18,6 +18,19 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarExtensions
     {
+        /// <summary>
+        /// returns the internal memory buffer if the stream is a <see cref="__MEMSTREAM"/>
+        /// </summary>
+        /// <param name="stream">The stream to probe</param>
+        /// <param name="segment">the buffer</param>
+        /// <returns>true on success</returns>
+        public static bool TryGetMemoryBuffer(this __STREAM stream, out __BYTESSEGMENT segment)
+        {
+            if (stream is __MEMSTREAM mem && mem.TryGetBuffer(out segment)) return true;
+            segment = default;
+            return false;
+        }
+
         public static __MEMSTREAM ToMemoryStream([DisallowNull] this Func<__STREAM> readerFunc)
         {
             using(var s = readerFunc.Invoke())
