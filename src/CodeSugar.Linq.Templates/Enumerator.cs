@@ -23,6 +23,5 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             if (ctor.MoveNext()) return ctor.Current;
             throw new ArgumentException("unexpected end of collection", nameof(ctor));
         }
-
     }
 }
