@@ -20,9 +20,9 @@ namespace CodeSugar
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
             // triggers | todo: get frameworks  
-            var withLanguageDataProvider = context.ParseOptionsProvider.Select(TryGetLanguageFeatures);    // trigger when language changes
-            var withRootNamespace = context.AnalyzerConfigOptionsProvider.Select(TryGetRootNamespace); // trigger when RootNamespace changes
-            var withNugetPackages = context.CompilationProvider.Select(TryGetNugetPackages);           // trigger when package references changes            
+            var withLanguageDataProvider = context.GetLanguageVersionProvider();
+            var withRootNamespace = context.GetRootNamespaceProvider();
+            var withNugetPackages = context.GetPackageReferencesProvider();
 
             // combined triggers
             var provider = withRootNamespace
@@ -30,75 +30,20 @@ namespace CodeSugar
                 .Combine(withNugetPackages);
 
             // executed on any triggers signal
-            context.RegisterSourceOutput(provider, (ctx, args) => _TryInjectSources(ctx, args.Left.Left!, args.Left.Right, args.Right) );
-        }
-
-        private static LanguageVersion TryGetLanguageFeatures(ParseOptions options, CancellationToken token)
-        {
-            if (options is not CSharpParseOptions csParseOptions)
-            {
-                throw new NotSupportedException($"Only {LanguageNames.CSharp} is supported.");
-            }
-
-            var langVersion = csParseOptions.LanguageVersion.MapSpecifiedToEffectiveVersion();
-
-            if (langVersion == LanguageVersion.Default) throw new InvalidOperationException("invalid language version");
-
-            return langVersion;
-        }
-
-        private static string? TryGetRootNamespace(AnalyzerConfigOptionsProvider options, CancellationToken token)
-        {
-            // retrieve Root namespace. MSBuild properties require the "build_property." prefix
-            return options.GlobalOptions.TryGetValue("build_property.RootNamespace", out var rootNamespace)
-                ? rootNamespace
-                : null;
-        }
-
-        private static Dictionary<string,string>? TryGetNugetPackages(Compilation compilation, CancellationToken token)
-        {
-            var dict = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);            
-
-            foreach (var reference in compilation.References)
-            {
-                if (reference is not PortableExecutableReference peRef) continue;
-                if (compilation.GetAssemblyOrModuleSymbol(peRef) is not IAssemblySymbol symbol) continue;
-
-                string version = string.Empty;
-
-                // Check InternalsVisibleTo or other assembly attributes
-                foreach (var attr in symbol.GetAttributes())
+            context.RegisterSourceOutput(provider,
+                (ctx, args) =>
                 {
-                    if (attr.AttributeClass?.Name == "InformationalVersionAttribute" ||
-                        attr.AttributeClass?.Name == "AssemblyVersionAttribute")
-                    {
-                        version = attr.ToString();                        
-                    }
-                }
+                    var (rns, lang, nugets) = IncrementalValueProviders.Untangle(args);
 
-                dict.Add(symbol.Name, version);
-            }
-
-            return dict;
-        }
-
-        private static Dictionary<string, bool>? TryGetSpecificTypes(Compilation compilation, CancellationToken token, params string[] typeFullNames)
-        {
-            var dict = new Dictionary<string, bool>();
-
-            foreach(var tfn in typeFullNames)
-            {
-                dict[tfn] = compilation.GetTypeByMetadataName(tfn) != null;
-            }
-
-            return dict;
-        }
+                    _TryInjectSources(ctx, rns, lang, nugets);
+                });
+        }        
 
         #endregion
 
         #region API
 
-        private void _TryInjectSources(SourceProductionContext context, string rootNamespace, LanguageVersion lang, Dictionary<string,string>? nupkgs)
+        private void _TryInjectSources(SourceProductionContext context, string? rootNamespace, LanguageVersion lang, Dictionary<string,string> nupkgs)
         {
             var ns = rootNamespace?.Trim();
 
@@ -109,7 +54,7 @@ namespace CodeSugar
                 return;
             }
 
-            if (nupkgs == null) return;
+            if (nupkgs.Count == 0) return;
 
             var cgc = new CodeGenerationContext(ns!, lang, nupkgs);
 
