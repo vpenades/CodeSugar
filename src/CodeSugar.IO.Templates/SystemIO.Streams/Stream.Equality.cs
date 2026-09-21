@@ -27,13 +27,13 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             if (Object.ReferenceEquals(a, b)) return true; // both files are the same
 
-            return StreamEquals(a.Open, b.Open, memStreamFactory, bufferSize);
+            return StreamEquals(a.GetStreamFunction(), b.GetStreamFunction(), memStreamFactory, bufferSize);
         }
 
         public static bool StreamEquals(this __FINFO a, __STREAMFUNC b, Func<long, __MEMSTREAM> memStreamFactory = null, int bufferSize = DEFAULTEQUALITYCOMPAREBUFFERLENGTH)
         {
             GuardExists(a);
-            return StreamEquals(a.Open, b, memStreamFactory, bufferSize);
+            return StreamEquals(a.GetStreamFunction(), b, memStreamFactory, bufferSize);
         }
 
         public static bool StreamEquals(this __STREAMFUNC a, __STREAMFUNC b, Func<long, __MEMSTREAM> memStreamFactory = null, int bufferSize = DEFAULTEQUALITYCOMPAREBUFFERLENGTH)

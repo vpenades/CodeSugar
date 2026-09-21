@@ -44,9 +44,13 @@ namespace CodeSugar
         [Test]
         public async Task TestMicrosoftPhysicalFileProvider()
         {
-            using (var pp = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(_CreateMockup1().FullName))
+            var mockup = _CreateMockup1();
+
+            using (var pp = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(mockup.FullName))
             {
-                await _TestMockup1(pp.GetDirectoryContents(string.Empty));                
+                var contents = pp.GetDirectoryContents(string.Empty);
+
+                await _TestMockup1(contents);
             }
         }
 
@@ -119,11 +123,21 @@ namespace CodeSugar
         {
             lock (_CreateMockup1Mutex)
             {
-                var baseDir = new System.IO.DirectoryInfo(AppContext.BaseDirectory).DefineDirectoryInfo("FileProviders");
+                var baseDir = new System.IO.DirectoryInfo(AppContext.BaseDirectory).UseDirectoryInfo("FileProviders");
 
-                baseDir.DefineFileInfo("file1.txt").GetStreamFunction().WriteAllText("hello");
-                baseDir.DefineFileInfo("file2.txt").GetStreamFunction().WriteAllText("hello");
-                baseDir.UseDirectoryInfo("subdir1").DefineFileInfo("file3.txt").GetStreamFunction().WriteAllText("hello");
+                var a = baseDir.DefineFileInfo("file1.txt");
+                var b = baseDir.DefineFileInfo("file2.txt");
+                var c = baseDir.UseDirectoryInfo("subdir1").DefineFileInfo("file3.txt");
+
+                if (a.Exists && b.Exists && c.Exists) return baseDir;
+
+                a.GetStreamFunction().WriteAllText("hello");
+                b.GetStreamFunction().WriteAllText("hello");
+                c.GetStreamFunction().WriteAllText("hello");
+
+                if (!a.PhysicallyExists()) throw new InvalidOperationException($"could not create {a.Name}");
+                if (!b.PhysicallyExists()) throw new InvalidOperationException($"could not create {b.Name}");
+                if (!c.PhysicallyExists()) throw new InvalidOperationException($"could not create {c.Name}");
 
                 return baseDir;
             }

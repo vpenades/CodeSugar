@@ -112,8 +112,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         /// <returns>true if it needd to create the directory</returns>
         public static bool EnsureDirectoryExists(this __DINFO directory)
         {
-            GuardNotNull(directory);
-
+            if (directory == null) return false;
             directory.Refresh();
             return _EnsureDirectoryExists(directory);
         }

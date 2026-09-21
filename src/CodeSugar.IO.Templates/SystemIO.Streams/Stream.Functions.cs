@@ -40,14 +40,16 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         [System.Runtime.CompilerServices.MethodImpl(AGRESSIVE)]
         public static async Task<System.IO.Stream> OpenReadAsync(this __STREAMTASK func, CancellationToken token)
         {
-            var s = await func?.Invoke(_MODEREAD, token);
+            if (func == null) return null;
+            var s = await func.Invoke(_MODEREAD, token).ConfigureAwait(false);
             return s;
         }
 
         [System.Runtime.CompilerServices.MethodImpl(AGRESSIVE)]
         public static async Task<System.IO.Stream> OpenWriteAsync(this __STREAMTASK func, CancellationToken token)
         {
-            var s = await func?.Invoke(_MODEWRITE, token);
+            if (func == null) return null;
+            var s = await func.Invoke(_MODEWRITE, token).ConfigureAwait(false);
             return s;
         }
 
@@ -62,6 +64,30 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 {
                     case System.IO.FileMode.Open: return readStreamFunc?.Invoke() ?? throw new InvalidOperationException($"Unsupported: {mode}");
                     case System.IO.FileMode.Create: return writeStreamFunc?.Invoke() ?? throw new InvalidOperationException($"Unsupported: {mode}");
+                    default: throw new InvalidOperationException($"Unsupported: {mode}");
+                }
+            }
+
+            return _Open;
+        }
+
+        [System.Runtime.CompilerServices.MethodImpl(AGRESSIVE)]
+        internal static __STREAMTASK _ToStreamTask(Func<CancellationToken, ValueTask<System.IO.Stream>> readStreamFunc, Func<CancellationToken, ValueTask<System.IO.Stream>> writeStreamFunc)
+        {
+            async Task<System.IO.Stream> _Open(System.IO.FileMode mode, CancellationToken token)
+            {
+                switch (mode)
+                {
+                    case System.IO.FileMode.Open:
+                        {
+                            var t = readStreamFunc?.Invoke(token) ?? throw new InvalidOperationException($"Unsupported: {mode}");
+                            return await t.ConfigureAwait(false);
+                        }
+                    case System.IO.FileMode.Create:
+                        {
+                            var t = writeStreamFunc?.Invoke(token) ?? throw new InvalidOperationException($"Unsupported: {mode}");
+                            return await t.ConfigureAwait(false);
+                        }
                     default: throw new InvalidOperationException($"Unsupported: {mode}");
                 }
             }
