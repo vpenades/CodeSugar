@@ -21,11 +21,17 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         [return: NotNull]
         public static __STREAMFUNC GetStreamFunction([NotNull] this __FINFO finfo)
         {
-            GuardExists(finfo);
+            GuardNotNull(finfo);            
 
             System.IO.Stream open(System.IO.FileMode mode)
             {
-                return finfo.Open(mode);
+                switch(mode)
+                {
+                    case System.IO.FileMode.Open: GuardExists(finfo); return finfo.OpenRead();
+                    case System.IO.FileMode.Append: GuardExists(finfo); return finfo.Open(System.IO.FileMode.Append);
+                    case System.IO.FileMode.Create: return finfo.Create();                    
+                    default: return finfo.Open(mode);                        
+                }
             }
 
             return open;            
