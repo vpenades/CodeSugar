@@ -121,9 +121,9 @@ namespace CodeSugar
             {
                 var baseDir = new System.IO.DirectoryInfo(AppContext.BaseDirectory).DefineDirectoryInfo("FileProviders");
 
-                baseDir.DefineFileInfo("file1.txt").GetWriteStreamFunction().WriteAllText("hello");
-                baseDir.DefineFileInfo("file2.txt").GetWriteStreamFunction().WriteAllText("hello");
-                baseDir.UseDirectoryInfo("subdir1").DefineFileInfo("file3.txt").GetWriteStreamFunction().WriteAllText("hello");
+                baseDir.DefineFileInfo("file1.txt").GetStreamFunction().WriteAllText("hello");
+                baseDir.DefineFileInfo("file2.txt").GetStreamFunction().WriteAllText("hello");
+                baseDir.UseDirectoryInfo("subdir1").DefineFileInfo("file3.txt").GetStreamFunction().WriteAllText("hello");
 
                 return baseDir;
             }

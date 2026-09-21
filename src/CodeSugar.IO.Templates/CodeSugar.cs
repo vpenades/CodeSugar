@@ -5,6 +5,8 @@ using System.IO;
 
 #nullable disable
 
+using __METHODOPTIONS = System.Runtime.CompilerServices.MethodImplOptions;
+
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     [System.ComponentModel.EditorBrowsable(System.ComponentModel.EditorBrowsableState.Never)]
@@ -12,6 +14,12 @@ namespace __CODESUGAR_ROOTNAMESPACE__
     internal static partial class CodeSugarExtensions    
     {
         #region constants
+
+        #if NETSTANDARD1_6_OR_GREATER
+        private const __METHODOPTIONS AGRESSIVE = __METHODOPTIONS.AggressiveInlining;
+        #else
+        private const __METHODOPTIONS AGRESSIVE = __METHODOPTIONS.AggressiveInlining | __METHODOPTIONS.AggressiveOptimization;
+        #endif
 
         private static System.Collections.Concurrent.ConcurrentDictionary<string, System.IO.DriveInfo> _InternedFixedDrives;
 

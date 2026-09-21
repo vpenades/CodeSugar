@@ -12,6 +12,9 @@ using System.Runtime.CompilerServices;
 using __STREAM = System.IO.Stream;
 using __BYTESSEGMENT = System.ArraySegment<byte>;
 
+using __STREAMFUNC = System.Func<System.IO.FileMode, System.IO.Stream>;
+using __STREAMTASK = System.Func<System.IO.FileMode, System.Threading.CancellationToken, System.Threading.Tasks.Task<System.IO.Stream>>;
+
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarExtensions
@@ -100,10 +103,10 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             return new System.IO.BinaryReader(stream, encoding, leaveStreamOpen);
         }
 
-        public static void WriteAllBytes<TCollection>(this Func<__STREAM> createStream, TCollection bytes)
+        public static void WriteAllBytes<TCollection>(this __STREAMFUNC createStream, TCollection bytes)
             where TCollection: IReadOnlyList<Byte>
         {
-            using (var s = createStream.Invoke())
+            using (var s = createStream.OpenWrite())
             {                
                 WriteAllBytes(s, bytes);
             }
@@ -158,10 +161,10 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
         }
 
-        public static async Task WriteAllBytesAsync<TCollection>(this Task<__STREAM> streamTask, TCollection bytes, CancellationToken ctoken = default)
+        public static async Task WriteAllBytesAsync<TCollection>(this __STREAMTASK streamTask, TCollection bytes, CancellationToken ctoken = default)
             where TCollection : IReadOnlyList<Byte>
         {
-            using (var s = await streamTask)
+            using (var s = await streamTask.OpenWriteAsync(ctoken))
             {
                 await WriteAllBytesAsync(s, bytes, ctoken);
             }
@@ -171,10 +174,10 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 		/// Writes all the bytes to the given stream.
 		/// Equivalent to <see cref="System.IO.File.WriteAllBytesAsync(string, byte[], CancellationToken)"/>
 		/// </summary>  
-		public static async Task WriteAllBytesAsync<TCollection>(this Func<__STREAM> createStream, TCollection bytes, CancellationToken ctoken = default)
+		public static async Task WriteAllBytesAsync<TCollection>(this __STREAMFUNC createStream, TCollection bytes, CancellationToken ctoken = default)
             where TCollection : IReadOnlyList<Byte>
         {
-            using (var s = createStream.Invoke())
+            using (var s = createStream.OpenWrite())
             {
                 await WriteAllBytesAsync(s, bytes, ctoken);
             }
@@ -210,17 +213,17 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
         }
 
-        public static async Task<__BYTESSEGMENT> ReadAllBytesAsync(this Func<Task<__STREAM>> openStream, CancellationToken ctoken)
+        public static async Task<__BYTESSEGMENT> ReadAllBytesAsync(this __STREAMTASK openStream, CancellationToken ctoken)
         {
-            using (var s = await openStream().ConfigureAwait(false))
+            using (var s = await openStream.OpenReadAsync(ctoken).ConfigureAwait(false))
             {
                 return await s.ReadAllBytesAsync(ctoken).ConfigureAwait(false);
             }
         }
 
-        public static __BYTESSEGMENT ReadAllBytes(this Func<__STREAM> openStream)
+        public static __BYTESSEGMENT ReadAllBytes(this __STREAMFUNC openStream)
         {
-            using (var s = openStream.Invoke())
+            using (var s = openStream.OpenRead())
             {                
                 return s.ReadAllBytes();
             }
@@ -283,9 +286,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             return new __BYTESSEGMENT(bytes);
         }
 
-        public static async Task<__BYTESSEGMENT> ReadAllBytesAsync(this Func<__STREAM> openStream, CancellationToken ctoken = default)
+        public static async Task<__BYTESSEGMENT> ReadAllBytesAsync(this __STREAMFUNC openStream, CancellationToken ctoken = default)
         {
-            using (var s = openStream.Invoke())
+            using (var s = openStream.OpenRead())
             {
                 return await ReadAllBytesAsync(s, ctoken).ConfigureAwait(false);
             }

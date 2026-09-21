@@ -12,6 +12,7 @@ using __XINFO = Microsoft.Extensions.FileProviders.IFileInfo;
 using __XPROVIDER = Microsoft.Extensions.FileProviders.IFileProvider;
 using __XDIRECTORY = Microsoft.Extensions.FileProviders.IDirectoryContents;
 
+using __STREAMFUNC = System.Func<System.IO.FileMode, System.IO.Stream>;
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
@@ -46,7 +47,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         }
 
         [return: NotNull]
-        public static __XINFO ToIFileInfo([NotNull] this Func<System.IO.Stream> reader, [NotNull] string name, long len, DateTimeOffset lastWrite)
+        public static __XINFO ToIFileInfo([NotNull] this __STREAMFUNC reader, [NotNull] string name, long len, DateTimeOffset lastWrite)
         {
             return new _GenericFileInfo(name, len, lastWrite, reader);
         }
@@ -55,11 +56,11 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         public static __XINFO ToIFileInfo([NotNull] this Func<string, System.IO.Stream> reader, [NotNull] string name, long len, DateTimeOffset lastWrite)
         {
             if (reader == null) throw new ArgumentNullException(nameof(reader));
-            return new _GenericFileInfo(name, len, lastWrite, ()=> reader.Invoke(name));
+            return new _GenericFileInfo(name, len, lastWrite, _ToStreamFunc(()=> reader.Invoke(name),null));
         }        
 
         [return: NotNull]
-        public static __XINFO ToIFileInfo([NotNull] this Func<System.IO.Stream> reader, [NotNull] string name, long len)
+        public static __XINFO ToIFileInfo([NotNull] this __STREAMFUNC reader, [NotNull] string name, long len)
         {
             return new _GenericFileInfo(name, len, DateTime.Today, reader);
         }
@@ -68,19 +69,19 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         public static __XINFO ToIFileInfo([NotNull] this Func<string, System.IO.Stream> reader, [NotNull] string name, long len)
         {
             if (reader == null) throw new ArgumentNullException(nameof(reader));
-            return new _GenericFileInfo(name, len, DateTime.Today, () => reader.Invoke(name));
+            return new _GenericFileInfo(name, len, DateTime.Today, _ToStreamFunc(() => reader.Invoke(name),null));
         }
 
         [return: NotNull]
         public static __XINFO ToIFileInfo(this ArraySegment<byte> data, [NotNull] string name, DateTimeOffset lastWrite)
         {
-            return new _GenericFileInfo(name, data.Count, lastWrite, () => _ToMemoryStream(data));
+            return new _GenericFileInfo(name, data.Count, lastWrite, _ToStreamFunc( () => _ToMemoryStream(data), null));
         }
 
         [return: NotNull]
         public static __XINFO ToIFileInfo(this ArraySegment<byte> data, [NotNull] string name)
         {
-            return new _GenericFileInfo(name, data.Count, DateTime.Today, () => _ToMemoryStream(data));
+            return new _GenericFileInfo(name, data.Count, DateTime.Today, _ToStreamFunc(() => _ToMemoryStream(data), null));
         }
 
         #endregion
@@ -88,51 +89,55 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         #region stream functions
 
         [return: NotNull]
-        public static Func<System.IO.Stream> GetReadStreamFunction([NotNull] this __XINFO xinfo)
+        public static __STREAMFUNC GetStreamFunction([NotNull] this __XINFO xinfo)
         {
             GuardNotNull(xinfo);
             if (xinfo.IsDirectory) throw new ArgumentException("directories don't have a stream", nameof(xinfo));
 
-            return xinfo.CreateReadStream;
-        }
+            var writef = _TryGetWriteStreamFunction(xinfo, out var wf) ? wf : null;
 
-        [return: NotNull]
-        public static Func<System.IO.Stream> GetWriteStreamFunction([NotNull] this __XINFO xinfo)
+            return _ToStreamFunc(xinfo.CreateReadStream, writef);            
+        }        
+
+        private static bool _TryGetWriteStreamFunction([NotNull] this __XINFO xinfo, out Func<System.IO.Stream> wf)
         {
-            GuardNotNull(xinfo);
-            if (xinfo.IsDirectory) throw new ArgumentException("directories don't have a stream", nameof(xinfo));
-
             // if we can get the internal FileInfo, use it over PhysicalPath because we can update
             // it after writing, which will also update the public properties of the IFileInfo.
-            if (TryGetInternalFileInfo(xinfo, out var finfo)) 
+            if (TryGetInternalFileInfo(xinfo, out var finfo))
             {
-                return GetWriteStreamFunction(finfo, true); // true to update after finished writing
+                wf = ()=> GetWriteStreamFunction(finfo, true).OpenWrite(); // true to update after finished writing
+                return true;
             }
 
             // use the physical path.
             if (!string.IsNullOrWhiteSpace(xinfo.PhysicalPath))
             {
                 finfo = new System.IO.FileInfo(xinfo.PhysicalPath);
-                return GetWriteStreamFunction(finfo, false); // false because there's nothing to update
+                wf = ()=> GetWriteStreamFunction(finfo, false).OpenWrite(); // false because there's nothing to update
+                return true;
             }
 
             // try get the open stream lambdas
-            if (xinfo is IServiceProvider srv2)
+            if (xinfo is IServiceProvider srv)
             {
                 // file system writer
-                if (srv2.GetService(typeof(Func<FileMode, System.IO.Stream>)) is Func<FileMode, System.IO.Stream> lambda0)
+                if (srv.GetService(typeof(__STREAMFUNC)) is __STREAMFUNC lambda0)
                 {
-                    return () => lambda0.Invoke(FileMode.Create);
-                }                
+                    wf = () => lambda0.Invoke(FileMode.Create);
+                    return true;
+
+                }
 
                 // WriteAllBytes
-                if (srv2.GetService(typeof(Action<ArraySegment<Byte>>)) is Action<ArraySegment<Byte>> lambda1)
+                if (srv.GetService(typeof(Action<ArraySegment<Byte>>)) is Action<ArraySegment<Byte>> lambda1)
                 {
-                    return ()=> new _ObservableMemoryStream(lambda1);
-                }                
+                    wf = () => new _ObservableMemoryStream(lambda1);
+                    return true;
+                }
             }
 
-            return ()=> null;
+            wf = default;
+            return false;
         }
 
         #endregion
@@ -143,7 +148,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         sealed class _GenericFileInfo : __XINFO
         {
             #region lifecycle
-            public _GenericFileInfo(string name, long length, DateTimeOffset lastModified, Func<Stream> reader)
+            public _GenericFileInfo(string name, long length, DateTimeOffset lastModified, __STREAMFUNC reader)
             {
                 if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
                 if (name.Contains(System.IO.Path.AltDirectorySeparatorChar)) throw new ArgumentException(nameof(name));
@@ -165,7 +170,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             public DateTimeOffset LastModified { get; }
 
             [System.Diagnostics.DebuggerBrowsable(System.Diagnostics.DebuggerBrowsableState.Never)]
-            private readonly Func<System.IO.Stream> _Reader;
+            private readonly __STREAMFUNC _Reader;
 
             #endregion
 
@@ -181,7 +186,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             #region API
 
-            public Stream CreateReadStream() { return _Reader.Invoke(); }
+            public Stream CreateReadStream() { return _Reader.Invoke(System.IO.FileMode.Open); }
 
             #endregion
         }

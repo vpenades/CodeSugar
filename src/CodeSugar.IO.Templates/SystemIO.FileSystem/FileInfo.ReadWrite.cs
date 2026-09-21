@@ -11,40 +11,48 @@ using System.Threading;
 #nullable disable
 
 using __FINFO = System.IO.FileInfo;
-using __READSTREAM = System.IO.Stream;
-using __WRITESTREAM = System.IO.Stream;
+
+using __STREAMFUNC = System.Func<System.IO.FileMode, System.IO.Stream>;
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarExtensions    
     {
         [return: NotNull]
-        public static Func<__READSTREAM> GetReadStreamFunction([NotNull] this __FINFO finfo)
+        public static __STREAMFUNC GetStreamFunction([NotNull] this __FINFO finfo)
         {
             GuardExists(finfo);
-            return finfo.OpenRead;
-        }        
+
+            System.IO.Stream open(System.IO.FileMode mode)
+            {
+                return finfo.Open(mode);
+            }
+
+            return open;            
+        }
 
         [return: NotNull]
-        public static Func<__WRITESTREAM> GetWriteStreamFunction([NotNull] this __FINFO finfo, bool syncFile = true)
-        {
+        public static __STREAMFUNC GetWriteStreamFunction([NotNull] this __FINFO finfo, bool syncFile)
+            {
             GuardNotNull(finfo);
 
-            __WRITESTREAM openWriteBlind()
+            System.IO.Stream openWriteBlind()
             {
                 EnsureDirectoryExists(finfo.Directory);
                 return finfo.Create();
             }
 
-            __WRITESTREAM openWriteRefresh()
+            System.IO.Stream openWriteRefresh()
             {
                 EnsureDirectoryExists(finfo.Directory);
                 return finfo.Create().WithDisposeObserver(finfo.Refresh);
-            }
+            }            
 
-            return syncFile
-                ? (Func<__WRITESTREAM>)openWriteRefresh
-                : (Func<__WRITESTREAM>)openWriteBlind;
-        }
+            var f = syncFile
+                ? (Func<System.IO.Stream>)openWriteRefresh
+                : (Func<System.IO.Stream>)openWriteBlind;
+
+            return _ToStreamFunc(null, f);
+        }        
     }
 }

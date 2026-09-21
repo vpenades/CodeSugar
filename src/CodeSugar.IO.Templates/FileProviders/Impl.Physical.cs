@@ -192,7 +192,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             private void _WriteBytes(ArraySegment<Byte> bytes)
             {
-                Info.GetWriteStreamFunction().WriteAllBytes(bytes);
+                Info.GetStreamFunction().WriteAllBytes(bytes);
             }
 
             #endregion

@@ -45,7 +45,7 @@ namespace CodeSugar
 
             await Assert.That(finfo.Exists).IsTrue();
 
-            var text = finfo.GetReadStreamFunction().ReadAllText();
+            var text = finfo.GetStreamFunction().ReadAllText();
 
             await Assert.That(text.Contains("Hello world!")).IsTrue();
         }

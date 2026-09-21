@@ -8,6 +8,8 @@ using System.Text;
 
 using __SCARCHENTRY = SharpCompress.Archives.IArchiveEntry;
 
+using __STREAMFUNC = System.Func<System.IO.FileMode, System.IO.Stream>;
+
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarExtensions
@@ -27,17 +29,10 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         }
 
         [return: NotNull]
-        public static Func<System.IO.Stream> GetReadStreamFunction([NotNull] this __SCARCHENTRY entry)
+        public static __STREAMFUNC GetStreamFunction([NotNull] this __SCARCHENTRY entry)
         {
             GuardReadable(entry);
-            return entry.OpenEntryStream;
-        }
-
-        [return: NotNull]
-        public static Func<System.IO.Stream> GetWriteStreamFunction([NotNull] this __SCARCHENTRY entry)
-        {
-            GuardWriteable(entry);            
-            return entry.OpenEntryStream;
+            return _ToStreamFunc(entry.OpenEntryStream, entry.OpenEntryStream);
         }        
     }
 }

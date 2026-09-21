@@ -10,6 +10,8 @@ using __STREAM = System.IO.Stream;
 using __MEMSTREAM = System.IO.MemoryStream;
 using __BYTESEGMENT = System.ArraySegment<byte>;
 
+using __STREAMFUNC = System.Func<System.IO.FileMode, System.IO.Stream>;
+
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarExtensions
@@ -25,23 +27,23 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             if (Object.ReferenceEquals(a, b)) return true; // both files are the same
 
-            return StreamEquals(a.OpenRead, b.OpenRead, memStreamFactory, bufferSize);
+            return StreamEquals(a.Open, b.Open, memStreamFactory, bufferSize);
         }
 
-        public static bool StreamEquals(this __FINFO a, Func<__STREAM> b, Func<long, __MEMSTREAM> memStreamFactory = null, int bufferSize = DEFAULTEQUALITYCOMPAREBUFFERLENGTH)
+        public static bool StreamEquals(this __FINFO a, __STREAMFUNC b, Func<long, __MEMSTREAM> memStreamFactory = null, int bufferSize = DEFAULTEQUALITYCOMPAREBUFFERLENGTH)
         {
             GuardExists(a);
-            return StreamEquals(a.OpenRead, b, memStreamFactory, bufferSize);
+            return StreamEquals(a.Open, b, memStreamFactory, bufferSize);
         }
 
-        public static bool StreamEquals(this Func<__STREAM> a, Func<__STREAM> b, Func<long, __MEMSTREAM> memStreamFactory = null, int bufferSize = DEFAULTEQUALITYCOMPAREBUFFERLENGTH)
+        public static bool StreamEquals(this __STREAMFUNC a, __STREAMFUNC b, Func<long, __MEMSTREAM> memStreamFactory = null, int bufferSize = DEFAULTEQUALITYCOMPAREBUFFERLENGTH)
         {
             if (a == null) throw new ArgumentNullException(nameof(a));
             if (b == null) throw new ArgumentNullException(nameof(b));            
 
-            using (var x = a.Invoke())
+            using (var x = a.OpenRead())
             {
-                using (var y = b.Invoke())
+                using (var y = b.OpenRead())
                 {
                     return _StreamEqualsCore(x, y, false, memStreamFactory, bufferSize);
                 }

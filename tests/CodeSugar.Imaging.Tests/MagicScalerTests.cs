@@ -18,7 +18,7 @@ namespace CodeSugar
             // magic scaler setup
             var settings = new ProcessImageSettings { Width = 800 };            
 
-            var tensor = icon.File.GetReadStreamFunction().MagicScalerReadTensor<float>(settings, out _);            
+            var tensor = icon.File.GetStreamFunction().MagicScalerReadTensor<float>(settings, out _);            
 
             AttachmentInfo.From("CodeSugar.ImageSharp.png").WriteObjectEx(x=> tensor.ImageSharpSaveTo(x,true));
         }

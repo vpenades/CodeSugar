@@ -179,7 +179,7 @@ namespace CodeSugar
             Console.Out.WriteLine(readme_txt.FullName);
 
 
-            var text = readme_txt.GetReadStreamFunction().ReadAllText();
+            var text = readme_txt.GetStreamFunction().ReadAllText();
             await Assert.That(text).IsEqualTo("hello world");
 
             var file2 = readme_txt.Directory!.GetFileInfo("readme.txt");
@@ -187,9 +187,9 @@ namespace CodeSugar
             await Assert.That(file2.Exists).IsTrue();
             // Assert.That(readme_txt.FullNameEquals(file2)); // must fix equality handling
 
-            var rfinfo = AttachmentInfo.From("readme_2.txt").WriteObjectEx(f => f.GetWriteStreamFunction().WriteAllText("hello world 2"));
+            var rfinfo = AttachmentInfo.From("readme_2.txt").WriteObjectEx(f => f.GetStreamFunction().WriteAllText("hello world 2"));
 
-            await Assert.That(rfinfo.GetReadStreamFunction().ReadAllText()).IsEqualTo("hello world 2");
+            await Assert.That(rfinfo.GetStreamFunction().ReadAllText()).IsEqualTo("hello world 2");
 
             await Assert.That(System.Convert.ToHexString(readme_txt.ComputeSha256())).IsEqualTo("B94D27B9934D3E08A52E52D7DA7DABFAC484EFE37A5380EE9088F7ACE2EFCDE9");
 
@@ -243,11 +243,11 @@ namespace CodeSugar
 
             var data = new Byte[] { 1, 2, 3, 4 };
 
-            adsInfo.GetWriteStreamFunction().WriteAllBytes(data);
+            adsInfo.GetStreamFunction().WriteAllBytes(data);
             await Assert.That(adsInfo.Exists).IsTrue();
 
-            await Assert.That(workFile.GetReadStreamFunction().ReadAllText()).IsEqualTo("hello world");
-            await Assert.That(adsInfo.GetReadStreamFunction().ReadAllBytes()).IsSequenceEqualTo(data);
+            await Assert.That(workFile.GetStreamFunction().ReadAllText()).IsEqualTo("hello world");
+            await Assert.That(adsInfo.GetStreamFunction().ReadAllBytes()).IsSequenceEqualTo(data);
         }
 
 
@@ -270,15 +270,15 @@ namespace CodeSugar
             var readme_txt_0 = testDir.UseFileInfo("readme.txt");
             var readme_txt_1 = testDir.UseFileInfo("README.txt");
 
-            readme_txt_0.GetWriteStreamFunction().WriteAllText("lowercase");
-            readme_txt_1.GetWriteStreamFunction().WriteAllText("uppercase");
+            readme_txt_0.GetStreamFunction().WriteAllText("lowercase");
+            readme_txt_1.GetStreamFunction().WriteAllText("uppercase");
 
             foreach(var readme_txt in testDir.GetFiles("*.txt"))
             {
                 Console.Out.WriteLine(readme_txt.FullName);
             }
 
-            bool isCaseSensitiveOS = readme_txt_0.GetReadStreamFunction().ReadAllText() == "lowercase";
+            bool isCaseSensitiveOS = readme_txt_0.GetStreamFunction().ReadAllText() == "lowercase";
 
             Console.Out.WriteLine($"OS file system is case sensitive: {isCaseSensitiveOS}");            
 
@@ -356,12 +356,12 @@ namespace CodeSugar
 
                 using (var zip = zpath.CreateZipArchive())
                 {
-                    zip.CreateEntry("readme.txt").GetWriteStreamFunction().WriteAllText("hello world");
+                    zip.CreateEntry("readme.txt").GetStreamFunction().WriteAllText("hello world");
                 }                
 
                 using (var zip = zpath.OpenReadZipArchive())
                 {
-                    var txt = zip.GetEntry("readme.txt").GetReadStreamFunction().ReadAllText();
+                    var txt = zip.GetEntry("readme.txt").GetStreamFunction().ReadAllText();
                     await Assert.That(txt).IsEqualTo("hello world");
 
                     var dict = zip.ToDictionary();

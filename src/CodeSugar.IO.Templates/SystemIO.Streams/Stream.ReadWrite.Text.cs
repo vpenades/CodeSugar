@@ -10,6 +10,9 @@ using System.Linq;
 
 #nullable disable
 
+using __STREAMFUNC = System.Func<System.IO.FileMode, System.IO.Stream>;
+using __STREAMTASK = System.Func<System.IO.FileMode, System.Threading.CancellationToken, System.Threading.Tasks.Task<System.IO.Stream>>;
+
 using __READSTREAM = System.IO.Stream;
 using __WRITESTREAM = System.IO.Stream;
 
@@ -21,9 +24,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         private static readonly Encoding UTF8NoBOM = new UTF8Encoding(false);
         #endif
 
-        public static async Task<IReadOnlyList<string>> ReadAllLinesAsync(this Task<__READSTREAM> streamTask, CancellationToken ctoken = default, Encoding encoding = null)
+        public static async Task<IReadOnlyList<string>> ReadAllLinesAsync(this __STREAMTASK streamTask, CancellationToken ctoken = default, Encoding encoding = null)
         {
-            using (var s = await streamTask.ConfigureAwait(false))
+            using (var s = await streamTask.OpenReadAsync(ctoken).ConfigureAwait(false))
             {
                 return await ReadAllLinesAsync(s, ctoken, encoding).ConfigureAwait(false);
             }
@@ -45,9 +48,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
         }
 
-        public static IReadOnlyList<string> ReadAllLines(this Func<__READSTREAM> openStream, Encoding encoding = null)
+        public static IReadOnlyList<string> ReadAllLines(this __STREAMFUNC openStream, Encoding encoding = null)
         {
-            using (var s = openStream())
+            using (var s = openStream(_MODEREAD))
             {
                 return ReadAllLines(s, encoding);
             }
@@ -69,9 +72,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
         }
 
-        public static void WriteAllLines(this Func<__WRITESTREAM> streamFunc, Encoding encoding, params string[] lines)
+        public static void WriteAllLines(this __STREAMFUNC streamFunc, Encoding encoding, params string[] lines)
         {
-            using (var stream = streamFunc.Invoke())
+            using (var stream = streamFunc.OpenWrite())
             {
                 WriteAllLines(stream, encoding, lines);
             }
@@ -82,9 +85,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             WriteAllLines(stream, lines.AsEnumerable(), encoding);
         }
 
-        public static void WriteAllLines(this Func<__WRITESTREAM> streamFunc, IEnumerable<string> lines, Encoding encoding = null)
+        public static void WriteAllLines(this __STREAMFUNC streamFunc, IEnumerable<string> lines, Encoding encoding = null)
         {
-            using (var stream = streamFunc.Invoke())
+            using (var stream = streamFunc.OpenWrite())
             {
                 WriteAllLines(stream, lines, encoding);
             }
@@ -131,9 +134,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             #endif
         }
 
-        public static void WriteAllText(this Func<__WRITESTREAM> stream, string contents, Encoding encoding = null)
+        public static void WriteAllText(this __STREAMFUNC stream, string contents, Encoding encoding = null)
         {
-            using (var s = stream.Invoke())
+            using (var s = stream.OpenWrite())
             {
                 WriteAllText(s, contents, encoding);
             }
@@ -155,9 +158,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
         }
 
-        public static string ReadAllText(this Func<__READSTREAM> openStream, Encoding encoding = null)
+        public static string ReadAllText(this __STREAMFUNC openStream, Encoding encoding = null)
         {
-            using (var s = openStream())
+            using (var s = openStream(_MODEREAD))
             {
                 return ReadAllText(s, encoding);
             }
@@ -177,9 +180,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
         }
 
-        public static async Task<string> ReadAllTextAsync(this Task<__READSTREAM> streamTask, CancellationToken ctoken, Encoding encoding = null)
+        public static async Task<string> ReadAllTextAsync(this __STREAMTASK streamTask, CancellationToken ctoken, Encoding encoding = null)
         {
-            using (var s = await streamTask.ConfigureAwait(false))
+            using (var s = await streamTask.OpenReadAsync(ctoken).ConfigureAwait(false))
             {
                 return await ReadAllTextAsync(s, ctoken, encoding).ConfigureAwait(false);
             }

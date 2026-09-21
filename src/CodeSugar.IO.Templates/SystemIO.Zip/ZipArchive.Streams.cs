@@ -8,30 +8,25 @@ using System.Diagnostics.CodeAnalysis;
 
 using __ZIPENTRY = System.IO.Compression.ZipArchiveEntry;
 
+using __STREAMFUNC = System.Func<System.IO.FileMode, System.IO.Stream>;
+
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarExtensions    
     {
         [return: NotNull]
-        public static Func<System.IO.Stream> GetReadStreamFunction([NotNull] this __ZIPENTRY entry)
+        public static __STREAMFUNC GetStreamFunction([NotNull] this __ZIPENTRY entry)
         {
-            GuardReadable(entry);
-            return entry.Open;
-        }
-
-        [return: NotNull]
-        public static Func<System.IO.Stream> GetWriteStreamFunction([NotNull] this __ZIPENTRY entry)
-        {
-            GuardWriteable(entry);
-            return entry.Open;
-        }
+            GuardReadable(entry);            
+            return _ToStreamFunc(entry.Open, entry.Open);
+        }        
 
         public static void CopyToFile(this __ZIPENTRY entry, System.IO.FileInfo dst)
         {
             GuardReadable(entry);
             GuardNotNull(dst);            
 
-            using(var dstS = dst.GetWriteStreamFunction().Invoke())
+            using(var dstS = dst.GetWriteStreamFunction(true).OpenWrite())
             {
                 using(var srcS = entry.Open())
                 {

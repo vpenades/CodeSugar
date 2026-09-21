@@ -9,6 +9,8 @@ using __STREAM = System.IO.Stream;
 using __MEMSTREAM = System.IO.MemoryStream;
 using __LAZYHASHALGORYTHM = System.Lazy<System.Security.Cryptography.HashAlgorithm>;
 
+using __STREAMFUNC = System.Func<System.IO.FileMode, System.IO.Stream>;
+
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarExtensions
@@ -30,9 +32,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
         }
 
-        public static void ComputeHashes(this Func<__STREAM> streamFunc, params Byte[][] result)
+        public static void ComputeHashes(this __STREAMFUNC streamFunc, params Byte[][] result)
         {
-            using(var s = streamFunc()) { ComputeHashes(s, result); }
+            using(var s = streamFunc(_MODEREAD)) { ComputeHashes(s, result); }
         }
 
         /// <summary>
@@ -61,9 +63,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
         }
 
-        public static Byte[] ComputeSha512(this Func<__STREAM> streamFunc)
+        public static Byte[] ComputeSha512(this __STREAMFUNC streamFunc)
         {
-            using (var s = streamFunc()) { return ComputeSha512(s); }
+            using (var s = streamFunc(_MODEREAD)) { return ComputeSha512(s); }
         }
 
         /// <summary>
@@ -74,9 +76,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             return _ComputeHash(stream, _Sha512Engine.Value);
         }
 
-        public static Byte[] ComputeSha384(this Func<__STREAM> streamFunc)
+        public static Byte[] ComputeSha384(this __STREAMFUNC streamFunc)
         {
-            using (var s = streamFunc()) { return ComputeSha384(s); }
+            using (var s = streamFunc(_MODEREAD)) { return ComputeSha384(s); }
         }
 
         /// <summary>
@@ -87,9 +89,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             return _ComputeHash(stream, _Sha384Engine.Value);
         }
 
-        public static Byte[] ComputeSha256(this Func<__STREAM> streamFunc)
+        public static Byte[] ComputeSha256(this __STREAMFUNC streamFunc)
         {
-            using (var s = streamFunc()) { return ComputeSha256(s); }
+            using (var s = streamFunc(_MODEREAD)) { return ComputeSha256(s); }
         }
 
         /// <summary>
@@ -100,9 +102,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             return _ComputeHash(stream, _Sha256Engine.Value);
         }
 
-        public static Byte[] ComputeMd5(this Func<__STREAM> streamFunc)
+        public static Byte[] ComputeMd5(this __STREAMFUNC streamFunc)
         {
-            using (var s = streamFunc()) { return ComputeMd5(s); }
+            using (var s = streamFunc(_MODEREAD)) { return ComputeMd5(s); }
         }
 
         /// <summary>
@@ -135,9 +137,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
         #if __REFERENCES_SYSTEMIOHASHING        
 
-        public static Byte[] ComputeCrc32(this Func<__STREAM> streamFunc)
+        public static Byte[] ComputeCrc32(this __STREAMFUNC streamFunc)
         {
-            using (var s = streamFunc()) { return ComputeCrc32(s); }
+            using (var s = streamFunc(_MODEREAD)) { return ComputeCrc32(s); }
         }
 
         public static Byte[] ComputeCrc32(this __STREAM stream)
@@ -145,9 +147,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             return _ComputeHash(stream, new System.IO.Hashing.Crc32());
         }
 
-        public static Byte[] ComputeCrc64(this Func<__STREAM> streamFunc)
+        public static Byte[] ComputeCrc64(this __STREAMFUNC streamFunc)
         {
-            using (var s = streamFunc()) { return ComputeCrc64(s); }
+            using (var s = streamFunc(_MODEREAD)) { return ComputeCrc64(s); }
         }
 
         public static Byte[] ComputeCrc64(this __STREAM stream)

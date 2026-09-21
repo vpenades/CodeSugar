@@ -10,6 +10,8 @@ using __STREAM = System.IO.Stream;
 using __MEMSTREAM = System.IO.MemoryStream;
 using __BYTESSEGMENT = System.ArraySegment<byte>;
 
+using __STREAMFUNC = System.Func<System.IO.FileMode, System.IO.Stream>;
+
 #if __REFERENCES_MICROSOFTIORECYCLABLEMEMORYSTREAM
 using __BIGMEMSTREAM = Microsoft.IO.RecyclableMemoryStream;
 #endif
@@ -31,9 +33,9 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             return false;
         }
 
-        public static __MEMSTREAM ToMemoryStream([DisallowNull] this Func<__STREAM> readerFunc)
+        public static __MEMSTREAM ToMemoryStream([DisallowNull] this __STREAMFUNC readerFunc)
         {
-            using(var s = readerFunc.Invoke())
+            using(var s = readerFunc.OpenRead())
             {
                 return ToMemoryStream(s);
             }

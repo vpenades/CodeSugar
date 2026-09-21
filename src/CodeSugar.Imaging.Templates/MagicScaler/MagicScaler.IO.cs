@@ -8,14 +8,16 @@ using PhotoSauce.MagicScaler;
 
 using __SIZE = System.Drawing.Size;
 
+using __STREAMFUNC = System.Func<System.IO.FileMode, System.IO.Stream>;
+
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarImagingExtensions
     {
-        public static void MagicScalerReadRawBitmap<TElement>(this Func<System.IO.Stream> streamFunc, ProcessImageSettings settings, out __SIZE bitmapSize, out int channels, out Guid pixelFormat, out TElement[] bitmapPixels)
+        public static void MagicScalerReadRawBitmap<TElement>(this __STREAMFUNC streamFunc, ProcessImageSettings settings, out __SIZE bitmapSize, out int channels, out Guid pixelFormat, out TElement[] bitmapPixels)
             where TElement:unmanaged
         {
-            using (var s = streamFunc.Invoke())
+            using (var s = streamFunc.Invoke(System.IO.FileMode.Open))
             {                
                 using var pipeline = MagicImageProcessor.BuildPipeline(s, settings);
 
@@ -68,10 +70,10 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
         #if __REFERENCES_SYSTEMNUMERICSTENSORS
 
-        public static System.Numerics.Tensors.Tensor<TElement> MagicScalerReadTensor<TElement>(this Func<System.IO.Stream> streamFunc, ProcessImageSettings settings, out Guid pixelFormat)
+        public static System.Numerics.Tensors.Tensor<TElement> MagicScalerReadTensor<TElement>(this __STREAMFUNC streamFunc, ProcessImageSettings settings, out Guid pixelFormat)
             where TElement:unmanaged
         {
-            using (var s = streamFunc.Invoke())
+            using (var s = streamFunc.Invoke(System.IO.FileMode.Open))
             {
                 return MagicScalerReadTensor<TElement>(s, settings, out pixelFormat);
             }

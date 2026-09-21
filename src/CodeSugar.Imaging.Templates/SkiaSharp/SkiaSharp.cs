@@ -6,18 +6,20 @@ using SkiaSharp;
 
 #nullable disable
 
+using __STREAMFUNC = System.Func<System.IO.FileMode, System.IO.Stream>;
+
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarImagingExtensions
     {
         public static SkiaSharp.SKBitmap ReadSkiaSharpBitmap(this System.IO.FileInfo finfo)
         {
-            return ReadSkiaSharpBitmap(finfo.OpenRead);
+            return ReadSkiaSharpBitmap(finfo.Open);
         }
 
-        public static SkiaSharp.SKBitmap ReadSkiaSharpBitmap(this Func<System.IO.Stream> stream)
+        public static SkiaSharp.SKBitmap ReadSkiaSharpBitmap(this __STREAMFUNC stream)
         {
-            using (var s = stream.Invoke())
+            using (var s = stream.Invoke(System.IO.FileMode.Open))
             {
                 return ReadSkiaSharpBitmap(s);
             }
@@ -30,10 +32,10 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
         public static void WriteSkiaSharpBitmap(this System.IO.FileInfo finfo, SKBitmap bitmap, SKEncodedImageFormat fmt, int quality = 0)
         {
-            WriteSkiaSharpBitmap(finfo.Create, bitmap, fmt, quality);
+            WriteSkiaSharpBitmap(finfo.Open, bitmap, fmt, quality);
         }
 
-        public static void WriteSkiaSharpBitmap(this Func<System.IO.Stream> stream, SKBitmap bitmap, SKEncodedImageFormat fmt, int quality = 0)
+        public static void WriteSkiaSharpBitmap(this __STREAMFUNC stream, SKBitmap bitmap, SKEncodedImageFormat fmt, int quality = 0)
         {
             if (quality == 0)
             {
@@ -44,7 +46,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 }
             }
 
-            using (var s = stream.Invoke())
+            using (var s = stream.Invoke(System.IO.FileMode.Create))
             {
                 bitmap.Encode(s, fmt, quality);
             }
