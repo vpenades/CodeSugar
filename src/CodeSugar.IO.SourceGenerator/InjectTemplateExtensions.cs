@@ -15,11 +15,13 @@ namespace CodeSugar
             var hasAbstractions = cgc.NugetPackages.ContainsKey("Microsoft.Extensions.FileProviders.Abstractions");                        
             var hasSharpCompress = cgc.NugetPackages.ContainsKey("SharpCompress");
             var hasMonoAndroid = cgc.NugetPackages.ContainsKey("MonoAndroid");
+            var hasAvalonia = cgc.NugetPackages.ContainsKey("Avalonia");
 
             ProcessTemplates(context, cgc, "SystemIO", n => n.Contains(".Templates.SystemIO."));
 
             if (hasAbstractions) ProcessTemplates(context, cgc, "FileProviders", n => n.Contains(".Templates.FileProviders."));
             if (hasSharpCompress) ProcessTemplates(context, cgc,"SharpCompress", n => n.Contains(".Templates.SharpCompress."));
+            if (hasAvalonia) ProcessTemplates(context, cgc, "Avalonia", n => n.Contains(".Templates.Avalonia."));
         }
 
         private int _TemplateIndex = 0;
