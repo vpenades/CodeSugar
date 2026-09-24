@@ -414,15 +414,19 @@ namespace CodeSugar
         [Test]
         public async Task TestFindCommonDirectory()
         {
-            var a = new System.IO.DirectoryInfo("c:\\test\\alpha");
-            var b = new System.IO.DirectoryInfo("c:\\test\\alpaca");
-            var c = new System.IO.DirectoryInfo("c:\\test\\beta\\gamma");
+            var rinfo = ResourceInfo.From("readme.txt").File;
+
+            var a = rinfo.Directory.DefineDirectoryInfo("test", "alpha");
+            var b = rinfo.Directory.DefineDirectoryInfo("test", "alpaca");
+            var c = rinfo.Directory.DefineDirectoryInfo("test", "beta", "gamma");
+
+            var expected = rinfo.Directory.DefineDirectoryInfo("test");
 
             var a_b = new System.IO.DirectoryInfo[] { a, b }.TryGetCommonDirectory();
-            await Assert.That(a_b.FullName).IsEqualTo("c:\\test");
+            await Assert.That(a_b.FullNameEquals(expected)).IsTrue();
 
             var a_b_c = new System.IO.DirectoryInfo[] { a, b, c }.TryGetCommonDirectory();
-            await Assert.That(a_b_c.FullName).IsEqualTo("c:\\test");
+            await Assert.That(a_b_c.FullNameEquals(expected)).IsTrue();
         }
     }
 }
