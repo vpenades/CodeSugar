@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
@@ -102,7 +103,27 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             #endif
         }
 
-          
+
+
+        #endregion
+
+        #region netstandard
+
+        private static bool TryGetNonEnumeratedCount<TSource>(this IEnumerable<TSource> source, out int count)
+        {
+            switch(source)
+            {
+                case null: throw new ArgumentNullException(nameof(source));
+                case ICollection typed: count = typed.Count; return true;
+                case ICollection<TSource> typed: count = typed.Count; return true;
+
+                // IReadOnlyCollection is deliberately omited; see docs
+                // case IReadOnlyCollection<TSource> typed: count = typed.Count; return true;
+            }
+
+            count = 0;
+            return false;
+        }
 
         #endregion
     }

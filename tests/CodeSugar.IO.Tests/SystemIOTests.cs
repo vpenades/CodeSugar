@@ -410,5 +410,19 @@ namespace CodeSugar
             await m.ReadExactlyAsync(dst);
             await Assert.That(dst.AsSpan().SequenceEqual(data.AsSpan().Slice(128, 128))).IsTrue();
         }
+
+        [Test]
+        public async Task TestFindCommonDirectory()
+        {
+            var a = new System.IO.DirectoryInfo("c:\\test\\alpha");
+            var b = new System.IO.DirectoryInfo("c:\\test\\alpaca");
+            var c = new System.IO.DirectoryInfo("c:\\test\\beta\\gamma");
+
+            var a_b = new System.IO.DirectoryInfo[] { a, b }.TryGetCommonDirectory();
+            await Assert.That(a_b.FullName).IsEqualTo("c:\\test");
+
+            var a_b_c = new System.IO.DirectoryInfo[] { a, b, c }.TryGetCommonDirectory();
+            await Assert.That(a_b_c.FullName).IsEqualTo("c:\\test");
+        }
     }
 }
