@@ -14,21 +14,21 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         public static string ToBase64String(this Vector2 v)
         {
             Span<Byte> buff = stackalloc byte[4 * 2];
-            return __ToBase64String(v.Enumerate(), buff);
+            return __ToBase64String(v.EnumerateElements(), buff);
         }
 
         [DebuggerStepThrough]
         public static string ToBase64String(this Vector3 v)
         {
             Span<Byte> buff = stackalloc byte[4 * 3];
-            return __ToBase64String(v.Enumerate(), buff);
+            return __ToBase64String(v.EnumerateElements(), buff);
         }
 
         [DebuggerStepThrough]
         public static string ToBase64String(this Vector4 v)
         {
             Span<Byte> buff = stackalloc byte[4 * 4];            
-            return __ToBase64String(v.Enumerate(), buff);
+            return __ToBase64String(v.EnumerateElements(), buff);
         }
 
         [DebuggerStepThrough]
@@ -42,14 +42,14 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         public static string ToBase64String(this Matrix3x2 m)
         {
             Span<Byte> buff = stackalloc byte[4 * 6];
-            return __ToBase64String(m.Enumerate(), buff);
+            return __ToBase64String(m.EnumerateElements(), buff);
         }
 
         [DebuggerStepThrough]
         public static string ToBase64String(this in Matrix4x4 m)
         {
             Span<Byte> buff = stackalloc byte[4 * 16];
-            return __ToBase64String(m.Enumerate(), buff);
+            return __ToBase64String(m.EnumerateElements(), buff);
         }
     }
 }

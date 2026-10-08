@@ -12,7 +12,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
     {
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static IEnumerable<float> Enumerate(this Matrix3x2 matrix)
+        public static IEnumerable<float> EnumerateElements(this Matrix3x2 matrix)
         {
             yield return matrix.M11;
             yield return matrix.M12;
@@ -24,7 +24,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static IEnumerable<float> Enumerate(this Matrix4x4 matrix)
+        public static IEnumerable<float> EnumerateElements(this Matrix4x4 matrix)
         {
             yield return matrix.M11;
             yield return matrix.M12;
