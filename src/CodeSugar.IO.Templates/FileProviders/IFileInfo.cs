@@ -28,8 +28,21 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
         #region API
 
-        public static bool IsPhysical(this __XINFO entry)
+        public static bool IsPhysical<T>(this T entry) where T: __XINFO
         {
+            if (entry is null) return false;
+
+            // all these are weak checks since the internal
+            // types are only available to the current assembly
+
+            if (entry is _ZipArchiveFile) return false;
+            if (entry is _ZipArchiveDirectory) return false;
+
+            if (entry is _BasicPhysicalFile) return true;
+            if (entry is _BasicPhysicalDirectory) return true;
+
+            // strong, cross assembly checks:
+
             return !string.IsNullOrEmpty(entry?.PhysicalPath);
         }
 

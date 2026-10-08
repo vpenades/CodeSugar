@@ -46,7 +46,7 @@ namespace CodeSugar
             //      invalid name chars: " < > |                             : * ? \ /
 
             Console.Out.WriteLine($"{Environment.OSVersion.Platform}");
-            Console.Out.WriteLine($" comparison: {CODESUGARIO.FileSystemStringComparison}");
+            Console.Out.WriteLine($" comparison: {System.IO.MatchCasing.PlatformDefault.GetStringComparison()}");
 
             Console.Out.WriteLine($"Separators {System.IO.Path.DirectorySeparatorChar} {System.IO.Path.AltDirectorySeparatorChar}");
             Console.Out.WriteLine($"invalid name chars: " + string.Join(" ",System.IO.Path.GetInvalidFileNameChars()));
@@ -93,7 +93,7 @@ namespace CodeSugar
 
             await Assert.That(CODESUGARIO.SplitDirectoryAndName("//network/abc/d/e")).IsEqualTo(("//network/abc/d", "e"));
 
-            if (CODESUGARIO.FileSystemIsCaseSensitive)
+            if (System.IO.MatchCasing.PlatformDefault.GetStringComparison() == StringComparison.Ordinal)
             {
                 await Assert.That(MatchCasing.PlatformDefault.ArePathsEqual("c:/abc", "c:/abc/")).IsTrue();
                 await Assert.That(MatchCasing.PlatformDefault.ArePathsEqual("c:/abc", "c:/abC/")).IsFalse();
@@ -427,6 +427,22 @@ namespace CodeSugar
 
             var a_b_c = new System.IO.DirectoryInfo[] { a, b, c }.TryGetCommonDirectory();
             await Assert.That(a_b_c.FullNameEquals(expected)).IsTrue();
+        }
+
+        [Test]
+        public async Task RecycleBinTests()
+        {
+            var file = new System.IO.FileInfo($"trashfile_{Guid.NewGuid().ToString()}.bin");
+
+            file.GetStreamFunction().WriteAllText("This is a temporary trash file. You can delete it");
+
+            await Assert.That(file.Exists).IsTrue();
+
+            var result = await file.TrySendToRecycleBinAsync();
+
+            await Assert.That(result).IsTrue();
+
+            await Assert.That(file.Exists).IsFalse();
         }
     }
 }

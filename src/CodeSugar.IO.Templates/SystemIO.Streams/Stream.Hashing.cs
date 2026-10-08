@@ -119,7 +119,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         {
             GuardReadable(stream);
 
-            if (TryGetMemoryBuffer(stream, out var buff))
+            if (TryGetArraySegment(stream, out var buff))
             {                
                 buff = buff.Slice((int)stream.Position);
                 return engine.ComputeHash(buff.Array, buff.Offset, buff.Count);                
@@ -161,7 +161,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         {
             GuardReadable(stream);
 
-            if (TryGetMemoryBuffer(stream, out var buff))
+            if (TryGetArraySegment(stream, out var buff))
             {                
                 buff = buff.Slice((int)stream.Position);
                 engine.Append(buff);

@@ -122,6 +122,12 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
         #region nested types
 
+        /// <remarks>
+        /// This is pretty much the same as PhysicalFileInfo with a number of differences
+        /// - This is a struct instead of a class
+        /// - it implements equality
+        /// - it allows accessing the internal <see cref="System.IO.FileInfo"/>
+        /// </remarks>
         [System.Diagnostics.DebuggerDisplay("{PhysicalPath}")]
         private readonly struct _BasicPhysicalFile :
             __XINFO,
@@ -151,13 +157,11 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             #endregion
 
-            #region equality
-
-            
+            #region equality            
 
             public override int GetHashCode()
             {
-                return Info.FullName.GetHashCode(FileSystemStringComparison);
+                return this.Info.GetHashCode();
             }
 
             public override bool Equals(object obj)
@@ -177,13 +181,27 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             #region API
 
-            public Stream CreateReadStream() { return Info.OpenRead(); }
+            public Stream CreateReadStream()
+            {
+                // https://github.com/dotnet/runtime/blob/49e04fa0e472453f4391c4a7097d9e55380dbef2/src/libraries/Microsoft.Extensions.FileProviders.Physical/src/PhysicalFileInfo.cs#L46
+
+                // We are setting buffer size to 1 to prevent FileStream from allocating it's internal buffer
+                // 0 causes constructor to throw
+                int bufferSize = 1;
+                return new FileStream(
+                    PhysicalPath,
+                    FileMode.Open,
+                    FileAccess.Read,
+                    FileShare.ReadWrite,
+                    bufferSize,
+                    FileOptions.Asynchronous | FileOptions.SequentialScan);
+            }
 
             public object GetService(Type serviceType)
             {
                 if (serviceType == typeof(__FINFO)) return Info;
                 if (serviceType == typeof(__MATCHCASING)) return __MATCHCASING.PlatformDefault;
-                if (serviceType == typeof(StringComparison)) return FileSystemStringComparison;
+                if (serviceType == typeof(StringComparison)) return __MATCHCASING.PlatformDefault.GetStringComparison();
 
                 if (serviceType == typeof(Action<ArraySegment<Byte>>)) return (Action<ArraySegment<Byte>>) _WriteBytes;
 
@@ -192,7 +210,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             private void _WriteBytes(ArraySegment<Byte> bytes)
             {
-                Info.GetStreamFunction().WriteAllBytes(bytes);
+                Info.GetWriteStreamFunction(true).WriteAllBytes(bytes);
             }
 
             #endregion
@@ -237,7 +255,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             public override int GetHashCode()
             {
-                return Info.FullName.GetHashCode(FileSystemStringComparison);
+                return Info.GetHashCode();
             }
 
             public override bool Equals(object obj)
@@ -270,7 +288,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             public object GetService(Type serviceType)
             {
                 if (serviceType == typeof(__MATCHCASING)) return __MATCHCASING.PlatformDefault;
-                if (serviceType == typeof(StringComparison)) return FileSystemStringComparison;
+                if (serviceType == typeof(StringComparison)) return __MATCHCASING.PlatformDefault.GetStringComparison();
                 if (serviceType == typeof(__DINFO)) return Info;
 
                 return null;

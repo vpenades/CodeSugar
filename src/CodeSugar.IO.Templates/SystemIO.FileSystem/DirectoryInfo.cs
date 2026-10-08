@@ -34,7 +34,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             path = path.Substring(0, temp.Length);            
 
-            return ArePathsEqual(casing, temp, path);
+            return AreFullPathsEqual(casing, temp, path);
         }
 
         /// <summary>

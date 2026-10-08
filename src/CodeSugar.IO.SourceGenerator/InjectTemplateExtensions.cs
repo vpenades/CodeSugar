@@ -38,6 +38,7 @@ namespace CodeSugar
             processor.UsesNuget("Microsoft.Extensions.FileProviders.Embedded");
             processor.UsesNuget("Microsoft.Extensions.FileProviders.Composite");
             processor.UsesNuget("Microsoft.IO.RecyclableMemoryStream");
+            processor.UsesNuget("Microsoft.VisualBasic");
             processor.UsesNuget("SharpCompress");
 
             foreach (var code in EmbeddedTemplates.GetEmbeddedTemplates(name, nameChecker))

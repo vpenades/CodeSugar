@@ -16,11 +16,27 @@ namespace __CODESUGAR_ROOTNAMESPACE__
     {
         #region constants
 
-        public static bool FileSystemIsCaseSensitive { get; } = _CheckFileSystemCaseSensitive();
+        private static readonly bool __FileSystemIsCaseSensitive = _CheckFileSystemCaseSensitive();        
 
-        public static StringComparison FileSystemStringComparison => FileSystemIsCaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+        public static readonly StringComparer __FileSystemStringComparer = __FileSystemIsCaseSensitive
+            ? StringComparer.Ordinal
+            : StringComparer.OrdinalIgnoreCase;
+        private static readonly StringComparer[] __MatchCasingStringComparer = new StringComparer[]
+        {
+            __FileSystemStringComparer,
+            StringComparer.Ordinal,
+            StringComparer.OrdinalIgnoreCase
+        };
 
-        public static StringComparer FileSystemStringComparer => FileSystemIsCaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase;
+        private static readonly StringComparison __FileSystemStringComparison = __FileSystemIsCaseSensitive
+            ? StringComparison.Ordinal
+            : StringComparison.OrdinalIgnoreCase;
+        private static readonly StringComparison[] __MatchCasingStringComparison = new StringComparison[]
+        {
+            __FileSystemStringComparison,
+            StringComparison.Ordinal,
+            StringComparison.OrdinalIgnoreCase
+        };
 
         #endregion
 
@@ -52,30 +68,32 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
         public static StringComparer GetStringComparer(this __PATHCASING casing)
         {
-            switch (casing)
-            {
-                case __PATHCASING.CaseInsensitive: return StringComparer.OrdinalIgnoreCase;
-                case __PATHCASING.CaseSensitive: return StringComparer.Ordinal;
-                case __PATHCASING.PlatformDefault: return FileSystemStringComparer;
-                default: throw new ArgumentOutOfRangeException(nameof(casing), casing.ToString());
-            }
+            return __MatchCasingStringComparer[(int)casing];
         }
 
         public static StringComparison GetStringComparison(this __PATHCASING casing)
         {
-            switch (casing)
-            {
-                case __PATHCASING.CaseInsensitive: return StringComparison.OrdinalIgnoreCase;
-                case __PATHCASING.CaseSensitive: return StringComparison.Ordinal;
-                case __PATHCASING.PlatformDefault: return FileSystemStringComparison;
-                default: throw new ArgumentOutOfRangeException(nameof(casing), casing.ToString());
-            }
+            return __MatchCasingStringComparison[(int)casing];
         }
 
         /// <summary>
-        /// determines if two file system paths are equal.
+        /// determines if two paths are equal.
         /// </summary>
+        [Obsolete("Use AreFullPathsEqual")]
         public static bool ArePathsEqual(this __PATHCASING casing, string pathX, string pathY)
+        {
+            return AreFullPathsEqual(casing, pathX, pathY);
+        }
+
+        /// <summary>
+        /// determines if two FULLY QUALIFIED file system paths are equal.
+        /// </summary>
+        public static bool AreFullPathsEqual(this __PATHCASING casing, string pathX, string pathY)
+        {
+            return _AreFullPathsEqual(GetStringComparison(casing), pathX, pathY);
+        }
+        
+        private static bool _AreFullPathsEqual(StringComparison casing, string pathX, string pathY)
         {
             if (pathX == pathY) return true;
             if (pathX == null) return false;
@@ -84,12 +102,24 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             pathX = GetNormalizedFullyQualifiedPath(pathX);
             pathY = GetNormalizedFullyQualifiedPath(pathY);
 
-            return string.Equals(pathX, pathY, GetStringComparison(casing));
+            return string.Equals(pathX, pathY, casing);
+        }
+
+        private static int _CompareFullPaths(StringComparison casing, string pathX, string pathY)
+        {
+            if (pathX == pathY) return 0;
+            if (pathX == null) return 1;
+            if (pathY == null) return -1;
+
+            pathX = GetNormalizedFullyQualifiedPath(pathX);
+            pathY = GetNormalizedFullyQualifiedPath(pathY);
+
+            return string.Compare(pathX, pathY, casing);
         }
 
         public static bool PathStartsWith(this __PATHCASING casing, string path, string head)
         {
-            if (path == null && head == null) return true;
+            if (path == head) return true;
             if (path == null) return false;
             if (head == null) return true;
 
@@ -101,7 +131,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
         public static bool PathEndsWith(this __PATHCASING casing, string path, string tail)
         {
-            if (path == null && tail == null) return true;
+            if (path == tail) return true;
             if (path == null) return false;
             if (tail == null) return true;
 
@@ -114,7 +144,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
         public static bool PathEndsWith(this __PATHCASING casing, string path, string tail, bool tailHasWildcards)
         {
-            if (path == null && tail == null) return true;
+            if (path == tail) return true;
             if (path == null) return false;
             if (tail == null) return true;
 
@@ -151,12 +181,27 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         /// <summary>
         /// calculates the hash code of a path, using the same rules used for path equality.
         /// </summary>
+        [Obsolete("Use GetFullPathHashCode")]
         public static int GetPathHashCode(this __PATHCASING casing, string path)
         {
             if (string.IsNullOrEmpty(path)) return 0;
             path = GetNormalizedFullyQualifiedPath(path);
-
             return path.GetHashCode(GetStringComparison(casing));
+        }
+
+        /// <summary>
+        /// calculates the hash code of a FULLY QUALIFIED path, using the same rules used for path equality.
+        /// </summary>
+        public static int GetFullPathHashCode(this __PATHCASING casing, string path)
+        {
+            return _GetFullPathHashCode(GetStringComparison(casing), path);
+        }
+        
+        private static int _GetFullPathHashCode(StringComparison casing, string path)
+        {
+            if (string.IsNullOrEmpty(path)) return 0;
+            path = GetNormalizedFullyQualifiedPath(path);
+            return path.GetHashCode(casing);
         }
 
         #endregion
