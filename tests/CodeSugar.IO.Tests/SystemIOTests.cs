@@ -95,20 +95,20 @@ namespace CodeSugar
 
             if (System.IO.MatchCasing.PlatformDefault.GetStringComparison() == StringComparison.Ordinal)
             {
-                await Assert.That(MatchCasing.PlatformDefault.ArePathsEqual("c:/abc", "c:/abc/")).IsTrue();
-                await Assert.That(MatchCasing.PlatformDefault.ArePathsEqual("c:/abc", "c:/abC/")).IsFalse();
+                await Assert.That(MatchCasing.PlatformDefault.AreFullPathsEqual("c:/abc", "c:/abc/")).IsTrue();
+                await Assert.That(MatchCasing.PlatformDefault.AreFullPathsEqual("c:/abc", "c:/abC/")).IsFalse();
             }
             else
             {
-                await Assert.That(MatchCasing.PlatformDefault.ArePathsEqual("c:/abc", "c:/abc/")).IsTrue();
-                await Assert.That(MatchCasing.PlatformDefault.ArePathsEqual("C:/abc", "c:/ABC/")).IsTrue();
-                await Assert.That(MatchCasing.PlatformDefault.ArePathsEqual("c:/abc", "c:/abX/")).IsFalse();                
+                await Assert.That(MatchCasing.PlatformDefault.AreFullPathsEqual("c:/abc", "c:/abc/")).IsTrue();
+                await Assert.That(MatchCasing.PlatformDefault.AreFullPathsEqual("C:/abc", "c:/ABC/")).IsTrue();
+                await Assert.That(MatchCasing.PlatformDefault.AreFullPathsEqual("c:/abc", "c:/abX/")).IsFalse();                
             }
 
             if (IsWindowsPlatform)
             {
                 await Assert.That(CODESUGARIO.SplitPath("\\abc/d\\e")).IsSequenceEqualTo(new string[] { "abc", "d", "e" });
-                await Assert.That(MatchCasing.PlatformDefault.ArePathsEqual("C:\\AbC/", "c:/aBc\\")).IsTrue();
+                await Assert.That(MatchCasing.PlatformDefault.AreFullPathsEqual("C:\\AbC/", "c:/aBc\\")).IsTrue();
             }
         }
 
@@ -416,11 +416,11 @@ namespace CodeSugar
         {
             var rinfo = ResourceInfo.From("readme.txt").File;
 
-            var a = rinfo.Directory.DefineDirectoryInfo("test", "alpha");
-            var b = rinfo.Directory.DefineDirectoryInfo("test", "alpaca");
-            var c = rinfo.Directory.DefineDirectoryInfo("test", "beta", "gamma");
+            var a = rinfo.Directory!.DefineDirectoryInfo("test", "alpha");
+            var b = rinfo.Directory!.DefineDirectoryInfo("test", "alpaca");
+            var c = rinfo.Directory!.DefineDirectoryInfo("test", "beta", "gamma");
 
-            var expected = rinfo.Directory.DefineDirectoryInfo("test");
+            var expected = rinfo.Directory!.DefineDirectoryInfo("test");
 
             var a_b = new System.IO.DirectoryInfo[] { a, b }.TryGetCommonDirectory();
             await Assert.That(a_b.FullNameEquals(expected)).IsTrue();
