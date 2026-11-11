@@ -1,4 +1,6 @@
-﻿#if NET8_0_OR_GREATER
+﻿// GENERATOR_REQUIRES: Avalonia
+
+#if NET8_0_OR_GREATER
 
 using System;
 using System.Collections;
@@ -24,6 +26,8 @@ using __AVALONIASTORAGEITEM = Avalonia.Platform.Storage.IStorageItem;
 using __AVALONIASTORAGEFILE = Avalonia.Platform.Storage.IStorageFile;
 using __AVALONIASTORAGEFOLDER = Avalonia.Platform.Storage.IStorageFolder;
 
+using __STREAMTASK = System.Func<System.IO.FileMode, System.Threading.CancellationToken, System.Threading.Tasks.Task<System.IO.Stream>>;
+
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
@@ -40,20 +44,41 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
         }
 
-        public static bool TryGetFileInfo(this __AVALONIASTORAGEFILE storage, [NotNullWhen(true)] out System.IO.FileInfo finfo)
+        public static bool TryGetDirectoryInfo(this __AVALONIASTORAGEFOLDER folder, out System.IO.DirectoryInfo dinfo)
         {
-            var local = storage?.TryGetLocalPath();
-            if (local == null) { finfo = null; return false; }
-            finfo = new System.IO.FileInfo(local);
+            dinfo = null;
+            if (folder == null) return false;
+            var path = folder.TryGetLocalPath();
+            if (string.IsNullOrWhiteSpace(path)) return false;
+            dinfo = new System.IO.DirectoryInfo(path);
             return true;
         }
 
-        public static bool TryGetDirectoryInfo(this __AVALONIASTORAGEFOLDER storage, [NotNullWhen(true)] out System.IO.DirectoryInfo dinfo)
+        public static bool TryGetFileInfo(this __AVALONIASTORAGEFILE file, out System.IO.FileInfo finfo)
         {
-            var local = storage?.TryGetLocalPath();
-            if (local == null) { dinfo = null; return false; }
-            dinfo = new System.IO.DirectoryInfo(local);
+            finfo = null;
+            if (file == null) return false;
+            var path = file.TryGetLocalPath();
+            if (string.IsNullOrWhiteSpace(path)) return false;
+            finfo = new System.IO.FileInfo(path);
             return true;
+        }
+
+        public static __STREAMTASK GetStreamTask(this __AVALONIASTORAGEFILE file)
+        {
+            ArgumentNullException.ThrowIfNull(file);
+
+            async Task<System.IO.Stream> rsf(System.IO.FileMode mode, System.Threading.CancellationToken token)
+            {
+                switch (mode)
+                {
+                    case FileMode.Open: return await file.OpenReadAsync();
+                    case FileMode.Create: return await file.OpenWriteAsync();
+                    default: throw new NotSupportedException();
+                }
+            }
+
+            return rsf;
         }
 
         #if __REFERENCES_MICROSOFTEXTENSIONSFILEPROVIDERSABSTRACTIONS

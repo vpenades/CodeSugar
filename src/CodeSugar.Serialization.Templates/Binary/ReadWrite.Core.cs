@@ -17,6 +17,12 @@ using __WRITEABLEBLOCK_ARRAY = System.ArraySegment<byte>;
 using __READABLEBLOCK__STREAM = System.IO.Stream;
 using __WRITEABLEBLOCK__STREAM = System.IO.Stream;
 
+#if NET
+using __SIZEOFAPI = System.Runtime.CompilerServices.Unsafe;
+#else
+using __SIZEOFAPI = System.Runtime.InteropServices.Marshal;
+#endif
+
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     internal static partial class CodeSugarSerializationExtensions
@@ -80,7 +86,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             var sequence = System.Runtime.InteropServices.MemoryMarshal.Cast<byte, T>(target);
             sequence[0] = value;
 
-            return target.Slice(__SizeOf<T>.ByteSize);
+            return target.Slice(__SIZEOFAPI.SizeOf<T>());
         }
 
         /// <summary>
@@ -95,18 +101,18 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             value = sequence[0];
 
-            return source.Slice(__SizeOf<T>.ByteSize);
+            return source.Slice(__SIZEOFAPI.SizeOf<T>());
         }
 
         [return: NotNull]
-        public static __WRITEABLEBLOCK_SPAN WriteBytes([NotNull] this __WRITEABLEBLOCK_SPAN target, ReadOnlySpan<Byte> array)
+        public static __WRITEABLEBLOCK_SPAN WriteBytes([NotNull] this __WRITEABLEBLOCK_SPAN target, __READABLEBLOCK_SPAM array)
         {
             array.CopyTo(target);
             return target.Slice(array.Length);
         }
 
         [return: NotNull]
-        public static __READABLEBLOCK_SPAM ReadBytes([NotNull] this __READABLEBLOCK_SPAM source, Span<Byte> array)
+        public static __READABLEBLOCK_SPAM ReadBytes([NotNull] this __READABLEBLOCK_SPAM source, __WRITEABLEBLOCK_SPAN array)
         {
             source.Slice(0, array.Length).CopyTo(array);
             return source.Slice(array.Length);
@@ -173,7 +179,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             var sequence = System.Runtime.InteropServices.MemoryMarshal.Cast<byte, T>(target.AsSpan());
             sequence[0] = value;
 
-            return target.Slice(__SizeOf<T>.ByteSize);
+            return target.Slice(__SIZEOFAPI.SizeOf<T>());
         }
 
         /// <summary>
@@ -188,18 +194,18 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             value = sequence[0];
 
-            return source.Slice(__SizeOf<T>.ByteSize);
+            return source.Slice(__SIZEOFAPI.SizeOf<T>());
         }
 
         [return: NotNull]
-        public static __WRITEABLEBLOCK_ARRAY WriteBytes([NotNull] this __WRITEABLEBLOCK_ARRAY target, ReadOnlySpan<Byte> array)            
+        public static __WRITEABLEBLOCK_ARRAY WriteBytes([NotNull] this __WRITEABLEBLOCK_ARRAY target, __READABLEBLOCK_SPAM array)            
         {
             array.CopyTo(target);
             return target.Slice(array.Length);
         }
 
         [return: NotNull]
-        public static __READABLEBLOCK_ARRAY ReadBytes([NotNull] this __READABLEBLOCK_ARRAY source, Span<Byte> array)
+        public static __READABLEBLOCK_ARRAY ReadBytes([NotNull] this __READABLEBLOCK_ARRAY source, __WRITEABLEBLOCK_SPAN array)
         {
             source.Slice(0, array.Length).AsSpan().CopyTo(array);            
             return source.Slice(array.Length);

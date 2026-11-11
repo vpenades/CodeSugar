@@ -106,7 +106,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
 
             #else
-            throw new InvalidOperationException("Reference to "Microsoft.VisualBasic" nuget package required");
+            throw new InvalidOperationException("Reference to 'Microsoft.VisualBasic' nuget package required");
             #endif            
 
             return false;

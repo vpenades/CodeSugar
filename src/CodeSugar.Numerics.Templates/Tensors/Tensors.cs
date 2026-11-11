@@ -1,18 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
-using System.Numerics.Tensors;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Buffers;
-using System.Reflection;
-using System.Transactions;
-using System.Threading;
+using System.Numerics.Tensors;
 
 #nullable disable
 
 using __TENSORS = System.Numerics.Tensors;
+
+
+#if NET
+using __SIZEOFAPI = System.Runtime.CompilerServices.Unsafe;
+#else
+using __SIZEOFAPI = System.Runtime.InteropServices.Marshal;
+#endif
 
 
 namespace __CODESUGAR_ROOTNAMESPACE__
@@ -97,8 +99,8 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             ref var srcRef = ref System.Runtime.InteropServices.TensorMarshal.GetReference(src);
             ref var dstRef = ref System.Runtime.CompilerServices.Unsafe.As<TSrc, TDst>(ref srcRef);
 
-            var srcSize = System.Runtime.CompilerServices.Unsafe.SizeOf<TSrc>();
-            var dstSize = System.Runtime.CompilerServices.Unsafe.SizeOf<TDst>();
+            var srcSize = __SIZEOFAPI.SizeOf<TSrc>();
+            var dstSize = __SIZEOFAPI.SizeOf<TDst>();
 
             if (srcSize == dstSize)
             {
@@ -153,8 +155,8 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             ref var tmpRef = ref System.Runtime.CompilerServices.Unsafe.AsRef(in srcRef); // requires langversion 12+
             ref readonly var dstRef = ref System.Runtime.CompilerServices.Unsafe.As<TSrc, TDst>(ref tmpRef);
 
-            var srcSize = System.Runtime.CompilerServices.Unsafe.SizeOf<TSrc>();
-            var dstSize = System.Runtime.CompilerServices.Unsafe.SizeOf<TDst>();
+            var srcSize = __SIZEOFAPI.SizeOf<TSrc>();
+            var dstSize = __SIZEOFAPI.SizeOf<TDst>();
 
             if (srcSize == dstSize)
             {

@@ -3,9 +3,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Numerics;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+
 
 #nullable disable
+
+
+#if NET
+using __SIZEOFAPI = System.Runtime.CompilerServices.Unsafe;
+#else
+using __SIZEOFAPI = System.Runtime.InteropServices.Marshal;
+#endif
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
@@ -81,18 +88,17 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             if (!BitConverter.IsLittleEndian)
             {
                 int tmp = __ReverseEndianness(BitConverter.SingleToInt32Bits(value));
-                MemoryMarshal.Write(destination, ref tmp);
+                System.Runtime.InteropServices.MemoryMarshal.Write(destination, ref tmp);
             }
             else
             {
-                MemoryMarshal.Write(destination, ref value);
+                System.Runtime.InteropServices.MemoryMarshal.Write(destination, ref value);
             }
         }
 
         private static T __ReverseEndianness<T>(T value) where T:unmanaged
-        {
-            // requires System.Runtime.CompilerServices.Unsafe" Version="6.1.2"
-            Span<byte> tbytes = stackalloc byte[System.Runtime.CompilerServices.Unsafe.SizeOf<T>()];
+        {            
+            Span<byte> tbytes = stackalloc byte[__SIZEOFAPI.SizeOf<T>()];
             var tval = System.Runtime.InteropServices.MemoryMarshal.Cast<byte, T>(tbytes);
 
             tval[0] = value;

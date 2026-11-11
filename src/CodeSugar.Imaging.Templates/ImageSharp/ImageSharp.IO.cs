@@ -1,7 +1,6 @@
 ﻿// GENERATOR_REQUIRES: SixLabors.ImageSharp
 
 using System;
-using System.Runtime.CompilerServices;
 
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -12,6 +11,12 @@ using __SIXLABORS = SixLabors.ImageSharp;
 
 using __SIZE = System.Drawing.Size;
 using __STREAMFUNC = System.Func<System.IO.Stream>;
+
+#if NET
+using __SIZEOFAPI = System.Runtime.CompilerServices.Unsafe;
+#else
+using __SIZEOFAPI = System.Runtime.InteropServices.Marshal;
+#endif
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
@@ -40,7 +45,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         public static void ConvertToRawBitmap<TPixel>(this __SIXLABORS.Memory.Buffer2D<TPixel> buffer, out __SIZE bitmapSize, out byte[] bitmapPixels)
             where TPixel: unmanaged, IPixel<TPixel>
         {
-            var rowLen = buffer.Width * Unsafe.SizeOf<TPixel>();
+            var rowLen = buffer.Width * __SIZEOFAPI.SizeOf<TPixel>();
 
             bitmapPixels = new byte[buffer.Height * rowLen];
             bitmapSize = new __SIZE(buffer.Width, buffer.Height);

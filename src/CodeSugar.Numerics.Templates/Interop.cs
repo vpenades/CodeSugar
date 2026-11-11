@@ -1,6 +1,4 @@
-﻿// Copyright (c) CodeSugar 2024 Vicente Penades
-
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Numerics;
@@ -12,6 +10,12 @@ using System.Runtime.CompilerServices;
 using __VECTOR2 = System.Numerics.Vector2;
 using __VECTOR3 = System.Numerics.Vector3;
 using __VECTOR4 = System.Numerics.Vector4;
+
+#if NET
+using __SIZEOFAPI = System.Runtime.CompilerServices.Unsafe;
+#else
+using __SIZEOFAPI = System.Runtime.InteropServices.Marshal;
+#endif
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
@@ -198,15 +202,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         {
             static __Reflection()
             {
-                // this is not available in a number of frameworks, including Unity.
-                // System.Runtime.CompilerServices.Unsafe.SizeOf<T>();
-
-                // another way is this:                
-                // Span<T> span = stackalloc T[1];
-                // var buff = System.Runtime.InteropServices.MemoryMarshal.AsBytes<T>(span);
-                // ByteSize = buff.Length;
-
-                ByteSize = System.Runtime.InteropServices.Marshal.SizeOf<T>();
+                ByteSize = __SIZEOFAPI.SizeOf<T>();
             }
 
             public static int ByteSize { get; }
