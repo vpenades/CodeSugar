@@ -1,7 +1,7 @@
 
 ## CodeSugar overview
 
-This is a collection of commonly used extension methods for `System.Numerics.Tensors` and 'SixLabors.ImageSharp'
+This is a collection of commonly used extension methods.
 
 ## CodeSugar.Sources.ICommand overview
 
