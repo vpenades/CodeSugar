@@ -19,6 +19,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="TUnit" Version="1.83.0" />
+		<!-- https://github.com/thomhurst/TUnit/issues/2419 -->
+		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="10.0.15" />
 		<PackageReference Include="TestAttachments.TUnit" Version="4.0.0-Preview-20260129-1218" />
 	</ItemGroup>
 
