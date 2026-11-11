@@ -12,7 +12,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
     {
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static IEnumerable<float> Enumerate(this Vector2 v)
+        public static IEnumerable<float> EnumerateElements(this Vector2 v)
         {
             yield return v.X;
             yield return v.Y;
@@ -20,7 +20,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static IEnumerable<float> Enumerate(this Vector3 v)
+        public static IEnumerable<float> EnumerateElements(this Vector3 v)
         {
             yield return v.X;
             yield return v.Y;
@@ -29,7 +29,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
         [DebuggerStepThrough]
         [MethodImpl(AGRESSIVE)]
-        public static IEnumerable<float> Enumerate(this Vector4 v)
+        public static IEnumerable<float> EnumerateElements(this Vector4 v)
         {
             yield return v.X;
             yield return v.Y;

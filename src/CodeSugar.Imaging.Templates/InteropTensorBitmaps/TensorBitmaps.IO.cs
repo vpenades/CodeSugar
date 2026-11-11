@@ -11,29 +11,31 @@ using SixLabors.ImageSharp.PixelFormats;
 
 using __KNOWNFMTS = InteropTypes.Numerics.KnownPixelFormats;
 
+using __STREAMFUNC = System.Func<System.IO.FileMode, System.IO.Stream>;
+
 #nullable disable
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     internal static partial class CodeSugarImagingExtensions
     {
-        public static InteropTypes.TensorBitmaps.TensorBitmap<byte, TPixel> ReadByteTensorBitmapFrom<TPixel>(this Func<System.IO.Stream> stream)
+        public static InteropTypes.TensorBitmaps.TensorBitmap<byte, TPixel> ReadByteTensorBitmapFrom<TPixel>(this __STREAMFUNC stream)
             where TPixel : unmanaged
         {
-            using(var s = stream.Invoke()) { return ReadByteTensorBitmapFrom<TPixel>(s); }
+            using(var s = stream.Invoke(System.IO.FileMode.Open)) { return ReadByteTensorBitmapFrom<TPixel>(s); }
         }
 
-        public static InteropTypes.TensorBitmaps.TensorBitmap<float, TPixel> ReadFloatTensorBitmapFrom<TPixel>(this Func<System.IO.Stream> stream)
+        public static InteropTypes.TensorBitmaps.TensorBitmap<float, TPixel> ReadFloatTensorBitmapFrom<TPixel>(this __STREAMFUNC stream)
             where TPixel : unmanaged
         {
-            using (var s = stream.Invoke()) { return ReadFloatTensorBitmapFrom<TPixel>(s); }
+            using (var s = stream.Invoke(System.IO.FileMode.Open)) { return ReadFloatTensorBitmapFrom<TPixel>(s); }
         }
 
-        public static void WritePngToStream<TElement, TPixel>(this InteropTypes.TensorBitmaps.ReadOnlyTensorSpanBitmap<TElement, TPixel> bitmap, Func<System.IO.Stream> stream)
+        public static void WritePngToStream<TElement, TPixel>(this InteropTypes.TensorBitmaps.ReadOnlyTensorSpanBitmap<TElement, TPixel> bitmap, __STREAMFUNC stream)
             where TElement : unmanaged, INumber<TElement>
             where TPixel : unmanaged
         {
-            using (var s = stream.Invoke()) { WritePngToStream(bitmap, s); }
+            using (var s = stream.Invoke(System.IO.FileMode.Open)) { WritePngToStream(bitmap, s); }
         }
 
         public static InteropTypes.TensorBitmaps.TensorBitmap<byte, TPixel> ReadByteTensorBitmapFrom<TPixel>(this System.IO.Stream stream)

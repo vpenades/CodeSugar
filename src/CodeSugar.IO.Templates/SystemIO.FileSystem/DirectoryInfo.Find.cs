@@ -27,6 +27,38 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         // https://stackoverflow.com/questions/719020/is-there-an-async-version-of-directoryinfo-getfiles-directory-getdirectories-i            
         // https://gist.github.com/jnm2/46a642d2c9f2794ece0b095ba3d96270
 
+        /// <summary>
+        /// Gets the neighbour of a given directory.
+        /// </summary>
+        /// <param name="current">the current directory</param>
+        /// <param name="offset">the index offset to the (positive) next or (negative) previous neighbour.</param>
+        /// <param name="comparer">a comparer if we want to pre-sort all the neighbours</param>
+        /// <returns>The neighbour directory</returns>
+        public static __DINFO GetNeighbourDirectoryInfo(this __DINFO current, int offset, IComparer<__DINFO> comparer = null)
+        {
+            var parentDir = current?.Parent;
+            if (parentDir == null) return null;
+
+            if (offset == 0) return current;
+
+            var neighbourhood = parentDir.GetDirectories();
+            if (comparer != null) Array.Sort(neighbourhood, comparer);            
+
+            var idx = Array.FindIndex(neighbourhood, s => System.IO.MatchCasing.PlatformDefault.AreFullPathsEqual(current.FullName, s.FullName));
+
+            if (idx < 0)
+            {
+                System.Diagnostics.Debug.Fail("should always be found");
+                return current;
+            }
+
+            idx += offset;
+
+            idx = Math.Clamp(idx, 0, neighbourhood.Length-1);
+
+            return neighbourhood[idx];
+        }
+
         public static async Task<IReadOnlyList<__DINFO>> FindAllDirectoriesAsync(this __DINFO directoryInfo, __DIRECTORYFILTER resultFilter, __SEARCHOPTION option, __CTOKEN ctoken, __PPROGRESS percentProgress = null)
         {
             return await FindAllDirectoriesAsync(directoryInfo, resultFilter, d=> option == __SEARCHOPTION.AllDirectories, ctoken, percentProgress).ConfigureAwait(true);

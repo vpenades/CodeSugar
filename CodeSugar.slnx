@@ -59,5 +59,6 @@
     <Project Path="tests/CodeSugar.Numerics.Tests/CodeSugar.Numerics.Tests.csproj" />
     <Project Path="tests/CodeSugar.Templates.Tests/CodeSugar.Templates.Tests.csproj" Id="d666c13b-dd03-4262-a8ee-857bb59c1db4" />
     <Project Path="tests/CodeSugar.Tests/CodeSugar.Tests.csproj" />
+    <Project Path="tests/Rehametrics.Numerics.NetStd/Rehametrics.Numerics.NetStd.csproj" Id="db656007-9269-4be4-a3a7-3bfacc64808c" />
   </Folder>
 </Solution>

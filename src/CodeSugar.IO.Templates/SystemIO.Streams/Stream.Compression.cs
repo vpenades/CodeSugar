@@ -6,17 +6,19 @@ using System.IO;
 
 using __STREAM = System.IO.Stream;
 
+using __STREAMFUNC = System.Func<System.IO.FileMode, System.IO.Stream>;
+
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarExtensions
     {
-        public static Func<__STREAM> Inflate(this Func<__STREAM> readFunc)
+        public static __STREAMFUNC Inflate(this __STREAMFUNC readFunc)
         {
             if (readFunc == null) return null;
 
-            __STREAM _inflate()
+            __STREAM _inflate(System.IO.FileMode mode)
             {
-                var s = readFunc.Invoke();
+                var s = readFunc.Invoke(mode);
                 GuardReadable(s);
                 return new System.IO.Compression.DeflateStream(s, System.IO.Compression.CompressionMode.Decompress, false);
             }
@@ -24,13 +26,13 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             return _inflate;
         }
 
-        public static Func<__STREAM> Deflate(this Func<__STREAM> writeFunc, System.IO.Compression.CompressionLevel level = System.IO.Compression.CompressionLevel.Optimal)
+        public static __STREAMFUNC Deflate(this __STREAMFUNC writeFunc, System.IO.Compression.CompressionLevel level = System.IO.Compression.CompressionLevel.Optimal)
         {
             if (writeFunc == null) return null;
 
-            __STREAM _deflate()
+            __STREAM _deflate(System.IO.FileMode mode)
             {
-                var s = writeFunc.Invoke();
+                var s = writeFunc.Invoke(mode);
                 GuardWriteable(s);
                 return new System.IO.Compression.DeflateStream(s, level, false);
             }
@@ -38,13 +40,13 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             return _deflate;
         }
 
-        public static Func<__STREAM> GzipInflate(this Func<__STREAM> readFunc)
+        public static __STREAMFUNC GzipInflate(this __STREAMFUNC readFunc)
         {
             if (readFunc == null) return null;
 
-            __STREAM _inflate()
+            __STREAM _inflate(System.IO.FileMode mode)
             {
-                var s = readFunc.Invoke();
+                var s = readFunc.Invoke(mode);
                 GuardReadable(s);
                 return new System.IO.Compression.GZipStream(s, System.IO.Compression.CompressionMode.Decompress, false);
             }
@@ -52,13 +54,13 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             return _inflate;
         }
 
-        public static Func<__STREAM> GZipDeflate(this Func<__STREAM> writeFunc, System.IO.Compression.CompressionLevel level = System.IO.Compression.CompressionLevel.Optimal)
+        public static __STREAMFUNC GZipDeflate(this __STREAMFUNC writeFunc, System.IO.Compression.CompressionLevel level = System.IO.Compression.CompressionLevel.Optimal)
         {
             if (writeFunc == null) return null;
 
-            __STREAM _deflate()
+            __STREAM _deflate(System.IO.FileMode mode)
             {
-                var s = writeFunc.Invoke();
+                var s = writeFunc.Invoke(mode);
                 GuardWriteable(s);
                 return new System.IO.Compression.GZipStream(s, level, false);
             }
@@ -66,13 +68,13 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             return _deflate;
         }
 
-        public static Func<__STREAM> BrotliInflate(this Func<__STREAM> readFunc)
+        public static __STREAMFUNC BrotliInflate(this __STREAMFUNC readFunc)
         {
             if (readFunc == null) return null;
 
-            __STREAM _inflate()
+            __STREAM _inflate(System.IO.FileMode mode)
             {
-                var s = readFunc.Invoke();
+                var s = readFunc.Invoke(mode);
                 GuardReadable(s);
                 return new System.IO.Compression.BrotliStream(s, System.IO.Compression.CompressionMode.Decompress, false);
             }
@@ -80,13 +82,13 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             return _inflate;
         }
 
-        public static Func<__STREAM> BrotliDeflate(this Func<__STREAM> readFunc, System.IO.Compression.CompressionLevel level = System.IO.Compression.CompressionLevel.Optimal)
+        public static __STREAMFUNC BrotliDeflate(this __STREAMFUNC readFunc, System.IO.Compression.CompressionLevel level = System.IO.Compression.CompressionLevel.Optimal)
         {
             if (readFunc == null) return null;
 
-            __STREAM _deflate()
+            __STREAM _deflate(System.IO.FileMode mode)
             {
-                var s = readFunc.Invoke();
+                var s = readFunc.Invoke(mode);
                 GuardWriteable(s);
                 return new System.IO.Compression.BrotliStream(s, level, false);
             }

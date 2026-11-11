@@ -3,46 +3,59 @@
 #if __REFERENCES_SYSTEMTEXTJSON
 
 using System.Text.Json.Serialization.Metadata;
+using System.Threading;
+using System.Threading.Tasks;
+
 
 #nullable disable
 
-using __READSTREAM = System.IO.Stream;
-using __WRITESTREAM = System.IO.Stream;
+using __STREAMFUNC = System.Func<System.IO.FileMode, System.IO.Stream>;
+using __STREAMTASK = System.Func<System.IO.FileMode, System.Threading.CancellationToken, System.Threading.Tasks.Task<System.IO.Stream>>;
+
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     partial class CodeSugarExtensions
     {
-        public static T DeserializeJson<T>(this Func<__READSTREAM> stream, JsonTypeInfo<T> typeInfo)
+        public static T DeserializeJson<T>(this __STREAMFUNC stream, JsonTypeInfo<T> typeInfo)
         {
-            using(var s = stream.Invoke())
+            using(var s = stream.OpenRead())
             {
-                return DeserializeJson(s, typeInfo);
+                GuardReadable(s);
+
+                return System.Text.Json.JsonSerializer.Deserialize(s, typeInfo);
             }            
-        }
+        }        
 
-        public static T DeserializeJson<T>(this __READSTREAM stream, JsonTypeInfo<T> typeInfo)
+        public static void SerializeJson<T>(this __STREAMFUNC stream, JsonTypeInfo<T> typeInfo, T value)
         {
-            GuardReadable(stream);
-
-            return System.Text.Json.JsonSerializer.Deserialize(stream, typeInfo);
-        }
-
-        public static void SerializeJson<T>(this Func<__WRITESTREAM> stream, JsonTypeInfo<T> typeInfo, T value)
-        {
-            using (var s = stream.Invoke())
+            using (var s = stream.OpenWrite())
             {
-                SerializeJson(s, typeInfo, value);
+                GuardWriteable(s);
+
+                System.Text.Json.JsonSerializer.Serialize(s, value, typeInfo);
             }
         }
 
-        public static void SerializeJson<T>(this __WRITESTREAM stream, JsonTypeInfo<T> typeInfo, T value)
+        public static async Task<T> DeserializeJsonAsync<T>(this __STREAMTASK stream, JsonTypeInfo<T> typeInfo)
         {
-            GuardWriteable(stream);
+            using (var s = await stream.OpenReadAsync(CancellationToken.None))
+            {
+                GuardReadable(s);
 
-            System.Text.Json.JsonSerializer.Serialize(stream, value, typeInfo);
+                return await System.Text.Json.JsonSerializer.DeserializeAsync(s, typeInfo);
+            }
         }
 
+        public static async Task SerializeJson<T>(this __STREAMTASK stream, JsonTypeInfo<T> typeInfo, T value)
+        {
+            using (var s = await stream.OpenWriteAsync(CancellationToken.None))
+            {
+                GuardWriteable(s);
+
+                await System.Text.Json.JsonSerializer.SerializeAsync(s, value, typeInfo);
+            }
+        }
     }
 }
 

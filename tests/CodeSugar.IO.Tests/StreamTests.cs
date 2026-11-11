@@ -13,6 +13,28 @@ namespace CodeSugar
     internal class StreamTests
     {
         [Test]
+        public async Task TestLambdas()
+        {
+            System.IO.MemoryStream? result = null;
+
+            async Task<Stream> createAsync(System.IO.FileMode mode, CancellationToken token)
+            {
+                await Assert.That(mode).IsEqualTo(System.IO.FileMode.Create);
+                result = new System.IO.MemoryStream();
+                return result;
+            }
+
+            Func<System.IO.FileMode, CancellationToken, Task <Stream>> lambda = createAsync;
+
+            await lambda.WriteAllBytesAsync(new byte[] { 1, 2, 3 }, CancellationToken.None);
+
+            await Assert.That(result).IsNotNull();
+            await Assert.That(result.CanWrite).IsFalse();
+            await Assert.That(result.TryGetBuffer(out var buff)).IsTrue();
+            await Assert.That(buff.Count).IsEqualTo(3);
+        }
+
+        [Test]
         public async Task TestStreamsAsync()
         {
             var rnd = new byte[1000000];
@@ -40,8 +62,6 @@ namespace CodeSugar
 
                 AttachmentInfo.From($"tmp{i}.bin").WriteObjectEx(_write);
             }            
-
-            
         }
 
         private static async Task _TestReadWriteBytesAsync(Func<System.IO.Stream> streamFactory, IReadOnlyList<byte> sample)
@@ -86,9 +106,9 @@ namespace CodeSugar
 
         private async Task _TestStreamEquality(long streamsLen, int buffLen, bool useFactory)
         {
-            var rnd1 = new RandomStream(streamsLen, 1);
-            var rnd2 = new RandomStream(streamsLen, 2);
-            var rnd3 = new RandomStream(streamsLen, 2);
+            using var rnd1 = new RandomStream(streamsLen, 1);
+            using var rnd2 = new RandomStream(streamsLen, 2);
+            using var rnd3 = new RandomStream(streamsLen, 2);
 
             System.IO.MemoryStream memStreamFactory(long len)
             {
@@ -143,5 +163,66 @@ namespace CodeSugar
                 await Assert.That(fromPosition1).IsSequenceEqualTo(new Byte[] { 2, 3 });
             }
         }
+
+        [Test]
+        public async Task GetOrReadAsMemoryStreamTests()
+        {
+            var sources = new List<Func<Stream>>
+            {
+                () => new RandomStream(100, 1),
+                () => new MemoryStream(new byte[100])
+            };
+
+
+            foreach(var source in sources)
+            {
+                using var s = source.Invoke();
+                s.ReadByte();
+
+                using var r = s.GetOrReadAsMemoryStream(false);
+
+                var remaining = r.Length - r.Position;
+
+                await Assert.That(remaining).IsEqualTo(99);
+            }
+
+            foreach (var source in sources)
+            {
+                using var s = source.Invoke();
+                s.ReadByte();
+
+                using var r = await s.GetOrReadAsMemoryStreamAsync(CancellationToken.None, false);
+
+                var remaining = r.Length - r.Position;
+
+                await Assert.That(remaining).IsEqualTo(99);
+            }
+
+            var manager = new Microsoft.IO.RecyclableMemoryStreamManager();
+
+            foreach (var source in sources)
+            {
+                using var s = source.Invoke();
+                s.ReadByte();
+
+                using var r = s.GetOrReadAsMemoryStream(manager, false);
+
+                var remaining = r.Length - r.Position;
+
+                await Assert.That(remaining).IsEqualTo(99);
+            }
+
+            foreach (var source in sources)
+            {
+                using var s = source.Invoke();
+                s.ReadByte();
+
+                using var r = await s.GetOrReadAsMemoryStreamAsync(manager, CancellationToken.None, false);
+
+                var remaining = r.Length - r.Position;
+
+                await Assert.That(remaining).IsEqualTo(99);
+            }
+        }        
     }
 }

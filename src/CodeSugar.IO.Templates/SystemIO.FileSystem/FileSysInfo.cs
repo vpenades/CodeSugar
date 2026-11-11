@@ -319,5 +319,67 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         #endif
 
         #endregion
+
+        #region common directory
+        
+
+        public static __DINFO TryGetCommonDirectory<T>(this IEnumerable<T> files) where T: __SINFO
+        {
+            if (!(files is IReadOnlyCollection<T>)) files = files.ToList();            
+
+            static string _getDirPath(T fsi)
+            {
+                switch (fsi)
+                {
+                    case null: return string.Empty;
+                    case __FINFO f: return f.Directory?.FullName ?? string.Empty;
+                    case __DINFO d: return d.FullName ?? string.Empty;
+                    default: throw new NotImplementedException();
+                }
+            }
+
+            if (files.TryGetNonEnumeratedCount(out var count))
+            {
+                if (count == 0) return null;
+                if (count == 1)
+                {
+                    switch (files.Single())
+                    {
+                        case __FINFO f: return f.Directory;
+                        case __DINFO d: return d;
+                        default: return null;
+                    }
+                }
+            }
+
+            // find the longest directory path
+
+            var path = files
+                .Select(_getDirPath)
+                .OrderByDescending(p => p.Length)
+                .FirstOrDefault()
+                ?? string.Empty;
+
+            path = path.TrimEnd('\\').TrimEnd('/');
+
+            // trim the path by all
+
+            foreach (var f in files)
+            {
+                if (string.IsNullOrWhiteSpace(path)) break;
+
+                var d = _getDirPath(f);
+
+                while (!string.IsNullOrWhiteSpace(path))
+                {
+                    if (d.StartsWith(path, StringComparison.OrdinalIgnoreCase)) break;
+                    path = System.IO.Path.GetDirectoryName(path);
+                }
+            }
+
+            return string.IsNullOrWhiteSpace(path) ? null : new __DINFO(path);
+        }
+
+        #endregion
     }
 }

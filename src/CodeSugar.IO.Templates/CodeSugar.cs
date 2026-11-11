@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
 #nullable disable
+
+using __METHODOPTIONS = System.Runtime.CompilerServices.MethodImplOptions;
 
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
@@ -12,6 +15,12 @@ namespace __CODESUGAR_ROOTNAMESPACE__
     internal static partial class CodeSugarExtensions    
     {
         #region constants
+
+        #if NETSTANDARD1_6_OR_GREATER
+        private const __METHODOPTIONS AGRESSIVE = __METHODOPTIONS.AggressiveInlining;
+        #else
+        private const __METHODOPTIONS AGRESSIVE = __METHODOPTIONS.AggressiveInlining | __METHODOPTIONS.AggressiveOptimization;
+        #endif
 
         private static System.Collections.Concurrent.ConcurrentDictionary<string, System.IO.DriveInfo> _InternedFixedDrives;
 
@@ -94,7 +103,27 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             #endif
         }
 
-          
+
+
+        #endregion
+
+        #region netstandard
+
+        private static bool TryGetNonEnumeratedCount<TSource>(this IEnumerable<TSource> source, out int count)
+        {
+            switch(source)
+            {
+                case null: throw new ArgumentNullException(nameof(source));
+                case ICollection typed: count = typed.Count; return true;
+                case ICollection<TSource> typed: count = typed.Count; return true;
+
+                // IReadOnlyCollection is deliberately omited; see docs
+                // case IReadOnlyCollection<TSource> typed: count = typed.Count; return true;
+            }
+
+            count = 0;
+            return false;
+        }
 
         #endregion
     }

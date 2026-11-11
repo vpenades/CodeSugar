@@ -323,7 +323,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                         var entry = arch.Entries.FirstOrDefault(item => item.Key == key);
                         if (entry == null) return null;
 
-                        return entry.GetReadStreamFunction().ToMemoryStream();
+                        return entry.GetStreamFunction().ToMemoryStream();
                     }
                 }
             }

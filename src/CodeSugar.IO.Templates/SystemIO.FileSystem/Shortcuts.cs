@@ -34,7 +34,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             if (uri.IsFile)
             {
-                GetWriteStreamFunction(finfo).WriteAllLines(null,
+                GetStreamFunction(finfo).WriteAllLines(null,
                     "[{000214A0-0000-0000-C000-000000000046}]",
                     "Prop3=19,11",
                     "[InternetShortcut]",
@@ -46,7 +46,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
             else
             {
-                GetWriteStreamFunction(finfo).WriteAllLines(null,
+                GetStreamFunction(finfo).WriteAllLines(null,
                     "[{000214A0-0000-0000-C000-000000000046}]",
                     "Prop3=19,11",
                     "[InternetShortcut]",
@@ -200,7 +200,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             _CheckShortcutNotTemp(finfo);
 
-            var lines = GetReadStreamFunction(finfo).ReadAllLines();
+            var lines = GetStreamFunction(finfo).ReadAllLines();
 
             var line = lines.FirstOrDefault(l=> l.StartsWith("URL="));
             if (line == null) return null;

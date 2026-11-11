@@ -12,13 +12,15 @@ using System.Threading;
 
 #nullable disable
 
+using __STREAMFUNC = System.Func<System.IO.FileMode, System.IO.Stream>;
+
 namespace __CODESUGAR_ROOTNAMESPACE__
 {
     internal static partial class CodeSugarImagingExtensions
     {
-        public static System.Numerics.Tensors.Tensor<Byte> ReadTensorRgbFrom(this Func<System.IO.Stream> stream)
+        public static System.Numerics.Tensors.Tensor<Byte> ReadTensorRgbFrom(this __STREAMFUNC stream)
         {
-            using(var s = stream.Invoke())
+            using(var s = stream.Invoke(System.IO.FileMode.Open))
             {
                 return ReadTensorRgbFrom(s);
             }

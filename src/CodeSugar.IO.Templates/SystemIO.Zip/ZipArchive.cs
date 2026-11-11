@@ -45,7 +45,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
         {
             if (archive == null) throw new ArgumentNullException(nameof(archive));
 
-            return archive.Entries.ToDictionary(entry => entry.FullName, entry => entry.GetReadStreamFunction().ReadAllBytes());
+            return archive.Entries.ToDictionary(entry => entry.FullName, entry => entry.GetStreamFunction().ReadAllBytes());
         }
 
         public static void AddEntries(this __ZIPARCHIVE archive, IReadOnlyDictionary<string,__BYTESSEGMENT> entries)
@@ -56,7 +56,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             foreach(var entry in entries)
             {
                 var zipPath = entry.Key.Replace(System.IO.Path.DirectorySeparatorChar, System.IO.Path.AltDirectorySeparatorChar);
-                archive.CreateEntry(zipPath).GetWriteStreamFunction().WriteAllBytes(entry.Value);
+                archive.CreateEntry(zipPath).GetStreamFunction().WriteAllBytes(entry.Value);
             }        
         }
     }

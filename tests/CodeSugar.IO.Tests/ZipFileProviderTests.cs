@@ -74,7 +74,7 @@ namespace CodeSugar
             {
                 foreach(var item in content)
                 {                    
-                    writeZip.CreateEntry(item.Key).GetWriteStreamFunction().WriteAllBytes(item.Value);
+                    writeZip.CreateEntry(item.Key).GetStreamFunction().WriteAllBytes(item.Value);
                 }
             }
 
@@ -117,7 +117,7 @@ namespace CodeSugar
             await Assert.That(rootContent.Count).IsEqualTo(1);
             await Assert.That(rootContent[0].Name).IsEqualTo("c.bin");
 
-            var bytes = provider.GetFileInfo("a/b.bin").GetReadStreamFunction().ReadAllBytes();
+            var bytes = provider.GetFileInfo("a/b.bin").GetStreamFunction().ReadAllBytes();
             await Assert.That(bytes).IsSequenceEqualTo(new byte[] { 1, 2, 3, 4, 5 });
         }
     }

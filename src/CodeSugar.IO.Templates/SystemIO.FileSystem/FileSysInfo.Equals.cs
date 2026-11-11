@@ -118,7 +118,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             if (a == null && bPath == null) return true;
             if (a == null) return false;
 
-            return ArePathsEqual(__MATCHCASING.PlatformDefault, a.FullName, bPath);
+            return AreFullPathsEqual(__MATCHCASING.PlatformDefault, a.FullName, bPath);
         }
 
         /// <summary>
@@ -188,13 +188,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             public static _FileSystemInfoComparer<T> GetInstance(__MATCHCASING casing)
             {
-                switch(casing)
-                {
-                    case __MATCHCASING.CaseInsensitive: return GetInstance(StringComparison.OrdinalIgnoreCase);
-                    case __MATCHCASING.CaseSensitive: return GetInstance(StringComparison.Ordinal);
-                    case __MATCHCASING.PlatformDefault: return GetInstance(FileSystemStringComparison);
-                    default: throw new ArgumentOutOfRangeException(nameof(casing), casing.ToString());
-                }
+                return GetInstance(casing.GetStringComparison());
             }
 
             public static _FileSystemInfoComparer<T> GetInstance(StringComparison comparison)
@@ -220,7 +214,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 return _Comparers[(int)comparison];
             }
 
-			public static _FileSystemInfoComparer<T> Default { get; } = GetInstance(FileSystemStringComparison);
+			public static _FileSystemInfoComparer<T> Default { get; } = GetInstance(__MATCHCASING.PlatformDefault.GetStringComparison());
 
 			private _FileSystemInfoComparer(StringComparison comparison)
             {
@@ -235,10 +229,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 if (x == null) return 1;
                 if (y == null) return -1;
 
-                var apath = GetNormalizedFullName(x);
-                var bpath = GetNormalizedFullName(y);
-
-                return string.Compare(apath, bpath, _Comparison);
+                return _CompareFullPaths(_Comparison, x.FullName, y.FullName);
             }
 
             public bool Equals(T x, T y)
@@ -247,18 +238,14 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 if (x == null) return false;
                 if (y == null) return false;
 
-                var apath = GetNormalizedFullName(x);
-                var bpath = GetNormalizedFullName(y);
-
-                return string.Equals(apath, bpath, _Comparison);
+                return _AreFullPathsEqual(_Comparison, x.FullName, y.FullName);
             }
 
             public int GetHashCode(T obj)
             {
-                return obj == null ? 0 : GetNormalizedFullName(obj).GetHashCode(_Comparison);
-            }
-
-            
+                if (obj == null) return 0;
+                return _GetFullPathHashCode(_Comparison, obj.FullName);
+            }            
         }
 
         #endregion

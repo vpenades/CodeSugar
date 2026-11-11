@@ -171,11 +171,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             public bool ContainsSeparator(string path)
             {
-                #if NET10_0_OR_GREATER
-                return path.ContainsAny(_PathSepatators);
-                #else
-                return _PathSepatators.Any(c => path.Contains(c));
-                #endif
+                return path.IndexOfAny(_PathSepatators) >= 0;                
             }
 
             public bool StartsWithSeparator(string path)
@@ -190,7 +186,6 @@ namespace __CODESUGAR_ROOTNAMESPACE__
                 var i = path.Length - 1;
                 return _PathSepatators.Any(c => path[i] == c);
             }
-
         }
 
 
@@ -347,6 +342,6 @@ namespace __CODESUGAR_ROOTNAMESPACE__
             }
         }
 
-#endregion
+        #endregion
     }
 }

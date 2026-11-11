@@ -9,7 +9,11 @@
     <EmbeddedResource Include="..\CodeSugar.IO.Templates\SystemIO.Zip\*.cs" LinkBase="Templates\SystemIO" />
     <EmbeddedResource Include="..\CodeSugar.IO.Templates\FileProviders\*.cs" LinkBase="Templates\FileProviders" />
     <EmbeddedResource Include="..\CodeSugar.IO.Templates\SharpCompress\*.cs" LinkBase="Templates\SharpCompress" />
+<<<<<<< HEAD
 		<EmbeddedResource Include="..\CodeSugar.IO.Templates\Avalonia\*.cs" LinkBase="Templates\Avalonia" />
+=======
+    <EmbeddedResource Include="..\CodeSugar.IO.Templates\Avalonia\*.cs" LinkBase="Templates\Avalonia" />
+>>>>>>> 81beacafdfd054a88e94ca43f9716060be3c2912
   </ItemGroup>
 
   <PropertyGroup>

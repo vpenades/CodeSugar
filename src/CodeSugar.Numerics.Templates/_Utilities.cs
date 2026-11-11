@@ -91,7 +91,8 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
         private static T __ReverseEndianness<T>(T value) where T:unmanaged
         {
-            Span<byte> tbytes = stackalloc byte[Unsafe.SizeOf<T>()];
+            // requires System.Runtime.CompilerServices.Unsafe" Version="6.1.2"
+            Span<byte> tbytes = stackalloc byte[System.Runtime.CompilerServices.Unsafe.SizeOf<T>()];
             var tval = System.Runtime.InteropServices.MemoryMarshal.Cast<byte, T>(tbytes);
 
             tval[0] = value;

@@ -171,6 +171,7 @@ namespace __CODESUGAR_ROOTNAMESPACE__
 
             if (xdir is __XINFO xinfo)
             {
+                System.Diagnostics.Debug.Assert(xinfo.IsDirectory,"expeted directory");
                 physicalPath ??= xinfo.PhysicalPath;
             }
 
