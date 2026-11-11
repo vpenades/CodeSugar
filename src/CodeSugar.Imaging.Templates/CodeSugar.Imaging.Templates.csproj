@@ -16,11 +16,11 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="System.Numerics.Tensors" Version="10.0.10" />
-		<PackageReference Include="SixLabors.ImageSharp" Version="[3.1.12]" />
+		<PackageReference Include="System.Numerics.Tensors" Version="10.0.15" />
+		<PackageReference Include="SixLabors.ImageSharp" Version="[3.1.12]" NoWarn="NU1901;NU1902;NU1903;NU1904" />
 		<PackageReference Include="PhotoSauce.MagicScaler" Version="0.15.0" />
-		<PackageReference Include="SkiaSharp" Version="4.150.1" />
-    <PackageReference Include="Avalonia" Version="12.1.0" />		
+		<PackageReference Include="SkiaSharp" Version="4.155.0" />
+    <PackageReference Include="Avalonia" Version="12.1.6" />		
 	</ItemGroup>
 
   <ItemGroup Condition="$([MSBuild]::IsTargetFrameworkCompatible('$(TargetFramework)', 'net10.0'))">

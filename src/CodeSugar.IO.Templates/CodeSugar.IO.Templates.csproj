@@ -8,20 +8,23 @@
 
   <PropertyGroup>
     <DefineConstants>$(DefineConstants);__REFERENCES_SYSTEMTEXTJSON</DefineConstants>
+		<DefineConstants>$(DefineConstants);__REFERENCES_MICROSOFTEXTENSIONSFILEPROVIDERSABSTRACTIONS</DefineConstants>
 		<DefineConstants>$(DefineConstants);__REFERENCES_MICROSOFTIORECYCLABLEMEMORYSTREAM</DefineConstants>
 		<DefineConstants>$(DefineConstants);__REFERENCES_SHARPCOMPRESS</DefineConstants>
     <DefineConstants>$(DefineConstants);__REFERENCES_SYSTEMIOHASHING</DefineConstants>
+		<DefineConstants>$(DefineConstants);__REFERENCES_AVALONIA</DefineConstants>
   </PropertyGroup>  
 
   <ItemGroup>
-    <PackageReference Include="System.IO.Hashing" Version="10.0.10" />
-    <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.1" />
-    <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="10.0.10" />
-    <PackageReference Include="SharpCompress" Version="0.50.1" />
+    <PackageReference Include="System.IO.Hashing" Version="10.0.15" />
+    <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="4.0.1" />
+    <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="10.0.15" />
+    <PackageReference Include="SharpCompress" Version="0.50.8" />
+		<PackageReference Include="Avalonia" Version="12.1.6" />
   </ItemGroup>  
 
 	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard2.1' ">
-		<PackageReference Include="System.Text.Json" Version="10.0.10" />		
+		<PackageReference Include="System.Text.Json" Version="10.0.15" />		
 	</ItemGroup>
 
 </Project>
