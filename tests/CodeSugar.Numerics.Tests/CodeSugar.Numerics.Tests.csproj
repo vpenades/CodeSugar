@@ -1,4 +1,5 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <RootNamespace>CodeSugar</RootNamespace>
@@ -13,17 +14,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="TUnit" Version="1.83.0" />
-		<!-- https://github.com/thomhurst/TUnit/issues/2419 -->
-		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="10.0.15" />
-    <PackageReference Include="TestAttachments.TUnit" Version="4.0.0-Preview-20260129-1218" />
+    <PackageReference Include="TUnit" />		
+    <PackageReference Include="TestAttachments.TUnit" />
   </ItemGroup>
 
   <ItemGroup>
-		<PackageReference Include="System.Numerics.Tensors" Version="10.0.15" />
-		<PackageReference Include="Microsoft.ML.OnnxRuntime.Managed" Version="1.30.0" />
-		<PackageReference Include="MathNet.Numerics" Version="5.0.0" />
-		<PackageReference Include="NCalc" Version="7.4.0" />    
+		<PackageReference Include="System.Numerics.Tensors" />
+		<PackageReference Include="Microsoft.ML.OnnxRuntime.Managed" />
+		<PackageReference Include="MathNet.Numerics" />
+		<PackageReference Include="NCalc" />    
 	</ItemGroup>
 
   <Choose>

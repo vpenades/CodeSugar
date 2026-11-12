@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <EnablePackageVersionOverride>true</EnablePackageVersionOverride>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <ExtraSystemVersion>10.0.15</ExtraSystemVersion>
+    <CodeAnalysisVersion>[5.6.0]</CodeAnalysisVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+
+    <PackageVersion Include="System.CommandLine" Version="3.0.0" />
+    <PackageVersion Include="System.IO.Hashing" Version="$(ExtraSystemVersion)" />
+    <PackageVersion Include="System.Numerics.Tensors" Version="$(ExtraSystemVersion)" />
+    <PackageVersion Include="System.Text.Json" Version="$(ExtraSystemVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.FileProviders.Abstractions" Version="$(ExtraSystemVersion)" />
+    <PackageVersion Include="Microsoft.Extensions.FileProviders.Physical" Version="$(ExtraSystemVersion)" />
+
+    <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="$(CodeAnalysisVersion)" />
+    <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="$(CodeAnalysisVersion)" />    
+
+    <PackageVersion Include="Microsoft.IO.RecyclableMemoryStream" Version="4.0.1" />
+    <PackageVersion Include="Microsoft.ML.OnnxRuntime.Managed" Version="[1.30.0]" />
+
+    <PackageVersion Include="Avalonia" Version="12.1.6" />
+
+    <PackageVersion Include="MathNet.Numerics" Version="5.0.0" />
+    <PackageVersion Include="NCalc" Version="7.4.0" />
+
+    <PackageVersion Include="SharpCompress" Version="0.50.8" />
+
+    <PackageVersion Include="PhotoSauce.MagicScaler" Version="0.15.0" />
+
+    <PackageVersion Include="ContentFilesExample" Version="1.0.2" />
+
+    <PackageVersion Include="SkiaSharp" Version="4.155.0" />
+
+    <PackageVersion Include="SixLabors.ImageSharp" Version="[3.1.12]" />
+    <PackageVersion Include="SixLabors.ImageSharp.Drawing" Version="[2.1.7]" />
+
+    
+    <!-- https://github.com/thomhurst/TUnit/issues/7739 -->
+    <PackageVersion Include="TUnit" Version="[1.81.16]" />
+    
+    <PackageVersion Include="TestAttachments.TUnit" Version="4.0.0-Preview-20260129-1218" />
+    
+    <PackageVersion Include="InteropTypes.TensorBitmaps.Core" Version="1.0.0-prv-20260709-140121" />
+    <PackageVersion Include="CodeSugar.Srlzn.Bin.Sources" Version="1.0.0-prv-20261008" />    
+
+  </ItemGroup>
+</Project>

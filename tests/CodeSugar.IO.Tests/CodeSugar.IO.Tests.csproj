@@ -1,4 +1,5 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <RootNamespace>CodeSugar</RootNamespace>
@@ -13,18 +14,16 @@
   </PropertyGroup>
 
   <ItemGroup>    
-    <PackageReference Include="TUnit" Version="1.83.0" />
-		<!-- https://github.com/thomhurst/TUnit/issues/2419 -->
-		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="10.0.15" />
-    <PackageReference Include="TestAttachments.TUnit" Version="4.0.0-Preview-20260129-1218" />
+    <PackageReference Include="TUnit" />		
+    <PackageReference Include="TestAttachments.TUnit" />
   </ItemGroup>
 
   <ItemGroup>
-		<PackageReference Include="System.IO.Hashing" Version="10.0.15" />		
-		<PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="10.0.15" />
-		<PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="10.0.15" />
-		<PackageReference Include="SharpCompress" Version="0.50.8" />
-    <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="4.0.1" />
+		<PackageReference Include="System.IO.Hashing" />		
+		<PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" />
+		<PackageReference Include="Microsoft.Extensions.FileProviders.Physical" />
+		<PackageReference Include="SharpCompress" />
+    <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" />
   </ItemGroup>
 
   <Choose>

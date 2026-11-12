@@ -1,4 +1,5 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
@@ -7,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>    
-		<PackageReference Include="CodeSugar.Srlzn.Bin.Sources" Version="1.0.0-Prv-20260708" PrivateAssets="all" />
-    <PackageReference Include="ContentFilesExample" Version="1.0.2" PrivateAssets="all" />
+		<PackageReference Include="CodeSugar.Srlzn.Bin.Sources" PrivateAssets="all" />
+    <PackageReference Include="ContentFilesExample" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
